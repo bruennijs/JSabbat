@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JSabbat.iml" filepath="$PROJECT_DIR$/.idea/modules/JSabbat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.app/de.bruenni.sabbat.messenger.app.iml" filepath="$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.app/de.bruenni.sabbat.messenger.app.iml" group="de.bruenni.sabbat.messenger.app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.app/de.bruenni.sabbat.messenger.app_main.iml" filepath="$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.app/de.bruenni.sabbat.messenger.app_main.iml" group="de.bruenni.sabbat.messenger.app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.app/de.bruenni.sabbat.messenger.app_test.iml" filepath="$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.app/de.bruenni.sabbat.messenger.app_test.iml" group="de.bruenni.sabbat.messenger.app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.core/de.bruenni.sabbat.messenger.core.iml" filepath="$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.core/de.bruenni.sabbat.messenger.core.iml" group="de.bruenni.sabbat.messenger.core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.core/de.bruenni.sabbat.messenger.core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.core/de.bruenni.sabbat.messenger.core_main.iml" group="de.bruenni.sabbat.messenger.core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.core/de.bruenni.sabbat.messenger.core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/de.bruenni.sabbat.messenger.core/de.bruenni.sabbat.messenger.core_test.iml" group="de.bruenni.sabbat.messenger.core" />
+    </modules>
+  </component>
+</project>
