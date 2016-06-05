@@ -5,7 +5,8 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- services -->
-    <import resource="resources/spring.xml"/>
+    <import resource="classpath:spring/spring-infrastructure-common.xml"/>    <!--de.bruenni.infrastructure.common-->
+    <import resource="classpath:spring/spring-core.xml"/>   <!--de.bruenni.sabbat.messsenger.core-->
 
 
     <!-- more bean definitions for services go here -->

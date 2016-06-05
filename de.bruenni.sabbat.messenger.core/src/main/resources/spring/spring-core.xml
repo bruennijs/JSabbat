@@ -4,13 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--<import resource="services.xml"/>
-    <import resource="resources/messageSource.xml"/>
-    <import resource="/resources/themeSource.xml"/>-->
 
-    <bean id="MessageApplicationService"
-          class="org.springframework.samples.jpetstore.dao.jpa.JpaAccountDao">
-        &lt;!&ndash; additional collaborators and configuration for this bean go here &ndash;&gt;
+    <bean id="MessageApplicationService" class="sabbat.messenger.core.application.services.MessageApplicationService">
+        <constructor-arg ref="DomainEventBus" />
     </bean>
 
     <!-- more bean definitions for data access objects go here -->
