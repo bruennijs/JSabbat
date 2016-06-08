@@ -5,13 +5,16 @@ import infrastructure.common.event.*;
 import infrastructure.common.event.implementation.Event;
 import rx.Observable;
 
+import org.apache.logging.log4j.*;
+
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bruenni on 28.05.16.
  */
 public class MessageApplicationService {
+    static final Logger logger = LogManager.getLogger(MessageApplicationService.class.getName());
+
     private IDomainEventBus<IEvent> eventBus;
     private Observable<IEvent> eventSubscription;
 
@@ -22,7 +25,7 @@ public class MessageApplicationService {
 
     public Future<Message> send(String to, String content)
     {
-        System.out.println("send[to=" + to + ",content=" + content + "]");
+        logger.info("HELLO SEND");
         /*java.util.concurrent.CompletableFuture<Message>();
         Future<Message> future = new Future<Message>();*/
         return null;
