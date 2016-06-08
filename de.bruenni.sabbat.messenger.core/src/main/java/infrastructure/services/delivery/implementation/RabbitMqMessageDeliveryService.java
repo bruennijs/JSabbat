@@ -22,10 +22,6 @@ public class RabbitMqMessageDeliveryService implements IMessageDeliveryService {
 
     private Observable<IEvent> eventObservable = PublishSubject.create();
 
-    @Override
-    public Observable<IEvent> getEvent() {
-        return eventObservable;
-    }
 
     /**
      * Requests and triggers a message delivery.

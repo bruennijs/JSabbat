@@ -12,12 +12,6 @@ import java.util.concurrent.Future;
 public interface IMessageDeliveryService {
 
     /**
-     * Gets the event for receiving asynchronous delivered events.
-     * @return
-     */
-    Observable<IEvent> getEvent();
-
-    /**
      * Requests and triggers a message delivery.
      * Async result contains information about the success of the request not whether message
      * has been delivered to a user.

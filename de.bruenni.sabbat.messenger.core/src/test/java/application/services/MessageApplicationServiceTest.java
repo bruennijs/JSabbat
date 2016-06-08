@@ -11,7 +11,7 @@ public class MessageApplicationServiceTest {
     @Test
     public void When_send_message_expect_messagedelivery_service_called()
     {
-        MessageApplicationService sut = new MessageApplicationService(new DomainEventBusImpl<>());
+        MessageApplicationService sut = new MessageApplicationService(new DomainEventBusImpl<>(), null);
         sut.send("olli", "meine neue nachricht");
     }
 }

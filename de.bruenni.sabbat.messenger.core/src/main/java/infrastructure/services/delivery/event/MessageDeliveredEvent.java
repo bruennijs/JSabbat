@@ -1,19 +1,15 @@
 package infrastructure.services.delivery.event;
 
+import infrastructure.common.event.implementation.Event;
+
 import java.util.Date;
 
 /**
  * Created by bruenni on 08.06.16.
  */
-public class MessageDeliveredEvent {
-    String id;
-    Date timestamp;
+public class MessageDeliveredEvent extends Event {
 
-    public String getId() {
-        return id;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
+    public MessageDeliveredEvent(String id, Date timestamp) {
+        super(id, timestamp);
     }
 }

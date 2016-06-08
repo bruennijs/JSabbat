@@ -20,6 +20,6 @@ public class MessageBuilder {
 
     public Message Build()
     {
-        return new Message(from, to, timestamp, delivered);
+        return new Message(new Long(5), from, to, timestamp, delivered);
     }
 }
