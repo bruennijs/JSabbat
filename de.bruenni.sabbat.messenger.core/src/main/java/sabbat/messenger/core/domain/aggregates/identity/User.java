@@ -1,4 +1,4 @@
-package domain.aggregates.identity;
+package sabbat.messenger.core.domain.aggregates.identity;
 
 import java.net.URI;
 

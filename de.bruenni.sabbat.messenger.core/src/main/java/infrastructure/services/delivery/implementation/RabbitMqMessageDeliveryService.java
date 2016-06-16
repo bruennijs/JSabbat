@@ -1,10 +1,9 @@
 package infrastructure.services.delivery.implementation;
 
-import domain.aggregates.Message;
 import infrastructure.common.event.IEvent;
+import infrastructure.services.delivery.DeliveryRequest;
 import infrastructure.services.delivery.DeliveryRequestResult;
 import infrastructure.services.delivery.IMessageDeliveryService;
-import infrastructure.services.delivery.event.MessageDeliveredEvent;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -25,15 +24,14 @@ public class RabbitMqMessageDeliveryService implements IMessageDeliveryService {
 
     /**
      * Requests and triggers a message delivery.
-     * Async result contains information about the success of the request not whether message
+     * Async deliverySuccessful contains information about the success of the request not whether message
      * has been delivered to a user.
      * Delivered events are handled the corresponding observable.
-     * @param msg
+     * @param request
      * @return
      */
     @Override
-    public Future<DeliveryRequestResult> requestDelivery(Message msg)
-    {
+    public CompletableFuture<DeliveryRequestResult> requestDelivery(DeliveryRequest request) {
         CompletableFuture<DeliveryRequestResult> future = new CompletableFuture<>();
 
         future.complete(new DeliveryRequestResult(false));

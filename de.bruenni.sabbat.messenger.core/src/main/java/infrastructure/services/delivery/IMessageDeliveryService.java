@@ -1,9 +1,6 @@
 package infrastructure.services.delivery;
 
-import domain.aggregates.Message;
-import infrastructure.common.event.IEvent;
-import rx.Observable;
-
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
@@ -13,11 +10,11 @@ public interface IMessageDeliveryService {
 
     /**
      * Requests and triggers a message delivery.
-     * Async result contains information about the success of the request not whether message
+     * Async deliverySuccessful contains information about the success of the request not whether message
      * has been delivered to a user.
      * Delivered events are handled the corresponding observable.
-     * @param msg
+     * @param request delivery request
      * @return
      */
-    Future<DeliveryRequestResult> requestDelivery(Message msg);
+    CompletableFuture<DeliveryRequestResult> requestDelivery(DeliveryRequest request);
 }

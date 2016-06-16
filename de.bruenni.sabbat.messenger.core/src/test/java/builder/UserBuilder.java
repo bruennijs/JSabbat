@@ -1,6 +1,6 @@
 package builder;
 
-import domain.aggregates.identity.User;
+import sabbat.messenger.core.domain.aggregates.identity.User;
 
 import java.net.URI;
 import java.net.URISyntaxException;

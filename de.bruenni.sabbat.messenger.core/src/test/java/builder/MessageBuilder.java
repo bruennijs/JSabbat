@@ -1,10 +1,11 @@
 package builder;
 
-import domain.aggregates.Message;
-import domain.aggregates.identity.User;
+import sabbat.messenger.core.domain.aggregates.Message;
+import sabbat.messenger.core.domain.aggregates.identity.User;
 
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by bruenni on 08.06.16.
@@ -20,6 +21,6 @@ public class MessageBuilder {
 
     public Message Build()
     {
-        return new Message(new Long(5), from, to, timestamp, delivered);
+        return new Message(UUID.randomUUID(), from, to, timestamp, delivered);
     }
 }

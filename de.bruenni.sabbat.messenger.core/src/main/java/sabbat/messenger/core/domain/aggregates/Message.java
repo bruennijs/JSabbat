@@ -1,13 +1,13 @@
-package domain.aggregates;
+package sabbat.messenger.core.domain.aggregates;
 
-import domain.aggregates.identity.User;
+import sabbat.messenger.core.domain.aggregates.identity.User;
 import infrastructure.common.event.IEvent;
 import infrastructure.common.event.IEventHandler;
-import infrastructure.services.delivery.event.MessageDeliveredEvent;
-import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
+import infrastructure.persistence.Entity;
 
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * State each message can be in.
@@ -45,7 +45,7 @@ enum MessageEvents {
 /**
  * Created by bruenni on 05.06.16.
  */
-public class Message extends Entity<Long> implements IEventHandler {//extends EnumStateMachineConfigurerAdapter<MessageState, MessageEvents> {
+public class Message extends Entity<UUID> implements IEventHandler {//extends EnumStateMachineConfigurerAdapter<MessageState, MessageEvents> {
     User from;
     User to;
     Date timestamp;
@@ -58,7 +58,7 @@ public class Message extends Entity<Long> implements IEventHandler {//extends En
      * @param timestamp
      * @param delivered
      */
-    public Message(Long id, User from, User to, Date timestamp, Date delivered) {
+    public Message(UUID id, User from, User to, Date timestamp, Date delivered) {
         super(id);
         this.from = from;
         this.to = to;
