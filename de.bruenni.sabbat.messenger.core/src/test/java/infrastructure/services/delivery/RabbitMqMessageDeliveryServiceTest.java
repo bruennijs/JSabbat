@@ -18,7 +18,7 @@ public class RabbitMqMessageDeliveryServiceTest {
     @Test
     public void When_deliver_expect_future_completes() throws ExecutionException, InterruptedException, URISyntaxException {
         RabbitMqMessageDeliveryService sut = new RabbitMqMessageDeliveryService();
-        CompletableFuture<DeliveryRequestResult> future = sut.requestDelivery(new MessageDeliveryRequest(null, null, UUID.randomUUID(), "test content"));
+        CompletableFuture<DeliveryRequestResult> future = sut.requestDelivery(new MessageDeliveryRequest(null, null, UUID.randomUUID().toString(), "test content"));
         Assert.assertEquals(false, future.get().getResult());
     }
 }

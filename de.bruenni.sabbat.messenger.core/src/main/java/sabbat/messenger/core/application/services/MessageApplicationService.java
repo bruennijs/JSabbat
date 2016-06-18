@@ -16,6 +16,7 @@ import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -26,80 +27,97 @@ import java.util.concurrent.Future;
 public class MessageApplicationService implements IEventHandler<IEvent> {
     static final Logger logger = LogManager.getLogger(MessageApplicationService.class.getName());
 
-    private IDomainEventBus<IEvent> eventBus;
+    private IDomainEventPublisher domainEventPublisher;
+    //private IDomainEventBus<IEvent> eventBus;
     private CrudRepository<Message, UUID> messageRepository;
     private IUserRepository userRepository;
     private IMessageDeliveryService deliveryService;
-    private Type[] events = new Type[] { DeliveryResponseReceivedEvent.class, DeliveryRequestResultReceivedEvent.class };
+    private Type[] events = new Type[]
+            {
+                    DeliveryResponseReceivedEvent.class,
+                    DeliveryRequestResultReceivedEvent.class
+            };
 
-    public MessageApplicationService(IDomainEventBus<IEvent> eventBus,
-                                     CrudRepository<Message, UUID> messageRepository,
+    public MessageApplicationService(IDomainEventPublisher domainEventPublisher,
+                                        CrudRepository<Message, UUID> messageRepository,
                                      IUserRepository userRepository,
                                      IMessageDeliveryService deliveryService) {
-        this.eventBus = eventBus;
+        this.domainEventPublisher = domainEventPublisher;
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
         this.deliveryService = deliveryService;
-        Subscribe(this.eventBus);
     }
 
     /**
      * Send message to recipient
      * @param command
-     * @return
+     * @return complates aftre message has been sent or sending has been rejected
      */
-    public Future<Message> send(MessageSendCommand command) {
+    public CompletableFuture<Message> send(MessageSendCommand command) {
 
         CompletableFuture<Message> result = new CompletableFuture<Message>();
 
-        logger.debug("send [to=" + command.getToUserName() + ",content=" + command.getContent() +"]");
+        logger.debug("send [to=" + command.getToUserName() + ", content=" + command.getContent() +"]");
 
-        User fromUser = userRepository.findByUserName(command.getFromUserName());
-        User toUser = userRepository.findByUserName(command.getToUserName());
+        User sender = userRepository.findByUserName(command.getFromUserName());
+        User recepient = userRepository.findByUserName(command.getToUserName());
 
-/*        MessageDeliveryRequest deliveryRequest = new MessageDeliveryRequest(fromUser, toUser, UUID.randomUUID(), command.getContent());
+        Message message = new Message(UUID.randomUUID(), sender, recepient, new Date(), null);
+
+        MessageDeliveryRequest deliveryRequest = new MessageDeliveryRequest(sender,
+                recepient,
+                message.getId().toString(),
+                command.getContent());
+
+        // call delievry service to send message
         CompletableFuture<DeliveryRequestResult> requestDeliveryFuture = deliveryService.requestDelivery(deliveryRequest);
-        requestDeliveryFuture.exceptionally((exc, result) -> {
-            handleDeliveryRequestResult(result);
+        requestDeliveryFuture.thenAccept(val -> {
+            // value received
+            message.onDeliveryRequestResult(val);
 
-        });*/
+            result.complete(message);
+        });
+
+        requestDeliveryFuture.exceptionally(exc -> {
+
+            result.completeExceptionally(exc);
+            return null;
+        });
 
         return result;
     }
 
-    private void handleDeliveryRequestResult(DeliveryRequestResult result) {
-        this.eventBus.publish(new DeliveryRequestResultReceivedEvent(result));
-    }
-
     /**
-     * Adapters
+     * Called by adapters to dispatch responses to message aggragates
      * @param deliveryResponse
      */
 
     public void handleDeliveryResponse(DeliveryResponse deliveryResponse) {
-        this.eventBus.publish(new DeliveryResponseReceivedEvent(deliveryResponse));
+
+        // find message by id
+        Message message = messageRepository.findOne(UUID.fromString(deliveryResponse.getCorrelationId()));
+
+        this.domainEventPublisher.publish(message.onDeliveryResponse(deliveryResponse));
     }
 
-    private void Subscribe(IDomainEventBus<IEvent> eventBus) {
+    private void Subscribe(IDomainEventBus eventBus) {
         eventBus
                 .subscribe()
                 .filter(e -> { return Arrays.stream(events).anyMatch(se -> se.getClass().equals(e.getClass())); })
-                .subscribe(event -> HandleEvent(event));
-    }
-
-    private void HandleEvent(IEvent event) {
-        logger.debug("OnEvent [" + event.toString() + "]");
-
-        if (event instanceof DeliveryResponseReceivedEvent)
-        {
-            Message message = messageRepository.findOne(((DeliveryResponseReceivedEvent) event).getDeliveryResponse().getRequestId());
-            message.OnEvent(event);
-        }
+                .subscribe(event -> OnEvent(event));
     }
 
     @Override
-    public void OnEvent(IEvent event) {
+    public void OnEvent(IEvent event)
+    {
         logger.debug("OnEvent IEventHandler [" + event.toString() + "]");
+
+        if (event instanceof DeliveryResponseReceivedEvent)
+        {
+            UUID uuid = UUID.fromString(((DeliveryResponseReceivedEvent) event).getDeliveryResponse().getCorrelationId());
+            Message message = messageRepository.findOne(uuid);
+            message.OnEvent(event);
+        }
     }
 
     @Override

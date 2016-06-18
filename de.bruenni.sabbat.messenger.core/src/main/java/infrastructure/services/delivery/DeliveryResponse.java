@@ -1,13 +1,11 @@
 package infrastructure.services.delivery;
 
-import java.util.UUID;
+import infrastructure.common.gateway.Response;
 
 /**
  * Created by bruenni on 16.06.16.
  */
-public class DeliveryResponse {
-    public UUID requestId;
-
+public class DeliveryResponse extends Response<String> {
     /**
      * True means that a delivery service could send and received an ack
      * by the client. False means that service sent the message but did not
@@ -17,15 +15,13 @@ public class DeliveryResponse {
 
     /**
      *
-     * @param requestId
+     * @param correlationId
      */
-    public DeliveryResponse(UUID requestId) {
-        this.requestId = requestId;
+    public DeliveryResponse(String correlationId)
+    {
+        super(correlationId);
     }
 
-    public UUID getRequestId() {
-        return requestId;
-    }
 
     public boolean isDeliverySuccessful() {
         return deliverySuccessful;

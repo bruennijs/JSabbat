@@ -11,7 +11,7 @@ public class MessageDeliveryRequest extends DeliveryRequest {
 
     private String content;
 
-    public MessageDeliveryRequest(User sender, User recipient, UUID requestId, String content) {
+    public MessageDeliveryRequest(User sender, User recipient, String requestId, String content) {
         super(sender, recipient, requestId);
         this.sender = sender;
         this.content = content;

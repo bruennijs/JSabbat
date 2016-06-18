@@ -34,7 +34,7 @@ public class RabbitMqMessageDeliveryService implements IMessageDeliveryService {
     public CompletableFuture<DeliveryRequestResult> requestDelivery(DeliveryRequest request) {
         CompletableFuture<DeliveryRequestResult> future = new CompletableFuture<>();
 
-        future.complete(new DeliveryRequestResult(false));
+        future.complete(new DeliveryRequestResult(request.getCorrelationId(), Boolean.FALSE));
 
         return future;
     }

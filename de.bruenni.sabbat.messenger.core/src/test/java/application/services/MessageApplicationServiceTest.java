@@ -13,7 +13,7 @@ public class MessageApplicationServiceTest {
     public void When_send_message_expect_messagedelivery_service_called()
     {
         MessageApplicationService sut = new MessageApplicationService(
-                new DomainEventBusImpl<>(), null, null, null);
+                new DomainEventBusImpl(), null, null, null);
         sut.send(new MessageSendCommand("peter", "olli", "meine neue nachricht"));
     }
 }

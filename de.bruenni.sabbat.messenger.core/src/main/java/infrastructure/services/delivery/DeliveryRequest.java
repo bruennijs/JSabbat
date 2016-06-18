@@ -1,5 +1,6 @@
 package infrastructure.services.delivery;
 
+import infrastructure.common.gateway.Request;
 import sabbat.messenger.core.domain.aggregates.identity.User;
 
 import java.util.UUID;
@@ -7,20 +8,14 @@ import java.util.UUID;
 /**
  * Created by bruenni on 16.06.16.
  */
-public abstract class DeliveryRequest {
-    public UUID requestId;
-
+public abstract class DeliveryRequest extends Request<String> {
     public User sender;
 
     public User recipient;
 
-    public DeliveryRequest(User sender, User recipient, UUID requestId) {
+    public DeliveryRequest(User sender, User recipient, String requestId) {
+        super(requestId);
         this.recipient = recipient;
-        this.requestId = requestId;
-    }
-
-    public UUID getRequestId() {
-        return requestId;
     }
 
     public User getRecipient() {

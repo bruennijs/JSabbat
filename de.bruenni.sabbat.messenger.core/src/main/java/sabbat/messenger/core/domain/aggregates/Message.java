@@ -1,9 +1,13 @@
 package sabbat.messenger.core.domain.aggregates;
 
+import infrastructure.services.delivery.DeliveryRequestResult;
+import infrastructure.services.delivery.DeliveryResponse;
 import sabbat.messenger.core.domain.aggregates.identity.User;
 import infrastructure.common.event.IEvent;
 import infrastructure.common.event.IEventHandler;
 import infrastructure.persistence.Entity;
+import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -91,5 +95,18 @@ public class Message extends Entity<UUID> implements IEventHandler {//extends En
     @Override
     public Type[] getSupportedEvents() {
         return new Type[0];
+    }
+
+    /**
+     * A message delivery request has been acked.
+     * @param result
+     */
+    public void onDeliveryRequestResult(DeliveryRequestResult result) {
+
+    }
+
+    public IEvent onDeliveryResponse(DeliveryResponse response) {
+
+        return new DeliveryResponseReceivedEvent(response);
     }
 }
