@@ -1,13 +1,12 @@
 package sabbat.messenger.core.domain.aggregates;
 
-import infrastructure.services.delivery.DeliveryRequestResult;
-import infrastructure.services.delivery.DeliveryResponse;
-import sabbat.messenger.core.domain.aggregates.identity.User;
 import infrastructure.common.event.IEvent;
 import infrastructure.common.event.IEventHandler;
 import infrastructure.persistence.Entity;
+import infrastructure.services.delivery.DeliveryRequestResult;
+import infrastructure.services.delivery.DeliveryResponse;
+import sabbat.messenger.core.domain.aggregates.identity.User;
 import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -89,7 +88,12 @@ public class Message extends Entity<UUID> implements IEventHandler {//extends En
 
     @Override
     public void OnEvent(IEvent iEvent) {
+        DeliveryResponseReceivedEvent deliveryResponseReceivedEvent = iEvent instanceof DeliveryResponseReceivedEvent ? ((DeliveryResponseReceivedEvent) iEvent) : null;
 
+        if (deliveryResponseReceivedEvent != null)
+        {
+            this.delivered = deliveryResponseReceivedEvent.getTimestamp();
+        }
     }
 
     @Override
