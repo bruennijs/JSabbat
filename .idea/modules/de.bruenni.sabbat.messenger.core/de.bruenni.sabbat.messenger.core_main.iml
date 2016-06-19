@@ -28,5 +28,6 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-messaging:4.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: de.bruenni:sabbat.messenger.core:1.0.0" level="project" />
   </component>
 </module>

@@ -23,6 +23,8 @@
       <module name="de.bruenni.sabbat.messenger.app_test" target="1.8" />
       <module name="de.bruenni.sabbat.messenger.core_main" target="1.8" />
       <module name="de.bruenni.sabbat.messenger.core_test" target="1.8" />
+      <module name="de.bruenni.sabbat.messenger.infrastructure_main" target="1.8" />
+      <module name="de.bruenni.sabbat.messenger.infrastructure_test" target="1.8" />
       <module name="messenger-core_main" target="1.5" />
       <module name="messenger-core_test" target="1.5" />
       <module name="messenger.app.arsch_main" target="1.5" />
@@ -31,6 +33,8 @@
       <module name="messenger.app_test" target="1.5" />
       <module name="messenger.core.test_main" target="1.5" />
       <module name="messenger.core.test_test" target="1.5" />
+      <module name="sabbat.messenger.infrastructure_main" target="1.8" />
+      <module name="sabbat.messenger.infrastructure_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
