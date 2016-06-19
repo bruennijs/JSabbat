@@ -1,7 +1,6 @@
-package infrastructure.services.delivery;
+package sabbat.messenger.core.infrastructure.delivery;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 /**
  * Created by bruenni on 05.06.16.

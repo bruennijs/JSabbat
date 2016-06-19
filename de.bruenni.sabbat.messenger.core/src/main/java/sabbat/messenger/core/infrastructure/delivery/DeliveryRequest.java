@@ -1,4 +1,4 @@
-package infrastructure.services.delivery;
+package sabbat.messenger.core.infrastructure.delivery;
 
 import infrastructure.common.gateway.Request;
 import sabbat.messenger.core.domain.aggregates.identity.User;

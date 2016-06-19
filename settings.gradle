@@ -2,4 +2,6 @@ rootProject.name = 'JSabbat'
 include 'de.bruenni.sabbat.messenger.core'
 include 'de.bruenni.sabbat.messenger.app'
 // findProject(':de.bruenni.sabbat.messenger.app')?.name = 'messenger.app'
+include 'de.bruenni.sabbat.messenger.infrastructure'
+// findProject(':de.bruenni.sabbat.messenger.infrastructure')?.name = 'de.bruenni.sabbat.messenger.infrastructure'
 

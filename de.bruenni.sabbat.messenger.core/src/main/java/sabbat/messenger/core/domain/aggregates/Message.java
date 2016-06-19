@@ -1,41 +1,17 @@
 package sabbat.messenger.core.domain.aggregates;
 
 import infrastructure.common.event.IEvent;
-import infrastructure.common.event.IEventHandler;
 import infrastructure.persistence.Entity;
-import infrastructure.services.delivery.DeliveryRequestResult;
-import infrastructure.services.delivery.DeliveryResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sabbat.messenger.core.domain.aggregates.identity.User;
 import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
+import sabbat.messenger.core.domain.events.MessageDeliveredEvent;
+import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
+import sabbat.messenger.core.infrastructure.delivery.DeliveryResponse;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.UUID;
-
-/**
- * State each message can be in.
- */
-enum MessageState
-{
-    /**
-     * Initial state.
-     */
-    New,
-    /**
-     * Send to delivery service and pending for state
-     * delivered or failed to be sent
-     */
-    Pending,
-    /**
-     * Final state
-     */
-    Delivered,
-
-    /**
-     * Failed could not be sent
-     */
-    Failed
-};
 
 /*
 enum MessageEvents {
@@ -48,11 +24,15 @@ enum MessageEvents {
 /**
  * Created by bruenni on 05.06.16.
  */
-public class Message extends Entity<UUID> implements IEventHandler {//extends EnumStateMachineConfigurerAdapter<MessageState, MessageEvents> {
+public class Message extends Entity<UUID> {//extends EnumStateMachineConfigurerAdapter<MessageState, MessageEvents> {
+
+    static final Logger logger = LogManager.getLogger(Message.class.getName());
+
     User from;
     User to;
-    Date timestamp;
-    Date delivered;
+    Date createdOn;
+    Date deliveredOn;
+    MessageState state;
 
     /**
      * Constructor.
@@ -61,20 +41,25 @@ public class Message extends Entity<UUID> implements IEventHandler {//extends En
      * @param timestamp
      * @param delivered
      */
-    public Message(UUID id, User from, User to, Date timestamp, Date delivered) {
+    public Message(UUID id,
+                   User from,
+                   User to,
+                   Date timestamp,
+                   Date delivered) {
         super(id);
         this.from = from;
         this.to = to;
-        this.timestamp = timestamp;
-        this.delivered = delivered;
+        this.createdOn = timestamp;
+        this.deliveredOn = delivered;
+        this.state = MessageState.New;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public Date getCreatedOn() {
+        return createdOn;
     }
 
-    public Date getDelivered() {
-        return delivered;
+    public Date getDeliveredOn() {
+        return deliveredOn;
     }
 
     public User getTo() {
@@ -85,20 +70,38 @@ public class Message extends Entity<UUID> implements IEventHandler {//extends En
         return from;
     }
 
+    public MessageState getState() {
+        return state;
+    }
 
-    @Override
-    public void OnEvent(IEvent iEvent) {
+    /**
+     * Handles domain events.
+     * @param iEvent
+     * @return new events created.
+     */
+    public IEvent OnEvent(IEvent iEvent) {
         DeliveryResponseReceivedEvent deliveryResponseReceivedEvent = iEvent instanceof DeliveryResponseReceivedEvent ? ((DeliveryResponseReceivedEvent) iEvent) : null;
 
         if (deliveryResponseReceivedEvent != null)
         {
-            this.delivered = deliveryResponseReceivedEvent.getTimestamp();
-        }
-    }
+            if (deliveryResponseReceivedEvent.getDeliveryResponse().isDeliverySuccessful()) {
+                this.deliveredOn = deliveryResponseReceivedEvent.getTimestamp();
+                this.state = MessageState.Delivered;
 
-    @Override
-    public Type[] getSupportedEvents() {
-        return new Type[0];
+                logger.debug("Message delivered {" + deliveryResponseReceivedEvent.getDeliveryResponse() + "}");
+
+                return new MessageDeliveredEvent(UUID.randomUUID(),
+                        this.getId(),
+                        deliveryResponseReceivedEvent.getTimestamp());
+            }
+            else
+            {
+                //this.state = MessageState.Failed;
+                logger.info("Message delivery response failed [" + deliveryResponseReceivedEvent.getDeliveryResponse() + "]");
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -106,11 +109,10 @@ public class Message extends Entity<UUID> implements IEventHandler {//extends En
      * @param result
      */
     public void onDeliveryRequestResult(DeliveryRequestResult result) {
-
     }
 
-    public IEvent onDeliveryResponse(DeliveryResponse response) {
-
-        return new DeliveryResponseReceivedEvent(response);
+    public IEvent onDeliveryResponse(DeliveryResponse response)
+    {
+        return new DeliveryResponseReceivedEvent(this.getId(), response);
     }
 }

@@ -1,8 +1,6 @@
-package infrastructure.services.delivery;
+package sabbat.messenger.core.infrastructure.delivery;
 
 import infrastructure.common.gateway.RequestResult;
-
-import java.util.UUID;
 
 /**
  * Created by bruenni on 08.06.16.

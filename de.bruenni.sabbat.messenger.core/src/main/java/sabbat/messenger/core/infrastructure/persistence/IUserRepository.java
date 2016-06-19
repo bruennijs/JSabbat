@@ -1,4 +1,4 @@
-package infrastructure.persistence;
+package sabbat.messenger.core.infrastructure.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 import sabbat.messenger.core.domain.aggregates.identity.User;

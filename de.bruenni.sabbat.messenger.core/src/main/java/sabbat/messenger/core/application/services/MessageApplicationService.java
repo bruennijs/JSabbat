@@ -1,15 +1,14 @@
 package sabbat.messenger.core.application.services;
 
-import infrastructure.persistence.IUserRepository;
-import infrastructure.services.delivery.DeliveryRequestResult;
+import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
+import sabbat.messenger.core.infrastructure.delivery.DeliveryResponse;
+import sabbat.messenger.core.infrastructure.delivery.IMessageDeliveryService;
+import sabbat.messenger.core.infrastructure.delivery.MessageDeliveryRequest;
+import sabbat.messenger.core.infrastructure.persistence.IUserRepository;
 import sabbat.messenger.core.domain.aggregates.Message;
 import sabbat.messenger.core.domain.aggregates.identity.User;
 import infrastructure.common.event.*;
-import infrastructure.services.delivery.IMessageDeliveryService;
-import infrastructure.services.delivery.MessageDeliveryRequest;
-import infrastructure.services.delivery.DeliveryResponse;
 import org.springframework.data.repository.CrudRepository;
-
 import org.apache.logging.log4j.*;
 import sabbat.messenger.core.domain.events.DeliveryRequestResultReceivedEvent;
 import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
@@ -19,7 +18,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 /**
  * Created by bruenni on 28.05.16.
@@ -39,7 +37,7 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
             };
 
     public MessageApplicationService(IDomainEventPublisher domainEventPublisher,
-                                        CrudRepository<Message, UUID> messageRepository,
+                                     CrudRepository<Message, UUID> messageRepository,
                                      IUserRepository userRepository,
                                      IMessageDeliveryService deliveryService) {
         this.domainEventPublisher = domainEventPublisher;
@@ -97,7 +95,9 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
         // find message by id
         Message message = messageRepository.findOne(UUID.fromString(deliveryResponse.getCorrelationId()));
 
-        this.domainEventPublisher.publish(message.onDeliveryResponse(deliveryResponse));
+        IEvent eventToPublish = message.onDeliveryResponse(deliveryResponse);
+
+        this.domainEventPublisher.publish(eventToPublish);
     }
 
     private void Subscribe(IDomainEventBus eventBus) {
@@ -116,7 +116,7 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
         {
             UUID uuid = UUID.fromString(((DeliveryResponseReceivedEvent) event).getDeliveryResponse().getCorrelationId());
             Message message = messageRepository.findOne(uuid);
-            message.OnEvent(event);
+            this.domainEventPublisher.publish(message.OnEvent(event));
         }
     }
 

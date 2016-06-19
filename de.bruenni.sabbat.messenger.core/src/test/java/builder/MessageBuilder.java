@@ -3,7 +3,6 @@ package builder;
 import sabbat.messenger.core.domain.aggregates.Message;
 import sabbat.messenger.core.domain.aggregates.identity.User;
 
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,7 +15,7 @@ public class MessageBuilder {
     private Date timestamp = new Date();
     private Date delivered = new Date();
 
-    public MessageBuilder() throws URISyntaxException {
+    public MessageBuilder() {
     }
 
     public Message Build()

@@ -10,7 +10,13 @@ import java.util.UUID;
  */
 public class MessageDeliveredEvent extends Event {
 
-    public MessageDeliveredEvent(UUID id, Date timestamp) {
-        super(id, timestamp);
+    /**
+     * Constructor.
+     * @param id
+     * @param messageId
+     * @param timestamp
+     */
+    public MessageDeliveredEvent(UUID id, UUID messageId, Date timestamp) {
+        super(id, messageId, timestamp);
     }
 }

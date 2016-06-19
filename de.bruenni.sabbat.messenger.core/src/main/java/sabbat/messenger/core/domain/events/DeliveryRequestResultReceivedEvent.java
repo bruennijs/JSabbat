@@ -1,8 +1,9 @@
 package sabbat.messenger.core.domain.events;
 
-import infrastructure.common.event.IEvent;
 import infrastructure.common.event.implementation.Event;
-import infrastructure.services.delivery.DeliveryRequestResult;
+import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
+
+import java.util.UUID;
 
 /**
  * Created by bruenni on 16.06.16.
@@ -10,7 +11,8 @@ import infrastructure.services.delivery.DeliveryRequestResult;
 public class DeliveryRequestResultReceivedEvent extends Event {
     private DeliveryRequestResult result;
 
-    public DeliveryRequestResultReceivedEvent(DeliveryRequestResult result) {
+    public DeliveryRequestResultReceivedEvent(UUID messageId, DeliveryRequestResult result) {
+        super(messageId);
         this.result = result;
     }
 

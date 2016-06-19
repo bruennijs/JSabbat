@@ -1,8 +1,6 @@
-package infrastructure.services.delivery;
+package sabbat.messenger.core.infrastructure.delivery;
 
 import sabbat.messenger.core.domain.aggregates.identity.User;
-
-import java.util.UUID;
 
 /**
  * Created by bruenni on 16.06.16.
