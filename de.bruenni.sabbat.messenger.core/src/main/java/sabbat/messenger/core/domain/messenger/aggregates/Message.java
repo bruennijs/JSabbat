@@ -13,6 +13,7 @@ import sabbat.messenger.core.domain.messenger.events.MessageDeliveredEvent;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryResponse;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -54,7 +55,7 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
         this.to = to;
         this.createdOn = timestamp;
         this.deliveredOn = delivered;
-        this.state = MessageState.New;
+        setState(MessageState.New);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
     }
 
     private void setState(MessageState newState) {
-        logger.debug("Message state changed [{0}->{1}]", this.state, newState);
+        logger.debug(MessageFormat.format("Message state changed [{2}:{0}->{1}]", this.state, newState, getId()));
         this.state = newState;
     }
 
@@ -111,14 +112,14 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
 
     private IEvent HandleDeliveryRequestResult() {
         if (this.getState() == MessageState.New)
-            this.state = MessageState.Pending;
+            setState(MessageState.Pending);
         return null;
     }
 
     private IEvent HandleDeliveryResponseEvent(DeliveryResponseReceivedEvent deliveryResponseReceivedEvent) {
         if (deliveryResponseReceivedEvent.getDeliveryResponse().isDeliverySuccessful()) {
             this.deliveredOn = deliveryResponseReceivedEvent.getTimestamp();
-            this.state = MessageState.Delivered;
+            setState(MessageState.Delivered);
 
             logger.debug("Message delivered {" + deliveryResponseReceivedEvent.getDeliveryResponse() + "}");
 
