@@ -1,4 +1,4 @@
-package sabbat.messenger.core.domain.events;
+package sabbat.messenger.core.domain.messenger.events;
 
 import infrastructure.common.event.IEvent;
 import infrastructure.common.event.implementation.Event;

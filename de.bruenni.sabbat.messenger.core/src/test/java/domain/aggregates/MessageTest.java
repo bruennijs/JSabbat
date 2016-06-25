@@ -5,11 +5,9 @@ import builder.MessageBuilder;
 import infrastructure.common.event.IEvent;
 import org.junit.Test;
 import org.springframework.util.Assert;
-import sabbat.messenger.core.application.services.MessageSendCommand;
-import sabbat.messenger.core.domain.aggregates.Message;
-import sabbat.messenger.core.domain.aggregates.MessageState;
-import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
-import sabbat.messenger.core.infrastructure.delivery.DeliveryResponse;
+import sabbat.messenger.core.domain.messenger.aggregates.Message;
+import sabbat.messenger.core.domain.messenger.aggregates.MessageState;
+import sabbat.messenger.core.domain.messenger.events.DeliveryResponseReceivedEvent;
 
 import java.net.URISyntaxException;
 

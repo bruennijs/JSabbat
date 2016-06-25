@@ -1,17 +1,19 @@
 package sabbat.messenger.core.application.services;
 
+import sabbat.messenger.core.domain.messenger.aggregates.IMessage;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryResponse;
 import sabbat.messenger.core.infrastructure.delivery.IMessageDeliveryService;
 import sabbat.messenger.core.infrastructure.delivery.MessageDeliveryRequest;
+import sabbat.messenger.core.infrastructure.persistence.IMessageRepository;
 import sabbat.messenger.core.infrastructure.persistence.IUserRepository;
-import sabbat.messenger.core.domain.aggregates.Message;
-import sabbat.messenger.core.domain.aggregates.identity.User;
+import sabbat.messenger.core.domain.messenger.aggregates.Message;
+import sabbat.messenger.core.domain.identity.aggregates.User;
 import infrastructure.common.event.*;
 import org.springframework.data.repository.CrudRepository;
 import org.apache.logging.log4j.*;
-import sabbat.messenger.core.domain.events.DeliveryRequestResultReceivedEvent;
-import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
+import sabbat.messenger.core.domain.messenger.events.DeliveryRequestResultReceivedEvent;
+import sabbat.messenger.core.domain.messenger.events.DeliveryResponseReceivedEvent;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -27,7 +29,7 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
 
     private IDomainEventPublisher domainEventPublisher;
     //private IDomainEventBus<IEvent> eventBus;
-    private CrudRepository<Message, UUID> messageRepository;
+    private IMessageRepository messageRepository;
     private IUserRepository userRepository;
     private IMessageDeliveryService deliveryService;
     private Type[] events = new Type[]
@@ -37,7 +39,7 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
             };
 
     public MessageApplicationService(IDomainEventPublisher domainEventPublisher,
-                                     CrudRepository<Message, UUID> messageRepository,
+                                     IMessageRepository messageRepository,
                                      IUserRepository userRepository,
                                      IMessageDeliveryService deliveryService) {
         this.domainEventPublisher = domainEventPublisher;
@@ -60,12 +62,13 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
         User sender = userRepository.findByUserName(command.getFromUserName());
         User recepient = userRepository.findByUserName(command.getToUserName());
 
-        Message message = new Message(UUID.randomUUID(), sender, recepient, new Date(), null);
+        Message message = new Message(UUID.randomUUID(),
+                sender.toUserValueObject(),
+                recepient.toUserValueObject(),
+                new Date(),
+                null);
 
-        MessageDeliveryRequest deliveryRequest = new MessageDeliveryRequest(sender,
-                recepient,
-                message.getId().toString(),
-                command.getContent());
+        MessageDeliveryRequest deliveryRequest = new MessageDeliveryRequest(message, message.getId().toString());
 
         // call delievry service to send message
         CompletableFuture<DeliveryRequestResult> requestDeliveryFuture = deliveryService.requestDelivery(deliveryRequest);

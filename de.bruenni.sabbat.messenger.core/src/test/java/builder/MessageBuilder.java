@@ -1,7 +1,7 @@
 package builder;
 
-import sabbat.messenger.core.domain.aggregates.Message;
-import sabbat.messenger.core.domain.aggregates.identity.User;
+import sabbat.messenger.core.domain.messenger.ValueObjects.User;
+import sabbat.messenger.core.domain.messenger.aggregates.Message;
 
 import java.util.Date;
 import java.util.UUID;

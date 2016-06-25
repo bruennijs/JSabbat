@@ -1,12 +1,12 @@
-package sabbat.messenger.core.domain.aggregates;
+package sabbat.messenger.core.domain.messenger.aggregates;
 
 import infrastructure.common.event.IEvent;
 import infrastructure.persistence.Entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sabbat.messenger.core.domain.aggregates.identity.User;
-import sabbat.messenger.core.domain.events.DeliveryResponseReceivedEvent;
-import sabbat.messenger.core.domain.events.MessageDeliveredEvent;
+import sabbat.messenger.core.domain.messenger.ValueObjects.User;
+import sabbat.messenger.core.domain.messenger.events.DeliveryResponseReceivedEvent;
+import sabbat.messenger.core.domain.messenger.events.MessageDeliveredEvent;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryResponse;
 
@@ -24,7 +24,7 @@ enum MessageEvents {
 /**
  * Created by bruenni on 05.06.16.
  */
-public class Message extends Entity<UUID> {//extends EnumStateMachineConfigurerAdapter<MessageState, MessageEvents> {
+public class Message extends Entity<UUID> implements IMessage {//extends EnumStateMachineConfigurerAdapter<MessageState, MessageEvents> {
 
     static final Logger logger = LogManager.getLogger(Message.class.getName());
 
@@ -54,22 +54,27 @@ public class Message extends Entity<UUID> {//extends EnumStateMachineConfigurerA
         this.state = MessageState.New;
     }
 
+    @Override
     public Date getCreatedOn() {
         return createdOn;
     }
 
+    @Override
     public Date getDeliveredOn() {
         return deliveredOn;
     }
 
+    @Override
     public User getTo() {
         return to;
     }
 
+    @Override
     public User getFrom() {
         return from;
     }
 
+    @Override
     public MessageState getState() {
         return state;
     }

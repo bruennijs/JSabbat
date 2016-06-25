@@ -1,4 +1,4 @@
-package sabbat.messenger.core.domain.aggregates;
+package sabbat.messenger.core.domain.messenger.aggregates;
 
 /**
  * State each message can be in.

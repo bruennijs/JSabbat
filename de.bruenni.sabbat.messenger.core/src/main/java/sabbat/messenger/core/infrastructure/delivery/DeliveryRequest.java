@@ -1,28 +1,22 @@
 package sabbat.messenger.core.infrastructure.delivery;
 
 import infrastructure.common.gateway.Request;
-import sabbat.messenger.core.domain.aggregates.identity.User;
-
-import java.util.UUID;
+import sabbat.messenger.core.domain.messenger.ValueObjects.User;
+import sabbat.messenger.core.domain.messenger.aggregates.IMessage;
 
 /**
  * Created by bruenni on 16.06.16.
  */
 public abstract class DeliveryRequest extends Request<String> {
-    public User sender;
 
-    public User recipient;
+    private IMessage message;
 
-    public DeliveryRequest(User sender, User recipient, String requestId) {
+    public DeliveryRequest(IMessage message, String requestId) {
         super(requestId);
-        this.recipient = recipient;
+        this.message = message;
     }
 
-    public User getRecipient() {
-        return recipient;
-    }
-
-    public User getSender() {
-        return sender;
+    public IMessage getMessage() {
+        return message;
     }
 }
