@@ -1,9 +1,12 @@
 package sabbat.messenger.core.domain.messenger.aggregates;
 
 import infrastructure.common.event.IEvent;
+import infrastructure.common.gateway.AggregateCorrelationException;
+import infrastructure.common.gateway.AsyncRequestBase;
 import infrastructure.persistence.Entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sabbat.messenger.core.domain.events.DeliveryRequestResultReceived;
 import sabbat.messenger.core.domain.messenger.ValueObjects.User;
 import sabbat.messenger.core.domain.messenger.events.DeliveryResponseReceivedEvent;
 import sabbat.messenger.core.domain.messenger.events.MessageDeliveredEvent;
@@ -79,6 +82,11 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
         return state;
     }
 
+    private void setState(MessageState newState) {
+        logger.debug("Message state changed [{0}->{1}]", this.state, newState);
+        this.state = newState;
+    }
+
     /**
      * Handles domain events.
      * @param iEvent
@@ -89,21 +97,39 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
 
         if (deliveryResponseReceivedEvent != null)
         {
-            if (deliveryResponseReceivedEvent.getDeliveryResponse().isDeliverySuccessful()) {
-                this.deliveredOn = deliveryResponseReceivedEvent.getTimestamp();
-                this.state = MessageState.Delivered;
+            return HandleDeliveryResponseEvent(deliveryResponseReceivedEvent);
+        }
 
-                logger.debug("Message delivered {" + deliveryResponseReceivedEvent.getDeliveryResponse() + "}");
+        DeliveryRequestResultReceived messageStateChangedEvent = iEvent instanceof DeliveryRequestResultReceived ? ((DeliveryRequestResultReceived) iEvent) : null;
+        if (messageStateChangedEvent != null)
+        {
+            return HandleDeliveryRequestResult();
+        }
 
-                return new MessageDeliveredEvent(UUID.randomUUID(),
-                        this.getId(),
-                        deliveryResponseReceivedEvent.getTimestamp());
-            }
-            else
-            {
-                //this.state = MessageState.Failed;
-                logger.info("Message delivery response failed [" + deliveryResponseReceivedEvent.getDeliveryResponse() + "]");
-            }
+        return null;
+    }
+
+    private IEvent HandleDeliveryRequestResult() {
+        if (this.getState() == MessageState.New)
+            this.state = MessageState.Pending;
+        return null;
+    }
+
+    private IEvent HandleDeliveryResponseEvent(DeliveryResponseReceivedEvent deliveryResponseReceivedEvent) {
+        if (deliveryResponseReceivedEvent.getDeliveryResponse().isDeliverySuccessful()) {
+            this.deliveredOn = deliveryResponseReceivedEvent.getTimestamp();
+            this.state = MessageState.Delivered;
+
+            logger.debug("Message delivered {" + deliveryResponseReceivedEvent.getDeliveryResponse() + "}");
+
+            return new MessageDeliveredEvent(UUID.randomUUID(),
+                    this.getId(),
+                    deliveryResponseReceivedEvent.getTimestamp());
+        }
+        else
+        {
+            //this.state = MessageState.Failed;
+            logger.info("Message delivery response failed [" + deliveryResponseReceivedEvent.getDeliveryResponse() + "]");
         }
 
         return null;
@@ -113,11 +139,26 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
      * A message delivery request has been acked.
      * @param result
      */
-    public void onDeliveryRequestResult(DeliveryRequestResult result) {
+    public IEvent onDeliveryRequestResult(DeliveryRequestResult result) {
+
+        //ValidateCorrelation(result);
+        if (result.getResult())
+            return new DeliveryRequestResultReceived(this.getId(), MessageState.Pending);
+        else
+            logger.debug("Delivery request result failure [{0}]", result);
+
+        return null;
     }
 
-    public IEvent onDeliveryResponse(DeliveryResponse response)
-    {
+    public IEvent onDeliveryResponse(DeliveryResponse response) {
+
+        //ValidateCorrelation(response);
+
         return new DeliveryResponseReceivedEvent(this.getId(), response);
+    }
+
+    private void ValidateCorrelation(AsyncRequestBase<String> asyncRequestBase) throws AggregateCorrelationException {
+        if (!UUID.fromString(asyncRequestBase.getCorrelationId()).equals(this.getId()))
+            throw new AggregateCorrelationException(asyncRequestBase.getCorrelationId(), this.getId().toString(), "Message and correlation does not match");
     }
 }

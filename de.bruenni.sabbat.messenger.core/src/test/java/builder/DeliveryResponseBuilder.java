@@ -12,11 +12,11 @@ public class DeliveryResponseBuilder{
     }
 
     public DeliveryResponse Build() {
-        return new DeliveryResponse(true, "correlationid", "restclient 1.4.5.2");
+        return new DeliveryResponse(isDeliverySuccessful, "correlationid", "restclient 1.4.5.2");
     }
 
     public DeliveryResponseBuilder WithSuccess(boolean value) {
-        isDeliverySuccessful = false;
+        isDeliverySuccessful = value;
         return this;
     }
 }

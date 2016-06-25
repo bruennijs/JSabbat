@@ -1,5 +1,7 @@
 package sabbat.messenger.core.application.services;
 
+import com.sun.javafx.binding.StringFormatter;
+import infrastructure.common.gateway.AggregateCorrelationException;
 import sabbat.messenger.core.domain.messenger.aggregates.IMessage;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryResponse;
@@ -16,6 +18,7 @@ import sabbat.messenger.core.domain.messenger.events.DeliveryRequestResultReceiv
 import sabbat.messenger.core.domain.messenger.events.DeliveryResponseReceivedEvent;
 
 import java.lang.reflect.Type;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
@@ -68,14 +71,10 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
                 new Date(),
                 null);
 
-        MessageDeliveryRequest deliveryRequest = new MessageDeliveryRequest(message, message.getId().toString());
-
-        // call delievry service to send message
-        CompletableFuture<DeliveryRequestResult> requestDeliveryFuture = deliveryService.requestDelivery(deliveryRequest);
+        CompletableFuture<DeliveryRequestResult> requestDeliveryFuture = deliverMessage(message);
         requestDeliveryFuture.thenAccept(val -> {
             // value received
             message.onDeliveryRequestResult(val);
-
             result.complete(message);
         });
 
@@ -96,18 +95,16 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
     public void handleDeliveryResponse(DeliveryResponse deliveryResponse) {
 
         // find message by id
-        Message message = messageRepository.findOne(UUID.fromString(deliveryResponse.getCorrelationId()));
+        UUID msgId = UUID.fromString(deliveryResponse.getCorrelationId());
+        Message message = messageRepository.findOne(msgId);
 
-        IEvent eventToPublish = message.onDeliveryResponse(deliveryResponse);
+        if (message != null) {
+            IEvent eventToPublish = message.onDeliveryResponse(deliveryResponse);
 
-        this.domainEventPublisher.publish(eventToPublish);
-    }
-
-    private void Subscribe(IDomainEventBus eventBus) {
-        eventBus
-                .subscribe()
-                .filter(e -> { return Arrays.stream(events).anyMatch(se -> se.getClass().equals(e.getClass())); })
-                .subscribe(event -> OnEvent(event));
+            this.domainEventPublisher.publish(eventToPublish);
+        }
+        else
+            logger.debug(MessageFormat.format("Cannot find message by id [{0}]", msgId));
     }
 
     @Override
@@ -115,16 +112,32 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
     {
         logger.debug("OnEvent IEventHandler [" + event.toString() + "]");
 
-        if (event instanceof DeliveryResponseReceivedEvent)
-        {
-            UUID uuid = UUID.fromString(((DeliveryResponseReceivedEvent) event).getDeliveryResponse().getCorrelationId());
-            Message message = messageRepository.findOne(uuid);
-            this.domainEventPublisher.publish(message.OnEvent(event));
+        UUID msgId = UUID.fromString(event.getAggregateId().toString());
+        Message message = messageRepository.findOne(msgId);
+        if (message != null) {
+            IEvent newEvent = message.OnEvent(event);
+            this.domainEventPublisher.publish(newEvent);
         }
+        else
+            logger.debug(MessageFormat.format("Cannot find message by id [{0}]", msgId));
     }
 
     @Override
     public Type[] getSupportedEvents() {
         return events;
+    }
+
+    private CompletableFuture<DeliveryRequestResult> deliverMessage(Message message) {
+        MessageDeliveryRequest deliveryRequest = new MessageDeliveryRequest(message, message.getId().toString());
+
+        // call delievry service to send message
+        return deliveryService.requestDelivery(deliveryRequest);
+    }
+
+    private void Subscribe(IDomainEventBus eventBus) {
+        eventBus
+                .subscribe()
+                .filter(e -> { return Arrays.stream(events).anyMatch(se -> se.getClass().equals(e.getClass())); })
+                .subscribe(event -> OnEvent(event));
     }
 }
