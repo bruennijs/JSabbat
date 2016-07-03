@@ -1,0 +1,7 @@
+application:
+  name: de.bruenni.sabbat.api-gateway
+  mapmytracks:
+    period: 500
+    text: "hello you"
+
+

@@ -1,4 +1,4 @@
-package sabbat.messenger.infrastrcuture.delivery;
+package sabbat.messenger.infrastructure.delivery;
 
 import infrastructure.common.event.IEvent;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryRequest;
