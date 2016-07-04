@@ -16,7 +16,7 @@ import sabbat.location.core.application.IActivityApplicationService;
 /**
  * Created by bruenni on 03.07.16.
  */
-
+@Component
 // @Controller
 // @ConfigurationProperties(prefix="application.mapmytracks.")
 public class MapMyTracksApiController {
