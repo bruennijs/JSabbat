@@ -1,0 +1,54 @@
+group 'de.bruenni'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    baseName = 'sabbat.location.infrastructure'
+    version = version
+    manifest {
+        attributes 'sabbat-location-infrastructure': 'infrastructure implementations where interfaces are used in sabbat.location.core',
+                'Implementation-Version': version
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven { url "http://repo.spring.io/release" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.5.RELEASE")
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "http://repo.spring.io/release" }
+}
+
+dependencies {
+    compile group: 'org.springframework', name: 'spring-context', version: '4.2.5.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.2.5.RELEASE'
+    compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'
+    //compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.12.1.RELEASE'
+    //compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.3.5.RELEASE'
+    //compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.3.3.RELEASE'
+    compile group: 'org.reactivestreams', name: 'reactive-streams', version: '1.0.0'
+    compile "io.projectreactor:reactor-core:2.5.0.M4"
+    compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

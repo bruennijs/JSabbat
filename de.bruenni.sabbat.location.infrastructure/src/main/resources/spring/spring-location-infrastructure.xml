@@ -5,11 +5,9 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- services -->
-    <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>  -->
-    <import resource="classpath:spring/spring-location-infrastructure.xml"/>
+    <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>-->
 
-    <bean id="MapMyTracksApiController" class="sabbat.apigateway.location.controller.MapMyTracksApiController">
-        <constructor-arg ref="RestClientActivityService" />
+    <bean id="RestClientActivityService" class="sabbat.location.infrastructure.client.RestClientActivityApplicationService">
     </bean>
 
     <!-- more bean definitions for services go here -->

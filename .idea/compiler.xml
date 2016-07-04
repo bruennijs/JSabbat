@@ -23,6 +23,8 @@
       <module name="de.bruenni.sabbat.api-gateway_test" target="1.8" />
       <module name="de.bruenni.sabbat.location.core_main" target="1.8" />
       <module name="de.bruenni.sabbat.location.core_test" target="1.8" />
+      <module name="de.bruenni.sabbat.location.infrastructure_main" target="1.8" />
+      <module name="de.bruenni.sabbat.location.infrastructure_test" target="1.8" />
       <module name="de.bruenni.sabbat.messenger.app_main" target="1.8" />
       <module name="de.bruenni.sabbat.messenger.app_test" target="1.8" />
       <module name="de.bruenni.sabbat.messenger.core_main" target="1.8" />
@@ -41,6 +43,8 @@
       <module name="sabbat.api-gateway_test" target="1.5" />
       <module name="sabbat.location.core_main" target="1.8" />
       <module name="sabbat.location.core_test" target="1.8" />
+      <module name="sabbat.location.infrastructure_main" target="1.8" />
+      <module name="sabbat.location.infrastructure_test" target="1.8" />
       <module name="sabbat.messenger.infrastructure_main" target="1.8" />
       <module name="sabbat.messenger.infrastructure_test" target="1.8" />
     </bytecodeTargetLevel>

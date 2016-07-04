@@ -1,27 +1,35 @@
-package sabbat.location.controller;
+package sabbat.apigateway.location.controller;
 
 
 import com.sun.javafx.binding.StringFormatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import sabbat.location.controller.dto.MapMyTracksResponse;
-import sabbat.location.controller.dto.StartActivityRequest;
-import sabbat.location.controller.dto.StartActivityResponse;
-import sabbat.location.controller.dto.UpdateRequest;
+import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
+import sabbat.apigateway.location.controller.dto.StartActivityRequest;
+import sabbat.apigateway.location.controller.dto.StartActivityResponse;
+import sabbat.apigateway.location.controller.dto.UpdateRequest;
+import sabbat.location.core.application.IActivityApplicationService;
 
 /**
  * Created by bruenni on 03.07.16.
  */
-@Controller
+
+// @Controller
 // @ConfigurationProperties(prefix="application.mapmytracks.")
 public class MapMyTracksApiController {
 
     private static Logger logger = LogManager.getLogger(MapMyTracksApiController.class);
+    private IActivityApplicationService activityService;
+
+    public MapMyTracksApiController(IActivityApplicationService activityService) {
+        this.activityService = activityService;
+    }
 
     @Value("${application.mapmytracks.period}")
-    public int period;
+    public String period;
 
     @Value("${application.mapmytracks.text}")
     public String text;

@@ -1,0 +1,10 @@
+package sabbat.location.core.application;
+
+/**
+ * Created by bruenni on 04.07.16.
+ */
+public class Activity extends ActivityBase {
+    public Activity(String id) {
+        super(id);
+    }
+}

@@ -6,4 +6,5 @@ include 'de.bruenni.sabbat.messenger.infrastructure'
 // findProject(':de.bruenni.sabbat.messenger.infrastructure')?.name = 'de.bruenni.sabbat.messenger.infrastructure'
 include 'de.bruenni.sabbat.location.core'
 include 'de.bruenni.sabbat.api-gateway'
+include 'de.bruenni.sabbat.location.infrastructure'
 

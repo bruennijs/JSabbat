@@ -1,4 +1,4 @@
-package sabbat.location.controller.dto;
+package sabbat.apigateway.location.controller.dto;
 
 /**
  * Created by bruenni on 03.07.16.
