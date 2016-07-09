@@ -25,10 +25,10 @@ repositories {
 }
 
 dependencies {
+    compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
     compile group: 'org.springframework', name: 'spring-context', version: '4.2.5.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '4.2.5.RELEASE'
     compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.12.1.RELEASE'
-    compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
     compile group: 'org.reactivestreams', name: 'reactive-streams', version: '1.0.0'

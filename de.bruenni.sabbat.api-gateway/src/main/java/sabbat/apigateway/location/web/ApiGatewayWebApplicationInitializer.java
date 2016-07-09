@@ -10,11 +10,15 @@ import org.springframework.web.servlet.support.AbstractDispatcherServletInitiali
  * Created by bruenni on 05.07.16.
  */
 
-@Component
-public class MyWebAppInitializer extends AbstractDispatcherServletInitializer {
+
+public class ApiGatewayWebApplicationInitializer extends AbstractDispatcherServletInitializer {
 
     @Value("{application.mapmytracks.url")
     public String BaseUrl;
+
+    public ApiGatewayWebApplicationInitializer() {
+
+    }
 
     @Override
     protected WebApplicationContext createRootApplicationContext() {
@@ -33,4 +37,5 @@ public class MyWebAppInitializer extends AbstractDispatcherServletInitializer {
         return new String[]{BaseUrl};
     }
 }
+
 

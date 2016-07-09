@@ -12,6 +12,8 @@
         <constructor-arg ref="RestClientActivityService" />
     </bean>
 
+    <!--<bean id="ApiGatewayWebApplicationInitializer" class="sabbat.apigateway.location.web.ApiGatewayWebApplicationInitializer" />-->
+
     <!-- more bean definitions for services go here -->
 
 </beans>
