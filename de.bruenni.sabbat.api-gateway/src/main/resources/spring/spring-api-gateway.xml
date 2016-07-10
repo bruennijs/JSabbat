@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--<mvc:annotation-driven/>-->
+    <!--<context:component-scan base-package="sabbat.apigateway.location.config"/>-->
 
     <!-- services -->
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>  -->
@@ -12,7 +19,10 @@
         <constructor-arg ref="RestClientActivityService" />
     </bean>
 
-    <!--<bean id="ApiGatewayWebApplicationInitializer" class="sabbat.apigateway.location.web.ApiGatewayWebApplicationInitializer" />-->
+<!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">
+    </bean>-->
+
+    <!--<bean id="ApiGatewayWebApplicationInitializer" class="sabbat.apigateway.location.configfig.ApiGatewayWebApplicationInitializer" />-->
 
     <!-- more bean definitions for services go here -->
 

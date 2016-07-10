@@ -22,7 +22,7 @@ import java.util.Arrays;
 @EnableAutoConfiguration
 @Configuration
 @ImportResource("classpath:spring/spring-api-gateway.xml")
-//@ComponentScan
+@ComponentScan(basePackages = "sabbat.apigateway.location.config")
 public class Application {
 
     static final Logger logger = LogManager.getLogger(Application.class.getName());

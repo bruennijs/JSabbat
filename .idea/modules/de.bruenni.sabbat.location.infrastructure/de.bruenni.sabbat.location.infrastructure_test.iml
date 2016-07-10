@@ -13,7 +13,6 @@
     <orderEntry type="module" module-name="de.bruenni.sabbat.location.core_main" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: de.bruenni:sabbat.location.core:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.projectreactor:reactor-core:2.5.0.M4" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:infrastructure.common:1.0.0" level="project" />

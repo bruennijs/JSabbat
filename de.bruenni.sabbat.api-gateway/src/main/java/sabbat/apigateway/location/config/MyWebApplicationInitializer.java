@@ -1,4 +1,4 @@
-package sabbat.apigateway.location.web;
+package sabbat.apigateway.location.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
