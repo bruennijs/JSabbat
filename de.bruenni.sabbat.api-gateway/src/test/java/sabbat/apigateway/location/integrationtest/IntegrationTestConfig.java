@@ -1,6 +1,7 @@
 package sabbat.apigateway.location.integrationtest;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 
 /**
@@ -8,5 +9,6 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @PropertySource("classpath:test/application.properties")
-public class TestConfig {
+@ImportResource(locations = {"classpath:test/spring-api-gateway-integrationtest.xml"})
+public class IntegrationTestConfig {
 }
