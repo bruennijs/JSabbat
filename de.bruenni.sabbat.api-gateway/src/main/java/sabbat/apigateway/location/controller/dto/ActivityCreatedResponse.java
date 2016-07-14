@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @JacksonXmlRootElement(localName = "message")
 public class ActivityCreatedResponse extends MapMyTracksResponse {
+
     @JacksonXmlProperty(localName = "activity_id")
     public String activityId;
 
