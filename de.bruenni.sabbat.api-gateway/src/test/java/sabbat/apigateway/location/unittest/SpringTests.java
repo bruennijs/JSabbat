@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @EnableAutoConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-//@SpringApplicationConfiguration(classes = { UnitTestConfig.class })
 @ContextConfiguration(classes = {UnitTestConfig.class})
 public class SpringTests {
     @Value("${test.location.poc}")

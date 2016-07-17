@@ -40,8 +40,7 @@ repositories {
 dependencies {
     // PROJECT DEPS
     compile project(':de.bruenni.sabbat.location.infrastructure');
-    compile project(':de.bruenni.sabbat.location.core');
-
+    //compile project(':de.bruenni.sabbat.location.core');
 
     // EXTERNAL DEPS
     compile group: 'org.springframework', name: 'spring-context', version: '4.2.5.RELEASE'
@@ -58,12 +57,16 @@ dependencies {
     compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
     /*compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'*/
     //compile group: 'de.bruenni', name: 'sabbat.location.infrastructure', version: '1.0.0'
+
+    //compile group: 'com.github.isrsal', name: 'spring-mvc-logger', version: '0.2';  ///https://github.com/isrsal/spring-mvc-logger
+
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
 
     // ==== TEST ====
     testCompile group: 'org.springframework', name: "spring-test", version: '4.2.5.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.0.52-beta'
 }
 
 dependencies {

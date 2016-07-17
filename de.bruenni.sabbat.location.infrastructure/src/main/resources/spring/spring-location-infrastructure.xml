@@ -7,9 +7,5 @@
     <!-- services -->
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>-->
 
-    <bean id="RestClientActivityService" class="sabbat.location.infrastructure.client.RestClientActivityApplicationService">
-    </bean>
-
-    <!-- more bean definitions for services go here -->
-
+    <bean id="ActivityRemoteService" class="sabbat.location.infrastructure.client.implementations.RabbitMqClientActivityApplicationService" />
 </beans>
