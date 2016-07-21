@@ -15,14 +15,16 @@
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>  -->
     <import resource="classpath:spring/spring-location-infrastructure.xml"/>
 
+    <!--<bean id="DispatcherServletInitializer" class="sabbat.apigateway.location.config.MyDispatcherServletInitializer" />-->
+
     <bean id="MapMyTracksApiController" class="sabbat.apigateway.location.controller.MapMyTracksApiController">
-        <constructor-arg ref="RestClientActivityService" />
+        <constructor-arg ref="ActivityRemoteService" />
     </bean>
 
 <!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">
     </bean>-->
 
-    <!--<bean id="ApiGatewayWebApplicationInitializer" class="sabbat.apigateway.location.configfig.ApiGatewayWebApplicationInitializer" />-->
+    <!--<bean id="MyDispatcherServletInitializer" class="sabbat.apigateway.location.configfig.MyDispatcherServletInitializer" />-->
 
     <!-- more bean definitions for services go here -->
 

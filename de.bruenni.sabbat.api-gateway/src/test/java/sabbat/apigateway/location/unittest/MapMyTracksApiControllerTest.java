@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 //@IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { UnitTestConfig.class, RootConfig.class, WebConfig.class, Application.class})
+@SpringApplicationConfiguration(classes = { UnitTestConfig.class, WebConfig.class, Application.class})
 @WebAppConfiguration
 public class MapMyTracksApiControllerTest {
 
@@ -70,10 +70,11 @@ public class MapMyTracksApiControllerTest {
                 .param("request", requestId))
                 //.content("request=start_activity&title=hello"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(new LambdaMatcher<String>(s ->
+                .andExpect(content().string(new LambdaMatcher<>(content ->
                 {
                     try {
-                        return mapper.readValue(s, ActivityCreatedResponse.class).type == "activity_started";
+                        ActivityCreatedResponse response = mapper.readValue(content, ActivityCreatedResponse.class);
+                        return response.type.equals("activity_started");
                     } catch (IOException e) {
                         return false;
                     }

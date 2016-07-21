@@ -17,11 +17,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import sabbat.apigateway.location.config.RootConfig;
+import sabbat.apigateway.location.config.WebConfig;
 import sabbat.apigateway.location.controller.MapMyTracksApiController;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MockServletContext.class)
+@SpringApplicationConfiguration(classes = {MockServletContext.class, UnitTestConfig.class, WebConfig.class})
 @WebAppConfiguration
 public class ExampleControllerTest {
 
@@ -35,9 +37,8 @@ public class ExampleControllerTest {
     }
 
     @Test
-    public void getHello() throws Exception {
+    public void when_send_no_params_expect_415() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/location/api/v1").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("Greetings from Spring Boot!")));
+                .andExpect(status().is(415));
     }
 }
