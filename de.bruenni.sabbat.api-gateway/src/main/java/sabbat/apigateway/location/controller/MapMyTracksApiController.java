@@ -2,50 +2,37 @@ package sabbat.apigateway.location.controller;
 
 
 import com.sun.javafx.binding.StringFormatter;
+import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.ActivityStoppedResponse;
-import sabbat.apigateway.location.controller.dto.ActivityUpdatedResponse;
-import sabbat.location.core.application.ActivityCreateCommand;
 import sabbat.location.core.application.ActivityUpdateCommand;
-import sabbat.location.core.application.IActivityApplicationService;
+import sabbat.location.infrastructure.client.IActivityRemoteService;
+import sabbat.location.infrastructure.client.dto.ActivityCreateCommandDto;
 
-import java.util.Map;
 import java.util.UUID;
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Created by bruenni on 03.07.16.
  */
 @Controller
-// @ConfigurationProperties(prefix="application.mapmytracks.")
-//@Configuratio
 //@ResponseBody
 @RequestMapping(path = "/location/api/v1")
 public class MapMyTracksApiController {
 
     private static Logger logger = LogManager.getLogger(MapMyTracksApiController.class);
-    private IActivityApplicationService activityService;
+    private IActivityRemoteService activityService;
 
-    public MapMyTracksApiController(IActivityApplicationService activityService) {
+    public MapMyTracksApiController(IActivityRemoteService activityService) {
         logger.debug("constructor");
         this.activityService = activityService;
     }
-
-    @Value("${application.mapmytracks.text}")
-    public String text;
 
     /**
      * Content-Length: 173
@@ -74,13 +61,13 @@ public class MapMyTracksApiController {
                                 @RequestParam(value=  "title", required = false) String title,
                                 @RequestParam(value = "tags", required = false) String[] tags)  throws Exception {
 
-        logger.info("REQUEST_TYPE=" + requestType);
-        //StringFormatter.format("startActivity [requestType=%1s, title=%2s]", requestType, title)
+
+        logger.info(StringFormatter.format("startActivity [requestType=%1s, title=%2s]", requestType, title));
 
         if (requestType.equals("start_activity")) {
             String activityId = UUID.randomUUID().toString();
 
-            this.activityService.start(new ActivityCreateCommand(activityId, title));
+            this.activityService.start(new ActivityCreateCommandDto(activityId, title));
 
             return new ResponseEntity(new ActivityCreatedResponse(activityId), HttpStatus.OK);
 /*            return StringFormatter.format("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -123,7 +110,8 @@ public class MapMyTracksApiController {
     {
         logger.debug(StringFormatter.format("[requesType=%1s,activity_id=%2s]", requestType, activityId));
 
-        this.activityService.update(new ActivityUpdateCommand(activityId, new Point[0], null, null));
+        //this.activityService.update(new ActivityUpdateCommand(activityId, new Point[0], null, null));
+        this.activityService.update();
 
         return new ResponseEntity(new ActivityStoppedResponse(), HttpStatus.OK);
     }

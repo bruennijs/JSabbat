@@ -1,5 +1,7 @@
 package sabbat.apigateway.location.config;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -7,17 +9,16 @@ import org.springframework.web.servlet.DispatcherServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-@Configuration
 /**
  * Created by bruenni on 07.07.16.
  */
-public class MyWebApplicationInitializer implements WebApplicationInitializer {
+public class MyEmbeddedContainerServletContextInitializer implements org.springframework.boot.context.embedded.ServletContextInitializer {
+
+    static final Logger logger = LogManager.getLogger(MyEmbeddedContainerServletContextInitializer.class.getName());
 
     @Override
     public void onStartup(ServletContext container) {
-        ServletRegistration.Dynamic registration = container.addServlet("dispatcher", new DispatcherServlet());
-        registration.setLoadOnStartup(1);
-        registration.addMapping("/api/*");
+        logger.info("constructor: stub implementation");
     }
 
 }

@@ -14,6 +14,13 @@ public class ActivityCreatedResponse extends MapMyTracksResponse {
     @JacksonXmlProperty(localName = "activity_id")
     public String activityId;
 
+    /**
+     * XmlMapper default constructor
+     */
+    public ActivityCreatedResponse() {
+        super("");
+    }
+
     public ActivityCreatedResponse(String activityId) {
         super("activity_started");
         this.activityId = activityId;

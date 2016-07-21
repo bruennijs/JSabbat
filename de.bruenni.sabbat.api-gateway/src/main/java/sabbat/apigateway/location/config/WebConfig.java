@@ -2,8 +2,7 @@ package sabbat.apigateway.location.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
@@ -17,14 +16,17 @@ import java.util.List;
  * Created by bruenni on 10.07.16.
  */
 @Configuration
-//@ComponentScan(basePackages = "sabbat.apigateway.location.config")
 @EnableWebMvc
+//@ComponentScan(basePackages = "sabbat.apigateway.location.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    @Override
+    public WebConfig() {
+    }
+
+/*    @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         //configurer.mediaType("json", MediaType.APPLICATION_JSON);
-    }
+    }*/
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
