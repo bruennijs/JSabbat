@@ -2,9 +2,6 @@ package sabbat.apigateway.location.controller;
 
 
 import com.sun.javafx.binding.StringFormatter;
-import org.apache.commons.logging.LogFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +12,9 @@ import sabbat.apigateway.location.controller.dto.ActivityStoppedResponse;
 import sabbat.location.core.application.ActivityUpdateCommand;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateCommandDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.UUID;
 
@@ -26,7 +26,9 @@ import java.util.UUID;
 @RequestMapping(path = "/location/api/v1")
 public class MapMyTracksApiController {
 
-    private static Logger logger = LogManager.getLogger(MapMyTracksApiController.class);
+    final Logger logger = org.slf4j.LoggerFactory.getLogger(MapMyTracksApiController.class);
+    final Logger loggerTraffic = org.slf4j.LoggerFactory.getLogger("location.traffic");
+
     private IActivityRemoteService activityService;
 
     public MapMyTracksApiController(IActivityRemoteService activityService) {
@@ -62,7 +64,7 @@ public class MapMyTracksApiController {
                                 @RequestParam(value = "tags", required = false) String[] tags)  throws Exception {
 
 
-        logger.info(StringFormatter.format("startActivity [requestType=%1s, title=%2s]", requestType, title));
+        logger.info(StringFormatter.format("startActivity [requestType=%1s, title=%2s]", requestType, title).getValue());
 
         if (requestType.equals("start_activity")) {
             String activityId = UUID.randomUUID().toString();
@@ -108,7 +110,7 @@ public class MapMyTracksApiController {
     public ResponseEntity<ActivityStoppedResponse> stopActivity(@PathVariable(value = "activity_id") String activityId,
                                                                @RequestParam(value = "request") String requestType)
     {
-        logger.debug(StringFormatter.format("[requesType=%1s,activity_id=%2s]", requestType, activityId));
+        logger.debug(StringFormatter.format("[requesType=%1s,activity_id=%2s]", requestType, activityId).getValue());
 
         //this.activityService.update(new ActivityUpdateCommand(activityId, new Point[0], null, null));
         this.activityService.update();

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.filter.Slf4jRequestLoggingFilter;
 
 /**
  * Created by bruenni on 17.07.16.
@@ -23,7 +24,7 @@ public class AppConfig {
     @Bean
     public FilterRegistrationBean logFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-        CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
+        Slf4jRequestLoggingFilter filter = new Slf4jRequestLoggingFilter();
 
         filter.setIncludePayload(logpayload);
 
