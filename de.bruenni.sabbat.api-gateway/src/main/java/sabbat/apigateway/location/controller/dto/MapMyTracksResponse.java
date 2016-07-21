@@ -7,13 +7,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
  */
 public class MapMyTracksResponse {
     @JacksonXmlProperty(localName = "type")
-    private String type;
+    public String type;
 
-    public MapMyTracksResponse(String type) {
+    public MapMyTracksResponse(String type)
+    {
         this.type = type;
-    }
-
-    public String getType() {
-        return type;
     }
 }
