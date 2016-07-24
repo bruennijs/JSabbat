@@ -28,7 +28,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="location.traffic" level="debug">
+        <Logger name="location.traffic" level="info">
             <AppenderRef ref="TrafficFile"/>
         </Logger>
 
@@ -36,7 +36,7 @@
             <AppenderRef ref="Console"/>
         </Logger>
 
-        <Root level="DEBUG">
+        <Root level="INFO">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
         </Root>

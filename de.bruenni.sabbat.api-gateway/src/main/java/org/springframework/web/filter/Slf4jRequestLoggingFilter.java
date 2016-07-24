@@ -1,13 +1,16 @@
 package org.springframework.web.filter;
 
+import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
-import sabbat.apigateway.location.controller.MapMyTracksApiController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by bruenni on 21.07.16.
  */
+@Configuration
 public class Slf4jRequestLoggingFilter extends AbstractRequestLoggingFilter {
 
     final Logger logger = org.slf4j.LoggerFactory.getLogger("location.traffic");
@@ -26,4 +29,6 @@ public class Slf4jRequestLoggingFilter extends AbstractRequestLoggingFilter {
     protected void afterRequest(HttpServletRequest request, String message) {
         logger.info(message);
     }
+
+
 }

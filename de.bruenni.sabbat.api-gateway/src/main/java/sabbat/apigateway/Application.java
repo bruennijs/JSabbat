@@ -4,18 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import sabbat.apigateway.location.config.AppConfig;
 import sabbat.apigateway.location.config.RootConfig;
 import sabbat.apigateway.location.config.WebConfig;
-import sabbat.apigateway.location.controller.MapMyTracksApiController;
 
 import java.util.Arrays;
 
@@ -28,7 +20,7 @@ import java.util.Arrays;
 //@ComponentScan(basePackages = "sabbat.apigateway.location.config")
 public class Application {
 
-    static final Logger logger = LogManager.getLogger(Application.class.getName());
+    static final Logger logger = LogManager.getLogger(Application.class);
 
     public static void main(String[] args) {
 

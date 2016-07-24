@@ -6,7 +6,7 @@ package sabbat.location.infrastructure.client.dto;
 public class ActivityCreatedResponseDto {
     private String id;
 
-    protected ActivityCreatedResponseDto(String id) {
+    public ActivityCreatedResponseDto(String id) {
         this.id = id;
     }
 

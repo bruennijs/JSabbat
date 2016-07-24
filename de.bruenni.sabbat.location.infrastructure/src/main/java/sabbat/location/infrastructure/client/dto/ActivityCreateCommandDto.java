@@ -8,8 +8,8 @@ import sabbat.location.core.application.ActivityBase;
 public class ActivityCreateCommandDto extends ActivityBase {
     private String title;
 
-    public ActivityCreateCommandDto(String activityId, String title) {
-        super(activityId);
+    public ActivityCreateCommandDto(String title) {
+        super("");
         this.title = title;
     }
 
