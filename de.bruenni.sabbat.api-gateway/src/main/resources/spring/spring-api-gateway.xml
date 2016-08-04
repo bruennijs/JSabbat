@@ -17,9 +17,23 @@
 
     <!--<bean id="DispatcherServletInitializer" class="sabbat.apigateway.location.config.MyDispatcherServletInitializer" />-->
 
-    <bean id="MapMyTracksApiController" class="sabbat.apigateway.location.controller.MapMyTracksApiController">
-        <constructor-arg ref="ActivityRemoteService" />
+    <bean id="ReactiveMapMyTracksController" class="sabbat.apigateway.location.controller.ReactiveMapMyTracksController">
     </bean>
+
+    <bean id="MapMyTracksApiController" class="sabbat.apigateway.location.controller.MapMyTracksApiController">
+        <constructor-arg ref="ActivityCommandFactory" />
+    </bean>
+
+    <bean id="StartActivityCommand" class="sabbat.apigateway.location.command.StartActivityCommand" lazy-init="true">
+        <property name="ActivityRemoteService" ref="ActivityRemoteService"/>
+    </bean>
+
+    <bean id="ActivityCommandFactory" class="sabbat.apigateway.location.command.ActivityCommandFactory">
+        <lookup-method name="createStartActivityCommand"
+                       bean="StartActivityCommand"/>
+    </bean>
+
+
 
 <!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">
     </bean>-->

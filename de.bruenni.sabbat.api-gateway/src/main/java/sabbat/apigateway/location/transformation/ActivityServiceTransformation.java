@@ -1,8 +1,10 @@
 package sabbat.apigateway.location.transformation;
 
+import com.sun.javafx.binding.StringFormatter;
 import org.springframework.data.geo.Point;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.ActivityStoppedResponse;
+import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
 import sabbat.location.infrastructure.client.dto.*;
 
 /**
@@ -14,32 +16,19 @@ public class ActivityServiceTransformation {
      * @param dto
      * @return
      */
-    public ActivityCreatedResponse transformResponse(ActivityCreatedResponseDto dto)
-    {
-        return new ActivityCreatedResponse(dto.getId());
+    public MapMyTracksResponse transformResponse(IActivityResponseDto dto) throws Exception {
+        if (dto instanceof ActivityCreatedResponseDto) {
+            return new ActivityCreatedResponse(((ActivityCreatedResponseDto)dto).getId());
+        }
+        else if (dto instanceof ActivityStoppedResponseDto)
+        {
+            return new ActivityStoppedResponse();
+        }
+
+        throw new Exception(StringFormatter.format("IActivityResponseDto impl not supported [type=%1s]", dto.getClass().toString()).getValue());
     }
 
-    /**
-     *
-     * @param dto
-     * @return
-     */
-    public ActivityStoppedResponse transformResponse(ActivityStoppedResponseDto dto)
-    {
-        return new ActivityStoppedResponse();
-    }
 
-    /***
-     * Transforms controller request to IActivityService command.
-     *
-     * @param requestType
-     * @param title
-     * @return
-     */
-    public ActivityCreateCommandDto transformStartRequest(String requestType, String title, String points)
-    {
-        return new ActivityCreateCommandDto(title);
-    }
 
     /***
      * Transforms controller request to IActivityService command.

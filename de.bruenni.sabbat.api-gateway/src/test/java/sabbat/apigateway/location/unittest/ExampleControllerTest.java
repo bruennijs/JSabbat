@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import sabbat.apigateway.location.config.RootConfig;
 import sabbat.apigateway.location.config.WebConfig;
 import sabbat.apigateway.location.controller.MapMyTracksApiController;
-import sabbat.location.infrastructure.client.IActivityRemoteService;
+import sabbat.apigateway.location.command.IActivityCommandFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {MockServletContext.class, UnitTestConfig.class, WebConfig.class})
@@ -31,9 +31,9 @@ public class ExampleControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        IActivityRemoteService activityService = mock(IActivityRemoteService.class);
+        IActivityCommandFactory factory = mock(IActivityCommandFactory.class);
 
-        mvc = MockMvcBuilders.standaloneSetup(new MapMyTracksApiController(activityService)).build();
+        mvc = MockMvcBuilders.standaloneSetup(new MapMyTracksApiController(factory)).build();
     }
 
     @Test

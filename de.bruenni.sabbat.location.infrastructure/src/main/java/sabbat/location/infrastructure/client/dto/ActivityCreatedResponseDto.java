@@ -3,7 +3,7 @@ package sabbat.location.infrastructure.client.dto;
 /**
  * Created by bruenni on 16.07.16.
  */
-public class ActivityCreatedResponseDto {
+public class ActivityCreatedResponseDto implements IActivityResponseDto {
     private String id;
 
     public ActivityCreatedResponseDto(String id) {

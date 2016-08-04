@@ -1,10 +1,7 @@
 package sabbat.location.infrastructure.client.implementations;
 
 import sabbat.location.infrastructure.client.IActivityRemoteService;
-import sabbat.location.infrastructure.client.dto.ActivityCreateCommandDto;
-import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.dto.ActivityStopCommandDto;
-import sabbat.location.infrastructure.client.dto.ActivityUpdateCommandDto;
+import sabbat.location.infrastructure.client.dto.*;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -16,21 +13,22 @@ import java.util.concurrent.Future;
 public class RabbitMqClientActivityApplicationService implements IActivityRemoteService {
 
     @Override
-    public Future<ActivityCreatedResponseDto> start(ActivityCreateCommandDto command) {
+    public CompletableFuture<ActivityCreatedResponseDto> start(ActivityCreateCommandDto command) {
         CompletableFuture future = new CompletableFuture();
-        future.complete(new ActivityCreatedResponseDto(UUID.randomUUID().toString()));
+        //future.complete(new ActivityCreatedResponseDto(UUID.randomUUID().toString().trim()));
+        future.complete(new ActivityCreatedResponseDto("4536"));
         return future;
     }
 
     @Override
-    public Future<Void> stop(ActivityStopCommandDto command) {
+    public CompletableFuture<ActivityStoppedResponseDto> stop(ActivityStopCommandDto command) {
         CompletableFuture future = new CompletableFuture();
-        future.complete(null);
+        future.complete(new ActivityStoppedResponseDto());
         return future;
     }
 
     @Override
-    public Future<Void> update(ActivityUpdateCommandDto command) {
+    public CompletableFuture<Void> update(ActivityUpdateCommandDto command) {
         CompletableFuture future = new CompletableFuture();
         future.complete(null);
         return future;

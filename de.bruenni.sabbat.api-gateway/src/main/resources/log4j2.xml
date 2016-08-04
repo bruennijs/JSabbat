@@ -28,7 +28,8 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="location.traffic" level="info">
+        <Logger name="location.traffic" level="INFO">
+            <!--<AppenderRef ref="Console"/>-->
             <AppenderRef ref="TrafficFile"/>
         </Logger>
 
@@ -36,8 +37,12 @@
             <AppenderRef ref="Console"/>
         </Logger>
 
+        <Logger name="sabbat.apigateway.location.controller.MapMyTracksApiController" level="debug">
+            <!--<AppenderRef ref="DefaultFile"/>-->
+        </Logger>
+
         <Root level="INFO">
-            <AppenderRef ref="Console"/>
+            <!--<AppenderRef ref="Console"/>-->
             <AppenderRef ref="DefaultFile"/>
         </Root>
     </Loggers>
