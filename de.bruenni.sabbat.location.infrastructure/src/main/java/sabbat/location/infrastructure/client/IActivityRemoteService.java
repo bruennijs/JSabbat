@@ -1,6 +1,9 @@
 package sabbat.location.infrastructure.client;
 
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.infrastructure.client.dto.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -31,4 +34,11 @@ public interface IActivityRemoteService {
      * @return Future completes after update is send to infrfastructure to deliver measurement value.
      */
     CompletableFuture<Void> update(ActivityUpdateCommandDto command);
+
+    /**
+     * Echo ping pong method.
+     * @param payload
+     * @return
+     */
+    ListenableFuture<String> echo(@Payload String payload, @Header("authorization") String jwt);
 }

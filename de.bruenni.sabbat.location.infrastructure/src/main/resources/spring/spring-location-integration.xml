@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:int="http://www.springframework.org/schema/integration"
+             xmlns:task="http://www.springframework.org/schema/task"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+<!--<amqp:outbound-channel-adapter channel="toAMQP"
+                               exchange-name="some.exchange"
+                               routing-key="foo"
+                               amqp-template="rabbitTemplate"/>-->
+
+<task:executor id="activityExecuter" pool-size="10"/>
+
+<int:channel id="activityRequestChannel">
+    <!--<int:dispatcher task-executor="activityExecuter"/>-->
+</int:channel>
+
+<int:publish-subscribe-channel id="activityReplyChannel"
+                               task-executor="activityExecuter">
+    <!--<int:dispatcher task-executor="activityExecuter"/>-->
+</int:publish-subscribe-channel>
+
+    <!--<int-stream:stdout-channel-adapter id="stdout"/>-->
+
+    <!--<int:outbound-channel-adapter channel="activityRequestChannel" ref="echoServiceActivator" method="print"/>-->
+
+<int:gateway id="ActivityRemoteService"
+             service-interface="sabbat.location.infrastructure.client.IActivityRemoteService"
+             default-request-channel="activityRequestChannel"
+             default-reply-channel="activityReplyChannel"
+             default-reply-timeout="10000"
+             async-executor="activityExecuter">
+
+    <int:method name="echo" reply-timeout="2000" request-timeout="200">
+        <int:header name="STATIC_HEADER" value="SomeValue"/>
+    </int:method>
+</int:gateway>
+
+<int:service-activator
+        input-channel="activityRequestChannel"
+        output-channel="activityReplyChannel"
+        ref="echoServiceActivator"
+        method="compute"/>
+
+<beans:bean id="echoServiceActivator" class="sabbat.location.infrastructure.client.implementations.EchoServiceActivator" />
+
+    <int:logging-channel-adapter
+            channel="activityRequestChannel"
+            level="INFO"
+            expression=""
+            log-full-message="true"
+            logger-name="location.traffic" />
+
+    <int:logging-channel-adapter
+            channel="activityReplyChannel"
+            level="INFO"
+            expression=""
+            log-full-message="true"
+            logger-name="location.traffic" />
+
+</beans:beans>
+
+

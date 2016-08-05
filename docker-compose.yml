@@ -1,0 +1,32 @@
+version: '2'
+services:
+  mono-app:
+    build:
+      context: .
+      dockerfile: Dockerfile-dnx-app
+    container_name: file-storage.mono-app
+    #image: microsoft/aspnet:1.0.0-rc1-update1  
+    ports:
+     - "8082:5000"
+    expose:
+      - "5000"
+
+  rabbitmq-dev:
+    hostname: rabbitmq-sabbat
+    container_name: rabbitmq-sabbat
+    image: rabbitmq:3.6.4
+    #ports:
+     #- "8082:5000"
+    expose:
+      - "4369"
+    volumes:
+     - /opt/tmp/rabbitmq-sabbat:/var/lib/rabbitmq
+    network_mode: "bridge"  # default network with bridge adapter docker0
+
+  rabbitmq-ctl:
+    #docker run -it --name rabbitmq-ctl --link some-rabbit:my-rabbit -e RABBITMQ_ERLANG_COOKIE='secret cookie here' rabbitmq:3 bash
+    #root@f2a2d3d27c75:/# rabbitmqctl -n rabbit@my-rabbit list_user
+    container_name: rabbitmq-ctl
+    image: rabbitmq:3.6.4
+    entrypoint: bash
+    network_mode: "bridge"  # default network with bridge adapter docker0

@@ -2,6 +2,7 @@ package sabbat.apigateway.location.integrationtest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import sabbat.apigateway.Application;
 import sabbat.apigateway.location.config.WebConfig;
 import sabbat.apigateway.location.unittest.UnitTestConfig;
+import sabbat.location.infrastructure.client.IActivityRemoteService;
 
 /**
  * Created by bruenni on 14.07.16.

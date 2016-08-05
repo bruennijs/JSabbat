@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import sabbat.apigateway.location.config.AppConfig;
 import sabbat.apigateway.location.config.RootConfig;
 import sabbat.apigateway.location.config.WebConfig;
+import sabbat.location.infrastructure.client.configuration.ActivityMiddlewareConfig;
 
 import java.util.Arrays;
 

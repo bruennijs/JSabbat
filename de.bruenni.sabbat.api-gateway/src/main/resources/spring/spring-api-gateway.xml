@@ -33,7 +33,7 @@
                        bean="StartActivityCommand"/>
     </bean>
 
-
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
 <!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">
     </bean>-->

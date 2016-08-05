@@ -64,8 +64,6 @@ dependencies {
     /*compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'*/
     //compile group: 'de.bruenni', name: 'sabbat.location.infrastructure', version: '1.0.0'
 
-    //compile group: 'com.github.isrsal', name: 'spring-mvc-logger', version: '0.2';  ///https://github.com/isrsal/spring-mvc-logger
-
     // =========== LOGGING with SLF4J with a adapter to log4j 1.2 -> POM of slf4j pulls log4j dependency ===============
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'    /// writes to log4j 1.2...
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'    /// writes to log4j 1.2...

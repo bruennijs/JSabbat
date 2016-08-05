@@ -6,6 +6,7 @@
 
     <!-- services -->
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>-->
+    <import resource="classpath:spring/spring-location-integration.xml"/>
 
-    <bean id="ActivityRemoteService" class="sabbat.location.infrastructure.client.implementations.RabbitMqClientActivityApplicationService" />
+    <bean id="ActivityRemoteServiceNative" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService" />
 </beans>
