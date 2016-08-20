@@ -6,19 +6,12 @@ import sabbat.location.core.application.ActivityBase;
 /**
  * Created by bruenni on 04.07.16.
  */
-public class ActivityUpdateCommandDto extends ActivityBase {
-
-    private Point[] points;
+public class ActivityStopRequestDto extends ActivityBase {
 
     /**
      * Constructor
      */
-    public ActivityUpdateCommandDto(String id, Point[] points) {
+    public ActivityStopRequestDto(String id) {
         super(id);
-        this.points = points;
-    }
-
-    public Point[] getPoints() {
-        return points;
     }
 }

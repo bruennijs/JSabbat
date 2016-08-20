@@ -36,12 +36,12 @@ public class ActivityServiceTransformation {
      *
      * @return
      */
-    public ActivityUpdateCommandDto transformUpdateRequest(String requestType, String id, String points)
+    public ActivityUpdateRequestDto transformUpdateRequest(String requestType, String id, String points)
     {
-        return new ActivityUpdateCommandDto(id, new Point[0]);
+        return new ActivityUpdateRequestDto(id, new Point[0]);
     }
 
-    public ActivityStopCommandDto transformStopRequest(String requestType, String activityId) {
-        return new ActivityStopCommandDto(activityId);
+    public ActivityStopRequestDto transformStopRequest(String requestType, String activityId) {
+        return new ActivityStopRequestDto(activityId);
     }
 }

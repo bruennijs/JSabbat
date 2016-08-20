@@ -5,11 +5,11 @@ import sabbat.location.core.application.ActivityBase;
 /**
  * Created by bruenni on 04.07.16.
  */
-public class ActivityCreateCommandDto extends ActivityBase {
+public class ActivityCreateRequestDto extends ActivityBase {
     private String title;
 
-    public ActivityCreateCommandDto(String title) {
-        super("");
+    public ActivityCreateRequestDto(String id, String title) {
+        super(id);
         this.title = title;
     }
 

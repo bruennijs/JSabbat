@@ -12,8 +12,8 @@ services:
       - "5000"
 
   rabbitmq-dev:
-    hostname: rabbitmq-sabbat
-    container_name: rabbitmq-sabbat
+    hostname: rabbitmq-dev
+    container_name: rabbitmq-dev
     image: rabbitmq:3.6.4
     #ports:
      #- "8082:5000"
@@ -25,7 +25,9 @@ services:
 
   rabbitmq-ctl:
     #docker run -it --name rabbitmq-ctl --link some-rabbit:my-rabbit -e RABBITMQ_ERLANG_COOKIE='secret cookie here' rabbitmq:3 bash
-    #root@f2a2d3d27c75:/# rabbitmqctl -n rabbit@my-rabbit list_user
+    #docker run -it --name rabbitmq-ctl --link rabbitmq-dev:rabbit -e RABBITMQ_ERLANG_COOKIE='DDXFNKDEXRBEGNIOHNPO' rabbitmq:3.6.4 bash
+
+    #root@f2a2d3d27c75:/# rabbitmqctl -n rabbit@rabbitmq-dev list_users
     container_name: rabbitmq-ctl
     image: rabbitmq:3.6.4
     entrypoint: bash

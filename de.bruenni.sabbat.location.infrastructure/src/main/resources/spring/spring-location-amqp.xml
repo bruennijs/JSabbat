@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
-<bean id="connectionFactory"
+    <bean id="connectionFactory"
       class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-    <constructor-arg value="somehost"/>
-    <property name="username" value="guest"/>
-    <property name="password" value="guest"/>
-</bean>
+        <constructor-arg  ref="connectionFactory"/>
+        <property name="username" value="guest"/>
+        <property name="password" value="guest"/>
+    </bean>
 
     <rabbit:connection-factory
             id="connectionFactory" cache-mode="CONNECTION" connection-cache-size="25"
-            host="rabbitmq-sabbat" port="5672"/>
+            host="rabbitmq-node" port="5672"/>
 </beans>

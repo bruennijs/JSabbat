@@ -28,6 +28,6 @@ public class EchoServiceActivator {
             authorization = (String)message.getHeaders().get("authorization");
         }
 
-        return "reply [payload=" + payload + ", authorization=" + authorization + "]";
+        return "echo reply=" + payload;
     }
 }
