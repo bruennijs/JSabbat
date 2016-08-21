@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns:int="http://www.springframework.org/schema/integration"
+<beans xmlns:int="http://www.springframework.org/schema/integration"
              xmlns:task="http://www.springframework.org/schema/task"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns="http://www.springframework.org/schema/beans"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/integration
@@ -35,17 +35,13 @@
              default-reply-channel="activityReplyChannel"
              async-executor="activityExecuter">
 
-    <int:method name="echo">
+    <int:method name="start" />
+    <int:method name="stop" />
+    <int:method name="update" />
+<!--    <int:method name="echo">
         <int:header name="STATIC_HEADER" value="SomeValue"/>
-    </int:method>
+    </int:method>-->
 </int:gateway>
-
-<int:service-activator
-            id="rabbitmq"
-            input-channel="activityRequestChannel"
-            output-channel="activityReplyChannel"
-            ref="RabbitMqActivityServiceActivator"
-            method="echo"/>
 
 <!--<int:service-activator
         input-channel="activityRequestChannel"
@@ -53,15 +49,25 @@
         ref="echoServiceActivator"
         method="compute"/>-->
 
-<beans:bean id="echoServiceActivator" class="sabbat.location.infrastructure.client.implementations.EchoServiceActivator" />
-
 <!-- activity event channel handling -->
-<int:outbound-channel-adapter channel="activityReplyChannel" ref="ActivityEventAdapter" method="onResponse"/>
+
+<bean id="ActivityEventAdapter" class="sabbat.location.infrastructure.client.implementations.ActivityEventAdapter" />
+
+<int:outbound-channel-adapter id="activityResponseChannel"
+                              channel="activityReplyChannel"
+                              ref="ActivityEventAdapter"
+                              method="onResponse"/>
 
     <int:logging-channel-adapter
             channel="activityRequestChannel"
             level="INFO"
             expression=""
+            log-full-message="true"
+            logger-name="location.traffic" />
+
+    <int:logging-channel-adapter
+            channel="activityReplyChannel"
+            level="INFO"
             log-full-message="true"
             logger-name="location.traffic" />
 
@@ -77,6 +83,6 @@
             log-full-message="true"
             logger-name="location.traffic" />-->
 
-</beans:beans>
+</beans>
 
 

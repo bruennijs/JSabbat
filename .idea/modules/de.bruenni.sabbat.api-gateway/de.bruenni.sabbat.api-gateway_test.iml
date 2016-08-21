@@ -30,10 +30,8 @@
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="library" name="Gradle: org.mockito:mockito-core:2.0.52-beta" level="project" />
     <orderEntry type="module" module-name="de.bruenni.sabbat.location.core_main" />
-    <orderEntry type="library" name="Gradle: org.springframework.integration:spring-integration-adapter:1.0.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.integration:spring-integration-amqp:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.integration:spring-integration-core:4.2.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework.integration:spring-integration-stream:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.projectreactor:reactor-core:2.0.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.2.6.RELEASE" level="project" />

@@ -1,24 +1,25 @@
-package sabbat.apigateway.location.integrationtest;
+package sabbat.location.infrastructure.integrationtest;
 
 import com.sun.javafx.binding.StringFormatter;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 import rx.observables.BlockingObservable;
-import sabbat.apigateway.Application;
-import sabbat.apigateway.location.config.WebConfig;
 import sabbat.location.infrastructure.client.IActivityEventService;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -28,9 +29,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by bruenni on 14.07.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { IntegrationTestConfig.class, WebConfig.class, Application.class })
-@WebIntegrationTest
+@SpringApplicationConfiguration(classes = { IntegrationTestConfig.class })
 public class LocationIntegrationTest {
+
+    Logger logger = org.slf4j.LoggerFactory.getLogger("location.infrastructure.traffic");
 
     @Autowired
     public IActivityRemoteService ActivityRemoteService;
@@ -39,6 +41,7 @@ public class LocationIntegrationTest {
     public IActivityEventService ActivityEventService;
 
     @Test
+    @Ignore
     public void When_echo_activity_remote_service_expect_return_string_with_payload() throws ExecutionException, InterruptedException {
         String payload = "mypayloadtext";
 
@@ -55,7 +58,7 @@ public class LocationIntegrationTest {
         AtomicInteger atomicInteger = new AtomicInteger(3647);
 
         Integer integer = new Integer(atomicInteger.getAndIncrement());
-        CompletableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDto(integer.toString(), "some title text of this track"));
+        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDto(integer.toString(), "some title text of this track"));
         ActivityCreatedResponseDto responseDto = future.get();
         Assert.assertEquals(integer.intValue(), Integer.decode(responseDto.getId()).intValue());
     }
@@ -64,15 +67,18 @@ public class LocationIntegrationTest {
     public void when_send_ActivityCreateRequest_expect_IActivityEventService_received_same_event() throws Exception {
 
         AtomicInteger atomicInteger = new AtomicInteger(3647);
-        BlockingObservable<IActivityResponseDto> eventObs = ActivityEventService.OnResponse().take(1).timeout(1000, TimeUnit.MILLISECONDS).toBlocking();
+        BlockingObservable<IActivityResponseDto> eventObs = ActivityEventService.OnResponse()
+                .doOnNext(resp -> logger.debug(resp.toString()))
+                .take(1)
+                .timeout(2000, TimeUnit.MILLISECONDS)
+                .toBlocking();
 
         Integer integer = new Integer(atomicInteger.getAndIncrement());
 
-        CompletableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDto(integer.toString(), "some title text of this track"));
+        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDto(integer.toString(), "some title text of this track"));
         ActivityCreatedResponseDto responseDto = future.get();
         // get respons eform event
         IActivityResponseDto eventResponseDto = eventObs.first();
-
 
         Assert.assertEquals("Event response and response of remote call of same instance", eventResponseDto.getClass(), ActivityCreatedResponseDto.class);
         ActivityCreatedResponseDto eventCreatedResponseDto = (ActivityCreatedResponseDto) eventResponseDto;

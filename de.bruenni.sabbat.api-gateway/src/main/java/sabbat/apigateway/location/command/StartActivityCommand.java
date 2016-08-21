@@ -1,5 +1,6 @@
 package sabbat.apigateway.location.command;
 
+import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
@@ -28,7 +29,7 @@ public class StartActivityCommand implements ICommand {
     }
 
     @Override
-    public CompletableFuture<ActivityCreatedResponseDto> executeAsync() {
+    public ListenableFuture<ActivityCreatedResponseDto> executeAsync() {
 
         // 1. authorize credentials credentials
 

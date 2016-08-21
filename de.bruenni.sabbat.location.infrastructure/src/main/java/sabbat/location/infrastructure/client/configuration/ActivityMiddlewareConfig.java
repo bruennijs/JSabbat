@@ -8,7 +8,7 @@ import org.springframework.integration.config.EnableIntegration;
  * Created by bruenni on 05.08.16.
  */
 @Configuration
-@ImportResource(locations = {"classpath:spring/spring-location-integration.xml"})
+@ImportResource(locations = {"classpath:spring/spring-location-infrastructure.xml"})
 //@EnableIntegration
 public class ActivityMiddlewareConfig {
 }

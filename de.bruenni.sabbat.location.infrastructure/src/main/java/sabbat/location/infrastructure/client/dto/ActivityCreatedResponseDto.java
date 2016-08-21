@@ -13,4 +13,11 @@ public class ActivityCreatedResponseDto implements IActivityResponseDto {
     public String getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "ActivityCreatedResponseDto{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

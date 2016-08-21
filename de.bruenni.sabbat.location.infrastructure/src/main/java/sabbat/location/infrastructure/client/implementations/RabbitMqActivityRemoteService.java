@@ -28,17 +28,14 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public CompletableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) {
-        CompletableFuture future = new CompletableFuture();
-        //future.complete(new ActivityCreatedResponseDto(UUID.randomUUID().toString().trim()));
-        future.complete(new ActivityCreatedResponseDto("4536"));
-        return future;
+    public ListenableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) {
+        return new AsyncResult<ActivityCreatedResponseDto>(new ActivityCreatedResponseDto(command.getId()));
     }
 
     @Override
     public CompletableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
         CompletableFuture future = new CompletableFuture();
-        future.complete(new ActivityStoppedResponseDto());
+        future.complete(new ActivityStoppedResponseDto(command.getId()));
         return future;
     }
 

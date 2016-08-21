@@ -7,8 +7,4 @@
     <!-- services -->
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>-->
     <import resource="classpath:spring/spring-location-integration.xml"/>
-
-    <bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
-    <!--<bean id="RabbitMqActivityRemoteService" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService" />-->
-    <bean id="ActivityEventAdapter" class="sabbat.location.infrastructure.client.implementations.ActivityEventAdapter" />
 </beans>

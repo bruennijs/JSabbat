@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	    http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+    <!-- services -->
+    <import resource="classpath:spring/spring-location-integration.xml"/>
+
+    <!--<context:property-placeholder />-->
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
+    <!-- INTEGRATION CONFIGURATION -->
+    <bean id="ActivityStubServiceActivator" class="sabbat.location.infrastructure.integrationtest.stubs.ActivityStubServiceActivator" />
+
+    <int:service-activator
+            id="activityStubStart"
+            input-channel="activityRequestChannel"
+            output-channel="activityReplyChannel"
+            ref="ActivityStubServiceActivator"
+            method="start"/>
+
+<!--    <int:service-activator
+            id="activityStubStop"
+            input-channel="activityRequestChannel"
+            output-channel="activityReplyChannel"
+            ref="ActivityStubServiceActivator"
+            method="stop"/>-->
+
+
+</beans>
+
+

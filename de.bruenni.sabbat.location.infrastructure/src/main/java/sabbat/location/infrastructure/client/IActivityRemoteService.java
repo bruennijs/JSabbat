@@ -17,7 +17,7 @@ public interface IActivityRemoteService {
      * @param command
      * @return
      */
-    CompletableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command);
+    ListenableFuture<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command);
 
     /**
      * Stops activity

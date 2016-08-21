@@ -6,8 +6,8 @@
     </Properties>
     <Appenders>
         <RollingFile name="DefaultFile"
-                fileName="${log-path}/sabbat.location.apigateway.log"
-                filePattern="${log-path}/sabbat.location.apigateway.%d{MM-dd-yyyy}-%i.log.gz">
+                fileName="${log-path}/sabbat.location.infrastructure.log"
+                filePattern="${log-path}/sabbat.location.infrastructure.%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
@@ -15,8 +15,8 @@
             </Policies>
         </RollingFile>
         <RollingFile name="TrafficFile"
-                     fileName="${log-path}/sabbat.location.apigateway.traffic.log"
-                     filePattern="${log-path}/sabbat.location.apigateway.traffic.%d{MM-dd-yyyy}-%i.log.gz">
+                     fileName="${log-path}/sabbat.location.infrastructure.traffic.log"
+                     filePattern="${log-path}/sabbat.location.infrastructure.traffic.%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
@@ -28,17 +28,13 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="location.traffic" level="INFO">
+        <Logger name="location.infrastructure.traffic" level="INFO">
             <!--<AppenderRef ref="Console"/>-->
             <AppenderRef ref="TrafficFile"/>
         </Logger>
 
-        <Logger name="location.console" level="debug">
+        <Logger name="location.infrastructure.console" level="debug">
             <AppenderRef ref="Console"/>
-        </Logger>
-
-        <Logger name="sabbat.apigateway.location.controller.MapMyTracksApiController" level="debug">
-            <!--<AppenderRef ref="DefaultFile"/>-->
         </Logger>
 
         <Root level="DEBUG">

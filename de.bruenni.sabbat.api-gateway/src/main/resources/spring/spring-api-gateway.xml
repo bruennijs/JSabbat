@@ -14,6 +14,7 @@
     <!-- services -->
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>  -->
     <import resource="classpath:spring/spring-location-infrastructure.xml"/>
+    <import resource="classpath:spring/spring-location-amqp.xml"/>
 
     <!--<bean id="DispatcherServletInitializer" class="sabbat.apigateway.location.config.MyDispatcherServletInitializer" />-->
 
