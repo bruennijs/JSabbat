@@ -1,5 +1,6 @@
 package sabbat.location.infrastructure.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -17,7 +18,7 @@ public interface IActivityRemoteService {
      * @param command
      * @return
      */
-    ListenableFuture<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command);
+    ListenableFuture<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws JsonProcessingException;
 
     /**
      * Stops activity

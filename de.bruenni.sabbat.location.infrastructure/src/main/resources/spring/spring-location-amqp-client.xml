@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="connectionFactoryTmp"
+      class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+        <constructor-arg  ref="connectionFactory"/>
+        <property name="username" value="guest"/>
+        <property name="password" value="guest"/>
+    </bean>
+
+    <rabbit:connection-factory
+            id="connectionFactory"
+            host="rabbitmq-node"
+            port="5672"
+            username="guest"
+            password="guest"/>
+
+    <!-- queue, topic, echange -->
+    <rabbit:topic-exchange id="activityCommandExchange" name="{location.activity.exchange.command}" />
+    <rabbit:topic-exchange id="activityTrackingExchange" name="{location.activity.exchange.tracking}" />
+
+    <!-- fixed start command reply queue -->
+    <rabbit:queue id="activityCommandReplyQueue" name="{location.activity.queue.command.reply}" />
+
+    <!-- TEMPLATES -->
+    <rabbit:template id="activityCommandTemplate"
+                     connection-factory="connectionFactory"
+                     exchange="{location.activity.exchange.command}"
+                     mandatory="true"
+                     reply-queue="activityCommandReplyQueue">
+                     <rabbit:reply-listener />
+    </rabbit:template>
+
+    <bean id="asyncActivityCommandTemplate" class="org.springframework.amqp.rabbit.AsyncRabbitTemplate">
+        <constructor-arg ref="connectionFactory" />
+        <constructor-arg name="exchange" value="{location.activity.exchange.command}" />
+        <constructor-arg name="routingKey" value="" />
+        <constructor-arg name="replyQueue" value="{location.activity.queue.command.reply}" />
+    </bean>
+
+    <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
+        <property name="backOffPolicy">
+            <bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
+                <property name="initialInterval" value="500" />
+                <property name="multiplier" value="10.0" />
+                <property name="maxInterval" value="10000" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
+
+    <bean id="jsonDtoParser" class="sabbat.location.infrastructure.client.parser.JsonDtoParser" />
+
+    <bean id="RabbitMqActivityNativeClient" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityNativeClient">
+        <constructor-arg ref="activityCommandTemplate" />
+        <constructor-arg ref="asyncActivityCommandTemplate" />
+        <constructor-arg ref="jsonDtoParser" />
+    </bean>
+
+    <int:service-activator
+            id="rabbitMqStart"
+            input-channel="activityRequestChannel"
+            output-channel="activityReplyChannel"
+            ref="RabbitMqActivityServiceActivator"
+            method="start"/>
+
+    <int:service-activator
+            id="rabbitMqStop"
+            input-channel="activityRequestChannel"
+            output-channel="activityReplyChannel"
+            ref="RabbitMqActivityServiceActivator"
+            method="stop"/>
+
+    <int:service-activator
+            id="rabbitMqUpdate"
+            input-channel="activityRequestChannel"
+            output-channel="activityReplyChannel"
+            ref="RabbitMqActivityServiceActivator"
+            method="update"/>
+</beans>
