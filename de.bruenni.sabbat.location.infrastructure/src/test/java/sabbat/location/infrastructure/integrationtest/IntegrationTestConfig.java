@@ -11,7 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:test/application.properties")
 @ImportResource(locations =
         {
-                "classpath:test/spring-location-infrastructure-test.xml"
+                "classpath:test/spring-location-infrastructure-test.xml",
+                "classpath:spring/spring-location-integration.xml"
         })
 public class IntegrationTestConfig {
 }

@@ -6,7 +6,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.infrastructure.client.dto.*;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by bruenni on 04.07.16.
@@ -18,7 +21,7 @@ public interface IActivityRemoteService {
      * @param command
      * @return
      */
-    ListenableFuture<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws JsonProcessingException;
+    ListenableFuture<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException;
 
     /**
      * Stops activity

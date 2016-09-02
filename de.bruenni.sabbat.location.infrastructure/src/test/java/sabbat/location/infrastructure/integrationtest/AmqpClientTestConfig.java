@@ -12,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 @ImportResource(locations =
         {
                 "classpath:test/spring-location-infrastructure-test.xml",
+                "classpath:spring/spring-location-integration.xml",
                 "classpath:spring/spring-location-amqp-client.xml"
         })
 public class AmqpClientTestConfig {

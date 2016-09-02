@@ -8,10 +8,11 @@
 		http://www.springframework.org/schema/integration/spring-integration.xsd">
 
     <!-- services -->
-    <import resource="classpath:spring/spring-location-integration.xml"/>
+<!--    <import resource="classpath:spring/spring-location-integration.xml"/>-->
 
     <!--<context:property-placeholder />-->
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
+
     <!-- INTEGRATION CONFIGURATION -->
     <bean id="ActivityStubServiceActivator" class="sabbat.location.infrastructure.integrationtest.stubs.ActivityStubServiceActivator" />
 

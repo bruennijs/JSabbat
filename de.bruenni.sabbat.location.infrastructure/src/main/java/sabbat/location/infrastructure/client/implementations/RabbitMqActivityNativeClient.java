@@ -26,11 +26,15 @@ import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.*;
 import sabbat.location.infrastructure.client.parser.IDtoParser;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static rx.subjects.PublishSubject.create;
 
@@ -47,26 +51,19 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
     @Value("{location.activity.routingkey.command.stop}")
     public String StopRoutingKey;
 
-    private final RabbitTemplate template;
+    private AsyncRabbitTemplate asyncRabbitTemplate;
     private IDtoParser parser;
-    private RabbitTemplate rabbitTemplate;
     private ConnectionFactory connectionFactory;
 
-    public RabbitMqActivityNativeClient(RabbitTemplate rabbitTemplate,
-                                        AsyncRabbitTemplate asyncRabbitTemplate,
+    public RabbitMqActivityNativeClient(AsyncRabbitTemplate asyncRabbitTemplate,
                                         IDtoParser parser)
     {
-        this.template = rabbitTemplate;
+        this.asyncRabbitTemplate = asyncRabbitTemplate;
         this.parser = parser;
-
-        InitTemplate(this.template);
-    }
-
-    private void InitTemplate(RabbitTemplate template) {
     }
 
     @Override
-    public ListenableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws JsonProcessingException {
+    public ListenableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         try {
             String dtoJson = parser.serialize(command);
@@ -75,7 +72,12 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
             messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
             messageProperties.setCorrelationId(UUID.randomUUID().toString().getBytes(StandardCharsets.US_ASCII));
 
-            template.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
+            AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
+
+            org.springframework.amqp.core.Message responseMessage = responseFuture.get(5000, TimeUnit.MILLISECONDS);
+
+            ActivityCreatedResponseDto responseDto = parser.parse(new String(responseMessage.getBody(), StandardCharsets.UTF_8), ActivityCreatedResponseDto.class);
+
             return new AsyncResult<ActivityCreatedResponseDto>(new ActivityCreatedResponseDto("tbd"));
         }
         catch (Exception exception)

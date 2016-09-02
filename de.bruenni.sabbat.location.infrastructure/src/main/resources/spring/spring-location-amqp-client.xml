@@ -4,43 +4,49 @@
        xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xmlns:int="http://www.springframework.org/schema/integration"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/rabbit
+        http://www.springframework.org/schema/rabbit/spring-rabbit-1.5.xsd
+        http://www.springframework.org/schema/integration
+        http://www.springframework.org/schema/integration/spring-integration.xsd">
 
-    <bean id="connectionFactoryTmp"
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
+
+<!--    <bean id="connectionFactoryTmp"
       class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
         <constructor-arg  ref="connectionFactory"/>
         <property name="username" value="guest"/>
         <property name="password" value="guest"/>
-    </bean>
+    </bean>-->
 
     <rabbit:connection-factory
             id="connectionFactory"
-            host="rabbitmq-node"
+            host="${rabbitmq-hostname}"
             port="5672"
             username="guest"
             password="guest"/>
 
     <!-- queue, topic, echange -->
-    <rabbit:topic-exchange id="activityCommandExchange" name="{location.activity.exchange.command}" />
-    <rabbit:topic-exchange id="activityTrackingExchange" name="{location.activity.exchange.tracking}" />
+    <rabbit:topic-exchange id="activityCommandExchange" name="${location.activity.exchange.command}" />
+    <rabbit:topic-exchange id="activityTrackingExchange" name="${location.activity.exchange.tracking}" />
 
     <!-- fixed start command reply queue -->
-    <rabbit:queue id="activityCommandReplyQueue" name="{location.activity.queue.command.reply}" />
+    <rabbit:queue id="activityCommandReplyQueue" name="${location.activity.queue.command.reply}" />
 
     <!-- TEMPLATES -->
-    <rabbit:template id="activityCommandTemplate"
+<!--    <rabbit:template id="activityCommandTemplate"
                      connection-factory="connectionFactory"
-                     exchange="{location.activity.exchange.command}"
+                     exchange="${location.activity.exchange.command}"
                      mandatory="true"
                      reply-queue="activityCommandReplyQueue">
                      <rabbit:reply-listener />
-    </rabbit:template>
+    </rabbit:template>-->
 
     <bean id="asyncActivityCommandTemplate" class="org.springframework.amqp.rabbit.AsyncRabbitTemplate">
-        <constructor-arg ref="connectionFactory" />
-        <constructor-arg name="exchange" value="{location.activity.exchange.command}" />
-        <constructor-arg name="routingKey" value="" />
-        <constructor-arg name="replyQueue" value="{location.activity.queue.command.reply}" />
+        <constructor-arg index="0" ref="connectionFactory" />
+        <constructor-arg index="1" value="${location.activity.exchange.command}" />
+        <constructor-arg index="2" value="" />  <!-- routing key -->
+        <constructor-arg index="3" value="${location.activity.queue.command.reply}" />
     </bean>
 
     <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
@@ -58,7 +64,6 @@
     <bean id="jsonDtoParser" class="sabbat.location.infrastructure.client.parser.JsonDtoParser" />
 
     <bean id="RabbitMqActivityNativeClient" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityNativeClient">
-        <constructor-arg ref="activityCommandTemplate" />
         <constructor-arg ref="asyncActivityCommandTemplate" />
         <constructor-arg ref="jsonDtoParser" />
     </bean>

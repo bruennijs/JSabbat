@@ -15,6 +15,7 @@ import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.implementations.RabbitMqActivityNativeClient;
 
+import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +32,7 @@ public class RabbitMqActivityNativeClientTest {
     public RabbitMqActivityNativeClient Client;
 
     @Test
-    public void When_start_activity_expect_message_send_to_exchange() throws JsonProcessingException, InterruptedException, ExecutionException, TimeoutException {
+    public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         ActivityCreateRequestDto dto = new ActivityCreateRequestDto(UUID.randomUUID().toString(), "mein erstes Rennen");
 
         ListenableFuture<ActivityCreatedResponseDto> responseFuture = Client.start(dto);
