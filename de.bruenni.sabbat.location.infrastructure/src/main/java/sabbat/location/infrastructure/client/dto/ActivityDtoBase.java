@@ -1,13 +1,15 @@
-package sabbat.location.core.application;
+package sabbat.location.infrastructure.client.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by bruenni on 04.07.16.
  */
-public abstract class ActivityBase {
+public abstract class ActivityDtoBase {
 
     private String id;
 
-    protected ActivityBase(String id) {
+    protected ActivityDtoBase(String id) {
         this.id = id;
     }
 
@@ -15,6 +17,7 @@ public abstract class ActivityBase {
      * Gets the ID of the activity
      * @return
      */
+    @JsonProperty("id")
     public String getId() {
         return id;
     }

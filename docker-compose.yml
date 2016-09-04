@@ -15,10 +15,12 @@ services:
     hostname: rabbitmq-dev
     container_name: rabbitmq-dev
     image: rabbitmq:3.6.4
-    #ports:
-     #- "8082:5000"
+    #ports:  #Expose ports. Either specify both ports (HOST:CONTAINER), or just the container port (a random host port will be chosen).
+     #- "5672:5672"
+
+    #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
     expose:
-      - "4369"
+      - "15672" #plugin: rabbitmq_management
     volumes:
      - /opt/tmp/rabbitmq-sabbat:/var/lib/rabbitmq
     network_mode: "bridge"  # default network with bridge adapter docker0

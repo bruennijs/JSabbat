@@ -6,7 +6,7 @@ import sabbat.location.core.application.ActivityBase;
 /**
  * Created by bruenni on 04.07.16.
  */
-public class ActivityUpdateRequestDto extends ActivityBase {
+public class ActivityUpdateRequestDto extends ActivityDtoBase {
 
     private Point[] points;
 

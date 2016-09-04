@@ -1,14 +1,20 @@
 package sabbat.location.infrastructure.integrationtest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sun.javafx.binding.StringFormatter;
+import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsNot;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.events.UIEvent;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
@@ -28,6 +34,9 @@ import java.util.concurrent.TimeoutException;
 @SpringApplicationConfiguration(classes = { AmqpClientTestConfig.class })
 public class RabbitMqActivityNativeClientTest {
 
+    @Value("${rabbitmq-hostname}")
+    public String host;
+
     @Autowired
     public RabbitMqActivityNativeClient Client;
 
@@ -39,5 +48,15 @@ public class RabbitMqActivityNativeClientTest {
         ActivityCreatedResponseDto response = responseFuture.get(1000, TimeUnit.MILLISECONDS);
 
         Assert.assertEquals(dto.getId(), response.getId());
+    }
+
+    @Test
+    @Ignore
+    public void When_rest_exception_no_unknwonhostexception()
+    {
+        System.out.println(host);
+
+        String s = new RestTemplate().getForObject("http://" + host, String.class);
+        Assert.assertThat(s, s, new IsEqual<>(""));
     }
 }

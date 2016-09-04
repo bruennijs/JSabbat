@@ -68,6 +68,8 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
         try {
             String dtoJson = parser.serialize(command);
 
+            System.out.println(dtoJson);
+
             MessageProperties messageProperties = new MessageProperties();
             messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
             messageProperties.setCorrelationId(UUID.randomUUID().toString().getBytes(StandardCharsets.US_ASCII));
