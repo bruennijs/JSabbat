@@ -7,15 +7,7 @@
 
     <!--<mvc:annotation-driven/>-->
     <!--<context:component-scan base-package="sabbat.apigateway.location.config"/>-->
-    </bean>
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
-
-<!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">
-    </bean>-->
-
-    <!--<bean id="MyDispatcherServletInitializer" class="sabbat.apigateway.location.configfig.MyDispatcherServletInitializer" />-->
-
-    <!-- more bean definitions for services go here -->
 
 </beans>
