@@ -3,37 +3,56 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/rabbit
+        http://www.springframework.org/schema/rabbit/spring-rabbit-1.5.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
+
+    <task:executor id="serviceExecuter" pool-size="5"/>
 
     <rabbit:connection-factory
-            id="connectionFactory"
-            cache-mode="CONNECTION"
-            connection-cache-size="25"
-            host="rabbitmq-node"
+            id="serviceConnectionFactory"
+            host="${rabbitmq-hostname}"
             port="5672"
             username="guest"
             password="guest"/>
+    <rabbit:admin id="serviceAdmin" connection-factory="serviceConnectionFactory" />
 
-    <!-- queue, topic, echange -->
-    <rabbit:queue id="activityCommandQueue" name="{location.activity.queue.command}" />
-    <rabbit:queue id="activityTrackingQueue" name="{location.activity.queue.tracking}" />
+    <bean id="RabbitMqActivityAdapter" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityCommandAdapter" />
 
-    <rabbit:topic-exchange id="activityCommandExchange" name="{location.activity.exchange.command}">
+    <rabbit:queue id="activityCommandQueue"
+                  name="${location.activity.queue.command}"
+                  declared-by="serviceAdmin"
+                  auto-declare="true"
+                  durable="true" />
+
+    <rabbit:topic-exchange
+            id="activityCommandExchange"
+            name="${location.activity.exchange.command}"
+            declared-by="serviceAdmin"
+            auto-declare="true">
         <rabbit:bindings>
-            <rabbit:binding pattern="location-activity.command.*"
-                            exchange="{location.activity.exchange.command}"
-                            queue="{location.activity.queue.command}"/> <!-- all commands (e.g. start, stop) -->
-        </rabbit:bindings>
+            <rabbit:binding queue="activityCommandQueue" pattern="${location.activity.routingkey.command.all}"/>
+                </rabbit:bindings>
     </rabbit:topic-exchange>
 
-    <rabbit:topic-exchange id="activityTrackingExchange" name="{location.activity.exchange.tracking}">
-        <rabbit:bindings>
-            <rabbit:binding pattern="location-activity.tracking.*"
-                            exchange="{location.activity.exchange.tracking}"
-                            queue="{location.activity.queue.tracking}"/>
-        </rabbit:bindings>
-    </rabbit:topic-exchange>
+    <rabbit:listener-container task-executor="serviceExecuter"
+                               connection-factory="serviceConnectionFactory"
+                               auto-startup="true">
+        <rabbit:listener queues="${location.activity.queue.command}"
+                         ref="RabbitMqActivityAdapter"
+                         response-exchange="${location.activity.queue.command.reply}"/>
+    </rabbit:listener-container>
 
-    <!-- TEMPLATES -->
+<!--    <bean id="activityCommandBinder" class="sabbat.location.infrastructure.RabbitMqQueueBinder">
+        <constructor-arg index="0" ref="serviceAdmin" />
+        <constructor-arg index="1" ref="activityCommandQueue" />
+        <constructor-arg index="2" ref="activityCommandExchange" />
+        <constructor-arg index="3" value="${location.activity.routingkey.command.all}" />
+    </bean>-->
 </beans>

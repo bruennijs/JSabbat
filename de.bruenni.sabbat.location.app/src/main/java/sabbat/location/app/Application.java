@@ -1,9 +1,12 @@
 package sabbat.location.app;
 
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.boot.SpringApplication;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import sabbat.location.infrastructure.RabbitMqQueueBinder;
 
 import java.util.Arrays;
 
@@ -23,12 +26,18 @@ public class Application {
         Arrays.stream(args).forEach(arg -> logger.info("arg=" + arg));
 
         logger.info("Starting location app...");
-        ApplicationContext applicationContext = SpringApplication.run(new Object[] {Application.class,
-                AppConfig.class}, args);
+        ApplicationContext applicationContext = SpringApplication.run(new Object[]
+                {
+                        Application.class,
+                        AppConfig.class
+                }, args);
 
-        //Environment environment = Environment;
+/*        SimpleMessageListenerContainer container = (SimpleMessageListenerContainer) applicationContext.getBean(SimpleMessageListenerContainer.class);
+        container.start();*/
 
-/*        MapMyTracksApiController controller = (MapMyTracksApiController) applicationContext.getBean("MapMyTracksApiController");
-        logger.debug("controler.text=" + controller.text + ",perido=" + controller.period);*/
+        /*logger.info("Bind queues to exchanges...");*/
+
+/*        RabbitMqQueueBinder binder = (RabbitMqQueueBinder) applicationContext.getBean("activityCommandBinder");
+        binder.bindQueuesToExchanges();*/
     }
 }

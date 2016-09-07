@@ -37,8 +37,14 @@
             <AppenderRef ref="Console"/>
         </Logger>
 
-        <Root level="DEBUG">
-            <!--<AppenderRef ref="Console"/>-->
+        <Logger name="sabbat.location.infrastructure.service.adapter"
+                level="DEBUG">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="TrafficFile"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
         </Root>
     </Loggers>

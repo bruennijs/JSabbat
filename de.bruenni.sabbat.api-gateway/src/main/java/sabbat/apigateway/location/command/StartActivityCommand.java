@@ -5,7 +5,10 @@ import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by bruenni on 04.08.16.
@@ -29,7 +32,7 @@ public class StartActivityCommand implements ICommand {
     }
 
     @Override
-    public ListenableFuture<ActivityCreatedResponseDto> executeAsync() {
+    public ListenableFuture<ActivityCreatedResponseDto> executeAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         // 1. authorize credentials credentials
 

@@ -70,8 +70,7 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
 
             MessageProperties messageProperties = new MessageProperties();
             messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
-            //messageProperties.setCorrelationId(UUID.randomUUID().toString().getBytes(StandardCharsets.US_ASCII));
-            messageProperties.setCorrelationId("4711".toString().getBytes(StandardCharsets.US_ASCII));
+            messageProperties.setCorrelationId(UUID.randomUUID().toString().getBytes(StandardCharsets.US_ASCII));
 
             AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
