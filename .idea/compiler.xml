@@ -21,6 +21,8 @@
     <bytecodeTargetLevel>
       <module name="de.bruenni.sabbat.api-gateway_main" target="1.8" />
       <module name="de.bruenni.sabbat.api-gateway_test" target="1.8" />
+      <module name="de.bruenni.sabbat.location.app_main" target="1.8" />
+      <module name="de.bruenni.sabbat.location.app_test" target="1.8" />
       <module name="de.bruenni.sabbat.location.core_main" target="1.8" />
       <module name="de.bruenni.sabbat.location.core_test" target="1.8" />
       <module name="de.bruenni.sabbat.location.infrastructure_main" target="1.8" />

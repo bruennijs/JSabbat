@@ -45,10 +45,10 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
 
     final Logger logger = org.slf4j.LoggerFactory.getLogger(RabbitMqActivityNativeClient.class);
 
-    @Value("{location.activity.routingkey.command.start}")
+    @Value("${location.activity.routingkey.command.start}")
     public String StartRoutingKey;
 
-    @Value("{location.activity.routingkey.command.stop}")
+    @Value("${location.activity.routingkey.command.stop}")
     public String StopRoutingKey;
 
     private AsyncRabbitTemplate asyncRabbitTemplate;
@@ -68,15 +68,14 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
         try {
             String dtoJson = parser.serialize(command);
 
-            System.out.println(dtoJson);
-
             MessageProperties messageProperties = new MessageProperties();
             messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
-            messageProperties.setCorrelationId(UUID.randomUUID().toString().getBytes(StandardCharsets.US_ASCII));
+            //messageProperties.setCorrelationId(UUID.randomUUID().toString().getBytes(StandardCharsets.US_ASCII));
+            messageProperties.setCorrelationId("4711".toString().getBytes(StandardCharsets.US_ASCII));
 
             AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
-            org.springframework.amqp.core.Message responseMessage = responseFuture.get(5000, TimeUnit.MILLISECONDS);
+            org.springframework.amqp.core.Message responseMessage = responseFuture.get(10000, TimeUnit.MILLISECONDS);
 
             ActivityCreatedResponseDto responseDto = parser.parse(new String(responseMessage.getBody(), StandardCharsets.UTF_8), ActivityCreatedResponseDto.class);
 

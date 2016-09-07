@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" />
+            <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.app" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.core" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.messenger.app" />
