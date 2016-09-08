@@ -23,7 +23,9 @@
             password="guest"/>
     <rabbit:admin id="serviceAdmin" connection-factory="serviceConnectionFactory" />
 
-    <bean id="RabbitMqActivityAdapter" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityCommandAdapter" />
+    <bean id="RabbitMqActivityMessageListenerAdapter" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityMessageListener" scope="singleton" />
+    <bean id="RabbitMqActivityAdapter" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityAdapter" scope="singleton"/>
+    <bean id="RabbitMqActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityRabbitListener" scope="singleton"/>
 
     <rabbit:queue id="activityCommandQueue"
                   name="${location.activity.queue.command}"
@@ -41,13 +43,22 @@
                 </rabbit:bindings>
     </rabbit:topic-exchange>
 
-    <rabbit:listener-container task-executor="serviceExecuter"
+<!--    <rabbit:listener-container task-executor="serviceExecuter"
                                connection-factory="serviceConnectionFactory"
                                auto-startup="true">
         <rabbit:listener queues="${location.activity.queue.command}"
-                         ref="RabbitMqActivityAdapter"
-                         response-exchange="${location.activity.queue.command.reply}"/>
-    </rabbit:listener-container>
+                         ref="RabbitMqActivityRabbitListener"
+                        method="onMessage" />
+                         &lt;!&ndash;response-exchange="${location.activity.queue.command.reply}"&ndash;&gt;
+    </rabbit:listener-container>-->
+
+    <bean id="rabbitListenerContainerFactory"
+          class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
+        <property name="connectionFactory" ref="serviceConnectionFactory"/>
+        <property name="concurrentConsumers" value="3"/>
+        <property name="maxConcurrentConsumers" value="10"/>
+        <property name="taskExecutor" ref="serviceExecuter" />
+    </bean>
 
 <!--    <bean id="activityCommandBinder" class="sabbat.location.infrastructure.RabbitMqQueueBinder">
         <constructor-arg index="0" ref="serviceAdmin" />

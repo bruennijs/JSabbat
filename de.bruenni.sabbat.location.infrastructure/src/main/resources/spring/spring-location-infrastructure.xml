@@ -6,5 +6,5 @@
 
     <!-- services -->
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>-->
-    <import resource="classpath:spring/spring-location-integration.xml"/>
+    <!--<import resource="classpath:spring/spring-location-integration.xml"/>-->
 </beans>
