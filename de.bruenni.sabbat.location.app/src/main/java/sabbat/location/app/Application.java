@@ -1,7 +1,5 @@
 package sabbat.location.app;
 
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.boot.SpringApplication;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
