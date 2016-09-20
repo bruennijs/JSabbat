@@ -1,0 +1,7 @@
+INSERT INTO user_coordinates(groupid, userid, captured, longitude, latitude) VALUES (2d93eeee-6121-4c72-80a1-ad9868076391, uuid(), toTimestamp(now()), 34.2212, 67.2121);
+
+INSERT INTO user_coordinates(groupid, userid, captured, longitude, latitude) VALUES (2d93eeee-6121-4c72-80a1-ad9868076391, 37bfd604-9573-4b12-ab3f-45151b613fde, toTimestamp(now()), 34.2212, 67.2121);
+INSERT INTO user_coordinates(groupid, userid, captured, longitude, latitude) VALUES (2d93eeee-6121-4c72-80a1-ad9868076391, 37bfd604-9573-4b12-ab3f-45151b613fde, '2016-09-19 00:01:02', 27.11, 67.0);
+INSERT INTO user_coordinates(groupid, userid, captured, longitude, latitude) VALUES (2d93eeee-6121-4c72-80a1-ad9868076391, 37bfd604-9573-4b12-ab3f-45151b613fde, '2016-09-19 00:05:00', 27.13, 67.3);
+
+SELECT * from user_coordinates WHERE groupid= 2d93eeee-6121-4c72-80a1-ad9868076391 AND userid = 37bfd604-9573-4b12-ab3f-45151b613fde AND captured >= '2016-09-20';

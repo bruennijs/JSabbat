@@ -1,0 +1,30 @@
+CREATE KEYSPACE sabbatlocation WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 2};
+
+use sabbatlocation;
+
+CREATE TABLE user_coordinates (
+    groupid uuid,
+    userid uuid,
+    captured timestamp,
+    longitude decimal,
+    latitude decimal,
+    PRIMARY KEY ((groupid), userid, captured)
+);
+
+CREATE TABLE activity (
+    id  uuid,
+    userid uuid,
+    started timestamp,
+    finished timestamp,
+    title text,
+    PRIMARY KEY ((userid), id)
+);
+
+CREATE TABLE activity_coordinates (
+    captured timestamp,
+    activityid uuid,
+    longitude decimal,
+    latitude decimal,
+    PRIMARY KEY ((activityid), captured)
+);
+

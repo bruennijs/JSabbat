@@ -11,6 +11,45 @@ services:
     expose:
       - "5000"
 
+
+  cassandra-dev-1:
+    hostname: cassandra-dev-1
+    container_name: cassandra-dev-1
+    image: cassandra:3.0.8
+    environment:
+      - CASSANDRA_CLUSTER_NAME=sabbat-dev
+      - CASSANDRA_BROADCAST_ADDRESS=cassandra-dev-1
+      - CASSANDRA_SEEDS=cassandra-dev-1
+    ports:  #Expose ports. Either specify both ports (HOST:CONTAINER), or just the container port (a random host port will be chosen).
+     - "9042:9042"  # to connect via localhost in development
+
+    #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
+    expose:
+      - "9042" #plugin: rabbitmq_management
+      - "7000"  # gossip
+    network_mode: "bridge"  # default network with bridge adapter docker0
+    # CQLSH: docker run -it --link cassandra-dev-1:cassandra-node --rm cassandra:3.0.8 cqlsh cassandra-node
+
+  cassandra-dev-2:
+    hostname: cassandra-dev-2
+    container_name: cassandra-dev-2
+    image: cassandra:3.0.8
+    environment:
+      - CASSANDRA_CLUSTER_NAME=sabbat-dev
+      - CASSANDRA_BROADCAST_ADDRESS=cassandra-dev-2
+      - CASSANDRA_SEEDS=cassandra-dev-1
+    links:
+      - cassandra-dev-1
+    #depends_on:
+      #- cassandra-dev-1
+
+    #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
+    expose:
+      - "9042" #plugin: rabbitmq_management
+      - "7000"  # gossip
+    network_mode: "bridge"  # default network with bridge adapter docker0
+    # CQLSH: docker run -it --link cassandra-dev-2:cassandra-node --rm cassandra:3.0.8 cqlsh cassandra-node
+
   rabbitmq-dev:
     hostname: rabbitmq-dev
     container_name: rabbitmq-dev

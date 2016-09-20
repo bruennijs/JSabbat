@@ -1,7 +1,5 @@
 package sabbat.location.infrastructure.integrationtest;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
@@ -13,9 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:spring/spring-location-infrastructure.properties")
 @ImportResource(locations =
         {
-                "classpath:test/spring-location-infrastructure-test.xml",
-                "classpath:spring/spring-location-integration.xml",
-                "classpath:spring/spring-location-amqp-client.xml"
+                "classpath:spring/spring-location-cassandra.xml",
+                "classpath:spring/spring-location-infrastructure.xml"
         })
-public class AmqpClientTestConfig {
+public class CassandraTestConfig {
 }
