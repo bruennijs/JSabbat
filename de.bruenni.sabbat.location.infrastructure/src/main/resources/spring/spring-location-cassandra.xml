@@ -12,22 +12,25 @@
     <!--<context:property-placeholder location="classpath:cassandra.properties" />-->
 
     <!-- REQUIRED: The Cassandra Cluster -->
-    <cassandra:cluster contact-points="${cassandra.contactpoints}"
+    <cassandra:cluster id="cluster" contact-points="${cassandra.contactpoints}"
                        port="${cassandra.port}" />
 
     <!-- REQUIRED: The Cassandra Session, built from the Cluster, and attaching
       to a keyspace -->
-    <cassandra:session keyspace-name="${cassandra.keyspace}" />
+    <cassandra:session id="cassandraSession"
+                       keyspace-name="${cassandra.keyspace}"
+                       cluster-ref="cluster" />
 
     <!-- REQUIRED: The Default Cassandra Mapping Context used by CassandraConverter -->
     <cassandra:mapping />
 
     <!-- REQUIRED: The Default Cassandra Converter used by CassandraTemplate -->
-    <cassandra:converter />
+    <cassandra:converter mapping-ref="cassandraMapping" />
 
     <!-- REQUIRED: The Cassandra Template is the building block of all Spring
       Data Cassandra -->
-    <cassandra:template id="cassandraTemplate" />
+    <cassandra:template id="cassandraTemplate"
+                        session-ref="cassandraSession"/>
 
     <!-- OPTIONAL: If you are using Spring Data Cassandra Repositories, add
       your base packages to scan here -->

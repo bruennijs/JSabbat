@@ -23,12 +23,27 @@ public class CassandraActivityRepositoryTest {
     public IActivityRepository ActivityRepository;
 
     @Test
+    public void When_insert_expect_returned_entity_equals_inserted_title()
+    {
+        Activity activity = new ActivityBuilder().build();
+
+        Activity insertedActivity = ActivityRepository.save(activity);
+
+        Assert.assertEquals(insertedActivity.getKey(), activity.getKey());
+        Assert.assertEquals(insertedActivity.getTitle(), activity.getTitle());
+        Assert.assertEquals(insertedActivity.getStarted(), activity.getStarted());
+        Assert.assertNull(insertedActivity.getFinished());
+    }
+
+    @Test
     public void When_insert_expect_get_by_id_returns_expected_activity()
     {
         Activity activity = new ActivityBuilder().build();
 
         Activity insertedActivity = ActivityRepository.save(activity);
 
-        Assert.assertEquals(insertedActivity.getTitle(), activity.getTitle());
+        Activity getEntity = ActivityRepository.findOne(insertedActivity.getKey());
+
+        Assert.assertEquals(insertedActivity, getEntity);
     }
 }
