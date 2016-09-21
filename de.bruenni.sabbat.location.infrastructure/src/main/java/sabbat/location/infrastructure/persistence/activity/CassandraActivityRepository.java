@@ -48,10 +48,10 @@ public class CassandraActivityRepository extends CassandraActivityBaseRepository
     public Iterable<ActivityCoordinate> findActivityCoordinates(Activity aggregateRoot) {
 
         Select select = QueryBuilder.select()
-                .from("activity_coordinates");
+                .from(ActivityCoordinate.ACTIVITY_COORDINATES_TABLE_NAME);
 
-        select.where(QueryBuilder.eq("userid", aggregateRoot.getKey().getUserId()));
-        select.where(QueryBuilder.eq("activityid", aggregateRoot.getKey().getId()));
+        select.where(QueryBuilder.eq("userid", aggregateRoot.getKey().getUserId().toString()));
+        select.where(QueryBuilder.eq("activityid", aggregateRoot.getKey().getId().toString()));
         select.setConsistencyLevel(convertFromSpringConsistencyLevel());
 
         //select.setFetchSize(100);
