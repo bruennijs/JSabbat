@@ -11,6 +11,14 @@ import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.CassandraTestConfig;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalField;
+import java.util.Date;
+
 /**
  * Created by bruenni on 20.09.16.
  */
@@ -45,5 +53,24 @@ public class CassandraActivityRepositoryTest {
         Activity getEntity = ActivityRepository.findOne(insertedActivity.getKey());
 
         Assert.assertEquals(insertedActivity, getEntity);
+    }
+
+    @Test
+    public void When_update_activity_with_finished_value_after_insert_expect_get_by_id_returns_activity_with_changed_finished_property()
+    {
+        Date finished = Date.from(LocalDateTime.of(1981, 1, 12, 0, 0, 0).toInstant(ZoneOffset.UTC));
+
+        Activity activity = new ActivityBuilder().build();
+
+        Activity insertedActivity = ActivityRepository.save(activity);
+
+        insertedActivity.setFinished(finished);
+
+        Activity updatedActivity = ActivityRepository.save(activity);
+
+        Activity getEntity = ActivityRepository.findOne(insertedActivity.getKey());
+
+        Assert.assertEquals(finished, getEntity.getFinished());
+        Assert.assertEquals(finished, updatedActivity.getFinished());
     }
 }
