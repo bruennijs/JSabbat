@@ -21,10 +21,11 @@ CREATE TABLE activity (
 );
 
 CREATE TABLE activity_coordinates (
-    captured timestamp,
+    userid uuid,
     activityid uuid,
+    captured timestamp,
     longitude decimal,
     latitude decimal,
-    PRIMARY KEY ((activityid), captured)
+    PRIMARY KEY ((userid), activityid, captured)
 );
 

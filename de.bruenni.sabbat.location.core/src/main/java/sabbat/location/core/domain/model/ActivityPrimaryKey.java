@@ -1,4 +1,4 @@
-package sabbat.location.core.persistence.activity;
+package sabbat.location.core.domain.model;
 
 import org.springframework.cassandra.core.PrimaryKeyType;
 import org.springframework.data.cassandra.mapping.PrimaryKeyClass;

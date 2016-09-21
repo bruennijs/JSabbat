@@ -1,7 +1,7 @@
 package sabbat.location.infrastructure.integrationtest.persistence.activity;
 
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.persistence.activity.ActivityPrimaryKey;
+import sabbat.location.core.domain.model.ActivityPrimaryKey;
 
 import java.util.Date;
 import java.util.UUID;

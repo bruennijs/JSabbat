@@ -1,13 +1,19 @@
 package sabbat.location.infrastructure.integrationtest.persistence.activity;
 
+import com.google.common.collect.Lists;
+import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.util.collections.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.model.ActivityCoordinate;
+import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
+import sabbat.location.core.domain.model.Coordinate;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.CassandraTestConfig;
 
@@ -17,7 +23,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalField;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by bruenni on 20.09.16.
@@ -72,5 +78,33 @@ public class CassandraActivityRepositoryTest {
 
         Assert.assertEquals(finished, getEntity.getFinished());
         Assert.assertEquals(finished, updatedActivity.getFinished());
+    }
+
+    @Test
+    public void When_insert_activity_repoitory_expect_select_can_read_them_gain()
+    {
+        Date now = new Date();
+
+        Activity activity = new ActivityBuilder().build();
+        ActivityCoordinatePrimaryKey activityCoordinatePrimaryKey1 = new ActivityCoordinatePrimaryKeyBuilder().fromActivityKey(activity.getKey());
+        ActivityCoordinatePrimaryKey activityCoordinatePrimaryKey2 = new ActivityCoordinatePrimaryKeyBuilder().fromActivityKey(activity.getKey());
+
+        ActivityCoordinate activityCoordinate1 = new ActivityCoordinateBuilder()
+                .withPrimaryKey(activityCoordinatePrimaryKey1)
+                .build();
+
+        ActivityCoordinate activityCoordinate2 = new ActivityCoordinateBuilder()
+                .withPrimaryKey(activityCoordinatePrimaryKey2)
+                .build();
+
+        Activity insertedActivity = ActivityRepository.save(activity);
+
+        List<ActivityCoordinate> insertedActivityCoordinates = Lists.newArrayList(ActivityRepository.insertCoordinate(Arrays.asList(activityCoordinate1, activityCoordinate2)));
+
+        List<ActivityCoordinate> readActivityCoordinates = Lists.newArrayList(ActivityRepository.findActivityCoordinates(activity));
+
+        Assert.assertEquals(insertedActivityCoordinates.size(), readActivityCoordinates.size());
+
+        Assert.assertThat(insertedActivityCoordinates, Is.is(readActivityCoordinates));
     }
 }

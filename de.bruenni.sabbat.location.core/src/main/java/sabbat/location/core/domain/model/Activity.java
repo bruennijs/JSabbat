@@ -3,7 +3,6 @@ package sabbat.location.core.domain.model;
 import org.springframework.data.cassandra.mapping.Column;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
-import sabbat.location.core.persistence.activity.ActivityPrimaryKey;
 
 import java.util.Date;
 
