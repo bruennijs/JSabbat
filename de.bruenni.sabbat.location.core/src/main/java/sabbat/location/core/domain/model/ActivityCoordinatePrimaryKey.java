@@ -35,4 +35,34 @@ public class ActivityCoordinatePrimaryKey implements Serializable {
         this.activityid = activityid;
         this.captured = captured;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ActivityCoordinatePrimaryKey that = (ActivityCoordinatePrimaryKey) o;
+
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (activityid != null ? !activityid.equals(that.activityid) : that.activityid != null) return false;
+        return captured != null ? captured.equals(that.captured) : that.captured == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId != null ? userId.hashCode() : 0;
+        result = 31 * result + (activityid != null ? activityid.hashCode() : 0);
+        result = 31 * result + (captured != null ? captured.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ActivityCoordinatePrimaryKey{" +
+                "userId=" + userId +
+                ", activityid=" + activityid +
+                ", captured=" + captured +
+                '}';
+    }
 }

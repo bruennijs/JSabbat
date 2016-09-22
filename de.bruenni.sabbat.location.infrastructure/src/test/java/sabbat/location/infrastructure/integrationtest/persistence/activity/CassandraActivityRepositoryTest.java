@@ -105,6 +105,6 @@ public class CassandraActivityRepositoryTest {
 
         Assert.assertEquals(insertedActivityCoordinates.size(), readActivityCoordinates.size());
 
-        Assert.assertThat(insertedActivityCoordinates, Is.is(readActivityCoordinates));
+        Assert.assertTrue(insertedActivityCoordinates.stream().allMatch(ac -> readActivityCoordinates.stream().anyMatch(rac -> rac.equals(ac))));
     }
 }

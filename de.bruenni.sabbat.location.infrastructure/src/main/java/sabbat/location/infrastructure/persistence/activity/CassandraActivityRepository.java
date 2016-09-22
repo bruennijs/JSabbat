@@ -1,6 +1,7 @@
 package sabbat.location.infrastructure.persistence.activity;
 
 import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
@@ -50,8 +51,8 @@ public class CassandraActivityRepository extends CassandraActivityBaseRepository
         Select select = QueryBuilder.select()
                 .from(ActivityCoordinate.ACTIVITY_COORDINATES_TABLE_NAME);
 
-        select.where(QueryBuilder.eq("userid", aggregateRoot.getKey().getUserId().toString()));
-        select.where(QueryBuilder.eq("activityid", aggregateRoot.getKey().getId().toString()));
+        select.where(QueryBuilder.eq("userid", aggregateRoot.getKey().getUserId()));
+        select.where(QueryBuilder.eq("activityid", aggregateRoot.getKey().getId()));
         select.setConsistencyLevel(convertFromSpringConsistencyLevel());
 
         //select.setFetchSize(100);
@@ -59,7 +60,7 @@ public class CassandraActivityRepository extends CassandraActivityBaseRepository
 
         log.debug(StringFormatter.format("select from activity_coordinates [statement=%1s]", select.getQueryString()).getValue());
 
-        return getTemplate().select(select.getQueryString(), ActivityCoordinate.class);
+        return getTemplate().select(select, ActivityCoordinate.class);
     }
 
     private com.datastax.driver.core.ConsistencyLevel convertFromSpringConsistencyLevel() {
