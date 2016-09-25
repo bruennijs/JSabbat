@@ -1,7 +1,6 @@
 package sabbat.location.core.domain.model;
 
 import org.springframework.data.cassandra.mapping.Column;
-import org.springframework.data.cassandra.mapping.Table;
 
 /**
  * Created by bruenni on 21.09.16.

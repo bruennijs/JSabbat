@@ -13,7 +13,7 @@
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
-    <task:executor id="serviceExecuter" pool-size="5"/>
+    <task:executor id="serviceTaskExecuter" pool-size="5"/>
 
     <rabbit:connection-factory
             id="serviceConnectionFactory"
@@ -43,7 +43,7 @@
                 </rabbit:bindings>
     </rabbit:topic-exchange>
 
-<!--    <rabbit:listener-container task-executor="serviceExecuter"
+<!--    <rabbit:listener-container task-executor="serviceTaskExecuter"
                                connection-factory="serviceConnectionFactory"
                                auto-startup="true">
         <rabbit:listener queues="${location.activity.queue.command}"
@@ -57,7 +57,7 @@
         <property name="connectionFactory" ref="serviceConnectionFactory"/>
         <property name="concurrentConsumers" value="3"/>
         <property name="maxConcurrentConsumers" value="10"/>
-        <property name="taskExecutor" ref="serviceExecuter" />
+        <property name="taskExecutor" ref="serviceTaskExecuter" />
     </bean>
 
 <!--    <bean id="activityCommandBinder" class="sabbat.location.infrastructure.RabbitMqQueueBinder">

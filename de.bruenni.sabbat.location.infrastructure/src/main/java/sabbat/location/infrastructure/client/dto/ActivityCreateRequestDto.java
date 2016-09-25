@@ -1,7 +1,6 @@
 package sabbat.location.infrastructure.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import sabbat.location.core.application.ActivityBase;
 
 /**
  * Created by bruenni on 04.07.16.

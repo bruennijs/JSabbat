@@ -31,7 +31,7 @@ public class ActivityServiceTransformation {
 
 
     /***
-     * Transforms controller request to IActivityService command.
+     * Transforms controller request to IActivityApplicationService command.
      * @param requestType
      *
      * @return

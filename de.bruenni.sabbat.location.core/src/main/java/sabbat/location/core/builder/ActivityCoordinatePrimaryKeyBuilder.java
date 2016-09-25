@@ -1,4 +1,4 @@
-package sabbat.location.infrastructure.integrationtest.persistence.activity;
+package sabbat.location.core.builder;
 
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;

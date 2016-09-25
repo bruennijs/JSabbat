@@ -42,7 +42,7 @@ public class StartActivityCommand implements ICommand {
     }
 
     /***
-     * Transforms controller request to IActivityService command.
+     * Transforms controller request to IActivityApplicationService command.
      *
      * @param title
      * @return

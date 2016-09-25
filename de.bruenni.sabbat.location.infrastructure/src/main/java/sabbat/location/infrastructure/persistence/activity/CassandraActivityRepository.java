@@ -1,11 +1,9 @@
 package sabbat.location.infrastructure.persistence.activity;
 
-import com.datastax.driver.core.ConsistencyLevel;
-import com.datastax.driver.core.Statement;
-import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.sun.javafx.binding.StringFormatter;
+import org.springframework.cassandra.core.ConsistencyLevelResolver;
 import org.springframework.cassandra.core.RetryPolicy;
 import org.springframework.cassandra.core.WriteOptions;
 import org.springframework.data.cassandra.core.CassandraTemplate;
@@ -53,7 +51,7 @@ public class CassandraActivityRepository extends CassandraActivityBaseRepository
 
         select.where(QueryBuilder.eq("userid", aggregateRoot.getKey().getUserId()));
         select.where(QueryBuilder.eq("activityid", aggregateRoot.getKey().getId()));
-        select.setConsistencyLevel(convertFromSpringConsistencyLevel());
+        select.setConsistencyLevel(ConsistencyLevelResolver.resolve(getConsistencyLevel()));
 
         //select.setFetchSize(100);
         //select.setPagingState(PagingState.fromString());
@@ -61,9 +59,5 @@ public class CassandraActivityRepository extends CassandraActivityBaseRepository
         log.debug(StringFormatter.format("select from activity_coordinates [statement=%1s]", select.getQueryString()).getValue());
 
         return getTemplate().select(select, ActivityCoordinate.class);
-    }
-
-    private com.datastax.driver.core.ConsistencyLevel convertFromSpringConsistencyLevel() {
-        return com.datastax.driver.core.ConsistencyLevel.valueOf(getConsistencyLevel().name());
     }
 }

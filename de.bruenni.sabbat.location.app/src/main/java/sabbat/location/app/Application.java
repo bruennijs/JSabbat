@@ -1,10 +1,18 @@
 package sabbat.location.app;
 
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
 import org.springframework.context.ApplicationContext;
-import sabbat.location.infrastructure.RabbitMqQueueBinder;
+import sabbat.location.infrastructure.AmqpClientAutoConfiguration;
+import sabbat.location.infrastructure.AmqpServiceAutoConfiguration;
 
 import java.util.Arrays;
 
@@ -12,12 +20,10 @@ import java.util.Arrays;
  * Created by bruenni on 03.07.16.
  */
 
-//@SpringBootApplication    // contains componentscan to find @Configuratuion annotated class -> instead give spring boot these classes by calling SpringApplication.run(...) with these classes
-@EnableAutoConfiguration
-//@ComponentScan(basePackages = "sabbat.apigateway.location.config")
+@SpringBootApplication(exclude = { org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration.class, CassandraDataAutoConfiguration.class })
 public class Application {
 
-    static Logger logger = org.slf4j.LoggerFactory.getLogger("location.console");
+    static Logger logger = org.slf4j.LoggerFactory.getLogger("console");
 
     public static void main(String[] args) {
 
@@ -27,8 +33,15 @@ public class Application {
         ApplicationContext applicationContext = SpringApplication.run(new Object[]
                 {
                         Application.class,
-                        AppConfig.class
+                        AppConfig.class,
+                        sabbat.location.infrastructure.CassandraAutoConfiguration.class
+                        //AmqpClientAutoConfiguration.class
+                        //AmqpServiceAutoConfiguration.class
                 }, args);
+
+        Session session = ((Cluster)applicationContext.getBean("cassandraCluster")).connect();
+
+        session.getCluster().getMetadata().getAllHosts().stream().forEach(c -> logger.info(c.toString()));
 
 /*        SimpleMessageListenerContainer container = (SimpleMessageListenerContainer) applicationContext.getBean(SimpleMessageListenerContainer.class);
         container.start();*/

@@ -1,5 +1,7 @@
 package sabbat.location.infrastructure.client.implementations;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
@@ -10,6 +12,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureAdapter;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.*;
 import sabbat.location.infrastructure.client.parser.IDtoParser;
@@ -21,6 +24,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Created by bruenni on 04.07.16.
@@ -58,11 +63,16 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
 
             AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
-            org.springframework.amqp.core.Message responseMessage = responseFuture.get(10000, TimeUnit.MILLISECONDS);
-
-            ActivityCreatedResponseDto responseDto = parser.parse(new String(responseMessage.getBody(), StandardCharsets.UTF_8), ActivityCreatedResponseDto.class);
-
-            return new AsyncResult<ActivityCreatedResponseDto>(new ActivityCreatedResponseDto("tbd"));
+            return new ListenableFutureAdapter<ActivityCreatedResponseDto, org.springframework.amqp.core.Message>(responseFuture) {
+                @Override
+                protected ActivityCreatedResponseDto adapt(org.springframework.amqp.core.Message msg) throws ExecutionException {
+                    try {
+                        return parser.parse(new String(msg.getBody(), StandardCharsets.UTF_8), ActivityCreatedResponseDto.class);
+                    } catch (IOException e) {
+                        throw new ExecutionException(e);
+                    }
+                }
+            };
         }
         catch (Exception exception)
         {

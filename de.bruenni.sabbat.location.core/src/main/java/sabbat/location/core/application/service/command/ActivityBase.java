@@ -1,13 +1,15 @@
-package sabbat.location.core.application;
+package sabbat.location.core.application.service.command;
+
+import java.util.UUID;
 
 /**
  * Created by bruenni on 04.07.16.
  */
 public abstract class ActivityBase {
 
-    private String id;
+    private UUID id;
 
-    protected ActivityBase(String id) {
+    protected ActivityBase(UUID id) {
         this.id = id;
     }
 
@@ -15,7 +17,7 @@ public abstract class ActivityBase {
      * Gets the ID of the activity
      * @return
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 }

@@ -1,0 +1,4 @@
+# Auto Configure
+sabbat.location.infrastructure.AmqpClientAutoConfiguration=\
+sabbat.location.infrastructure.AmqpServiceAutoConfiguration=\
+sabbat.location.infrastructure.CassandraAutoConfiguration

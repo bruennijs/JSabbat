@@ -1,8 +1,9 @@
-package sabbat.location.core.application;
+package sabbat.location.core.application.service.command;
 
 import org.springframework.data.geo.Point;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by bruenni on 04.07.16.
@@ -17,7 +18,7 @@ public class ActivityUpdateCommand extends ActivityBase {
      * Constructor
      * @param id
      */
-    public ActivityUpdateCommand(String id, Point[] points,
+    public ActivityUpdateCommand(UUID id, Point[] points,
                                  Optional<Integer> heartRate,
                                  Optional<Integer> cadence) {
         super(id);

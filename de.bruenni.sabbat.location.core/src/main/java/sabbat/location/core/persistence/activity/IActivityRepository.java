@@ -1,10 +1,9 @@
 package sabbat.location.core.persistence.activity;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.repository.CrudRepository;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
+import sabbat.location.core.domain.model.ActivityCoordinate;
 
 import java.util.List;
 

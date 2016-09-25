@@ -8,7 +8,11 @@ import org.springframework.context.annotation.PropertySource;
  * Created by bruenni on 13.07.16.
  */
 @Configuration
-@PropertySource("classpath:spring/spring-location-infrastructure.properties")
+@PropertySource(
+        {
+                "classpath:spring/spring-location-infrastructure.properties",
+                "classpath:test/spring-location-infrastructure-test.properties"
+        })
 @ImportResource(locations =
         {
                 "classpath:test/spring-location-infrastructure-test.xml",

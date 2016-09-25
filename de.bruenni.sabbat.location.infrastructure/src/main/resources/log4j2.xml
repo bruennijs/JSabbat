@@ -33,10 +33,6 @@
             <AppenderRef ref="TrafficFile"/>
         </Logger>
 
-        <Logger name="location.infrastructure.console" level="debug">
-            <AppenderRef ref="Console"/>
-        </Logger>
-
         <Root level="DEBUG">
             <!--<AppenderRef ref="Console"/>-->
             <AppenderRef ref="DefaultFile"/>

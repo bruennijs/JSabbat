@@ -1,35 +1,40 @@
 package sabbat.location.infrastructure.integrationtest.persistence.activity;
 
 import com.google.common.collect.Lists;
-import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.util.collections.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import sabbat.location.core.builder.ActivityCoordinateBuilder;
+import sabbat.location.core.builder.ActivityCoordinatePrimaryKeyBuilder;
+import sabbat.location.core.builder.ActivityBuilder;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
-import sabbat.location.core.domain.model.Coordinate;
 import sabbat.location.core.persistence.activity.IActivityRepository;
-import sabbat.location.infrastructure.integrationtest.CassandraTestConfig;
+import sabbat.location.infrastructure.CassandraAutoConfiguration;
+import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalField;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by bruenni on 20.09.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { CassandraTestConfig.class })
+@SpringApplicationConfiguration(classes =
+        {
+                IntegrationTestConfig.class,
+                sabbat.location.infrastructure.CassandraAutoConfiguration.class
+        })
 public class CassandraActivityRepositoryTest {
 
     @Autowired
