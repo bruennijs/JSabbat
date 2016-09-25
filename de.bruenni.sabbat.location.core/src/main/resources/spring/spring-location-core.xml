@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- services -->
-    <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>-->
-    <!--<import resource="classpath:spring/spring-location-integration.xml"/>-->
+    <!--<mvc:annotation-driven/>-->
+    <!--<context:component-scan base-package="sabbat.apigateway.location.config"/>-->
+
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
-    <bean id="jsonDtoParser" class="infrastructure.parser.JsonDtoParser" />
+    <bean id="activityApplicationService" class="sabbat.location.core.application.service.ActivityApplicationService" scope="singleton" />
 
 </beans>

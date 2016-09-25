@@ -9,4 +9,4 @@ include 'de.bruenni.sabbat.location.infrastructure'
 include 'de.bruenni.sabbat.api-gateway'
 include 'de.bruenni.sabbat.location.app'
 
-
+//include './../JInfrastructure/de.bruenni.infrastructure.common'

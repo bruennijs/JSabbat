@@ -5,6 +5,9 @@ package sabbat.location.infrastructure.client.dto;
  */
 public class ActivityCreatedResponseDto extends ActivityDtoBase implements IActivityResponseDto {
 
+    public ActivityCreatedResponseDto() {
+    }
+
     public ActivityCreatedResponseDto(String id)
     {
         super(id);

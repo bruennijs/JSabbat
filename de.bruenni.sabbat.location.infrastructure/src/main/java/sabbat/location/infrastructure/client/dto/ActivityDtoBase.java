@@ -9,6 +9,9 @@ public abstract class ActivityDtoBase {
 
     private String id;
 
+    public ActivityDtoBase() {
+    }
+
     protected ActivityDtoBase(String id) {
         this.id = id;
     }

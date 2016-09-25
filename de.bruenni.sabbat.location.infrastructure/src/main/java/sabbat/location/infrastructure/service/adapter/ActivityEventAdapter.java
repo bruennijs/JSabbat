@@ -8,19 +8,20 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.util.concurrent.ListenableFuture;
 
 import java.nio.charset.StandardCharsets;
 
 /**
  * Created by bruenni on 07.09.16.
  */
-public class RabbitMqActivityAdapter {
+public class ActivityEventAdapter {
 
-    Logger logger = LoggerFactory.getLogger(RabbitMqActivityAdapter.class);
+    Logger logger = LoggerFactory.getLogger(ActivityEventAdapter.class);
 
-    public String onMessage(@Payload String payload, @Header("correlation_id") String correlationId) {
+    public ActivityEventAdapter() {
+    }
+
+    public Message onMessage(@Payload String payload, @Header("correlation_id") String correlationId) {
         logger.debug("-----> [correlationid=" + payload.toString() + "payload=" + payload);
 
         MessageProperties msgProps = MessagePropertiesBuilder.newInstance().build();
@@ -29,6 +30,6 @@ public class RabbitMqActivityAdapter {
 
         logger.debug("<----- ", response.toString());
 
-        return "response text of RabbitMqActivityAdapter";
+        return response;//"response text of ActivityEventAdapter";
     }
 }

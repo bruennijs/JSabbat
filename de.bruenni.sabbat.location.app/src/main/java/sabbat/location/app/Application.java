@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
 import org.springframework.context.ApplicationContext;
+import sabbat.location.core.LocationCoreConfiguration;
 import sabbat.location.infrastructure.AmqpClientAutoConfiguration;
 import sabbat.location.infrastructure.AmqpServiceAutoConfiguration;
 
@@ -34,21 +35,13 @@ public class Application {
                 {
                         Application.class,
                         AppConfig.class,
-                        sabbat.location.infrastructure.CassandraAutoConfiguration.class
-                        //AmqpClientAutoConfiguration.class
-                        //AmqpServiceAutoConfiguration.class
+                        LocationCoreConfiguration.class,
+                        sabbat.location.infrastructure.CassandraAutoConfiguration.class,
+                        AmqpServiceAutoConfiguration.class,
+                        AmqpClientAutoConfiguration.class
                 }, args);
 
-        Session session = ((Cluster)applicationContext.getBean("cassandraCluster")).connect();
-
-        session.getCluster().getMetadata().getAllHosts().stream().forEach(c -> logger.info(c.toString()));
-
-/*        SimpleMessageListenerContainer container = (SimpleMessageListenerContainer) applicationContext.getBean(SimpleMessageListenerContainer.class);
-        container.start();*/
-
-        /*logger.info("Bind queues to exchanges...");*/
-
-/*        RabbitMqQueueBinder binder = (RabbitMqQueueBinder) applicationContext.getBean("activityCommandBinder");
-        binder.bindQueuesToExchanges();*/
+        //Session session = ((Cluster)applicationContext.getBean("cassandraCluster")).connect();
+        //session.getCluster().getMetadata().getAllHosts().stream().forEach(c -> logger.info(c.toString()));
     }
 }

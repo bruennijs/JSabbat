@@ -66,8 +66,6 @@
 
     <bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
 
-    <bean id="jsonDtoParser" class="sabbat.location.infrastructure.client.parser.JsonDtoParser" />
-
     <bean id="RabbitMqActivityNativeClient" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityNativeClient">
         <constructor-arg ref="asyncActivityCommandTemplate" />
         <constructor-arg ref="jsonDtoParser" />

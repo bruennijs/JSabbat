@@ -15,7 +15,6 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureAdapter;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.*;
-import sabbat.location.infrastructure.client.parser.IDtoParser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -41,11 +40,11 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
     public String StopRoutingKey;
 
     private AsyncRabbitTemplate asyncRabbitTemplate;
-    private IDtoParser parser;
+    private infrastructure.parser.IDtoParser parser;
     private ConnectionFactory connectionFactory;
 
     public RabbitMqActivityNativeClient(AsyncRabbitTemplate asyncRabbitTemplate,
-                                        IDtoParser parser)
+                                        infrastructure.parser.IDtoParser parser)
     {
         this.asyncRabbitTemplate = asyncRabbitTemplate;
         this.parser = parser;
@@ -67,7 +66,7 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
                 @Override
                 protected ActivityCreatedResponseDto adapt(org.springframework.amqp.core.Message msg) throws ExecutionException {
                     try {
-                        return parser.parse(new String(msg.getBody(), StandardCharsets.UTF_8), ActivityCreatedResponseDto.class);
+                        return parser.parse(msg.getBody(), ActivityCreatedResponseDto.class);
                     } catch (IOException e) {
                         throw new ExecutionException(e);
                     }

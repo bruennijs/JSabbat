@@ -19,6 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="._.._JInfrastructure_de.bruenni.infrastructure.common_main" target="1.8" />
+      <module name="._.._JInfrastructure_de.bruenni.infrastructure.common_test" target="1.8" />
       <module name="de.bruenni.sabbat.api-gateway_main" target="1.8" />
       <module name="de.bruenni.sabbat.api-gateway_test" target="1.8" />
       <module name="de.bruenni.sabbat.location.app_main" target="1.8" />

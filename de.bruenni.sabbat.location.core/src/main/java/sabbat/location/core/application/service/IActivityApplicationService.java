@@ -11,7 +11,7 @@ import sabbat.location.core.domain.model.Activity;
 public interface IActivityApplicationService {
     ListenableFuture<Activity> start(ActivityCreateCommand command);
 
-    ListenableFuture<Void> stop(String id);
+    ListenableFuture<Void> stop(String id) throws Exception;
 
-    ListenableFuture<Void> update(ActivityUpdateCommand command);
+    ListenableFuture<Void> update(ActivityUpdateCommand command) throws Exception;
 }

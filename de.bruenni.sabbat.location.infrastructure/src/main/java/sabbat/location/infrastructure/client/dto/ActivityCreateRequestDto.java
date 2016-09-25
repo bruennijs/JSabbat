@@ -8,6 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ActivityCreateRequestDto extends ActivityDtoBase {
     private String title;
 
+    public ActivityCreateRequestDto() {
+        super();
+    }
+
     public ActivityCreateRequestDto(String id, String title) {
         super(id);
         this.title = title;

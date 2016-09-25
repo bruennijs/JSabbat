@@ -24,8 +24,11 @@
     <rabbit:admin id="serviceAdmin" connection-factory="serviceConnectionFactory" />
 
     <bean id="RabbitMqActivityMessageListenerAdapter" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityMessageListener" scope="singleton" />
-    <bean id="RabbitMqActivityAdapter" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityAdapter" scope="singleton"/>
-    <bean id="RabbitMqActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityRabbitListener" scope="singleton"/>
+    <bean id="ActivityEventAdapter" class="sabbat.location.infrastructure.service.adapter.ActivityEventAdapter" scope="singleton"/>
+    <bean id="ActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.ActivityRabbitListener" scope="singleton">
+        <constructor-arg ref="jsonDtoParser" />
+        <constructor-arg ref="activityApplicationService" />
+    </bean>
 
     <rabbit:queue id="activityCommandQueue"
                   name="${location.activity.queue.command}"
@@ -43,13 +46,18 @@
                 </rabbit:bindings>
     </rabbit:topic-exchange>
 
-<!--    <rabbit:listener-container task-executor="serviceTaskExecuter"
+    <bean id="jackson2JsonMessageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
+
+<!--   <rabbit:listener-container task-executor="serviceTaskExecuter"
                                connection-factory="serviceConnectionFactory"
-                               auto-startup="true">
+                              acknowledge="auto"
+                              concurrency="3"
+                              max-concurrency="10"
+                               auto-startup="true"
+                              message-converter="jackson2JsonMessageConverter">
         <rabbit:listener queues="${location.activity.queue.command}"
-                         ref="RabbitMqActivityRabbitListener"
-                        method="onMessage" />
-                         &lt;!&ndash;response-exchange="${location.activity.queue.command.reply}"&ndash;&gt;
+                         ref="ActivityEventAdapter"
+                        method="onMessage"/>
     </rabbit:listener-container>-->
 
     <bean id="rabbitListenerContainerFactory"
@@ -58,6 +66,7 @@
         <property name="concurrentConsumers" value="3"/>
         <property name="maxConcurrentConsumers" value="10"/>
         <property name="taskExecutor" ref="serviceTaskExecuter" />
+        <property name="messageConverter" ref="jackson2JsonMessageConverter" />
     </bean>
 
 <!--    <bean id="activityCommandBinder" class="sabbat.location.infrastructure.RabbitMqQueueBinder">

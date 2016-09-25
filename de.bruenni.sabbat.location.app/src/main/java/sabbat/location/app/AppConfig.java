@@ -5,6 +5,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -14,13 +15,10 @@ import org.springframework.context.annotation.PropertySource;
  * Created by bruenni on 07.09.16.
  */
 @Configuration
-@PropertySource("classpath:application.properties")
-@PropertySource("classpath:spring/spring-location-infrastructure.properties")
+@PropertySource("classpath:spring/spring-location-app.properties")
 @ImportResource(locations =
         {
-                "classpath:spring/spring-location-infrastructure.xml",
-                //"classpath:spring/spring-location-amqp-client.xml",
-                "classpath:spring/spring-location-amqp-service.xml"
+                "classpath:spring/spring-location-app.xml"
         })
 public class AppConfig {
 }
