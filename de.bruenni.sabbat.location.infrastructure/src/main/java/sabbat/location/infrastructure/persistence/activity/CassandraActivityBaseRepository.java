@@ -6,6 +6,7 @@ import org.springframework.cassandra.core.ConsistencyLevel;
 import org.springframework.cassandra.core.RetryPolicy;
 import org.springframework.cassandra.core.WriteOptions;
 import org.springframework.data.cassandra.core.CassandraTemplate;
+import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
 import sabbat.location.core.persistence.activity.IActivityRepository;
@@ -38,6 +39,11 @@ public abstract class CassandraActivityBaseRepository<S extends Activity> implem
         log.debug(StringFormatter.format("INSERT into activity [%1s, ConsistencyLevel=%2s]", entity.toString(), this.ConsistencyLevel.toString()).getValue());
 
         return template.insert(entity, new WriteOptions(this.ConsistencyLevel, RetryPolicy.DEFAULT));
+    }
+
+    @Override
+    public ListenableFuture<Activity> saveAsync(Activity activity) throws Exception {
+        throw new Exception("not implemented");
     }
 
     @Override

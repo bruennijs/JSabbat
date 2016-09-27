@@ -17,7 +17,7 @@
 
     <rabbit:connection-factory
             id="serviceConnectionFactory"
-            host="${rabbitmq-hostname}"
+            host="${location.rabbitmq.hostaddress}"
             port="5672"
             username="guest"
             password="guest"/>
@@ -69,10 +69,4 @@
         <property name="messageConverter" ref="jackson2JsonMessageConverter" />
     </bean>
 
-<!--    <bean id="activityCommandBinder" class="sabbat.location.infrastructure.RabbitMqQueueBinder">
-        <constructor-arg index="0" ref="serviceAdmin" />
-        <constructor-arg index="1" ref="activityCommandQueue" />
-        <constructor-arg index="2" ref="activityCommandExchange" />
-        <constructor-arg index="3" value="${location.activity.routingkey.command.all}" />
-    </bean>-->
 </beans>

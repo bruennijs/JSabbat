@@ -21,7 +21,7 @@
 
     <rabbit:connection-factory
             id="connectionFactory"
-            host="${rabbitmq-hostname}"
+            host="${location.rabbitmq.hostaddress}"
             port="5672"
             username="guest"
             password="guest"/>

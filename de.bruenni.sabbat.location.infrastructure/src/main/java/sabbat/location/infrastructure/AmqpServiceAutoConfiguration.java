@@ -14,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
         name = "enabled",
         havingValue = "true",
         matchIfMissing = true)
-@PropertySource("classpath:spring/spring-location-infrastructure.properties")
+@PropertySource("classpath:sabbat-location-infrastructure.properties")
 @ImportResource(locations =
         {
                 "classpath:spring/spring-location-infrastructure.xml",

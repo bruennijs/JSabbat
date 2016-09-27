@@ -1,5 +1,7 @@
 package sabbat.location.infrastructure.service.adapter;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureAdapter;
 import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.domain.model.Activity;
@@ -61,7 +64,7 @@ public class ActivityRabbitListener {
                     queues = "${location.activity.queue.command}",
                     containerFactory = "rabbitListenerContainerFactory")
     //@Header("correlationId") String correlationId
-    public Message onMessage(Message message,
+    public ListenableFuture<Message> onMessage(Message message,
                              @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey,
                              Channel channel,
                              @Header(AmqpHeaders.CORRELATION_ID) byte[] correlationId) throws Exception {
@@ -75,20 +78,29 @@ public class ActivityRabbitListener {
 
             ListenableFuture<Activity> activityStartFuture = this.applicationService.start(command);
 
-            Activity activity = activityStartFuture.get(1000, TimeUnit.MILLISECONDS);
+            //Activity activity = activityStartFuture.get(1000, TimeUnit.MILLISECONDS);
+            return new ListenableFutureAdapter<Message, Activity>(activityStartFuture) {
+                @Override
+                protected Message adapt(Activity activity) throws ExecutionException {
+                    try {
+                        ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
 
-            ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
+                        MessageProperties msgProps = MessagePropertiesBuilder.newInstance().setCorrelationId(correlationId).build();
+                        Message response = MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
+                                .andProperties(msgProps)
+                                .build();
 
-            MessageProperties msgProps = MessagePropertiesBuilder.newInstance().setCorrelationId(correlationId).build();
-            Message response = MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
-                                            .andProperties(msgProps)
-                                            .build();
+                        logger.debug("<----- " + response.toString());
 
-            logger.debug("<----- " + response.toString());
+                        return response;
+                    } catch (Exception e) {
+                        logger.error("transforming of activity failed [" + activity.toString() + "]", e);
+                        throw new ExecutionException(e);
+                    }
+                }
+            };
 
             //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-
-            return response;
         }
 
         throw new Exception("not implemented");
