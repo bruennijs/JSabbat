@@ -1,5 +1,5 @@
 group 'de.bruenni'
-version '1.0.0'
+version ''
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -13,8 +13,7 @@ jar {
     baseName = 'sabbat.api-gateway'
     version = version
     manifest {
-        attributes 'sabbat-api-gateway': 'API gateway for sabbat service (e.g. messenger, location, frontend)',
-                'Implementation-Version': version
+        attributes 'sabbat-api-gateway': 'API gateway for sabbat service (e.g. messenger, location, frontend)', 'Implementation-Version': version
     }
 }
 

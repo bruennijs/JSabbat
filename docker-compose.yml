@@ -1,16 +1,21 @@
 version: '2'
 services:
-  mono-app:
+  api-gateway-build:
     build:
-      context: .
-      dockerfile: Dockerfile-dnx-app
-    container_name: file-storage.mono-app
-    #image: microsoft/aspnet:1.0.0-rc1-update1  
-    ports:
-     - "8082:5000"
-    expose:
-      - "5000"
+      context: ./de.bruenni.sabbat.api-gateway
+      dockerfile: Dockerfile
+    image: bruenni/sabbat-apigateway:latest
 
+  api-gateway-dev:
+    image: bruenni/sabbat-apigateway:latest
+    hostname: sabbat-apigateway-dev
+    container_name: sabbat-apigateway
+
+    ports:
+      - "8081:80"
+    expose:
+      - "80"
+    network_mode: "bridge"  # default network with bridge adapter docker0
 
   cassandra-dev-1:
     hostname: cassandra-dev-1
