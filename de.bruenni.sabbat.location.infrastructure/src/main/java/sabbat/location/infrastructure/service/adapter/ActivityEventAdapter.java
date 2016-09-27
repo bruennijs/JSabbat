@@ -21,7 +21,7 @@ public class ActivityEventAdapter {
     public ActivityEventAdapter() {
     }
 
-    public Message onMessage(@Payload String payload, @Header("correlation_id") String correlationId) {
+    public Message onMessage(@Payload String payload) {
         logger.debug("-----> [correlationid=" + payload.toString() + "payload=" + payload);
 
         MessageProperties msgProps = MessagePropertiesBuilder.newInstance().build();

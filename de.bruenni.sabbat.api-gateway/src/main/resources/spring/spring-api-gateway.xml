@@ -13,13 +13,12 @@
 
     <!-- services -->
     <!--<import resource="classpath:spring/spring-infrastructure-common.xml"/>  -->
-    <import resource="classpath:spring/spring-location-infrastructure.xml"/>
-    <import resource="classpath:spring/spring-location-amqp.xml"/>
+    <!--<import resource="classpath:spring/spring-location-infrastructure.xml"/>-->
+    <!--<import resource="classpath:spring/spring-location-amqp.xml"/>-->
 
-    <!--<bean id="DispatcherServletInitializer" class="sabbat.apigateway.location.config.MyDispatcherServletInitializer" />-->
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
-    <bean id="ReactiveMapMyTracksController" class="sabbat.apigateway.location.controller.ReactiveMapMyTracksController">
-    </bean>
+    <!--<bean id="ReactiveMapMyTracksController" class="sabbat.apigateway.location.controller.ReactiveMapMyTracksController" />-->
 
     <bean id="MapMyTracksApiController" class="sabbat.apigateway.location.controller.MapMyTracksApiController">
         <constructor-arg ref="ActivityCommandFactory" />
@@ -33,8 +32,6 @@
         <lookup-method name="createStartActivityCommand"
                        bean="StartActivityCommand"/>
     </bean>
-
-    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
 <!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">
     </bean>-->

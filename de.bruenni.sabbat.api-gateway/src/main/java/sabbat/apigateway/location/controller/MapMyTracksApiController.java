@@ -40,6 +40,9 @@ public class MapMyTracksApiController {
     private IActivityCommandFactory activityCommandFactory;
     private ApplicationContext applicationContext;
 
+    public MapMyTracksApiController() {
+    }
+
     public MapMyTracksApiController(IActivityCommandFactory activityCommandFactory) {
         this.activityCommandFactory = activityCommandFactory;
         this.applicationContext = applicationContext;

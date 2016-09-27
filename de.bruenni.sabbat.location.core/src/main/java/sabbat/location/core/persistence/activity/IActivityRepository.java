@@ -1,6 +1,7 @@
 package sabbat.location.core.persistence.activity;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
 import sabbat.location.core.domain.model.ActivityCoordinate;
@@ -25,4 +26,11 @@ public interface IActivityRepository extends CrudRepository<Activity, ActivityPr
      * @return
      */
     Iterable<ActivityCoordinate> findActivityCoordinates(Activity aggregateRoot);
+
+    /**
+     * Saves asynchronously.
+     * @param activity
+     * @return Future returning when save finished.
+     */
+    ListenableFuture<Activity> saveAsync(Activity activity) throws Exception;
 }

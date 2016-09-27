@@ -13,7 +13,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
  * Created by bruenni on 13.07.16.
  */
 @Configuration
-@PropertySource("classpath:test/application.properties")
+//@PropertySource("classpath:config/application.properties")
 @ImportResource("classpath:test/spring-api-gateway-test.xml")
 public class UnitTestConfig {
 }

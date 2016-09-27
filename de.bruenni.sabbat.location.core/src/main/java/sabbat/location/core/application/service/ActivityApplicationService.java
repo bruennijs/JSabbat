@@ -7,6 +7,7 @@ import sabbat.location.core.application.service.command.ActivityStopCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
+import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.util.Date;
 import java.util.UUID;
@@ -15,7 +16,18 @@ import java.util.UUID;
  * Created by bruenni on 24.09.16.
  */
 public class ActivityApplicationService implements IActivityApplicationService {
+
+    private IActivityRepository activityRepository;
+
+    public ActivityApplicationService(IActivityRepository activityRepository) {
+        this.activityRepository = activityRepository;
+    }
+
     public ListenableFuture<Activity> startActivity(ActivityCreateCommand command) throws Exception {
+
+/*        Activity activity = new Activity(new ActivityPrimaryKey(command.getId(), UUID.randomUUID()), command.getTitle(), new Date());
+
+        activityRepository.save(activity);*/
         throw new Exception("not implemnted");
     }
 

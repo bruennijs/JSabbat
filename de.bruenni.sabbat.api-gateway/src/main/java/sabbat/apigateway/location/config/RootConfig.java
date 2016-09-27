@@ -12,9 +12,6 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @Configuration
 public class RootConfig {
 
-    @Value("${application.location.poc}")
-    public String LocationPoC;
-
     @Value(value = "${application.location.logpayload}")
     public Boolean logpayload;
 

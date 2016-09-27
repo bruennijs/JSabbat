@@ -10,6 +10,8 @@
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
-    <bean id="activityApplicationService" class="sabbat.location.core.application.service.ActivityApplicationService" scope="singleton" />
+    <bean id="activityApplicationService" class="sabbat.location.core.application.service.ActivityApplicationService" scope="singleton">
+        <constructor-arg ref="cassandraActivityRepository" />
+    </bean>
 
 </beans>

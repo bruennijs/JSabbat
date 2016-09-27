@@ -10,8 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(
         {
-                "classpath:spring/spring-location-infrastructure.properties",
-                "classpath:test/spring-location-infrastructure-test.properties"
+                "classpath:sabbat-location-infrastructure.properties",
+                "classpath:application.properties"
         })
 @ImportResource(locations =
         {

@@ -15,7 +15,7 @@ import org.springframework.context.annotation.PropertySource;
  * Created by bruenni on 07.09.16.
  */
 @Configuration
-@PropertySource("classpath:spring/spring-location-app.properties")
+//@PropertySource("classpath:application.properties")
 @ImportResource(locations =
         {
                 "classpath:spring/spring-location-app.xml"

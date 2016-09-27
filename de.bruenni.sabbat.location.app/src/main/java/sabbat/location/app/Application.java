@@ -35,10 +35,9 @@ public class Application {
                 {
                         Application.class,
                         AppConfig.class,
-                        LocationCoreConfiguration.class,
                         sabbat.location.infrastructure.CassandraAutoConfiguration.class,
-                        AmqpServiceAutoConfiguration.class,
-                        AmqpClientAutoConfiguration.class
+                        LocationCoreConfiguration.class,
+                        AmqpServiceAutoConfiguration.class
                 }, args);
 
         //Session session = ((Cluster)applicationContext.getBean("cassandraCluster")).connect();
