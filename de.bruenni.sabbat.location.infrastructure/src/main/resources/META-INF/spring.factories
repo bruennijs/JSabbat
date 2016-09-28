@@ -1,4 +1,5 @@
 # Auto Configure
-sabbat.location.infrastructure.AmqpClientAutoConfiguration=\
-sabbat.location.infrastructure.AmqpServiceAutoConfiguration=\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+sabbat.location.infrastructure.AmqpClientAutoConfiguration,\
+sabbat.location.infrastructure.AmqpServiceAutoConfiguration,\
 sabbat.location.infrastructure.CassandraAutoConfiguration
