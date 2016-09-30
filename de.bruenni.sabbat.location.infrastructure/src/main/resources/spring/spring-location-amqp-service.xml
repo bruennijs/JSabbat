@@ -38,6 +38,7 @@
                   auto-declare="true"
                   durable="true" />
 
+<!--
     <rabbit:topic-exchange
             id="activityCommandExchange"
             name="${location.activity.exchange.command}"
@@ -47,6 +48,7 @@
             <rabbit:binding queue="activityCommandQueue" pattern="${location.activity.routingkey.command.all}"/>
                 </rabbit:bindings>
     </rabbit:topic-exchange>
+-->
 
     <bean id="jackson2JsonMessageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
 
