@@ -61,8 +61,7 @@ public class ActivityRabbitListener {
     }
 
     @RabbitListener(id="activityListener",
-                    queues = "${location.activity.queue.command}",
-                    containerFactory = "rabbitListenerContainerFactory")
+                    queues = "${location.activity.queue.command}")
     //@Header("correlationId") String correlationId
     public ListenableFuture<Message> onMessage(Message message,
                              @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey,

@@ -1,5 +1,10 @@
 package sabbat.location.infrastructure;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerEndpoint;
+import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
+import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +25,10 @@ import org.springframework.context.annotation.PropertySource;
                 "classpath:spring/spring-location-infrastructure.xml",
                 "classpath:spring/spring-location-amqp-service.xml"
         })
-public class AmqpServiceAutoConfiguration {
+@EnableRabbit   //IMPORT: to use @RabbitListener annotated classes -> Moreover a SimpleMessageListenerContainerFactory can be registered to customize created container
+public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
+
+        @Override
+        public void configureRabbitListeners(RabbitListenerEndpointRegistrar registrar) {
+        }
 }

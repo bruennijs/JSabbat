@@ -41,14 +41,13 @@ import java.util.concurrent.TimeoutException;
         })
 public class RabbitMqActivityNativeClientTest {
 
-    @Value("${location.rabbitmq.hostaddress}")
+    @Value("${spring.rabbitmq.host}")
     public String host;
 
     @Autowired
     public RabbitMqActivityNativeClient Client;
 
     @Test
-    @Ignore
     public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         ActivityCreateRequestDto dto = new ActivityCreateRequestDto(UUID.randomUUID().toString(), "mein erstes Rennen");
 

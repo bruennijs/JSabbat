@@ -9,7 +9,7 @@ scalibilty and availability. Moreover it is a learning platform to learn stuff l
 The following list decsribes the bounded contexts:Applications to be used in high available private clouds (like messenging, communitypay)
 
 * messenger: allows all users to send messages to each other with different external interfaces (e.g. like email, mobile phone push, twitter) but also in the future websockets)
-* location: an application to track geographic location data, heart rates, cadenc of road bike riders to keep track of them and to connect friends of the same community group with each other. So they shall know where friends are, what the distance is between them.
+* location: an application to track geographic location data, heart rates, cadenc of road bike riders to keep track of them and to connect friends of the same community group with each other. So they shall know where friends are, what the distance is between them. Android and Apple phones can be integrated by using MapMyTracks API (https://github.com/MapMyTracks/api) by using app "OruxMaps" for example. The API-GATEWAY implements this API protocol.
 
 
 Technical facts:

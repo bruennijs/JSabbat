@@ -17,18 +17,20 @@
 
     <rabbit:connection-factory
             id="serviceConnectionFactory"
-            host="${location.rabbitmq.hostaddress}"
-            port="5672"
+            host="${spring.rabbitmq.host}"
+            port="${spring.rabbitmq.port}"
             username="guest"
             password="guest"/>
+
     <rabbit:admin id="serviceAdmin" connection-factory="serviceConnectionFactory" />
 
-    <bean id="RabbitMqActivityMessageListenerAdapter" class="sabbat.location.infrastructure.service.adapter.RabbitMqActivityMessageListener" scope="singleton" />
-    <bean id="ActivityEventAdapter" class="sabbat.location.infrastructure.service.adapter.ActivityEventAdapter" scope="singleton"/>
     <bean id="ActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.ActivityRabbitListener" scope="singleton">
         <constructor-arg ref="jsonDtoParser" />
         <constructor-arg ref="activityApplicationService" />
     </bean>
+
+    <bean id="ActivityRabbitListenerTyped" class="sabbat.location.infrastructure.service.adapter.ActivityMessageRabbitListener" scope="singleton" />
+
 
     <rabbit:queue id="activityCommandQueue"
                   name="${location.activity.queue.command}"
@@ -53,11 +55,15 @@
                               acknowledge="auto"
                               concurrency="3"
                               max-concurrency="10"
-                               auto-startup="true"
+                               auto-startup="false"
                               message-converter="jackson2JsonMessageConverter">
-        <rabbit:listener queues="${location.activity.queue.command}"
-                         ref="ActivityEventAdapter"
+
+       <rabbit:listener ref="ActivityRabbitListener"
+                        queue-names="${location.activity.queue.command}"
                         method="onMessage"/>
+&lt;!&ndash;       <rabbit:listener ref="ActivityRabbitListenerTyped"
+                        queue-names="${location.activity.queue.command}"
+                        method="onMessage"/>&ndash;&gt;
     </rabbit:listener-container>-->
 
     <bean id="rabbitListenerContainerFactory"

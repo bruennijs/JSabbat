@@ -21,8 +21,8 @@
 
     <rabbit:connection-factory
             id="connectionFactory"
-            host="${location.rabbitmq.hostaddress}"
-            port="5672"
+            host="${spring.rabbitmq.host}"
+            port="${spring.rabbitmq.port}"
             username="guest"
             password="guest"/>
 
@@ -64,12 +64,12 @@
         </property>
     </bean>
 
-    <bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
-
     <bean id="RabbitMqActivityNativeClient" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityNativeClient">
         <constructor-arg ref="asyncActivityCommandTemplate" />
         <constructor-arg ref="jsonDtoParser" />
     </bean>
+
+    <bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
 
     <int:service-activator
             id="rabbitMqStart"
