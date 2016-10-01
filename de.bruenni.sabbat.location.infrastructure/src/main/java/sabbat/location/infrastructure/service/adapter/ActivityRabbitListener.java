@@ -70,12 +70,12 @@ public class ActivityRabbitListener {
 
             ActivityCreateRequestDto dtoRequest = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
-            ActivityCreateCommand command = new ActivityCreateCommand(UUID.fromString(dtoRequest.getId()), dtoRequest.getTitle());
+            ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID(), UUID.fromString(dtoRequest.getId()), dtoRequest.getTitle());
 
-            ListenableFuture<Activity> activityStartFuture = this.applicationService.start(command);
+            Activity activity = this.applicationService.start(command);
 
             //Observable.from(activityStartFuture)
-            ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activityStartFuture.get().getKey().getId().toString());
+            ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
 
             MessageProperties msgProps = MessagePropertiesBuilder.newInstance().setCorrelationId(correlationId).build();
             return MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())

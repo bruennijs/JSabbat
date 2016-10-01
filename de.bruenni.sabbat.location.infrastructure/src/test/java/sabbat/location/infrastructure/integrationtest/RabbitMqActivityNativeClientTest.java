@@ -1,29 +1,20 @@
 package sabbat.location.infrastructure.integrationtest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sun.javafx.binding.StringFormatter;
 import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.IsNot;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
-import org.w3c.dom.events.UIEvent;
 import sabbat.location.infrastructure.AmqpClientAutoConfiguration;
-import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.implementations.RabbitMqActivityNativeClient;
+import sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteClient;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -44,7 +35,7 @@ public class RabbitMqActivityNativeClientTest {
     public String host;
 
     @Autowired
-    public RabbitMqActivityNativeClient Client;
+    public RabbitMqActivityRemoteClient Client;
 
     @Test
     public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException {

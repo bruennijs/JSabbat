@@ -26,11 +26,4 @@ public interface IActivityRepository extends CrudRepository<Activity, ActivityPr
      * @return
      */
     Iterable<ActivityCoordinate> findActivityCoordinates(Activity aggregateRoot);
-
-    /**
-     * Saves asynchronously.
-     * @param activity
-     * @return Future returning when save finished.
-     */
-    ListenableFuture<Activity> saveAsync(Activity activity) throws Exception;
 }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ActivityCreateRequestDto extends ActivityDtoBase {
 
-    //@JsonProperty("title")
+    @JsonProperty("title")
     private String title;
 
     public ActivityCreateRequestDto() {
@@ -41,5 +41,12 @@ public class ActivityCreateRequestDto extends ActivityDtoBase {
         int result = super.hashCode();
         result = 31 * result + title.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ActivityCreateRequestDto{" +
+                "title='" + title + '\'' +
+                "} " + super.toString();
     }
 }

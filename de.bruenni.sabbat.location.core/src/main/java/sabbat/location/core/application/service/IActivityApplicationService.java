@@ -9,9 +9,9 @@ import sabbat.location.core.domain.model.Activity;
  * Created by bruenni on 04.07.16.
  */
 public interface IActivityApplicationService {
-    ListenableFuture<Activity> start(ActivityCreateCommand command);
+    Activity start(ActivityCreateCommand command);
 
-    ListenableFuture<Void> stop(String id) throws Exception;
+    Void stop(String id) throws Exception;
 
     ListenableFuture<Void> update(ActivityUpdateCommand command) throws Exception;
 }

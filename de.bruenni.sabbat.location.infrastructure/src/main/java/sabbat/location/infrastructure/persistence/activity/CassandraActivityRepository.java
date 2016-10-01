@@ -7,6 +7,7 @@ import org.springframework.cassandra.core.ConsistencyLevelResolver;
 import org.springframework.cassandra.core.RetryPolicy;
 import org.springframework.cassandra.core.WriteOptions;
 import org.springframework.data.cassandra.core.CassandraTemplate;
+import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 

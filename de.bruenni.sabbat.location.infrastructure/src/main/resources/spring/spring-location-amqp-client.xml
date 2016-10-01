@@ -64,7 +64,7 @@
         </property>
     </bean>
 
-    <bean id="RabbitMqActivityNativeClient" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityNativeClient">
+    <bean id="RabbitMqActivityNativeClient" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteClient">
         <constructor-arg ref="asyncActivityCommandTemplate" />
         <constructor-arg ref="jsonDtoParser" />
     </bean>

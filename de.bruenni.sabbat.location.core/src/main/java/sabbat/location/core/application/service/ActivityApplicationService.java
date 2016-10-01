@@ -1,5 +1,7 @@
 package sabbat.location.core.application.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
@@ -17,31 +19,22 @@ import java.util.UUID;
  */
 public class ActivityApplicationService implements IActivityApplicationService {
 
+    private Logger logger = LoggerFactory.getLogger(ActivityApplicationService.class);
+
     private IActivityRepository activityRepository;
 
     public ActivityApplicationService(IActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
     }
 
-    public ListenableFuture<Activity> startActivity(ActivityCreateCommand command) throws Exception {
-
-/*        Activity activity = new Activity(new ActivityPrimaryKey(command.getId(), UUID.randomUUID()), command.getTitle(), new Date());
-
-        activityRepository.save(activity);*/
-        throw new Exception("not implemnted");
-    }
-
-    public ListenableFuture<Activity> stopActivity(ActivityStopCommand command) throws Exception {
-        throw new Exception("not implemnted");
+    @Override
+    public Activity start(ActivityCreateCommand command) {
+        Activity domainObject = new Activity(new ActivityPrimaryKey(command.getUserId(), command.getId()), command.getTitle(), new Date());
+        return this.activityRepository.save(domainObject);
     }
 
     @Override
-    public ListenableFuture<Activity> start(ActivityCreateCommand command) {
-        return new AsyncResult(new Activity(new ActivityPrimaryKey(command.getId(), command.getId()), command.getTitle(), new Date()));
-    }
-
-    @Override
-    public ListenableFuture<Void> stop(String id) throws Exception {
+    public Void stop(String id) throws Exception {
         throw new Exception("not implemented");
     }
 

@@ -7,13 +7,19 @@ import java.util.UUID;
  */
 public class ActivityCreateCommand extends ActivityBase {
     private String title;
+    private UUID userId;
 
-    public ActivityCreateCommand(UUID activityId, String title) {
+    public ActivityCreateCommand(UUID userId, UUID activityId, String title) {
         super(activityId);
+        this.userId = userId;
         this.title = title;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public UUID getUserId() {
+        return userId;
     }
 }

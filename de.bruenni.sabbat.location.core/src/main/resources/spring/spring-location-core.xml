@@ -11,7 +11,7 @@
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
     <bean id="activityApplicationService" class="sabbat.location.core.application.service.ActivityApplicationService" scope="singleton">
-        <constructor-arg ref="cassandraActivityRepository" />
+        <constructor-arg ref="activityRepository" />
     </bean>
 
 </beans>

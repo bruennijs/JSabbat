@@ -42,11 +42,6 @@ public abstract class CassandraActivityBaseRepository<S extends Activity> implem
     }
 
     @Override
-    public ListenableFuture<Activity> saveAsync(Activity activity) throws Exception {
-        throw new Exception("not implemented");
-    }
-
-    @Override
     public <S extends Activity> Iterable<S> save(Iterable<S> entities) {
         return null;
     }

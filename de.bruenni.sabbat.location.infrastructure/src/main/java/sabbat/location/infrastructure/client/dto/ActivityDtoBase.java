@@ -40,4 +40,11 @@ public abstract class ActivityDtoBase {
     public int hashCode() {
         return id.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "ActivityDtoBase{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }

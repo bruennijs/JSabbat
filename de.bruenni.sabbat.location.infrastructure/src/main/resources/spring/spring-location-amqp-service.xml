@@ -43,22 +43,6 @@
 
     <bean id="jackson2JsonMessageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
 
-<!--   <rabbit:listener-container task-executor="serviceTaskExecuter"
-                               connection-factory="serviceConnectionFactory"
-                              acknowledge="auto"
-                              concurrency="3"
-                              max-concurrency="10"
-                               auto-startup="false"
-                              message-converter="jackson2JsonMessageConverter">
-
-       <rabbit:listener ref="ActivityRabbitListener"
-                        queue-names="${location.activity.queue.command}"
-                        method="onMessage"/>
-&lt;!&ndash;       <rabbit:listener ref="ActivityRabbitListenerTyped"
-                        queue-names="${location.activity.queue.command}"
-                        method="onMessage"/>&ndash;&gt;
-    </rabbit:listener-container>-->
-
     <bean id="rabbitListenerContainerFactory"
           class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
         <property name="connectionFactory" ref="serviceConnectionFactory"/>

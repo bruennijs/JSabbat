@@ -53,12 +53,12 @@ public class ActivityMessageRabbitListener {
 
         if (routingKey.equals(ActivityStartRoutingKey)) {
 
-            ActivityCreateCommand command = new ActivityCreateCommand(UUID.fromString(requestMsg.getPayload().getId()), requestMsg.getPayload().getTitle());
+            ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID(), UUID.fromString(requestMsg.getPayload().getId()), requestMsg.getPayload().getTitle());
 
-            ListenableFuture<Activity> activityStartFuture = this.applicationService.start(command);
+            Activity activity = this.applicationService.start(command);
 
             //Observable.from(activityStartFuture)
-            ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activityStartFuture.get().getKey().getId().toString());
+            ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
 
             return MessageBuilder.withPayload(dtoResponse)
                     .setHeader(AmqpHeaders.CONTENT_TYPE, "application/json")

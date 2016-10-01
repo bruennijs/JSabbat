@@ -1,7 +1,5 @@
 package sabbat.location.infrastructure.client.implementations;
 
-import com.google.common.base.Function;
-import com.google.common.util.concurrent.Futures;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
@@ -21,17 +19,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Created by bruenni on 04.07.16.
  */
-public class RabbitMqActivityNativeClient implements IActivityRemoteService {
+public class RabbitMqActivityRemoteClient implements IActivityRemoteService {
 
-    final Logger logger = org.slf4j.LoggerFactory.getLogger(RabbitMqActivityNativeClient.class);
+    final Logger logger = org.slf4j.LoggerFactory.getLogger(RabbitMqActivityRemoteClient.class);
 
     @Value("${location.activity.routingkey.command.start}")
     public String StartRoutingKey;
@@ -43,7 +38,7 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
     private infrastructure.parser.IDtoParser parser;
     private ConnectionFactory connectionFactory;
 
-    public RabbitMqActivityNativeClient(AsyncRabbitTemplate asyncRabbitTemplate,
+    public RabbitMqActivityRemoteClient(AsyncRabbitTemplate asyncRabbitTemplate,
                                         infrastructure.parser.IDtoParser parser)
     {
         this.asyncRabbitTemplate = asyncRabbitTemplate;
@@ -54,6 +49,8 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
     public ListenableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         try {
+            logger.debug("Start activity [" + command + "]");
+
             String dtoJson = parser.serialize(command);
 
             MessageProperties messageProperties = new MessageProperties();
@@ -62,12 +59,7 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
 
             AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
-            org.springframework.amqp.core.Message message = responseFuture.get();
-            logger.debug(new String(message.getBody()));
-
-            return new AsyncResult<>(parser.parse(message.getBody(), ActivityCreatedResponseDto.class));
-
-/*            return new ListenableFutureAdapter<ActivityCreatedResponseDto, org.springframework.amqp.core.Message>(responseFuture) {
+            return new ListenableFutureAdapter<ActivityCreatedResponseDto, org.springframework.amqp.core.Message>(responseFuture) {
                 @Override
                 protected ActivityCreatedResponseDto adapt(org.springframework.amqp.core.Message msg) throws ExecutionException {
                     try {
@@ -76,7 +68,7 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
                         throw new ExecutionException(e);
                     }
                 }
-            };*/
+            };
         }
         catch (Exception exception)
         {
