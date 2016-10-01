@@ -41,8 +41,14 @@
             <!--<AppenderRef ref="DefaultFile"/>-->
         </Logger>
 
-        <Root level="DEBUG">
-            <!--<AppenderRef ref="Console"/>-->
+        <Logger name="sabbat.location.infrastructure"
+                level="debug">
+            <!--<AppenderRef ref="DefaultFile"/>-->
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
         </Root>
     </Loggers>

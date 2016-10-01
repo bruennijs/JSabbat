@@ -17,6 +17,27 @@ services:
       - "80"
     network_mode: "bridge"  # default network with bridge adapter docker0
 
+  location-app-build:
+    build:
+      context: ./de.bruenni.sabbat.location.app
+      dockerfile: Dockerfile
+    image: bruenni/sabbat-location-app:latest
+
+  location-app-dev:
+    image: bruenni/sabbat-location-app:latest
+    hostname: sabbat-location-app-dev
+    container_name: sabbat-location-app
+
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+    links:
+      - cassandra-v22-dev-1:cassandra-dev-1
+      - cassandra-v22-dev-2:cassandra-dev-2
+      - rabbitmq-dev:rabbitmq-dev
+
+    network_mode: "bridge"  # default network with bridge adapter docker0
+
   cassandra-dev-1:
     hostname: cassandra-dev-1
     container_name: cassandra-dev-1
