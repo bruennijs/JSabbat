@@ -34,7 +34,7 @@
         </Logger>
 
         <Root level="DEBUG">
-            <!--<AppenderRef ref="Console"/>-->
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
         </Root>
     </Loggers>

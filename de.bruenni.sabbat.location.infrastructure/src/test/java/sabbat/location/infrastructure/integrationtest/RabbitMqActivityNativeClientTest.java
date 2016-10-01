@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
@@ -26,9 +27,7 @@ import sabbat.location.infrastructure.client.implementations.RabbitMqActivityNat
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 /**
  * Created by bruenni on 28.08.16.
@@ -49,6 +48,9 @@ public class RabbitMqActivityNativeClientTest {
 
     @Test
     public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+
         ActivityCreateRequestDto dto = new ActivityCreateRequestDto(UUID.randomUUID().toString(), "mein erstes Rennen");
 
         ListenableFuture<ActivityCreatedResponseDto> responseFuture = Client.start(dto);

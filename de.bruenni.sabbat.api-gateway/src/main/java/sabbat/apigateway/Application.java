@@ -20,7 +20,11 @@ import java.util.Arrays;
  * Created by bruenni on 03.07.16.
  */
 
-@SpringBootApplication(exclude = { CassandraAutoConfiguration.class, CassandraDataAutoConfiguration.class})
+@SpringBootApplication(exclude =
+        {
+                CassandraAutoConfiguration.class,
+                CassandraDataAutoConfiguration.class
+        })
 // contains componentscan to find @Configuratuion annotated class -> instead give spring boot these classes by calling SpringApplication.run(...) with these classes
 //@EnableAutoConfiguration
 //@ComponentScan(basePackages = "sabbat.apigateway.location.config")
@@ -33,11 +37,10 @@ public class Application {
         Arrays.stream(args).forEach(arg -> logger.info("arg=" + arg));
 
         logger.info("Starting api-gateway...");
-        ApplicationContext applicationContext = SpringApplication.run(new Object[] {Application.class,
+        ApplicationContext applicationContext = SpringApplication.run(new Object[] {
                 RootConfig.class,
                 WebConfig.class,
-                AppConfig.class,
-                AmqpClientAutoConfiguration.class}, args);
+                AppConfig.class}, args);
 
         //Environment environment = Environment;
 

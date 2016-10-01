@@ -62,7 +62,12 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
 
             AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
-            return new ListenableFutureAdapter<ActivityCreatedResponseDto, org.springframework.amqp.core.Message>(responseFuture) {
+            org.springframework.amqp.core.Message message = responseFuture.get();
+            logger.debug(new String(message.getBody()));
+
+            return new AsyncResult<>(parser.parse(message.getBody(), ActivityCreatedResponseDto.class));
+
+/*            return new ListenableFutureAdapter<ActivityCreatedResponseDto, org.springframework.amqp.core.Message>(responseFuture) {
                 @Override
                 protected ActivityCreatedResponseDto adapt(org.springframework.amqp.core.Message msg) throws ExecutionException {
                     try {
@@ -71,7 +76,7 @@ public class RabbitMqActivityNativeClient implements IActivityRemoteService {
                         throw new ExecutionException(e);
                     }
                 }
-            };
+            };*/
         }
         catch (Exception exception)
         {

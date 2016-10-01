@@ -20,11 +20,14 @@ import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.CassandraAutoConfiguration;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bruenni on 20.09.16.
@@ -91,8 +94,8 @@ public class CassandraActivityRepositoryTest {
         Date now = new Date();
 
         Activity activity = new ActivityBuilder().build();
-        ActivityCoordinatePrimaryKey activityCoordinatePrimaryKey1 = new ActivityCoordinatePrimaryKeyBuilder().fromActivityKey(activity.getKey());
-        ActivityCoordinatePrimaryKey activityCoordinatePrimaryKey2 = new ActivityCoordinatePrimaryKeyBuilder().fromActivityKey(activity.getKey());
+        ActivityCoordinatePrimaryKey activityCoordinatePrimaryKey1 = new ActivityCoordinatePrimaryKeyBuilder().fromActivityKey(activity.getKey(), now );
+        ActivityCoordinatePrimaryKey activityCoordinatePrimaryKey2 = new ActivityCoordinatePrimaryKeyBuilder().fromActivityKey(activity.getKey(), new Date(now.toInstant().plusMillis(5).toEpochMilli()));
 
         ActivityCoordinate activityCoordinate1 = new ActivityCoordinateBuilder()
                 .withPrimaryKey(activityCoordinatePrimaryKey1)

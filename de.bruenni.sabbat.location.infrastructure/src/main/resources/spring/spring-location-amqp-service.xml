@@ -24,12 +24,9 @@
 
     <rabbit:admin id="serviceAdmin" connection-factory="serviceConnectionFactory" />
 
-    <bean id="ActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.ActivityRabbitListener" scope="singleton">
-        <constructor-arg ref="jsonDtoParser" />
-        <constructor-arg ref="activityApplicationService" />
-    </bean>
+    <bean id="ActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.ActivityRabbitListener" scope="singleton" />
 
-    <bean id="ActivityRabbitListenerTyped" class="sabbat.location.infrastructure.service.adapter.ActivityMessageRabbitListener" scope="singleton" />
+    <!--<bean id="ActivityRabbitListenerTyped" class="sabbat.location.infrastructure.service.adapter.ActivityMessageRabbitListener" scope="singleton" />-->
 
 
     <rabbit:queue id="activityCommandQueue"
@@ -38,17 +35,11 @@
                   auto-declare="true"
                   durable="true" />
 
-<!--
-    <rabbit:topic-exchange
-            id="activityCommandExchange"
-            name="${location.activity.exchange.command}"
-            declared-by="serviceAdmin"
-            auto-declare="true">
-        <rabbit:bindings>
-            <rabbit:binding queue="activityCommandQueue" pattern="${location.activity.routingkey.command.all}"/>
-                </rabbit:bindings>
-    </rabbit:topic-exchange>
--->
+    <rabbit:queue id="activityCommandReplyQueue"
+                  name="${location.activity.queue.command.reply}"
+                  declared-by="serviceAdmin"
+                  auto-declare="true"
+                  durable="true" />
 
     <bean id="jackson2JsonMessageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
 

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public abstract class ActivityDtoBase {
 
+    @JsonProperty("id")
     private String id;
 
     public ActivityDtoBase() {
@@ -20,8 +21,23 @@ public abstract class ActivityDtoBase {
      * Gets the ID of the activity
      * @return
      */
-    @JsonProperty("id")
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ActivityDtoBase that = (ActivityDtoBase) o;
+
+        return id.equals(that.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

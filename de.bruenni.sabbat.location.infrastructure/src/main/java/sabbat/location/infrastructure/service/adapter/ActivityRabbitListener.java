@@ -12,6 +12,7 @@ import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -41,36 +42,28 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class ActivityRabbitListener {
 
+    private Logger logger = LoggerFactory.getLogger(ActivityRabbitListener.class);
+
     @Value("${location.activity.routingkey.command.start}")
     public String ActivityStartRoutingKey;
 
     @Value("${location.activity.routingkey.command.stop}")
     public String ActivityStopRoutingKey;
 
-    private Logger logger = LoggerFactory.getLogger(ActivityRabbitListener.class);
-    private IActivityApplicationService applicationService;
+    @Autowired
+    public IActivityApplicationService applicationService;
+
+    @Autowired
     private infrastructure.parser.IDtoParser dtoParser;
 
-    public ActivityRabbitListener() {
-    }
-
-    /**
-     * Constructor
-     * @param applicationService
-     * @param dtoParser
-     */
-    public ActivityRabbitListener(IActivityApplicationService applicationService, infrastructure.parser.IDtoParser dtoParser) {
-        this.applicationService = applicationService;
-        this.dtoParser = dtoParser;
-    }
-
     @RabbitListener(id="activityListener",
-                    queues = "${location.activity.queue.command}")
+                    queues = "${location.activity.queue.command}",
+                    containerFactory = "rabbitListenerContainerFactory")
     //@Header("correlationId") String correlationId
     public Message onMessage(Message message,
-                                                       @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey,
-                                                       Channel channel,
-                                                       @Header(AmqpHeaders.CORRELATION_ID) byte[] correlationId) throws Exception {
+                             @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey,
+                             Channel channel,
+                             @Header(AmqpHeaders.CORRELATION_ID) byte[] correlationId) throws Exception {
         logger.debug("-----> " + message.toString() + "cid=" + correlationId + ",routingkey=" + routingKey);
 
         if (routingKey.equals(ActivityStartRoutingKey)) {
@@ -85,31 +78,9 @@ public class ActivityRabbitListener {
             ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activityStartFuture.get().getKey().getId().toString());
 
             MessageProperties msgProps = MessagePropertiesBuilder.newInstance().setCorrelationId(correlationId).build();
-            Message response = MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
+            return MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
                     .andProperties(msgProps)
                     .build();
-
-            return response;
-
-/*            return new ListenableFutureAdapter<Message, Activity>(activityStartFuture) {
-                @Override
-                protected Message adapt(Activity activity) throws ExecutionException {
-                    try {
-                        ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
-
-                        MessageProperties msgProps = MessagePropertiesBuilder.newInstance().setCorrelationId(correlationId).build();
-                        Message response = MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
-                                .andProperties(msgProps)
-                                .build();
-
-                        logger.debug("<----- " + response.toString());
-
-                        return response;
-                    } catch (Exception e) {
-                        logger.error("transforming of activity failed [" + activity.toString() + "]", e);
-                        throw new ExecutionException(e);
-                    }
-                }*/
             }
 
             //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Created by bruenni on 04.07.16.
  */
 public class ActivityCreateRequestDto extends ActivityDtoBase {
+
+    //@JsonProperty("title")
     private String title;
 
     public ActivityCreateRequestDto() {
@@ -17,8 +19,27 @@ public class ActivityCreateRequestDto extends ActivityDtoBase {
         this.title = title;
     }
 
-    @JsonProperty("title")
+
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ActivityCreateRequestDto that = (ActivityCreateRequestDto) o;
+
+        return title.equals(that.title);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + title.hashCode();
+        return result;
     }
 }
