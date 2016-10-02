@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by bruenni on 09.07.16.
  */
+
 @JacksonXmlRootElement(localName = "message")
 public class ActivityCreatedResponse extends MapMyTracksResponse {
 

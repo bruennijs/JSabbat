@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.matchers.GreaterThan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -22,6 +24,8 @@ import java.util.UUID;
 @SpringApplicationConfiguration(classes = { SystemTestConfig.class})
 public class MapMyTracksApiIntegrationTest {
 
+    Logger logger = LoggerFactory.getLogger(MapMyTracksApiIntegrationTest.class);
+
     @Value("${apigateway.mapmytracksapi.url}")
     public String ApiUrl;
 
@@ -29,6 +33,8 @@ public class MapMyTracksApiIntegrationTest {
     public void When_start_activity_expect_returns_200_OK()
     {
         ResponseEntity<ActivityCreatedResponse> response = new MapMyTracksApiClient(ApiUrl).startActivity("MapMyTracksApiIntegrationTest title");
+
+        logger.debug(response.toString());
 
         Assert.assertEquals(201, response.getStatusCode().value());
         Assert.assertThat(response.getBody().activityId, new LambdaMatcher<>(id -> id.longValue() > 0, "not greater zero"));

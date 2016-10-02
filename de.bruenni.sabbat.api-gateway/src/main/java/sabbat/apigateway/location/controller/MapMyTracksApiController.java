@@ -4,9 +4,12 @@ package sabbat.apigateway.location.controller;
 import com.sun.javafx.binding.StringFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import sabbat.apigateway.location.command.IActivityCommandFactory;
 import sabbat.apigateway.location.command.ICommand;
@@ -93,9 +96,14 @@ public class MapMyTracksApiController {
             //ActivityCreatedResponse response = new ActivityCreatedResponse(new Date().getTime());
             loggerTraffic.debug(StringFormatter.format("<-- [%1s]", response).getValue());
 
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML.toString());
+
             return new ResponseEntity(
                     response,
-                    HttpStatus.CREATED);
+                    headers,
+                    HttpStatus.OK);
         }
         catch(Exception exc)
         {

@@ -28,7 +28,6 @@ public class StartActivityCommandDummy implements ICommand {
      * @param points
      */
     public StartActivityCommandDummy(String id, String title, String points) {
-        logger.debug("ctor" + id);
         this.id = id;
     }
 
@@ -36,12 +35,12 @@ public class StartActivityCommandDummy implements ICommand {
     public ListenableFuture<ActivityCreatedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         // 1. authorize credentials credentials
-        logger.debug(this.id);
+        //logger.debug(this.id);
 
         // 2. start activity
         ActivityCreatedResponseDto responseDto = new ActivityCreatedResponseDto(this.id);
 
-        logger.debug(responseDto.toString());
+        //logger.debug(responseDto.toString());
 
         return new AsyncResult<>(responseDto);
     }
