@@ -5,6 +5,9 @@ package sabbat.location.infrastructure.client.dto;
  */
 public class ActivityCreatedResponseDto extends ActivityDtoBase implements IActivityResponseDto {
 
+    /**
+     * Used in json deserializer.
+     */
     public ActivityCreatedResponseDto() {
     }
 

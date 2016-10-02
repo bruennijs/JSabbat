@@ -4,18 +4,14 @@ package sabbat.apigateway.location.controller;
 import com.sun.javafx.binding.StringFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import sabbat.apigateway.location.command.ActivityCommandFactory;
 import sabbat.apigateway.location.command.IActivityCommandFactory;
 import sabbat.apigateway.location.command.ICommand;
-import sabbat.apigateway.location.command.StartActivityCommand;
-import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
-import sabbat.apigateway.location.transformation.ActivityServiceTransformation;
+import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import org.slf4j.Logger;
 import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
@@ -38,7 +34,7 @@ public class MapMyTracksApiController {
     final Logger logger = org.slf4j.LoggerFactory.getLogger(MapMyTracksApiController.class);
     final Logger loggerTraffic = org.slf4j.LoggerFactory.getLogger("apigateway.traffic");
 
-    private ActivityServiceTransformation transformation = new ActivityServiceTransformation();
+    private LocationApiDtoConverter transformation = new LocationApiDtoConverter();
 
     private IActivityCommandFactory activityCommandFactory;
 
@@ -79,7 +75,7 @@ public class MapMyTracksApiController {
                                 @RequestParam(value= "request") String requestType,
                                 @RequestParam(value= "activity_id", required = false) String activity_id,
                                 @RequestParam(value= "title", required = false) String title,
-                                @RequestParam(value= "points") String points,
+                                @RequestParam(value= "points", required = false) String points,
                                 @RequestParam(value= "source", required = false) String source,
                                 @RequestParam(value = "tags", required = false) String tags)  throws Exception {
 
@@ -90,11 +86,11 @@ public class MapMyTracksApiController {
 
             ICommand command = activityCommandFactory.getCommand(requestType, title, points, source, activity_id);
 
-            Future<? extends IActivityResponseDto> future = command.executeAsync();
+            Future<? extends IActivityResponseDto> future = command.requestAsync();
 
             MapMyTracksResponse response = transformation.transformResponse(future.get(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS));
 
-            //ActivityCreatedResponse response = new ActivityCreatedResponse("6722");
+            //ActivityCreatedResponse response = new ActivityCreatedResponse(new Date().getTime());
             loggerTraffic.debug(StringFormatter.format("<-- [%1s]", response).getValue());
 
             return new ResponseEntity(

@@ -46,6 +46,8 @@
     </int:method>-->
 </int:gateway>
 
+<bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
+
 <!--<int:service-activator
         input-channel="activityRequestChannel"
         output-channel="activityReplyChannel"

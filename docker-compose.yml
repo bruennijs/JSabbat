@@ -135,6 +135,7 @@ services:
       - "15672" #plugin: rabbitmq_management
     ports:
     - "5672:5672"
+    - "15672:15672"
     volumes:
      - /opt/tmp/rabbitmq-sabbat:/var/lib/rabbitmq
     network_mode: "bridge"  # default network with bridge adapter docker0

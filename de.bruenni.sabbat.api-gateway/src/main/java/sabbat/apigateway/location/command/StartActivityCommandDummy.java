@@ -1,59 +1,53 @@
 package sabbat.apigateway.location.command;
 
+import org.slf4j.Logger;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
+import sabbat.apigateway.location.controller.MapMyTracksApiController;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
  * Created by bruenni on 04.08.16.
  */
-public class StartActivityCommand implements ICommand {
+public class StartActivityCommandDummy implements ICommand {
 
-    private IActivityRemoteService ActivityRemoteService;
-
-    public void setActivityRemoteService(IActivityRemoteService activityRemoteService) {
-        ActivityRemoteService = activityRemoteService;
-    }
+    final Logger logger = org.slf4j.LoggerFactory.getLogger(StartActivityCommandDummy.class);
 
     private String id;
-    private String title;
-    private String points;
 
-    public StartActivityCommand(String id, String title, String points) {
+    /**
+     *
+     * @param id
+     * @param title
+     * @param points
+     */
+    public StartActivityCommandDummy(String id, String title, String points) {
+        logger.debug("ctor" + id);
         this.id = id;
-        this.title = title;
-        this.points = points;
     }
 
     @Override
     public ListenableFuture<ActivityCreatedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         // 1. authorize credentials credentials
-
+        logger.debug(this.id);
 
         // 2. start activity
-        return this.ActivityRemoteService.start(transformStartRequest(title, points));
+        ActivityCreatedResponseDto responseDto = new ActivityCreatedResponseDto(this.id);
+
+        logger.debug(responseDto.toString());
+
+        return new AsyncResult<>(responseDto);
     }
 
     @Override
     public void publish() throws Exception {
         throw new Exception("not implemented");
-    }
-
-    /***
-     * Transforms controller request to IActivityApplicationService command.
-     *
-     * @param title
-     * @return
-     */
-    private ActivityCreateRequestDto transformStartRequest(String title, String points)
-    {
-        return new ActivityCreateRequestDto(id, title);
     }
 }

@@ -1,13 +1,11 @@
 package sabbat.location.infrastructure.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.infrastructure.client.dto.*;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -28,14 +26,14 @@ public interface IActivityRemoteService {
      * @param command
      * @return
      */
-    CompletableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command);
+    ListenableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command);
 
     /**
      * Update of activity with new geo points, heartrate and so on.
      * @param command
      * @return Future completes after update is send to infrfastructure to deliver measurement value.
      */
-    CompletableFuture<Void> update(ActivityUpdateRequestDto command);
+    void update(ActivityUpdateEventDto command) throws Exception;
 
     /**
      * Echo ping pong method.

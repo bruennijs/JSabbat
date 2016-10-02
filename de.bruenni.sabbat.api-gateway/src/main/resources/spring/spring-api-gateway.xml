@@ -24,9 +24,26 @@
         <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
     </bean>
 
+    <bean id="StartActivityCommandDummy" class="sabbat.apigateway.location.command.StartActivityCommandDummy" lazy-init="true" scope="prototype"/>
+
+    <bean id="StopActivityCommand" class="sabbat.apigateway.location.command.StopActivityCommand" lazy-init="true">
+        <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
+    </bean>
+
+    <bean id="LocationApiDtoConverter" class="sabbat.apigateway.location.controller.converter.LocationApiDtoConverter" scope="singleton" />
+
+    <bean id="UpdateActivityCommand" class="sabbat.apigateway.location.command.StopActivityCommand" lazy-init="true">
+        <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
+        <property name="DtoConverter" ref="LocationApiDtoConverter"/>
+    </bean>
+
     <bean id="ActivityCommandFactory" class="sabbat.apigateway.location.command.ActivityCommandFactory">
         <lookup-method name="createStartActivityCommand"
-                       bean="StartActivityCommand"/>
+                       bean="StartActivityCommandDummy"/>
+        <lookup-method name="createStopActivityCommand"
+                       bean="StopActivityCommand"/>
+        <lookup-method name="createUpdateActivityCommand"
+                       bean="UpdateActivityCommand"/>
     </bean>
 
 <!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">

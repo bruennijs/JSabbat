@@ -68,6 +68,4 @@
         <constructor-arg ref="asyncActivityCommandTemplate" />
         <constructor-arg ref="jsonDtoParser" />
     </bean>
-
-    <bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
 </beans>

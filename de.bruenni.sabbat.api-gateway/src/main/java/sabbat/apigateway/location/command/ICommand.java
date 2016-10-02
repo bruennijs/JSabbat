@@ -16,5 +16,11 @@ public interface ICommand {
      * Executes async.
      * @return
      */
-    Future<? extends IActivityResponseDto> executeAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException;
+    Future<? extends IActivityResponseDto> requestAsync() throws Exception;
+
+    /**
+     * Publishes an event without service response synchronously.
+     * @return
+     */
+    void publish() throws Exception;
 }

@@ -16,7 +16,7 @@ public class ActivityStubServiceActivator {
         return new ActivityStoppedResponseDto(message.getPayload().getId());
     }
 
-    public void update(Message<ActivityUpdateRequestDto> command) {
+    public void update(Message<ActivityUpdateEventDto> command) {
         return;
     }
 

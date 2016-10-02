@@ -17,7 +17,6 @@ import sabbat.location.infrastructure.client.dto.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -78,17 +77,13 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public CompletableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
-        CompletableFuture future = new CompletableFuture();
-        future.complete(new ActivityStoppedResponseDto(command.getId()));
-        return future;
+    public ListenableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
+        return new AsyncResult<>(new ActivityStoppedResponseDto(command.getId()));
     }
 
     @Override
-    public CompletableFuture<Void> update(ActivityUpdateRequestDto command) {
-        CompletableFuture future = new CompletableFuture();
-        future.complete(null);
-        return future;
+    public void update(ActivityUpdateEventDto dto) throws Exception {
+        throw new Exception("not implemented");
     }
 
     @Override

@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ActivityCreatedResponse extends MapMyTracksResponse {
 
     @JacksonXmlProperty(localName = "activity_id")
-    public String activityId;
+    public long activityId;
 
     /**
      * XmlMapper default constructor
@@ -21,7 +21,7 @@ public class ActivityCreatedResponse extends MapMyTracksResponse {
         super("");
     }
 
-    public ActivityCreatedResponse(String activityId) {
+    public ActivityCreatedResponse(long activityId) {
         super("activity_started");
         this.activityId = activityId;
     }
