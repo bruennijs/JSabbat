@@ -9,9 +9,6 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!-- services -->
-    <import resource="classpath:spring/spring-api-gateway.xml"/>
-
     <!--<context:property-placeholder />-->
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 

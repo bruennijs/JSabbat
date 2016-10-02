@@ -49,7 +49,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     public ListenableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         try {
-            logger.debug("Start activity [" + command + "]");
+            logger.debug("Start activity [" + command.toString() + "]");
 
             String dtoJson = parser.serialize(command);
 

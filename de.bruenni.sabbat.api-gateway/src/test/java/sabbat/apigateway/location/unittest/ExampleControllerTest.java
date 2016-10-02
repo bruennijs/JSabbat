@@ -33,7 +33,10 @@ public class ExampleControllerTest {
     public void setUp() throws Exception {
         IActivityCommandFactory factory = mock(IActivityCommandFactory.class);
 
-        mvc = MockMvcBuilders.standaloneSetup(new MapMyTracksApiController(factory)).build();
+        MapMyTracksApiController controller = new MapMyTracksApiController();
+        controller.setActivityCommandFactory(factory);
+
+        mvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
