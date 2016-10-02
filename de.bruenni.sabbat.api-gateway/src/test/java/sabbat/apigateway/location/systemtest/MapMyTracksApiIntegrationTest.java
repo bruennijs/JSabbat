@@ -8,7 +8,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.integrationtest.IntegrationTestConfig;
+
+import java.util.UUID;
 
 /**
  * Created by bruenni on 14.07.16.
@@ -23,10 +26,10 @@ public class MapMyTracksApiIntegrationTest {
     @Test
     public void When_start_activity_expect_returns_200_OK()
     {
-        ResponseEntity<String> response = new MapMyTracksApiClient(ApiUrl).startActivity("MapMyTracksApiIntegrationTest title");
+        ResponseEntity<ActivityCreatedResponse> response = new MapMyTracksApiClient(ApiUrl).startActivity("MapMyTracksApiIntegrationTest title");
 
         Assert.assertEquals(200, response.getStatusCode().value());
-
-        //LoginResponse response = (LoginResponse) restTemplate.postForObject(url, request, LoginResponse.cla
+        UUID.fromString(response.getBody().activityId);
+        Assert.assertEquals("activity_started", response.getBody().type);
     }
 }

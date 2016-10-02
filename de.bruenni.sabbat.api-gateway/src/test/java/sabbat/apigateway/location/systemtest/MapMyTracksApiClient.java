@@ -11,6 +11,7 @@ import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConve
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class MapMyTracksApiClient {
      * @param title
      * @return
      */
-    public ResponseEntity<String> startActivity(String title) {
+    public ResponseEntity<ActivityCreatedResponse> startActivity(String title) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
         HttpHeaders headers = new HttpHeaders();
 
@@ -52,6 +53,6 @@ public class MapMyTracksApiClient {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(body, headers);
 
-        return this.restTemplate.postForEntity(this.url, request, String.class);
+        return this.restTemplate.postForEntity(this.url, request, ActivityCreatedResponse.class);
     }
 }
