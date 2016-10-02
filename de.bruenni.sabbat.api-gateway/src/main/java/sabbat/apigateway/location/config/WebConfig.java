@@ -16,7 +16,6 @@ import java.util.List;
  * Created by bruenni on 10.07.16.
  */
 @Configuration
-@EnableWebMvc
 //@ComponentScan(basePackages = "sabbat.apigateway.location.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 

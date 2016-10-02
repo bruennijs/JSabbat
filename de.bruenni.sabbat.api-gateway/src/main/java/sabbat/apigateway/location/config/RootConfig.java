@@ -2,18 +2,26 @@ package sabbat.apigateway.location.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Created by bruenni on 17.07.16.
  */
 @Configuration
+@EnableWebMvc
 public class RootConfig {
 
     @Value(value = "${application.location.logpayload}")
     public Boolean logpayload;
+
+    @Value(value = "${server.port}")
+    public int serverPort;
 
 /*    @Bean
     public ServletRegistrationBean dispatcherServlet() {
@@ -29,9 +37,9 @@ public class RootConfig {
         return new MyEmbeddedContainerServletContextInitializer();
     }*/
 
-/*    @Bean
+    @Bean
     public TomcatEmbeddedServletContainerFactory embeddedServletContainer()
     {
-        return new TomcatEmbeddedServletContainerFactory();
-    }*/
+        return new TomcatEmbeddedServletContainerFactory(serverPort);
+    }
 }

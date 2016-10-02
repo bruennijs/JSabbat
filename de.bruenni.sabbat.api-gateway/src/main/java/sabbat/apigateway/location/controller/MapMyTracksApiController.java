@@ -121,5 +121,9 @@ public class MapMyTracksApiController {
         }
     }*/
 
-
+    @RequestMapping(path = "/activities",
+            method = RequestMethod.GET)
+    public @ResponseBody String get() throws Exception {
+        return "myactivity";
+    }
 }

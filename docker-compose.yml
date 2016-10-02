@@ -1,5 +1,7 @@
 version: '2'
 services:
+
+  # ========== API-GATEWAY ===============
   api-gateway-build:
     build:
       context: ./de.bruenni.sabbat.api-gateway
@@ -17,6 +19,7 @@ services:
       - "80"
     network_mode: "bridge"  # default network with bridge adapter docker0
 
+  # ========== LOCATION.APP ===============
   location-app-build:
     build:
       context: ./de.bruenni.sabbat.location.app
@@ -36,8 +39,13 @@ services:
       - cassandra-v22-dev-2:cassandra-dev-2
       - rabbitmq-dev:rabbitmq-dev
 
+    depends_on:
+      - cassandra-v22-dev-1
+      - rabbitmq-dev
+
     network_mode: "bridge"  # default network with bridge adapter docker0
 
+  # ========== CASSANDRA ===============
   cassandra-dev-1:
     hostname: cassandra-dev-1
     container_name: cassandra-dev-1
@@ -125,6 +133,8 @@ services:
     #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
     expose:
       - "15672" #plugin: rabbitmq_management
+    ports:
+    - "5672:5672"
     volumes:
      - /opt/tmp/rabbitmq-sabbat:/var/lib/rabbitmq
     network_mode: "bridge"  # default network with bridge adapter docker0

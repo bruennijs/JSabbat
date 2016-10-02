@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class StartActivityCommand implements ICommand {
 
-    public IActivityRemoteService ActivityRemoteService;
+    private IActivityRemoteService ActivityRemoteService;
 
     public void setActivityRemoteService(IActivityRemoteService activityRemoteService) {
         ActivityRemoteService = activityRemoteService;

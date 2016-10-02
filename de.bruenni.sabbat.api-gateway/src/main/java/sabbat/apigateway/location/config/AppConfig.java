@@ -14,11 +14,8 @@ import org.springframework.web.filter.Slf4jRequestLoggingFilter;
 //@Profile({"dev", "prod"})
 @ImportResource(locations =
         {
-                "classpath:spring/spring-api-gateway.xml",
-                "classpath:spring/spring-location-infrastructure.xml",
-                "classpath:spring/spring-location-amqp-client.xml"
+                "classpath:spring/spring-api-gateway.xml"
         })
-@PropertySource("classpath:application.properties")
 public class AppConfig {
 
     @Value(value = "${application.location.logpayload}")

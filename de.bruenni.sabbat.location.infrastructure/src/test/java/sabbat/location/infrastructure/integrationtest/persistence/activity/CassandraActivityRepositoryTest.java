@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 public class CassandraActivityRepositoryTest {
 
     @Autowired
-    @Qualifier("cassandraActivityRepository")
+    @Qualifier("activityRepository")
     public IActivityRepository ActivityRepository;
 
     @Test

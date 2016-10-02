@@ -25,7 +25,7 @@
     </bean>
 
     <bean id="StartActivityCommand" class="sabbat.apigateway.location.command.StartActivityCommand" lazy-init="true">
-        <property name="ActivityRemoteService" ref="ActivityRemoteService"/>
+        <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
     </bean>
 
     <bean id="ActivityCommandFactory" class="sabbat.apigateway.location.command.ActivityCommandFactory">
@@ -36,7 +36,7 @@
 <!--    <bean id="MySpringBootServletInitializer" class="sabbat.apigateway.location.configfig.MySpringBootServletInitializer">
     </bean>-->
 
-    <!--<bean id="MyDispatcherServletInitializer" class="sabbat.apigateway.location.configfig.MyDispatcherServletInitializer" />-->
+    <bean id="LocationDispatcherServletInitializer" class="sabbat.apigateway.location.config.LocationDispatcherServletInitializer" />
 
     <!-- more bean definitions for services go here -->
 

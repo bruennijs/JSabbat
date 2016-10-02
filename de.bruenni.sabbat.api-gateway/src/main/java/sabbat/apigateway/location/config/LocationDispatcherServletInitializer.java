@@ -14,13 +14,13 @@ import java.util.Arrays;
 /**
  * Created by bruenni on 05.07.16.
  */
-@Configuration
-@Component
-//@Configuration
-public class MyDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class LocationDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    @Value("{application.mapmytracks.url")
+    @Value("{location.mapmytracksapi.baseurl")
     public String BaseUrl;
+
+    public LocationDispatcherServletInitializer() {
+    }
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
