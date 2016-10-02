@@ -3,8 +3,10 @@ package sabbat.apigateway.location.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.*;
+import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.filter.Slf4jRequestLoggingFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * Created by bruenni on 17.07.16.
@@ -20,6 +22,12 @@ public class AppConfig {
 
     @Value(value = "${application.location.logpayload}")
     public Boolean logpayload;
+
+/*    @Bean
+    public WebApplicationInitializer dispatcherServletInitializer()
+    {
+        return new LocationDispatcherServletInitializer();
+    }*/
 
     @Bean
     public FilterRegistrationBean logFilter() {

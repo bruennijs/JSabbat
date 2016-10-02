@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
  * Created by bruenni on 24.09.16.
  */
 @Configuration
-@ConditionalOnProperty(prefix = "location.infrastructure.amqp.client", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "location.infrastructure.amqp.client", name = "enabled", havingValue = "true", matchIfMissing = false)
 @PropertySource("classpath:sabbat-location-infrastructure.properties")
 @ImportResource(locations =
         {

@@ -18,7 +18,7 @@ import org.springframework.context.annotation.*;
 @ConditionalOnProperty(prefix = "location.infrastructure.amqp.service",
         name = "enabled",
         havingValue = "true",
-        matchIfMissing = true)
+        matchIfMissing = false)
 @PropertySource("classpath:sabbat-location-infrastructure.properties")
 @ImportResource(locations =
         {

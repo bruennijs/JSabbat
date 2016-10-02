@@ -64,31 +64,10 @@
         </property>
     </bean>
 
-    <bean id="RabbitMqActivityNativeClient" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteClient">
+    <bean id="RabbitMqActivityRemoteService" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService">
         <constructor-arg ref="asyncActivityCommandTemplate" />
         <constructor-arg ref="jsonDtoParser" />
     </bean>
 
     <bean id="RabbitMqActivityServiceActivator" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityServiceActivator" />
-
-    <int:service-activator
-            id="rabbitMqStart"
-            input-channel="activityRequestChannel"
-            output-channel="activityReplyChannel"
-            ref="RabbitMqActivityServiceActivator"
-            method="start"/>
-
-    <int:service-activator
-            id="rabbitMqStop"
-            input-channel="activityRequestChannel"
-            output-channel="activityReplyChannel"
-            ref="RabbitMqActivityServiceActivator"
-            method="stop"/>
-
-    <int:service-activator
-            id="rabbitMqUpdate"
-            input-channel="activityRequestChannel"
-            output-channel="activityReplyChannel"
-            ref="RabbitMqActivityServiceActivator"
-            method="update"/>
 </beans>

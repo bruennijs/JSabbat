@@ -37,7 +37,11 @@
             <AppenderRef ref="Console"/>
         </Logger>
 
-        <Logger name="sabbat.apigateway.location.controller.MapMyTracksApiController" level="debug">
+<!--        <Logger name="sabbat.apigateway.location.controller.MapMyTracksApiController" level="debug">
+            &lt;!&ndash;<AppenderRef ref="DefaultFile"/>&ndash;&gt;
+        </Logger>-->
+
+        <Logger name="sabbat.apigateway" level="debug">
             <!--<AppenderRef ref="DefaultFile"/>-->
         </Logger>
 

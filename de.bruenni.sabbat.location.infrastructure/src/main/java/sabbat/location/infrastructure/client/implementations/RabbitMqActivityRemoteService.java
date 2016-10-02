@@ -24,9 +24,9 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by bruenni on 04.07.16.
  */
-public class RabbitMqActivityRemoteClient implements IActivityRemoteService {
+public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
-    final Logger logger = org.slf4j.LoggerFactory.getLogger(RabbitMqActivityRemoteClient.class);
+    final Logger logger = org.slf4j.LoggerFactory.getLogger(RabbitMqActivityRemoteService.class);
 
     @Value("${location.activity.routingkey.command.start}")
     public String StartRoutingKey;
@@ -38,8 +38,8 @@ public class RabbitMqActivityRemoteClient implements IActivityRemoteService {
     private infrastructure.parser.IDtoParser parser;
     private ConnectionFactory connectionFactory;
 
-    public RabbitMqActivityRemoteClient(AsyncRabbitTemplate asyncRabbitTemplate,
-                                        infrastructure.parser.IDtoParser parser)
+    public RabbitMqActivityRemoteService(AsyncRabbitTemplate asyncRabbitTemplate,
+                                         infrastructure.parser.IDtoParser parser)
     {
         this.asyncRabbitTemplate = asyncRabbitTemplate;
         this.parser = parser;

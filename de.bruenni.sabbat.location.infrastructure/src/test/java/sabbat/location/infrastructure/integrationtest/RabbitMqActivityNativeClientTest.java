@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import sabbat.location.infrastructure.AmqpClientAutoConfiguration;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteClient;
+import sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class RabbitMqActivityNativeClientTest {
     public String host;
 
     @Autowired
-    public RabbitMqActivityRemoteClient Client;
+    public RabbitMqActivityRemoteService Client;
 
     @Test
     public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException {

@@ -2,6 +2,8 @@ package sabbat.apigateway.location.controller;
 
 
 import com.sun.javafx.binding.StringFormatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +40,17 @@ public class MapMyTracksApiController {
     private ActivityServiceTransformation transformation = new ActivityServiceTransformation();
 
     private IActivityCommandFactory activityCommandFactory;
-    private ApplicationContext applicationContext;
 
-    public MapMyTracksApiController() {
+    @Autowired
+    @Qualifier("ActivityCommandFactory")
+    public void setActivityCommandFactory(IActivityCommandFactory activityCommandFactory) {
+        this.activityCommandFactory = activityCommandFactory;
     }
 
-    public MapMyTracksApiController(IActivityCommandFactory activityCommandFactory) {
-        this.activityCommandFactory = activityCommandFactory;
-        this.applicationContext = applicationContext;
-        logger.debug("constructor");
+    /**
+     * Constructor
+     */
+    public MapMyTracksApiController() {
     }
 
     /**

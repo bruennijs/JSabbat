@@ -36,6 +36,7 @@ public class Application {
 
         logger.info("Starting api-gateway...");
         ApplicationContext applicationContext = SpringApplication.run(new Object[] {
+                Application.class,
                 RootConfig.class,
                 WebConfig.class,
                 AppConfig.class}, args);

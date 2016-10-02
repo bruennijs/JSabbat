@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * Created by bruenni on 17.07.16.
  */
 @Configuration
-@EnableWebMvc
 public class RootConfig {
 
     @Value(value = "${application.location.logpayload}")
@@ -37,9 +36,9 @@ public class RootConfig {
         return new MyEmbeddedContainerServletContextInitializer();
     }*/
 
-    @Bean
+/*    @Bean
     public TomcatEmbeddedServletContainerFactory embeddedServletContainer()
     {
         return new TomcatEmbeddedServletContainerFactory(serverPort);
-    }
+    }*/
 }

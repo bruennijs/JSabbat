@@ -1,5 +1,7 @@
 package sabbat.apigateway.location.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -16,10 +18,13 @@ import java.util.Arrays;
  */
 public class LocationDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    private Logger logger = LoggerFactory.getLogger(LocationDispatcherServletInitializer.class);
+
     @Value("{location.mapmytracksapi.baseurl")
     public String BaseUrl;
 
     public LocationDispatcherServletInitializer() {
+        logger.debug("constructor");
     }
 
     @Override
@@ -34,7 +39,8 @@ public class LocationDispatcherServletInitializer extends AbstractAnnotationConf
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{BaseUrl};
+        logger.debug("getServletMappings");
+        return new String[]{"/location/api/v1"};
     }
 
     @Override
