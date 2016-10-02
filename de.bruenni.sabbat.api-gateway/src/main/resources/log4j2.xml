@@ -28,7 +28,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="location.traffic" level="INFO">
+        <Logger name="apigateway.traffic" level="DEBUG">
             <!--<AppenderRef ref="Console"/>-->
             <AppenderRef ref="TrafficFile"/>
         </Logger>
@@ -41,14 +41,14 @@
             &lt;!&ndash;<AppenderRef ref="DefaultFile"/>&ndash;&gt;
         </Logger>-->
 
-        <Logger name="sabbat.apigateway" level="debug">
+        <Logger name="sabbat.apigateway"
+                level="debug">
             <!--<AppenderRef ref="DefaultFile"/>-->
         </Logger>
 
         <Logger name="sabbat.location.infrastructure"
                 level="debug">
             <!--<AppenderRef ref="DefaultFile"/>-->
-            <AppenderRef ref="Console"/>
         </Logger>
 
         <Root level="INFO">

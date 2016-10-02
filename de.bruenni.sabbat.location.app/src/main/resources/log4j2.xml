@@ -37,24 +37,16 @@
             <AppenderRef ref="Console"/>
         </Logger>
 
-        <Logger name="sabbat.location" level="DEBUG">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="DefaultFile"/>
-        </Logger>
-
-        <Logger name="sabbat.location.infrastructure.service.adapter"  level="DEBUG">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="TrafficFile"/>
+        <Logger name="sabbat.location"
+                level="DEBUG">
         </Logger>
 
         <Logger name="org.springframework" level="INFO">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="DefaultFile"/>
         </Logger>
 
         <Root level="INFO">
-            <!--<AppenderRef ref="Console"/>-->
-            <!--<AppenderRef ref="DefaultFile"/>-->
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="DefaultFile"/>
         </Root>
     </Loggers>
 </Configuration>

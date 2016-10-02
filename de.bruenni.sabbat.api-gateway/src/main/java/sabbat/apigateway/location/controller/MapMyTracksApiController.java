@@ -13,6 +13,7 @@ import sabbat.apigateway.location.command.ActivityCommandFactory;
 import sabbat.apigateway.location.command.IActivityCommandFactory;
 import sabbat.apigateway.location.command.ICommand;
 import sabbat.apigateway.location.command.StartActivityCommand;
+import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
 import sabbat.apigateway.location.transformation.ActivityServiceTransformation;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class MapMyTracksApiController {
 
 
     final Logger logger = org.slf4j.LoggerFactory.getLogger(MapMyTracksApiController.class);
-    final Logger loggerTraffic = org.slf4j.LoggerFactory.getLogger("location.traffic");
+    final Logger loggerTraffic = org.slf4j.LoggerFactory.getLogger("apigateway.traffic");
 
     private ActivityServiceTransformation transformation = new ActivityServiceTransformation();
 
@@ -77,23 +78,28 @@ public class MapMyTracksApiController {
     public ResponseEntity<MapMyTracksResponse> startActivity(
                                 @RequestParam(value= "request") String requestType,
                                 @RequestParam(value= "activity_id", required = false) String activity_id,
-                                @RequestParam(value= "title") String title,
+                                @RequestParam(value= "title", required = false) String title,
                                 @RequestParam(value= "points") String points,
                                 @RequestParam(value= "source", required = false) String source,
                                 @RequestParam(value = "tags", required = false) String tags)  throws Exception {
 
 
-        logger.debug(StringFormatter.format("start activity [request=%1s, title=%2s, points=%3s]", requestType, title, points).getValue());
+        loggerTraffic.debug(StringFormatter.format("--> [request=%1s, axtivity_id=%2s, title=%3s, points=%4s]", requestType, activity_id, title, points).getValue());
 
         try {
 
             ICommand command = activityCommandFactory.getCommand(requestType, title, points, source, activity_id);
 
-            Future<? extends IActivityResponseDto> response = command.executeAsync();
+            Future<? extends IActivityResponseDto> future = command.executeAsync();
+
+            MapMyTracksResponse response = transformation.transformResponse(future.get(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS));
+
+            //ActivityCreatedResponse response = new ActivityCreatedResponse("6722");
+            loggerTraffic.debug(StringFormatter.format("<-- [%1s]", response).getValue());
 
             return new ResponseEntity(
-                        transformation.transformResponse(response.get(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS)),
-                        HttpStatus.OK);
+                    response,
+                    HttpStatus.CREATED);
         }
         catch(Exception exc)
         {

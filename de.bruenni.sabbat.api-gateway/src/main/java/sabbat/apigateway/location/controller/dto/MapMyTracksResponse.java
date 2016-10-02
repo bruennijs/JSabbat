@@ -13,4 +13,11 @@ public class MapMyTracksResponse {
     {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "MapMyTracksResponse{" +
+                "type='" + type + '\'' +
+                '}';
+    }
 }

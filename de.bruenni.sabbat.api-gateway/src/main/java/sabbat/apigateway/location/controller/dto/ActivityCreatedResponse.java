@@ -25,4 +25,11 @@ public class ActivityCreatedResponse extends MapMyTracksResponse {
         super("activity_started");
         this.activityId = activityId;
     }
+
+    @Override
+    public String toString() {
+        return "ActivityCreatedResponse{" +
+                "activityId='" + activityId + '\'' +
+                "} " + super.toString();
+    }
 }

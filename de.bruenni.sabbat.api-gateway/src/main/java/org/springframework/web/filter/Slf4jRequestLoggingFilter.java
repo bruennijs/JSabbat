@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 public class Slf4jRequestLoggingFilter extends AbstractRequestLoggingFilter {
 
-    final Logger logger = org.slf4j.LoggerFactory.getLogger("location.traffic");
+    final Logger logger = org.slf4j.LoggerFactory.getLogger("apigateway.traffic");
 
     @Override
     protected boolean shouldLog(HttpServletRequest request) {
