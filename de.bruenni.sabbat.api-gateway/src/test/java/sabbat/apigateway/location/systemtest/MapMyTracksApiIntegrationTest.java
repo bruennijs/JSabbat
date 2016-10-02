@@ -25,7 +25,7 @@ public class MapMyTracksApiIntegrationTest {
     {
         ResponseEntity<String> response = new MapMyTracksApiClient(ApiUrl).startActivity("MapMyTracksApiIntegrationTest title");
 
-        Assert.assertEquals(200, response.getStatusCode().value(), ActiCre);
+        Assert.assertEquals(200, response.getStatusCode().value());
 
         //LoginResponse response = (LoginResponse) restTemplate.postForObject(url, request, LoginResponse.cla
     }
