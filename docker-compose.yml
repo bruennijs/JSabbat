@@ -13,10 +13,13 @@ services:
     hostname: sabbat-apigateway-dev
     container_name: sabbat-apigateway-dev
 
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
     ports:
-      - "8081:80"
+      - "8081:8081"
     expose:
-      - "80"
+      - "8081"
     network_mode: "bridge"  # default network with bridge adapter docker0
 
   api-gateway-prod:
@@ -24,11 +27,22 @@ services:
     hostname: sabbat-apigateway-prod
     container_name: sabbat-apigateway-prod
 
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
+    links:
+      - rabbitmq-prod:rabbitmq-host
+
     ports:
-      - "8081:80"
+      - "8081:8081"
+
     expose:
-      - "80"
-    network_mode: "sabbat"  # default network with bridge adapter docker0
+      - "8081"
+
+    depends_on:
+      - rabbitmq-prod
+
+    network_mode: "bridge"  # default network with bridge adapter docker0
 
   # ========== LOCATION.APP ===============
   location-app-build:
@@ -166,7 +180,7 @@ services:
     - "15672:15672"
     volumes:
      - /opt/rabbitmq-sabbat:/var/lib/rabbitmq
-    network_mode: "sabbat"  # default network with bridge adapter docker0
+    network_mode: "bridge"  # default network with bridge adapter docker0
 
 
   rabbitmq-ctl:
