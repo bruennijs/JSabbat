@@ -1,6 +1,14 @@
 .gradle
 */.gradle
-*/build
+#*/build/classes/**
+#*/build/dependency-cache/**
+#*/build/reports/**
+#*/build/resources/**
+#*/build/test-results/**
+#*/build/tmp/**
+#*/build/libs/**
+*/build/*/*
+!*/build/libs/*jar
 /local.properties
 .idea/workspace.xml
 .idea/libraries
