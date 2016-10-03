@@ -32,7 +32,7 @@
 
     <bean id="LocationApiDtoConverter" class="sabbat.apigateway.location.controller.converter.LocationApiDtoConverter" scope="singleton" />
 
-    <bean id="UpdateActivityCommand" class="sabbat.apigateway.location.command.StopActivityCommand" lazy-init="true">
+    <bean id="UpdateActivityCommand" class="sabbat.apigateway.location.command.UpdateActivityCommand" lazy-init="true">
         <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
         <property name="DtoConverter" ref="LocationApiDtoConverter"/>
     </bean>

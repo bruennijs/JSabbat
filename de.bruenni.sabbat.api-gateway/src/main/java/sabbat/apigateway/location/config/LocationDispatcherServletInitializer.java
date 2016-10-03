@@ -24,16 +24,19 @@ public class LocationDispatcherServletInitializer extends AbstractAnnotationConf
     public String BaseUrl;
 
     public LocationDispatcherServletInitializer() {
-        logger.debug("constructor");
+        logger.debug("LocationDispatcherServletInitializer ctor");
     }
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[0];
+        logger.debug("getRootConfigClasses");
+        return new Class<?>[] {RootConfig.class};
     }
 
     @Override
-    protected Class<?>[] getServletConfigClasses() {
+    protected Class<?>[] getServletConfigClasses()
+    {
+        logger.debug("getServletConfigClasses");
         return new Class<?>[] {WebConfig.class};
     }
 
@@ -45,8 +48,12 @@ public class LocationDispatcherServletInitializer extends AbstractAnnotationConf
 
     @Override
     protected Filter[] getServletFilters() {
-        return new Filter[] { new ServletContextRequestLoggingFilter() };
+        return new Filter[]
+                {
+                        new ServletContextRequestLoggingFilter()
+                };
     }
+
 }
 
 

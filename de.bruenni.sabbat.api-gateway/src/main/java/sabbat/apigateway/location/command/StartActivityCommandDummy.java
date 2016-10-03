@@ -32,6 +32,11 @@ public class StartActivityCommandDummy implements ICommand {
     }
 
     @Override
+    public boolean getPublishOnly() {
+        return false;
+    }
+
+    @Override
     public ListenableFuture<ActivityCreatedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         // 1. authorize credentials credentials

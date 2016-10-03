@@ -74,7 +74,7 @@ public class MapMyTracksApiController {
             produces = "application/xml",
             consumes = "application/x-www-form-urlencoded")
 
-    public ResponseEntity<MapMyTracksResponse> startActivity(
+    public ResponseEntity<MapMyTracksResponse> postMethod(
                                 @RequestParam(value= "request") String requestType,
                                 @RequestParam(value= "activity_id", required = false) String activity_id,
                                 @RequestParam(value= "title", required = false) String title,
@@ -82,32 +82,44 @@ public class MapMyTracksApiController {
                                 @RequestParam(value= "source", required = false) String source,
                                 @RequestParam(value = "tags", required = false) String tags)  throws Exception {
 
-
-        loggerTraffic.debug(StringFormatter.format("--> [request=%1s, axtivity_id=%2s, title=%3s, points=%4s]", requestType, activity_id, title, points).getValue());
+        if (loggerTraffic.isDebugEnabled())
+            loggerTraffic.debug(StringFormatter.format("--> [request=%1s, axtivity_id=%2s, title=%3s, points=%4s]", requestType, activity_id, title, points).getValue());
 
         try {
 
             ICommand command = activityCommandFactory.getCommand(requestType, title, points, source, activity_id);
 
-            Future<? extends IActivityResponseDto> future = command.requestAsync();
+            if (!command.getPublishOnly()) {
+                Future<? extends IActivityResponseDto> future = command.requestAsync();
 
-            MapMyTracksResponse response = transformation.transformResponse(future.get(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS));
+                MapMyTracksResponse response = transformation.transformResponse(future.get(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS));
 
-            //ActivityCreatedResponse response = new ActivityCreatedResponse(new Date().getTime());
-            loggerTraffic.debug(StringFormatter.format("<-- [%1s]", response).getValue());
+                //ActivityCreatedResponse response = new ActivityCreatedResponse(new Date().getTime());
+                if (loggerTraffic.isDebugEnabled())
+                    loggerTraffic.debug(StringFormatter.format("<-- [%1s]", response).getValue());
 
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML.toString());
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML.toString());
+                return new ResponseEntity(
+                        response,
+                        headers,
+                        HttpStatus.OK);
+            }
+            else
+            {
+                // publish only command
+                command.publish();
 
-            return new ResponseEntity(
-                    response,
-                    headers,
-                    HttpStatus.OK);
+                if (loggerTraffic.isDebugEnabled())
+                    loggerTraffic.debug("<-- [200 OK]");
+
+                return new ResponseEntity(HttpStatus.OK);
+            }
         }
         catch(Exception exc)
         {
-            logger.error("startActivity failed", exc);
+            logger.error("postMethod failed", exc);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

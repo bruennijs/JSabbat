@@ -36,6 +36,11 @@ public class UpdateActivityCommand implements ICommand {
     }
 
     @Override
+    public boolean getPublishOnly() {
+        return true;
+    }
+
+    @Override
     public ListenableFuture<IActivityResponseDto> requestAsync() throws Exception {
         throw new Exception("not implemented");
     }

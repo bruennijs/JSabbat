@@ -49,7 +49,7 @@ public abstract class ActivityCommandFactory implements IActivityCommandFactory 
     @Override
     public ICommand getCommand(String requestType, String title, String points, String source, String activity_id) throws Exception {
         if (requestType.equals("start_activity")) {
-            return createStartActivityCommand("4711", title, points);
+            return createStartActivityCommand(Long.valueOf(createNewUniqueId()).toString(), title, points);
             //return createStartActivityCommand(UUID.randomUUID().toString(), title, points);
         }
         else if (requestType.equals("stop_activity"))
@@ -61,5 +61,9 @@ public abstract class ActivityCommandFactory implements IActivityCommandFactory 
         }
 
         throw new Exception(StringFormatter.format("requesttype not supported [type=%1s]", requestType).getValue());
+    }
+
+    private long createNewUniqueId() {
+        return new Date().getTime() % Integer.MAX_VALUE;
     }
 }

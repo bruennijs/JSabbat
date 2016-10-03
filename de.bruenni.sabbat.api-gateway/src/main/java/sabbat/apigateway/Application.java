@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import sabbat.apigateway.location.config.AppConfig;
@@ -23,7 +24,8 @@ import java.util.Arrays;
         {
                 CassandraAutoConfiguration.class,
                 CassandraDataAutoConfiguration.class,
-                RabbitAutoConfiguration.class
+                RabbitAutoConfiguration.class,
+                //JacksonAutoConfiguration.class
         })
 // contains componentscan to find @Configuratuion annotated class -> instead give spring boot these classes by calling SpringApplication.run(...) with these classes
 public class Application {
@@ -37,8 +39,6 @@ public class Application {
         logger.info("Starting api-gateway...");
         ApplicationContext applicationContext = SpringApplication.run(new Object[] {
                 Application.class,
-                RootConfig.class,
-                WebConfig.class,
                 AppConfig.class}, args);
 
         //Environment environment = Environment;

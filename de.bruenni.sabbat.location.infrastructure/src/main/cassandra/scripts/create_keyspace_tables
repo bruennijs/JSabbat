@@ -3,8 +3,8 @@ CREATE KEYSPACE sabbatlocation WITH replication = {'class': 'SimpleStrategy', 'r
 use sabbatlocation;
 
 CREATE TABLE user_coordinates (
-    groupid uuid,
-    userid uuid,
+    groupid varchar,
+    userid varchar,
     captured timestamp,
     longitude decimal,
     latitude decimal,
@@ -12,8 +12,8 @@ CREATE TABLE user_coordinates (
 );
 
 CREATE TABLE activity (
-    id  uuid,
-    userid uuid,
+    id  varchar,
+    userid varchar,
     started timestamp,
     finished timestamp,
     title text,
@@ -21,8 +21,8 @@ CREATE TABLE activity (
 );
 
 CREATE TABLE activity_coordinates (
-    userid uuid,
-    activityid uuid,
+    userid varchar,
+    activityid varchar,
     captured timestamp,
     longitude decimal,
     latitude decimal,

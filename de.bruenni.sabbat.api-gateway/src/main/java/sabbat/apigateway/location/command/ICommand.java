@@ -13,6 +13,11 @@ import java.util.concurrent.TimeoutException;
 public interface ICommand {
 
     /**
+     * Flag checking whether only publish is supported
+     */
+    boolean getPublishOnly();
+
+    /**
      * Executes async.
      * @return
      */
@@ -23,4 +28,6 @@ public interface ICommand {
      * @return
      */
     void publish() throws Exception;
+
+
 }

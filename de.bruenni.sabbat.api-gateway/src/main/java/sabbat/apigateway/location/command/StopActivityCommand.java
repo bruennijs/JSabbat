@@ -28,6 +28,11 @@ public class StopActivityCommand implements ICommand {
     }
 
     @Override
+    public boolean getPublishOnly() {
+        return false;
+    }
+
+    @Override
     public ListenableFuture<ActivityStoppedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         // 1. authorize credentials credentials
