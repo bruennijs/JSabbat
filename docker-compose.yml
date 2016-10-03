@@ -6,18 +6,29 @@ services:
     build:
       context: ./de.bruenni.sabbat.api-gateway
       dockerfile: Dockerfile
-    image: bruenni/sabbat-apigateway:latest
+    image: bruenni/sabbat-api-gateway:latest
 
   api-gateway-dev:
-    image: bruenni/sabbat-apigateway:latest
+    image: bruenni/sabbat-api-gateway:latest
     hostname: sabbat-apigateway-dev
-    container_name: sabbat-apigateway
+    container_name: sabbat-apigateway-dev
 
     ports:
       - "8081:80"
     expose:
       - "80"
     network_mode: "bridge"  # default network with bridge adapter docker0
+
+  api-gateway-prod:
+    image: bruenni/sabbat-api-gateway:latest
+    hostname: sabbat-apigateway-prod
+    container_name: sabbat-apigateway-prod
+
+    ports:
+      - "8081:80"
+    expose:
+      - "80"
+    network_mode: "sabbat"  # default network with bridge adapter docker0
 
   # ========== LOCATION.APP ===============
   location-app-build:
@@ -139,6 +150,24 @@ services:
     volumes:
      - /opt/tmp/rabbitmq-sabbat:/var/lib/rabbitmq
     network_mode: "bridge"  # default network with bridge adapter docker0
+
+  rabbitmq-prod:
+    hostname: rabbitmq-prod
+    container_name: rabbitmq-prod
+    image: rabbitmq:3.6.4
+    #ports:  #Expose ports. Either specify both ports (HOST:CONTAINER), or just the container port (a random host port will be chosen).
+     #- "5672:5672"
+
+    #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
+    expose:
+      - "15672" #plugin: rabbitmq_management
+    ports:
+    - "5672:5672"
+    - "15672:15672"
+    volumes:
+     - /opt/rabbitmq-sabbat:/var/lib/rabbitmq
+    network_mode: "sabbat"  # default network with bridge adapter docker0
+
 
   rabbitmq-ctl:
     #docker run -it --name rabbitmq-ctl --link some-rabbit:my-rabbit -e RABBITMQ_ERLANG_COOKIE='secret cookie here' rabbitmq:3 bash
