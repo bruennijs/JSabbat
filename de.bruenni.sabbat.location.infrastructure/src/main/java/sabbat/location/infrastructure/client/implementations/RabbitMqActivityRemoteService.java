@@ -1,5 +1,6 @@
 package sabbat.location.infrastructure.client.implementations;
 
+import com.sun.javafx.binding.StringFormatter;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
@@ -83,7 +84,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
     @Override
     public void update(ActivityUpdateEventDto dto) throws Exception {
-        throw new Exception("not implemented");
+        logger.debug(StringFormatter.format("RABBIT dto[%1s]", this.parser.serialize(dto)).getValue());
     }
 
     @Override

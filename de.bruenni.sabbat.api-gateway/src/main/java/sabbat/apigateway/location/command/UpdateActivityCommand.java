@@ -47,7 +47,6 @@ public class UpdateActivityCommand implements ICommand {
 
     @Override
     public void publish() throws Exception {
-
         this.ActivityRemoteService.update(dtoConverter.transformUpdateEvent(this.id, this.points));
     }
 }
