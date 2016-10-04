@@ -53,14 +53,14 @@ public class LocationApiDtoConverter {
 
     private String[] ParsePointValues(String points) throws Exception {
 
-        String[] tokensByEqualSign = points.split("\\=");
+        //String[] tokensByEqualSign = points.split("\\=");
 
-        if (tokensByEqualSign.length != 2)
+        if (points == null || points.isEmpty())
         {
-            throw new Exception(StringFormatter.format("Points is not delimtted by '=' [%1s]", points).getValue());
+            throw new Exception("Points may not be null or empty");
         }
 
-        String[] tokens = tokensByEqualSign[1].split("\\ ");
+        String[] tokens = points.split("\\ ");
 
         if (tokens.length < 4)
         {

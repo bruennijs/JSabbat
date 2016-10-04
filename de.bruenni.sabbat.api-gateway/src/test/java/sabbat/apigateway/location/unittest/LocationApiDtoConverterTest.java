@@ -26,9 +26,9 @@ public class LocationApiDtoConverterTest {
     public static Iterable<Object[]> data() {
         return Arrays.asList(new Object[][]
                 {
-                        { "points=53.15081779 8.22885028 6.044 1475422138",  new Pair(new Date(1475422138000l), new Point(8.22885028d, 53.15081779d)) },
-                        { "points=89.779 166.2212 100.4 1475422138",  new Pair(new Date(1475422138000l), new Point(166.2212d, 89.779d)) },
-                        { "points=87.779 155.2212 100.4 1475422159 99.9 111.2212 2560.4 1475422177",  new Pair(new Date(1475422159000l), new Point(155.2212d, 87.779d)) }
+                        { "53.15081779 8.22885028 6.044 1475422138",  new Pair(new Date(1475422138000l), new Point(8.22885028d, 53.15081779d)) },
+                        { "89.779 166.2212 100.4 1475422138",  new Pair(new Date(1475422138000l), new Point(166.2212d, 89.779d)) },
+                        { "87.779 155.2212 100.4 1475422159 99.9 111.2212 2560.4 1475422177",  new Pair(new Date(1475422159000l), new Point(155.2212d, 87.779d)) }
                 });
     }
 
