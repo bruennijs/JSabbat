@@ -10,6 +10,7 @@ import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
 import sabbat.location.infrastructure.client.dto.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by bruenni on 24.07.16.
@@ -81,7 +82,7 @@ public class LocationApiDtoConverter {
 
             log.debug("Transform [" + locationResponseDto + "]");
 
-            return new ActivityCreatedResponse(Long.valueOf(locationResponseDto.getId()));
+            return new ActivityCreatedResponse(locationResponseDto.getId());
         }
         else if (dto instanceof ActivityStoppedResponseDto)
         {

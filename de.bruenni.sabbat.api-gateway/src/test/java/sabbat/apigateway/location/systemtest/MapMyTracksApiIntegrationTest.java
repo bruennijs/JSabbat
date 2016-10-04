@@ -37,7 +37,7 @@ public class MapMyTracksApiIntegrationTest {
         logger.debug(response.toString());
 
         Assert.assertEquals(200, response.getStatusCode().value());
-        Assert.assertThat(response.getBody().activityId, new LambdaMatcher<>(id -> id.longValue() > 0, "not greater zero"));
+        Assert.assertThat(response.getBody().activityId, new LambdaMatcher<>(id -> !id.isEmpty(), "is empty"));
         Assert.assertEquals("activity_started", response.getBody().type);
     }
 }
