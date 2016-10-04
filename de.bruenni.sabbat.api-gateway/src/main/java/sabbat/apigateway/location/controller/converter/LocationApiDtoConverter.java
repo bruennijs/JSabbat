@@ -38,7 +38,7 @@ public class LocationApiDtoConverter {
     }
 
     private Date ParseTimestamp(String[] pointTokens) {
-        return new Date(Long.valueOf(pointTokens[3]));
+        return new Date(Long.valueOf(pointTokens[3]) * 1000);
     }
 
     /**
@@ -46,6 +46,8 @@ public class LocationApiDtoConverter {
      * @param tokens
      */
     private Point ParseCoordinate(String[] tokens) {
+
+        // for each block parse block
         return new Point(Double.valueOf(tokens[1]).doubleValue(), Double.valueOf(tokens[0]).doubleValue());
     }
 
@@ -60,7 +62,7 @@ public class LocationApiDtoConverter {
 
         String[] tokens = tokensByEqualSign[1].split("\\ ");
 
-        if (tokens.length != 4)
+        if (tokens.length < 4)
         {
             throw new Exception(StringFormatter.format("Points does not have 4 tokens seperated by space [%1s]", points).getValue());
         }

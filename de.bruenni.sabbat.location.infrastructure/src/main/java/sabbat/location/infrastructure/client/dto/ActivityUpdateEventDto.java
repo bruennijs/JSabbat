@@ -4,17 +4,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.geo.Point;
 
 import java.util.Date;
+import java.util.Map;
+//import de.bruenni.infrastructure.common.util.Tuple2;
 
 /**
  * Created by bruenni on 02.10.16.
  */
 public class ActivityUpdateEventDto extends ActivityDtoBase  {
+
+/*    @JsonProperty()
+    private Tuple2<Date, Point> tuples;*/
+
     @JsonProperty("timestamp")
     private Date timestamp;
 
     @JsonProperty("coordinate")
     private Point coordinate;
 
+    /**
+     * Constructor
+     * @param activityId
+     * @param timestamp
+     * @param coordinate
+     */
     public ActivityUpdateEventDto(String activityId, Date timestamp, Point coordinate) {
         super(activityId);
         this.timestamp = timestamp;
