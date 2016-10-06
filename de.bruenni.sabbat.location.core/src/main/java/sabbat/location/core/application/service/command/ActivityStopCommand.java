@@ -6,9 +6,9 @@ import java.util.UUID;
  * Created by bruenni on 24.09.16.
  */
 public class ActivityStopCommand extends ActivityBase {
-    private UUID id;
+    private String id;
 
-    public ActivityStopCommand(UUID id)
+    public ActivityStopCommand(String id)
     {
         super(id);
     }

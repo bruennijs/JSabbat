@@ -53,7 +53,7 @@ public class ActivityMessageRabbitListener {
 
         if (routingKey.equals(ActivityStartRoutingKey)) {
 
-            ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID(), UUID.fromString(requestMsg.getPayload().getId()), requestMsg.getPayload().getTitle());
+            ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID().toString(), requestMsg.getPayload().getId(), requestMsg.getPayload().getTitle());
 
             Activity activity = this.applicationService.start(command);
 

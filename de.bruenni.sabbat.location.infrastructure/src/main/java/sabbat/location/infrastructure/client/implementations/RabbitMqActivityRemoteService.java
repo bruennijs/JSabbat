@@ -79,6 +79,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
     @Override
     public ListenableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
+        //return AsyncResult.forExecutionException(new Exception("thrown in RabbitMqActRemoteService"));
         return new AsyncResult<>(new ActivityStoppedResponseDto(command.getId()));
     }
 

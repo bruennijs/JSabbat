@@ -7,9 +7,9 @@ import java.util.UUID;
  */
 public abstract class ActivityBase {
 
-    private UUID id;
+    private String id;
 
-    protected ActivityBase(UUID id) {
+    protected ActivityBase(String id) {
         this.id = id;
     }
 
@@ -17,7 +17,7 @@ public abstract class ActivityBase {
      * Gets the ID of the activity
      * @return
      */
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 }

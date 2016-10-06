@@ -13,26 +13,26 @@ import java.util.UUID;
 @PrimaryKeyClass
 public class ActivityPrimaryKey implements Serializable {
     @PrimaryKeyColumn(name = "userid", ordinal = 0, type = org.springframework.cassandra.core.PrimaryKeyType.PARTITIONED)
-    private UUID userId;
+    private String userId;
 
     @PrimaryKeyColumn(name = "id", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
-    private UUID id;
+    private String id;
 
     /**
      * Constructor
      * @param userId
      * @param id
      */
-    public ActivityPrimaryKey(UUID userId, UUID id) {
+    public ActivityPrimaryKey(String userId, String id) {
         this.userId = userId;
         this.id = id;
     }
 
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 

@@ -14,10 +14,10 @@ import java.util.UUID;
 @PrimaryKeyClass
 public class ActivityCoordinatePrimaryKey implements Serializable {
     @PrimaryKeyColumn(name = "userid", ordinal = 0, type = org.springframework.cassandra.core.PrimaryKeyType.PARTITIONED)
-    private UUID userId;
+    private String userId;
 
     @PrimaryKeyColumn(name = "activityid", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
-    private UUID activityid;
+    private String activityid;
 
     @PrimaryKeyColumn(name = "captured", ordinal = 2, type = PrimaryKeyType.CLUSTERED)
     private Date captured;
@@ -28,7 +28,7 @@ public class ActivityCoordinatePrimaryKey implements Serializable {
      * @param activityid
      * @param captured
      */
-    public ActivityCoordinatePrimaryKey(UUID userId, UUID activityid, Date captured) {
+    public ActivityCoordinatePrimaryKey(String userId, String activityid, Date captured) {
         this.userId = userId;
         this.activityid = activityid;
         this.captured = captured;

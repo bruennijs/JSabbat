@@ -70,7 +70,7 @@ public class ActivityRabbitListener {
 
             ActivityCreateRequestDto dtoRequest = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
-            ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID(), UUID.fromString(dtoRequest.getId()), dtoRequest.getTitle());
+            ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID().toString(), dtoRequest.getId(), dtoRequest.getTitle());
 
             Activity activity = this.applicationService.start(command);
 

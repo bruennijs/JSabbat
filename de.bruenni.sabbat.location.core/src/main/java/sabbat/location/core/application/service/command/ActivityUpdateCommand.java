@@ -18,7 +18,7 @@ public class ActivityUpdateCommand extends ActivityBase {
      * Constructor
      * @param id
      */
-    public ActivityUpdateCommand(UUID id, Point[] points,
+    public ActivityUpdateCommand(String id, Point[] points,
                                  Optional<Integer> heartRate,
                                  Optional<Integer> cadence) {
         super(id);

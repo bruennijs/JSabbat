@@ -11,6 +11,6 @@ import java.util.Date;
 public class ActivityCoordinatePrimaryKeyBuilder {
     public ActivityCoordinatePrimaryKey fromActivityKey(ActivityPrimaryKey activityKey, Date timestamp) {
 
-        return new ActivityCoordinatePrimaryKey(activityKey.getUserId(),activityKey.getId(), timestamp);
+        return new ActivityCoordinatePrimaryKey(activityKey.getUserId().toString(), activityKey.getId().toString(), timestamp);
     }
 }
