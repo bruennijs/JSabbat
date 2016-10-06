@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.springframework.data.geo.Point;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.apigateway.location.builder.LocationApiDtoConverterBuilder;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;

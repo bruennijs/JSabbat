@@ -1,14 +1,25 @@
 package sabbat.apigateway.location.systemtest;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
+import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
+import org.springframework.context.annotation.*;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Created by bruenni on 13.07.16.
  */
 @Configuration
-@PropertySource("classpath:test/application.properties")
-@ImportResource(locations = {"classpath:test/spring-api-gateway-test.xml"})
+@Profile("test")
+@ActiveProfiles(value = "test")
+/*@SpringBootApplication(exclude =
+        {
+                CassandraAutoConfiguration.class,
+                CassandraDataAutoConfiguration.class,
+                RabbitAutoConfiguration.class,
+        })*/
+//@PropertySource("classpath:application.properties")
+@ImportResource("classpath:test/spring-api-gateway-test.xml")
 public class SystemTestConfig {
 }

@@ -1,5 +1,7 @@
 package sabbat.apigateway.location.systemtest;
 
+import infrastructure.util.Tuple2;
+import org.springframework.data.geo.Point;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,10 +14,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
+import sabbat.apigateway.location.controller.dto.ActivityStoppedResponse;
+import sabbat.apigateway.location.controller.dto.ActivityUpdatedResponse;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.BinaryOperator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by bruenni on 02.10.16.
@@ -48,11 +53,57 @@ public class MapMyTracksApiClient {
 
         body.add("request", "start_activity");
         body.add("title", title);
-        body.add("points", "0.0 0.0");
+        body.add("points", "0.0 0.0 0 0");
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(body, headers);
 
         return this.restTemplate.postForEntity(this.url, request, ActivityCreatedResponse.class);
+    }
+
+    /**
+     * Updates activity
+     * @return
+     */
+    public ResponseEntity<ActivityUpdatedResponse> updateActivity(long id, Iterable<Tuple2<Point, Date>> tuples) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+        HttpHeaders headers = new HttpHeaders();
+
+        body.add("request", "update_activity");
+        body.add("activity_id", Long.valueOf(id).toString());
+
+        Stream<String> seriallizesTuples = StreamSupport.stream(tuples.spliterator(), false).map(tuple -> SerializeTuple(tuple));
+
+
+        Optional<String> pointsValue = seriallizesTuples.reduce(new BinaryOperator<String>() {
+            @Override
+            public String apply(String s, String s2) {
+                return String.format("%1s %2s", s, s2);
+            }
+        });
+
+        body.add("points", pointsValue.get());
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(body, headers);
+
+        return this.restTemplate.postForEntity(this.url, request, ActivityUpdatedResponse.class);
+    }
+
+    public ResponseEntity<ActivityStoppedResponse> stopActivity(long id) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+        HttpHeaders headers = new HttpHeaders();
+
+        body.add("request", "stop_activity");
+        body.add("activity_id", Long.valueOf(id).toString());
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(body, headers);
+
+        return this.restTemplate.postForEntity(this.url, request, ActivityStoppedResponse.class);
+    }
+
+    private String SerializeTuple(Tuple2<Point, Date> tuple) {
+        return String.format(Locale.ROOT, "%1f %1f %1d %1d", tuple.getT1().getY(), tuple.getT1().getX(), 0, tuple.getT2().getTime() / 1000);
     }
 }

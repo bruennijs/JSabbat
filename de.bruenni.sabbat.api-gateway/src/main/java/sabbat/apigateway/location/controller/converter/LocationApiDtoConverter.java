@@ -82,7 +82,7 @@ public class LocationApiDtoConverter {
 
             log.debug("Transform [" + locationResponseDto + "]");
 
-            return new ActivityCreatedResponse(locationResponseDto.getId());
+            return new ActivityCreatedResponse(Long.parseLong(locationResponseDto.getId()));
         }
         else if (dto instanceof ActivityStoppedResponseDto)
         {

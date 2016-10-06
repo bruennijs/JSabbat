@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import sabbat.apigateway.location.command.IActivityCommandFactory;
 import sabbat.apigateway.location.command.ICommand;
+import sabbat.apigateway.location.controller.dto.ActivityUpdatedResponse;
 import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import org.slf4j.Logger;
@@ -114,7 +115,7 @@ public class MapMyTracksApiController {
                 if (loggerTraffic.isDebugEnabled())
                     loggerTraffic.debug("<-- [200 OK]");
 
-                return new ResponseEntity(HttpStatus.OK);
+                return new ResponseEntity(new ActivityUpdatedResponse(), HttpStatus.OK);
             }
         }
         catch(Exception exc)

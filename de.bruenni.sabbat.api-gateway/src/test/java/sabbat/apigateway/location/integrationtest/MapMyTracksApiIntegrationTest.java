@@ -1,47 +1,39 @@
-package sabbat.apigateway.location.unittest;
+package sabbat.apigateway.location.integrationtest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.hamcrest.CustomMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.WebApplicationContextServletContextAwareProcessor;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 import sabbat.apigateway.Application;
-import sabbat.apigateway.location.config.RootConfig;
 import sabbat.apigateway.location.config.WebConfig;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import test.matcher.LambdaMatcher;
 
 import java.io.IOException;
-import java.util.UUID;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * Created by bruenni on 13.07.16.
  */
 //@IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { UnitTestConfig.class, WebConfig.class, Application.class})
+@SpringApplicationConfiguration(classes = { IntegrationTestConfig.class, WebConfig.class, Application.class })
 @WebAppConfiguration
-public class MapMyTracksApiControllerTest {
+public class MapMyTracksApiIntegrationTest {
 
-    @Value("${test.location.poc}")
+    @Value("${apigateway.mapmytracksapi.url}")
     public String locationApiPoC;
 
     @Autowired

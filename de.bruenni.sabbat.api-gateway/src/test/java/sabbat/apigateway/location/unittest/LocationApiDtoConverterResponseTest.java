@@ -25,18 +25,19 @@ import java.util.UUID;
  * Created by bruenni on 02.10.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { UnitTestConfig.class})
+@SpringApplicationConfiguration(classes = { UnitTestConfig.class })
 public class LocationApiDtoConverterResponseTest {
 
     @Test
     public void when_transform_activitycreatedresponsedto_expect_mapmytracksdto_contains_type_and_id() throws Exception {
         LocationApiDtoConverter sut = new LocationApiDtoConverterBuilder().build();
 
-        ActivityCreatedResponseDto dto = new ActivityCreatedResponseDto(UUID.randomUUID().toString());
+        long time = new Date().getTime();
+        ActivityCreatedResponseDto dto = new ActivityCreatedResponseDto(String.format("%1d", time));
 
         ActivityCreatedResponse activityCreatedResponse = (ActivityCreatedResponse) sut.transformResponse(dto);
 
-        Assert.assertEquals(dto.getId(), activityCreatedResponse.activityId);
+        Assert.assertEquals(time, activityCreatedResponse.activityId);
         Assert.assertEquals("activity_started", activityCreatedResponse.type);
     }
 }

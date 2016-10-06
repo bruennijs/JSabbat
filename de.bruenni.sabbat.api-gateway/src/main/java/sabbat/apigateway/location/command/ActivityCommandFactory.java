@@ -49,8 +49,8 @@ public abstract class ActivityCommandFactory implements IActivityCommandFactory 
     @Override
     public ICommand getCommand(String requestType, String title, String points, String source, String activity_id) throws Exception {
         if (requestType.equals("start_activity")) {
-            //return createStartActivityCommand(Long.valueOf(createNewUniqueId()).toString(), title, points);
-            return createStartActivityCommand(UUID.randomUUID().toString(), title, points);
+            return createStartActivityCommand(Long.valueOf(createNewUniqueId()).toString(), title, points);
+            //return createStartActivityCommand(UUID.randomUUID().toString(), title, points);
         }
         else if (requestType.equals("stop_activity"))
         {
