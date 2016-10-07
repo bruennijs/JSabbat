@@ -186,6 +186,7 @@ services:
   rabbitmq-ctl:
     #docker run -it --name rabbitmq-ctl --link some-rabbit:my-rabbit -e RABBITMQ_ERLANG_COOKIE='secret cookie here' rabbitmq:3 bash
     #docker run -it --name rabbitmq-ctl --link rabbitmq-dev:rabbit -e RABBITMQ_ERLANG_COOKIE='DDXFNKDEXRBEGNIOHNPO' rabbitmq:3.6.4 bash
+    # then run in bash: rabbitmqctl -n rabbit@rabbitmq-dev list_queues
 
     #root@f2a2d3d27c75:/# rabbitmqctl -n rabbit@rabbitmq-dev list_users
     container_name: rabbitmq-ctl
