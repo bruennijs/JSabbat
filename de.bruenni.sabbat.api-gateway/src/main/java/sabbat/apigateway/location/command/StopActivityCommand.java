@@ -54,6 +54,6 @@ public class StopActivityCommand implements ICommand {
      */
     private ActivityStopRequestDto transformStartRequest(String id)
     {
-        return new ActivityStopRequestDto(id);
+        return new ActivityStopRequestDto(id, "");
     }
 }

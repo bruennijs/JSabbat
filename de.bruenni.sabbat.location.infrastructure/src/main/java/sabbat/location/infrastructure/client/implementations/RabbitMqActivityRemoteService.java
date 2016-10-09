@@ -5,13 +5,15 @@ import org.slf4j.Logger;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureAdapter;
+import rx.subjects.ReplaySubject;
+import sabbat.location.infrastructure.client.Confirmation;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.*;
 
@@ -28,20 +30,22 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
     final Logger logger = org.slf4j.LoggerFactory.getLogger(RabbitMqActivityRemoteService.class);
 
-    @Value("${location.activity.routingkey.command.start}")
-    public String StartRoutingKey;
-
-    @Value("${location.activity.routingkey.command.stop}")
-    public String StopRoutingKey;
-
     private AsyncRabbitTemplate asyncRabbitTemplate;
+    private RabbitTemplate updateTemplate;
     private infrastructure.parser.IDtoParser parser;
     private ConnectionFactory connectionFactory;
 
+    /**
+     * Constructor
+     * @param asyncRabbitTemplate
+     * @param parser
+     */
     public RabbitMqActivityRemoteService(AsyncRabbitTemplate asyncRabbitTemplate,
+                                         RabbitTemplate updateTabbitTemplate,
                                          infrastructure.parser.IDtoParser parser)
     {
         this.asyncRabbitTemplate = asyncRabbitTemplate;
+        this.updateTemplate = updateTabbitTemplate;
         this.parser = parser;
     }
 
@@ -57,7 +61,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
             messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
             messageProperties.setCorrelationIdString(UUID.randomUUID().toString());
 
-            AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.StartRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
+            AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
             return new ListenableFutureAdapter<ActivityCreatedResponseDto, org.springframework.amqp.core.Message>(responseFuture) {
                 @Override
@@ -84,8 +88,54 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public void update(ActivityUpdateEventDto dto) throws Exception {
-        logger.debug(StringFormatter.format("RABBIT dto[%1s]", this.parser.serialize(dto)).getValue());
+    public rx.Observable<Confirmation<ActivityUpdateEventDto>> update(ActivityUpdateEventDto dto) throws Exception {
+
+
+        try {
+
+            ReplaySubject<Confirmation<ActivityUpdateEventDto>> subject = ReplaySubject.create();
+
+            String json = parser.serialize(dto);
+
+            MessageProperties messageProperties = new MessageProperties();
+            messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+            messageProperties.setCorrelationIdString(UUID.randomUUID().toString());
+
+            logger.debug(String.format("Update activity [dto=%1s, correlationId=%2s]", json, messageProperties.getCorrelationIdString()));
+
+            updateTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
+                logger.debug(String.format("update return %1s,%2s", replyCode, replyText));
+                try {
+                    subject.onNext(new Confirmation<>(dto, true, replyText));
+                }
+                finally {
+                    subject.onCompleted();
+                }
+            });
+
+            updateTemplate.setConfirmCallback((correlationData, ack, cause) ->
+            {
+                try
+                {
+                    logger.debug(String.format("update confirmation [correlationId=%1s, %2s, cause=%3s]", correlationData, ack, cause));
+                    //subject.onNext(new Confirmation<>(dto, ack, cause));
+                }
+                finally {
+                    //subject.onCompleted();
+                }
+            });
+
+            updateTemplate.send(
+              new org.springframework.amqp.core.Message(json.getBytes(StandardCharsets.US_ASCII),
+                messageProperties));
+
+            return subject;
+        }
+        catch (Exception exception)
+        {
+            logger.error("Start activity failed", exception);
+            throw exception;
+        }
     }
 
     @Override

@@ -81,10 +81,11 @@ public class MapMyTracksApiController {
                                 @RequestParam(value= "title", required = false) String title,
                                 @RequestParam(value= "points", required = false) String points,
                                 @RequestParam(value= "source", required = false) String source,
-                                @RequestParam(value = "tags", required = false) String tags)  throws Exception {
+                                @RequestParam(value = "tags", required = false) String tags,
+                                @RequestHeader(value = "Authorization", required = true) String authorization)  throws Exception {
 
         if (loggerTraffic.isDebugEnabled())
-            loggerTraffic.debug(StringFormatter.format("--> [request=%1s, axtivity_id=%2s, title=%3s, points=%4s]", requestType, activity_id, title, points).getValue());
+            loggerTraffic.debug(StringFormatter.format("--> [request=%1s, axtivity_id=%2s, title=%3s, points=%4s, authorization=%5s]", requestType, activity_id, title, points).getValue());
 
         try {
 

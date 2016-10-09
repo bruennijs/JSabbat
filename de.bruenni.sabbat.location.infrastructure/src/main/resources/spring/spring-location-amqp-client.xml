@@ -17,7 +17,7 @@
 
 <!--    <bean id="connectionFactoryTmp"
       class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <constructor-arg  ref="connectionFactory"/>
+        <constructor-arg  ref="clientConnectionFactory"/>
         <property name="username" value="guest"/>
         <property name="password" value="guest"/>
     </bean>-->
@@ -25,40 +25,42 @@
     <task:executor id="serviceTaskExecuter" pool-size="5"/>
 
     <rabbit:connection-factory
-            id="connectionFactory"
+            id="clientConnectionFactory"
             host="${spring.rabbitmq.host}"
             port="${spring.rabbitmq.port}"
             username="guest"
             password="guest"
-            executor="serviceTaskExecuter"/>
+            executor="serviceTaskExecuter"
+            publisher-confirms="true"
+            publisher-returns="true"/>
+
+    <rabbit:admin id="admin" connection-factory="clientConnectionFactory" />
 
     <!-- queue, topic, echange -->
-    <rabbit:topic-exchange id="activityCommandExchange" name="${location.activity.exchange.command}" declared-by="admin" />
-    <rabbit:topic-exchange id="activityTrackingExchange" name="${location.activity.exchange.tracking}" />
+    <rabbit:topic-exchange id="activityCommandExchange" name="${location.activity.exchange.command}"  declared-by="admin"/>
+    <rabbit:topic-exchange id="activityTrackingExchange" name="${location.activity.exchange.tracking}" declared-by="admin" />
 
     <!-- fixed start command reply queue -->
     <rabbit:queue id="activityCommandReplyQueue"
                   name="${location.activity.queue.command.reply}"
                   declared-by="admin"
-                auto-declare="true"/>
+                  auto-declare="true"/>
 
     <!-- TEMPLATES -->
 <!--    <rabbit:template id="activityCommandTemplate"
-                     connection-factory="connectionFactory"
+                     connection-factory="clientConnectionFactory"
                      exchange="${location.activity.exchange.command}"
                      mandatory="true"
                      reply-queue="activityCommandReplyQueue">
                      <rabbit:reply-listener />
     </rabbit:template>-->
 
-    <bean id="asyncActivityCommandTemplate" class="org.springframework.amqp.rabbit.AsyncRabbitTemplate">
-        <constructor-arg index="0" ref="connectionFactory" />
+    <bean id="locationCommandRabbitTemplate" class="org.springframework.amqp.rabbit.AsyncRabbitTemplate">
+        <constructor-arg index="0" ref="clientConnectionFactory" />
         <constructor-arg index="1" value="${location.activity.exchange.command}" />
-        <constructor-arg index="2" value="" />  <!-- routing key -->
+        <constructor-arg index="2" value="${location.activity.routingkey.command.start}" />
         <constructor-arg index="3" value="${location.activity.queue.command.reply}" />
     </bean>
-
-    <rabbit:admin id="admin" connection-factory="connectionFactory" />
 
     <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
         <property name="backOffPolicy">
@@ -71,7 +73,8 @@
     </bean>
 
     <bean id="RabbitMqActivityRemoteService" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService">
-        <constructor-arg ref="asyncActivityCommandTemplate" />
-        <constructor-arg ref="jsonDtoParser" />
+        <constructor-arg ref="locationCommandRabbitTemplate" />
+        <constructor-arg ref="locationUpdateRabbitTemplate" />
+        <constructor-arg ref="locationJsonDtoParser" />
     </bean>
 </beans>

@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 import rx.observables.BlockingObservable;
+import sabbat.location.infrastructure.builder.ActivityCreateRequestDtoBuilder;
 import sabbat.location.infrastructure.client.IActivityEventService;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
@@ -58,7 +59,7 @@ public class LocationIntegrationTest {
         AtomicInteger atomicInteger = new AtomicInteger(3647);
 
         Integer integer = new Integer(atomicInteger.getAndIncrement());
-        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDto(integer.toString(), "some title text of this track"));
+        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
         ActivityCreatedResponseDto responseDto = future.get();
         Assert.assertEquals(integer.intValue(), Integer.decode(responseDto.getId()).intValue());
     }
@@ -66,16 +67,13 @@ public class LocationIntegrationTest {
     @Test
     public void when_send_ActivityCreateRequest_expect_IActivityEventService_received_same_event() throws Exception {
 
-        AtomicInteger atomicInteger = new AtomicInteger(3647);
         BlockingObservable<IActivityResponseDto> eventObs = ActivityEventService.OnResponse()
                 .doOnNext(resp -> logger.debug(resp.toString()))
                 .take(1)
                 .timeout(2000, TimeUnit.MILLISECONDS)
                 .toBlocking();
 
-        Integer integer = new Integer(atomicInteger.getAndIncrement());
-
-        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDto(integer.toString(), "some title text of this track"));
+        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
         ActivityCreatedResponseDto responseDto = future.get();
         // get respons eform event
         IActivityResponseDto eventResponseDto = eventObs.first();

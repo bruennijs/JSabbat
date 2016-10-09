@@ -3,14 +3,16 @@ package sabbat.apigateway.location.controller.converter;
 import com.sun.javafx.binding.StringFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.geo.Point;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.ActivityStoppedResponse;
 import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
 import sabbat.location.infrastructure.client.dto.*;
 
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.UUID;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by bruenni on 24.07.16.
@@ -29,30 +31,46 @@ public class LocationApiDtoConverter {
      */
     public ActivityUpdateEventDto transformUpdateEvent(String id, String points) throws Exception {
 
-        String[] pointTokens = ParsePointValues(points);
+        LinkedList<TimeSeriesCoordinate> list = new LinkedList<>();
 
-        Point coordinate = ParseCoordinate(pointTokens);
+        String[] pointTokens = SplitTokens(points);
 
-        Date timestamp = ParseTimestamp(pointTokens);
+        parseTimeSeriesBlocksRecursive(pointTokens, list);
 
-        return new ActivityUpdateEventDto(id, timestamp, coordinate);
+        return new ActivityUpdateEventDto(id, "", list);
+    }
+
+    private void parseTimeSeriesBlocksRecursive(String[] tokens, LinkedList<TimeSeriesCoordinate> list) throws Exception {
+
+        if (tokens.length >= 4) {
+            TimeSeriesCoordinate timeSeriesCoordinate = ParseTimeSeries(tokens);
+
+            list.add(timeSeriesCoordinate);
+
+            String[] tokensLeft = Arrays.copyOfRange(tokens, 4, tokens.length);
+
+            parseTimeSeriesBlocksRecursive(tokensLeft, list);
+        }
     }
 
     private Date ParseTimestamp(String[] pointTokens) {
-        return new Date(Long.valueOf(pointTokens[3]) * 1000);
+        Instant instant = Instant.ofEpochSecond(Long.valueOf(pointTokens[3]));
+        return Date.from(instant);
     }
 
     /**
      * , LocationApiDtoConverter dtoConverter
      * @param tokens
      */
-    private Point ParseCoordinate(String[] tokens) {
+    private TimeSeriesCoordinate ParseTimeSeries(String[] tokens) {
+
+        Date timestamp = ParseTimestamp(tokens);
 
         // for each block parse block
-        return new Point(Double.valueOf(tokens[1]).doubleValue(), Double.valueOf(tokens[0]).doubleValue());
+        return new TimeSeriesCoordinate(timestamp, Double.valueOf(tokens[0]).doubleValue(), Double.valueOf(tokens[1]).doubleValue());
     }
 
-    private String[] ParsePointValues(String points) throws Exception {
+    private String[] SplitTokens(String points) throws Exception {
 
         //String[] tokensByEqualSign = points.split("\\=");
 

@@ -31,9 +31,9 @@ public interface IActivityRemoteService {
     /**
      * Update of activity with new geo points, heartrate and so on.
      * @param command
-     * @return Future completes after update is send to infrfastructure to deliver measurement value.
+     * @return Observable publishing channel confirmation whether dto has been
      */
-    void update(ActivityUpdateEventDto command) throws Exception;
+    rx.Observable<Confirmation<ActivityUpdateEventDto>> update(ActivityUpdateEventDto command) throws Exception;
 
     /**
      * Echo ping pong method.

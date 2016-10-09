@@ -11,9 +11,16 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
+import rx.Observable;
 import sabbat.location.infrastructure.AmqpClientAutoConfiguration;
+import sabbat.location.infrastructure.builder.ActivityCreateRequestDtoBuilder;
+import sabbat.location.infrastructure.builder.ActivityUpdateEventDtoBuilder;
+import sabbat.location.infrastructure.builder.TimeSeriesCoordinateBuilder;
+import sabbat.location.infrastructure.client.Confirmation;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
+import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
+import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
 import sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService;
 
 import java.io.IOException;
@@ -42,12 +49,25 @@ public class RabbitMqActivityNativeClientTest {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-        ActivityCreateRequestDto dto = new ActivityCreateRequestDto(UUID.randomUUID().toString(), "mein erstes Rennen");
+        ActivityCreateRequestDto dto = new ActivityCreateRequestDtoBuilder().build();
 
         ListenableFuture<ActivityCreatedResponseDto> responseFuture = Client.start(dto);
         ActivityCreatedResponseDto response = responseFuture.get(1000, TimeUnit.MILLISECONDS);
 
         Assert.assertEquals(dto.getId(), response.getId());
+    }
+
+    @Test
+    public void When_uddate_activity_expect_message_send_to_exchange() throws Exception {
+
+        TimeSeriesCoordinate timeSeriesCoordinate = new TimeSeriesCoordinateBuilder().withLatitude(179.99).build();
+        ActivityUpdateEventDto dto = new ActivityUpdateEventDtoBuilder().withTimeSeries(timeSeriesCoordinate).build();
+
+        Observable<Confirmation<ActivityUpdateEventDto>> confirmationObservable = Client.update(dto);
+
+        Confirmation<ActivityUpdateEventDto> confirmation = confirmationObservable.timeout(1000, TimeUnit.MILLISECONDS).toBlocking().single();
+
+        Assert.assertTrue(confirmation.toString(), confirmation.isAcked());
     }
 
     @Test

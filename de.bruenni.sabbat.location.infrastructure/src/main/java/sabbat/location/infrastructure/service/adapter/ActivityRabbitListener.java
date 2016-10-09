@@ -13,6 +13,7 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -26,6 +27,7 @@ import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
+import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -54,19 +56,21 @@ public class ActivityRabbitListener {
     public IActivityApplicationService applicationService;
 
     @Autowired
+    @Qualifier("locationJsonDtoParser")
     private infrastructure.parser.IDtoParser dtoParser;
 
-    @RabbitListener(id="activityListener",
+    @RabbitListener(id="activityCommandListener",
                     queues = "${location.activity.queue.command}",
                     containerFactory = "rabbitListenerContainerFactory")
     //@Header("correlationId") String correlationId
-    public Message onMessage(Message message,
+    public Message onCommandMessage(Message message,
                              @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey,
                              Channel channel,
                              @Header(AmqpHeaders.CORRELATION_ID) byte[] correlationId) throws Exception {
-        logger.debug("-----> " + message.toString() + "cid=" + correlationId + ",routingkey=" + routingKey);
+        logger.debug("--> command [" + message.toString() + "cid=" + correlationId + ",routingkey=" + routingKey + "]");
 
         if (routingKey.equals(ActivityStartRoutingKey)) {
+
 
             ActivityCreateRequestDto dtoRequest = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
@@ -86,5 +90,15 @@ public class ActivityRabbitListener {
             //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 
         throw new Exception("not implemented");
+    }
+
+    @RabbitListener(
+            id="activityUpdateListener",
+            queues = "${location.activity.queue.tracking}",
+            containerFactory = "rabbitListenerContainerFactory")
+    public void onTrackingMessage(Message message) throws IOException {
+        ActivityUpdateEventDto dto = dtoParser.parse(message.getBody(), ActivityUpdateEventDto.class);
+        logger.debug("--> tracking [" + message.toString() + "]");
+        logger.debug("--> DTO      [" + dto.toString() + "]");
     }
 }

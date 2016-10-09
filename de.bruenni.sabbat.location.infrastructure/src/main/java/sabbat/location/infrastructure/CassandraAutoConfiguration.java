@@ -2,8 +2,10 @@ package sabbat.location.infrastructure;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import sabbat.location.infrastructure.client.configuration.LocationInfrastructureConfiguration;
 
 /**
  * Created by bruenni on 24.09.16.
@@ -12,9 +14,9 @@ import org.springframework.context.annotation.PropertySource;
 //@ConditionalOnProperty(prefix = "location.infrastructure.cassandra", name = "enabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnProperty(prefix = "location.infrastructure.cassandra", name = "enabled", havingValue = "true", matchIfMissing = false)
 @PropertySource("classpath:sabbat-location-infrastructure.properties")
+@Import(LocationInfrastructureConfiguration.class)
 @ImportResource(locations =
         {
-                "classpath:spring/spring-location-infrastructure.xml",
                 //"classpath:spring/spring-location-amqp-client.xml",
                 "classpath:spring/spring-location-cassandra.xml"
         })

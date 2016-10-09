@@ -1,72 +1,60 @@
 package sabbat.location.infrastructure.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import infrastructure.util.Tuple2;
 import org.springframework.data.geo.Point;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 //import de.bruenni.infrastructure.common.util.Tuple2;
 
 /**
  * Created by bruenni on 02.10.16.
  */
-public class ActivityUpdateEventDto extends ActivityDtoBase  {
+public class ActivityUpdateEventDto extends ActivityRequestDtoBase   {
 
-/*    @JsonProperty()
-    private Tuple2<Date, Point> tuples;*/
+    @JsonProperty("timeseries")
+    private List<TimeSeriesCoordinate> timeSeries;
 
-    @JsonProperty("timestamp")
+    public ActivityUpdateEventDto() {
+    }
+
+    /*    @JsonProperty("timestamp")
     private Date timestamp;
 
-    @JsonProperty("coordinate")
-    private Point coordinate;
+    @JsonProperty("coordinates")
+    private Point coordinate;*/
 
     /**
      * Constructor
      * @param activityId
-     * @param timestamp
-     * @param coordinate
      */
-    public ActivityUpdateEventDto(String activityId, Date timestamp, Point coordinate) {
-        super(activityId);
-        this.timestamp = timestamp;
-        this.coordinate = coordinate;
+    public ActivityUpdateEventDto(String activityId, String identitytoken, TimeSeriesCoordinate timeSeries) {
+        super(activityId, identitytoken);
+        this.timeSeries = new ArrayList<>();
+        this.timeSeries.add(timeSeries);
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    /**
+     * Constructor
+     * @param id
+     * @param identityToken
+     */
+    public ActivityUpdateEventDto(String id, String identityToken, List<TimeSeriesCoordinate> timeSeriesArray) {
+        super(id, identityToken);
+        this.timeSeries = timeSeriesArray;
     }
 
-    public Point getCoordinate() {
-        return coordinate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        ActivityUpdateEventDto that = (ActivityUpdateEventDto) o;
-
-        if (!timestamp.equals(that.timestamp)) return false;
-        return coordinate.equals(that.coordinate);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + timestamp.hashCode();
-        result = 31 * result + coordinate.hashCode();
-        return result;
+    public Iterable<TimeSeriesCoordinate> getTimeSeries() {
+        return timeSeries;
     }
 
     @Override
     public String toString() {
         return "ActivityUpdateEventDto{" +
-                "timestamp=" + timestamp +
-                ", coordinate=" + coordinate +
+                "timeSeries=" + timeSeries +
                 "} " + super.toString();
     }
 }

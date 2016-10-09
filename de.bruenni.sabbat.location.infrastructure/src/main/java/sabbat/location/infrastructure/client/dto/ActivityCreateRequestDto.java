@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by bruenni on 04.07.16.
  */
-public class ActivityCreateRequestDto extends ActivityDtoBase {
+public class ActivityCreateRequestDto extends ActivityRequestDtoBase {
 
     @JsonProperty("title")
     private String title;
@@ -14,8 +14,8 @@ public class ActivityCreateRequestDto extends ActivityDtoBase {
         super();
     }
 
-    public ActivityCreateRequestDto(String id, String title) {
-        super(id);
+    public ActivityCreateRequestDto(String id, String title, String identityToken) {
+        super(id, identityToken);
         this.title = title;
     }
 

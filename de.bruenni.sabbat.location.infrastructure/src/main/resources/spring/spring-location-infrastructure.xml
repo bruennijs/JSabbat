@@ -9,6 +9,4 @@
     <!--<import resource="classpath:spring/spring-location-integration.xml"/>-->
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 
-    <bean id="jsonDtoParser" class="infrastructure.parser.JsonDtoParser" />
-
 </beans>

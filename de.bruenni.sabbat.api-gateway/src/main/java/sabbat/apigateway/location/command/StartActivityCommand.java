@@ -59,6 +59,6 @@ public class StartActivityCommand implements ICommand {
      */
     private ActivityCreateRequestDto transformStartRequest(String title, String points)
     {
-        return new ActivityCreateRequestDto(id, title);
+        return new ActivityCreateRequestDto(id, "", title);
     }
 }
