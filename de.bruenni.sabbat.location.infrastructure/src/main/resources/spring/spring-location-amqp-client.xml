@@ -37,7 +37,7 @@
     <rabbit:admin id="admin" connection-factory="clientConnectionFactory" />
 
     <!-- queue, topic, echange -->
-    <rabbit:topic-exchange id="activityCommandExchange" name="${location.activity.exchange.command}"  declared-by="admin"/>
+    <rabbit:topic-exchange id="activityCommandExchange" name="${location.activity.exchange.command}"  declared-by="admin" />
     <rabbit:topic-exchange id="activityTrackingExchange" name="${location.activity.exchange.tracking}" declared-by="admin" />
 
     <!-- fixed start command reply queue -->

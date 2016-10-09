@@ -24,7 +24,8 @@
             executor="serviceTaskExecuter"/>
 
     <rabbit:admin id="serviceAdmin"
-                  connection-factory="serviceConnectionFactory"/>
+                  connection-factory="serviceConnectionFactory"
+                auto-startup="true"/>
 
     <bean id="ActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.ActivityRabbitListener" scope="singleton" />
 

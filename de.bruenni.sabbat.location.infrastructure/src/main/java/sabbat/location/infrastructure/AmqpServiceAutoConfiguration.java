@@ -105,13 +105,13 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         @Bean
         public org.springframework.amqp.core.Exchange locationCommandExchange()
         {
-                return ExchangeBuilder.topicExchange(activityCommandExchangeName).autoDelete().build();
+                return ExchangeBuilder.topicExchange(activityCommandExchangeName).build();
         }
 
         @Bean
         public org.springframework.amqp.core.Exchange locationTrackingExchange()
         {
-                return ExchangeBuilder.topicExchange(activityTrackingExchangeName).autoDelete().build();
+                return ExchangeBuilder.topicExchange(activityTrackingExchangeName).build();
         }
 
         @Bean
