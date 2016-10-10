@@ -27,18 +27,6 @@
                   connection-factory="serviceConnectionFactory"
                 auto-startup="true"/>
 
-    <bean id="ActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.ActivityRabbitListener" scope="singleton" />
-
-    <!--<bean id="ActivityRabbitListenerTyped" class="sabbat.location.infrastructure.service.adapter.ActivityMessageRabbitListener" scope="singleton" />-->
-
-<!--    <bean id="rabbitListenerContainerFactory2"
-          class="sabbat.location.infrastructure.common.ExtendedRabbitListenerContainerFactory">
-        <property name="connectionFactory" ref="serviceConnectionFactory"/>
-        <property name="concurrentConsumers" value="3"/>
-        <property name="maxConcurrentConsumers" value="10"/>
-        <property name="taskExecutor" ref="serviceTaskExecuter" />
-        <property name="messageConverter" ref="jackson2JsonMessageConverter" />
-        <property name="autoDeclare" value="true" />
-    </bean>-->
+    <!--<bean id="ActivityRabbitListener" class="sabbat.location.infrastructure.service.adapter.ActivityRabbitListener" scope="singleton" />-->
 
 </beans>

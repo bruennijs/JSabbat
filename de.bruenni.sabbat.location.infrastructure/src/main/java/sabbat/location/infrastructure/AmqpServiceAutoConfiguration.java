@@ -12,10 +12,11 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
-import sabbat.location.infrastructure.client.configuration.LocationInfrastructureConfiguration;
 import sabbat.location.infrastructure.common.ExtendedRabbitListenerContainerFactory;
+import sabbat.location.infrastructure.service.adapter.ActivityRabbitListener;
 
 import java.util.HashMap;
 import java.util.concurrent.Executor;
@@ -78,8 +79,8 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         public ExtendedRabbitListenerContainerFactory rabbitListenerContainerFactory()
         {
                 ExtendedRabbitListenerContainerFactory factory = new ExtendedRabbitListenerContainerFactory();
-                factory.setConcurrentConsumers(10);
-                factory.setMaxConcurrentConsumers(10);
+                //factory.setConcurrentConsumers(5);
+                //factory.setMaxConcurrentConsumers(10);
                 factory.setTaskExecutor(taskExecutor);
                 factory.setConnectionFactory(connectionFactory);
                 factory.setMessageConverter(jackson2JsonMessageConverter());
@@ -95,7 +96,7 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
                 log.debug("locationCommandQueue definition [admin=" + serviceAdmin.toString() + "]");
 
                 HashMap<String, Object> arguments = new HashMap<>();
-                arguments.put("x-message-ttl", (int) 5000);
+                arguments.put("x-message-ttl", 5000);
                 Queue queue = new Queue(activityCommandQueueName, true, false, false, arguments);
                 queue.setAdminsThatShouldDeclare(serviceAdmin);
                 queue.setShouldDeclare(true);
@@ -105,19 +106,23 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         @Bean
         public org.springframework.amqp.core.Exchange locationCommandExchange()
         {
-                return ExchangeBuilder.topicExchange(activityCommandExchangeName).build();
+                return ExchangeBuilder.topicExchange(activityCommandExchangeName).autoDelete().build();
         }
 
         @Bean
         public org.springframework.amqp.core.Exchange locationTrackingExchange()
         {
-                return ExchangeBuilder.topicExchange(activityTrackingExchangeName).build();
+                return ExchangeBuilder.topicExchange(activityTrackingExchangeName).autoDelete().build();
         }
 
         @Bean
         public Binding locationCommandBinding()
         {
-                return BindingBuilder.bind(locationCommandQueue()).to(locationCommandExchange()).with(activityCommandsRoutingKey).noargs();
+                return BindingBuilder
+                        .bind(locationCommandQueue())
+                        .to(locationCommandExchange())
+                        .with(activityCommandsRoutingKey)
+                        .noargs();
         }
 
         @Bean
@@ -141,5 +146,12 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         public Jackson2JsonMessageConverter jackson2JsonMessageConverter()
         {
                 return new Jackson2JsonMessageConverter();
+        }
+
+        @Bean()
+        @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+        public ActivityRabbitListener activityRabbitListener()
+        {
+                return new ActivityRabbitListener();
         }
 }

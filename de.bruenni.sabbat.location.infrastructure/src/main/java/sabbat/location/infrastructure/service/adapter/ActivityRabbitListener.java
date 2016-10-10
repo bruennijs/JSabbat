@@ -3,6 +3,7 @@ package sabbat.location.infrastructure.service.adapter;
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.rabbitmq.client.Channel;
+import org.ietf.jgss.MessageProp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -59,8 +60,7 @@ public class ActivityRabbitListener {
     @Qualifier("locationJsonDtoParser")
     private infrastructure.parser.IDtoParser dtoParser;
 
-    @RabbitListener(id="activityCommandListener",
-                    queues = "${location.activity.queue.command}",
+    @RabbitListener(queues = "${location.activity.queue.command}",
                     containerFactory = "rabbitListenerContainerFactory")
     //@Header("correlationId") String correlationId
     public Message onCommandMessage(Message message,
@@ -81,7 +81,11 @@ public class ActivityRabbitListener {
             //Observable.from(activityStartFuture)
             ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
 
-            MessageProperties msgProps = MessagePropertiesBuilder.newInstance().setCorrelationId(correlationId).build();
+            MessageProperties msgProps = MessagePropertiesBuilder.newInstance()
+                    .setCorrelationId(correlationId)
+                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                    .build();
+
             return MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
                     .andProperties(msgProps)
                     .build();
@@ -92,10 +96,8 @@ public class ActivityRabbitListener {
         throw new Exception("not implemented");
     }
 
-    @RabbitListener(
-            id="activityUpdateListener",
-            queues = "${location.activity.queue.tracking}",
-            containerFactory = "rabbitListenerContainerFactory")
+    @RabbitListener(queues = "${location.activity.queue.tracking}",
+                    containerFactory = "rabbitListenerContainerFactory")
     public void onTrackingMessage(Message message) throws IOException {
         ActivityUpdateEventDto dto = dtoParser.parse(message.getBody(), ActivityUpdateEventDto.class);
         logger.debug("--> tracking [" + message.toString() + "]");

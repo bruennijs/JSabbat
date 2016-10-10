@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
-import sabbat.location.infrastructure.client.configuration.LocationInfrastructureConfiguration;
 
 /**
  * Created by bruenni on 24.09.16.

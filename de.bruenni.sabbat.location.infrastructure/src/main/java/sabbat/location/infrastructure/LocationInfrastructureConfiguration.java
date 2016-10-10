@@ -1,4 +1,4 @@
-package sabbat.location.infrastructure.client.configuration;
+package sabbat.location.infrastructure;
 
 import infrastructure.parser.JsonDtoParser;
 import org.springframework.context.annotation.Bean;

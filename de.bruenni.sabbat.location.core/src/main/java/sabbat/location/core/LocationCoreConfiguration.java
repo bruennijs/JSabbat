@@ -1,9 +1,13 @@
 package sabbat.location.core;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import sabbat.location.core.persistence.activity.IActivityRepository;
+import sabbat.location.core.persistence.activity.implementation.ActivityRepositoryDummy;
 
 /**
  * Created by bruenni on 25.09.16.
@@ -16,4 +20,11 @@ import org.springframework.context.annotation.PropertySource;
                 "classpath:spring/spring-location-core.xml"
         })
 public class LocationCoreConfiguration {
+
+        @Bean(name = "activityRepository")
+        @ConditionalOnMissingBean(IActivityRepository.class)
+        public IActivityRepository activityRepository()
+        {
+                return new ActivityRepositoryDummy();
+        }
 }

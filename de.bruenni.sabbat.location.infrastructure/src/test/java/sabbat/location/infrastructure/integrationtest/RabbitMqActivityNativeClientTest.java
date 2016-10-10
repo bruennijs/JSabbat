@@ -52,7 +52,7 @@ public class RabbitMqActivityNativeClientTest {
         ActivityCreateRequestDto dto = new ActivityCreateRequestDtoBuilder().build();
 
         ListenableFuture<ActivityCreatedResponseDto> responseFuture = Client.start(dto);
-        ActivityCreatedResponseDto response = responseFuture.get(1000, TimeUnit.MILLISECONDS);
+        ActivityCreatedResponseDto response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
 
         Assert.assertEquals(dto.getId(), response.getId());
     }
@@ -65,7 +65,7 @@ public class RabbitMqActivityNativeClientTest {
 
         Observable<Confirmation<ActivityUpdateEventDto>> confirmationObservable = Client.update(dto);
 
-        Confirmation<ActivityUpdateEventDto> confirmation = confirmationObservable.timeout(1000, TimeUnit.MILLISECONDS).toBlocking().single();
+        Confirmation<ActivityUpdateEventDto> confirmation = confirmationObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
 
         Assert.assertTrue(confirmation.toString(), confirmation.isAcked());
     }

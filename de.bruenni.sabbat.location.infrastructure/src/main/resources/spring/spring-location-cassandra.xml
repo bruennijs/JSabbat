@@ -12,14 +12,15 @@
     <!--<context:property-placeholder location="classpath:cassandra.properties" />-->
 
     <!-- REQUIRED: The Cassandra Cluster -->
-    <cassandra:cluster id="cassandraCluster" contact-points="${cassandra.contactpoints}"
+    <cassandra:cluster id="cassandraCluster"
+                       contact-points="${cassandra.contactpoints}"
                        port="${cassandra.port}" />
 
     <!-- REQUIRED: The Cassandra Session, built from the Cluster, and attaching
       to a keyspace -->
     <cassandra:session id="cassandraSession"
                        keyspace-name="${cassandra.keyspace}"
-                       cluster-ref="cassandraCluster" />
+                       cluster-ref="cassandraCluster"/>
 
     <!-- REQUIRED: The Default Cassandra Mapping Context used by CassandraConverter -->
     <cassandra:mapping />

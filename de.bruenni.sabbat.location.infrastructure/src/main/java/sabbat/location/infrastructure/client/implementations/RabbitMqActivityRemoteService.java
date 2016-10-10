@@ -133,7 +133,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
         }
         catch (Exception exception)
         {
-            logger.error("Start activity failed", exception);
+            logger.error("update activity failed", exception);
             throw exception;
         }
     }

@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
-import sabbat.location.infrastructure.client.configuration.LocationInfrastructureConfiguration;
 
 /**
  * Created by bruenni on 24.09.16.
