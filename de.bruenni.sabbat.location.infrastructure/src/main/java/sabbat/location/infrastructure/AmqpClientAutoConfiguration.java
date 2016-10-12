@@ -6,12 +6,14 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
 
@@ -50,6 +52,9 @@ public class AmqpClientAutoConfiguration {
         @Value("${location.activity.queue.tracking}")
         public String trackingQueueName;
 
+        @Value("${location.activity.queue.command.reply}")
+        public String commandReplyQueueName;
+
         @Autowired
         @Qualifier("clientConnectionFactory")
         public ConnectionFactory connectionFactory;
@@ -58,8 +63,17 @@ public class AmqpClientAutoConfiguration {
         @Qualifier("admin")
         public RabbitAdmin admin;
 
+        @Bean(name = "locationCommandRabbitTemplate")
+        @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+        public AsyncRabbitTemplate commandRabbitTemplate() {
+                return new AsyncRabbitTemplate(connectionFactory,
+                        activityCommandExchangeName,
+                        activityCommandsRoutingKey,
+                        commandReplyQueueName);
+        }
 
         @Bean(name = "locationUpdateRabbitTemplate")
+        @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
         public RabbitTemplate locationUpdateRabbitTemplate() {
                 RabbitTemplate template = new RabbitTemplate(connectionFactory);
                 template.setExchange(trackingExchangeName);
@@ -72,9 +86,10 @@ public class AmqpClientAutoConfiguration {
         {
                 log.debug("locationCommandQueue definition [admin=" + admin.toString() + "]");
 
-                HashMap<String, Object> arguments = new HashMap<>();
-                arguments.put("x-message-ttl", 5000);
-                Queue queue = new Queue(activityCommandQueueName, true, false, false, arguments);
+/*                HashMap<String, Object> arguments = new HashMap<>();
+                arguments.put("x-message-ttl", 5000);*/
+                //Queue queue = new Queue(activityCommandQueueName, true, false, false, arguments);
+                Queue queue = new Queue(activityCommandQueueName, true, false, false);
                 queue.setAdminsThatShouldDeclare(admin);
                 queue.setShouldDeclare(true);
                 return queue;

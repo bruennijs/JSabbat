@@ -92,7 +92,9 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         @Bean
         public Queue locationTrackingQueue()
         {
-                Queue queue = new Queue(activityTrackingQueueName, true, false, false);
+                HashMap<String, Object> arguments = new HashMap<>();
+                arguments.put("x-max-length-bytes", (int) 50 * 1024 * 1024);
+                Queue queue = new Queue(activityTrackingQueueName, true, false, false, arguments);
                 queue.setAdminsThatShouldDeclare(serviceAdmin);
                 queue.setShouldDeclare(true);
                 return queue;
