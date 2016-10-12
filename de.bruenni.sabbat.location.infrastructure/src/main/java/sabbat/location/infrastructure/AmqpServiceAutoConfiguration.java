@@ -46,18 +46,6 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         @Value("${location.activity.queue.tracking}")
         public String activityTrackingQueueName;
 
-        @Value("${location.activity.exchange.command}")
-        public String activityCommandExchangeName;
-
-        @Value("${location.activity.exchange.tracking}")
-        public String activityTrackingExchangeName;
-
-        @Value("${location.activity.routingkey.command.all}")
-        public String activityCommandsRoutingKey;
-
-        @Value("${location.activity.routingkey.tracking.update}")
-        public String activityTrackingUpdateRoutingKey;
-
         @Autowired
         @Qualifier("serviceAdmin")
         public RabbitAdmin serviceAdmin;
@@ -95,51 +83,19 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         {
                 log.debug("locationCommandQueue definition [admin=" + serviceAdmin.toString() + "]");
 
-                HashMap<String, Object> arguments = new HashMap<>();
-                arguments.put("x-message-ttl", 5000);
-                Queue queue = new Queue(activityCommandQueueName, true, false, false, arguments);
+                Queue queue = new Queue(activityCommandQueueName, true, false, false);
                 queue.setAdminsThatShouldDeclare(serviceAdmin);
                 queue.setShouldDeclare(true);
                 return queue;
-        }
-
-        @Bean
-        public org.springframework.amqp.core.Exchange locationCommandExchange()
-        {
-                return ExchangeBuilder.topicExchange(activityCommandExchangeName).autoDelete().build();
-        }
-
-        @Bean
-        public org.springframework.amqp.core.Exchange locationTrackingExchange()
-        {
-                return ExchangeBuilder.topicExchange(activityTrackingExchangeName).autoDelete().build();
-        }
-
-        @Bean
-        public Binding locationCommandBinding()
-        {
-                return BindingBuilder
-                        .bind(locationCommandQueue())
-                        .to(locationCommandExchange())
-                        .with(activityCommandsRoutingKey)
-                        .noargs();
         }
 
         @Bean
         public Queue locationTrackingQueue()
         {
-                HashMap<String, Object> arguments = new HashMap<>();
-                arguments.put("x-max-length-bytes", (int) 50 * 1024 * 1024);
-                Queue queue = new Queue(activityTrackingQueueName, true, false, false, arguments);
+                Queue queue = new Queue(activityTrackingQueueName, true, false, false);
                 queue.setAdminsThatShouldDeclare(serviceAdmin);
                 queue.setShouldDeclare(true);
                 return queue;
-        }
-
-        @Bean
-        public Binding locationTrackingBinding()
-        {
-                return BindingBuilder.bind(locationTrackingQueue()).to(locationTrackingExchange()).with(activityTrackingUpdateRoutingKey).noargs();
         }
 
         @Bean

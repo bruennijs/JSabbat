@@ -103,7 +103,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
             logger.debug(String.format("Update activity [dto=%1s, correlationId=%2s]", json, messageProperties.getCorrelationIdString()));
 
-            updateTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
+/*            updateTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
                 logger.debug(String.format("update return %1s,%2s", replyCode, replyText));
                 try {
                     subject.onNext(new Confirmation<>(dto, true, replyText));
@@ -111,17 +111,17 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
                 finally {
                     subject.onCompleted();
                 }
-            });
+            });*/
 
             updateTemplate.setConfirmCallback((correlationData, ack, cause) ->
             {
                 try
                 {
                     logger.debug(String.format("update confirmation [correlationId=%1s, %2s, cause=%3s]", correlationData, ack, cause));
-                    //subject.onNext(new Confirmation<>(dto, ack, cause));
+                    subject.onNext(new Confirmation<>(dto, ack, cause));
                 }
                 finally {
-                    //subject.onCompleted();
+                    subject.onCompleted();
                 }
             });
 

@@ -32,7 +32,7 @@
             password="guest"
             executor="serviceTaskExecuter"
             publisher-confirms="true"
-            publisher-returns="true"/>
+            publisher-returns="false"/>
 
     <rabbit:admin id="admin" connection-factory="clientConnectionFactory" />
 
@@ -44,12 +44,12 @@
                            auto-delete="true"
                            declared-by="admin" />
 
-    <rabbit:topic-exchange id="activityTrackingExchange"
+<!--    <rabbit:topic-exchange id="activityTrackingExchange"
                            name="${location.activity.exchange.tracking}"
                            durable="false"
                            auto-declare="true"
                            auto-delete="true"
-                           declared-by="admin" />
+                           declared-by="admin" />-->
 
     <!-- fixed start command reply queue -->
     <rabbit:queue id="activityCommandReplyQueue"
