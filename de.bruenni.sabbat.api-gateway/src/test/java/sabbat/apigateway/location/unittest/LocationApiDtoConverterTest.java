@@ -28,6 +28,7 @@ public class LocationApiDtoConverterTest {
                 {
                         //// format: latitude longitude height timestamp(utc)
                         { "53.15081779 8.22885028 6.044 1475422138",  Arrays.asList(new TimeSeriesCoordinate(new Date(1475422138000l), 53.15081779d, 8.22885028d)) },
+                        { "53.15081779 8.22885028    6.044 1475422138",  Arrays.asList(new TimeSeriesCoordinate(new Date(1475422138000l), 53.15081779d, 8.22885028d)) },
                         { "89.779 166.2212 100.4 1475422138",  Arrays.asList(new TimeSeriesCoordinate(new Date(1475422138000l), 89.779d, 166.2212d)) },
                         { "87.779 155.2212 100.4 1475422159 99.9 111.2212 2560.4 1475422177",  Arrays.asList(new TimeSeriesCoordinate(Date.from(Instant.ofEpochSecond(1475422159)), 87.779d, 155.2212d),
                                                                                                              new TimeSeriesCoordinate(Date.from(Instant.ofEpochSecond(1475422177)), 99.9d, 111.2212d)) }

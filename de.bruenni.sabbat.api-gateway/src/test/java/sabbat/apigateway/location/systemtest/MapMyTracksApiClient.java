@@ -1,6 +1,8 @@
 package sabbat.apigateway.location.systemtest;
 
 import infrastructure.util.Tuple2;
+import infrastructure.web.client.AuthenticationRestTemplate;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.springframework.data.geo.Point;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,7 +34,8 @@ public class MapMyTracksApiClient {
 
     public MapMyTracksApiClient(String url) {
         this.url = url;
-        this.restTemplate = new RestTemplate();
+        this.restTemplate = new AuthenticationRestTemplate().addBasicAuthentication("MyUserName", "MyPassword");
+        //this.restTemplate = new RestTemplate();
 
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
         //messageConverters.add(new MappingJacksonHttpMessageConverter());
@@ -104,6 +107,6 @@ public class MapMyTracksApiClient {
     }
 
     private String SerializeTuple(Tuple2<Point, Date> tuple) {
-        return String.format(Locale.ROOT, "%1f %1f %1d %1d", tuple.getT1().getY(), tuple.getT1().getX(), 0, tuple.getT2().getTime() / 1000);
+        return String.format("%1s %2s %3s %4d", Double.valueOf(tuple.getT1().getY()).toString(), Double.valueOf(tuple.getT1().getX()).toString(), Long.valueOf(0l).toString(), tuple.getT2().getTime() / 1000);
     }
 }

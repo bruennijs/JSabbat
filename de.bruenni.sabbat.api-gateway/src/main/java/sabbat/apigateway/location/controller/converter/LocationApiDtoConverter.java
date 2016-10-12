@@ -79,7 +79,7 @@ public class LocationApiDtoConverter {
             throw new Exception("Points may not be null or empty");
         }
 
-        String[] tokens = points.split("\\ ");
+        String[] tokens = points.split("\\ +");
 
         if (tokens.length < 4)
         {

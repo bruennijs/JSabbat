@@ -73,7 +73,10 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'    // this is log4j 2 api
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
 
+    //compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
+
     // ==== TEST ====
+    testCompile group: 'org.springframework', name: 'spring-web', version: '4.2.8.RELEASE'
     testCompile group: 'org.springframework', name: "spring-test", version: '4.2.5.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.0.52-beta'
