@@ -79,6 +79,10 @@ public class AmqpClientAutoConfiguration {
                 template.setExchange(trackingExchangeName);
                 template.setRoutingKey(trackingUpdateRoutingKey);
                 return template;
+
+/*                return new AsyncRabbitTemplate(connectionFactory,
+                        trackingExchangeName,
+                        trackingUpdateRoutingKey);*/
         }
 
         @Bean

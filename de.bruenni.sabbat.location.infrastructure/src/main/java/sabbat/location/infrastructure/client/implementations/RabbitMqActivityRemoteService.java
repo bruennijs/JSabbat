@@ -117,32 +117,27 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
             updateTemplate.setMandatory(true);
             updateTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
                 logger.debug(String.format("update return %1s,%2s", replyCode, replyText));
-                try {
-                    subject.onError(new AmqpMessageReturnedException("Message returned", message, replyCode, replyText, exchange, routingKey));
+                subject.onError(new AmqpMessageReturnedException("Message returned", message, replyCode, replyText, exchange, routingKey));
+            });
+
+
+            updateTemplate.setConfirmCallback((correlationData, ack, cause) ->
+            {
+                try
+                {
+                    logger.debug(String.format("update confirmation [correlationId=%1s, %2s, cause=%3s]", correlationData, ack, cause));
+                    subject.onNext(null);
                 }
                 finally {
                     subject.onCompleted();
                 }
             });
 
-/*            updateTemplate.setConfirmCallback((correlationData, ack, cause) ->
-            {
-                try
-                {
-                    logger.debug(String.format("update confirmation [correlationId=%1s, %2s, cause=%3s]", correlationData, ack, cause));
-                    if (ack)
-                        subject.onNext(null);
-                    else
-                        subject.onError(new BadConfirmationException(cause));
-                }
-                finally {
-                    subject.onCompleted();
-                }
-            });*/
-
             updateTemplate.send(
               new org.springframework.amqp.core.Message(json.getBytes(StandardCharsets.US_ASCII),
                 messageProperties));
+
+            logger.debug("update finished");
 
             return subject;
         }

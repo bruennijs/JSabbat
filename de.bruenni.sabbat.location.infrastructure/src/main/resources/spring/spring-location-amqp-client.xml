@@ -31,7 +31,7 @@
             username="guest"
             password="guest"
             executor="serviceTaskExecuter"
-            publisher-confirms="false"
+            publisher-confirms="true"
             publisher-returns="true"/>
 
     <rabbit:admin id="admin" connection-factory="clientConnectionFactory" />
