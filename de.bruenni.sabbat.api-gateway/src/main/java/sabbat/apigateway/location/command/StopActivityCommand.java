@@ -1,6 +1,7 @@
 package sabbat.apigateway.location.command;
 
 import org.springframework.util.concurrent.ListenableFuture;
+import rx.Observable;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.ActivityStopRequestDto;
@@ -43,7 +44,7 @@ public class StopActivityCommand implements ICommand {
     }
 
     @Override
-    public void publish() throws Exception {
+    public Observable<Void> publish() throws Exception {
         throw new Exception("not implemented");
     }
 

@@ -63,11 +63,9 @@ public class RabbitMqActivityNativeClientTest {
         TimeSeriesCoordinate timeSeriesCoordinate = new TimeSeriesCoordinateBuilder().withLatitude(179.99).build();
         ActivityUpdateEventDto dto = new ActivityUpdateEventDtoBuilder().withTimeSeries(timeSeriesCoordinate).build();
 
-        Observable<Confirmation<ActivityUpdateEventDto>> confirmationObservable = Client.update(dto);
+        Observable<Void> observable = Client.update(dto);
 
-        Confirmation<ActivityUpdateEventDto> confirmation = confirmationObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
-
-        Assert.assertTrue(confirmation.toString(), confirmation.isAcked());
+        observable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
     }
 
     @Test

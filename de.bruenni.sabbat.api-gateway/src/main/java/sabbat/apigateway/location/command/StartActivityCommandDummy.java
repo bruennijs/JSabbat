@@ -3,6 +3,7 @@ package sabbat.apigateway.location.command;
 import org.slf4j.Logger;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
+import rx.Observable;
 import sabbat.apigateway.location.controller.MapMyTracksApiController;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
@@ -51,7 +52,7 @@ public class StartActivityCommandDummy implements ICommand {
     }
 
     @Override
-    public void publish() throws Exception {
+    public Observable<Void> publish() throws Exception {
         throw new Exception("not implemented");
     }
 }

@@ -1,5 +1,6 @@
 package sabbat.apigateway.location.command;
 
+import rx.Observable;
 import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 import java.io.IOException;
@@ -27,7 +28,5 @@ public interface ICommand {
      * Publishes an event without service response synchronously.
      * @return
      */
-    void publish() throws Exception;
-
-
+    Observable<Void> publish() throws Exception;
 }

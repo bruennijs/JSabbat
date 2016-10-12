@@ -32,8 +32,9 @@ public interface IActivityRemoteService {
      * Update of activity with new geo points, heartrate and so on.
      * @param command
      * @return Observable publishing channel confirmation whether dto has been
+     * @exception BadConfirmationException no confirm by transport (e.g. RabbitMQ9
      */
-    rx.Observable<Confirmation<ActivityUpdateEventDto>> update(ActivityUpdateEventDto command) throws Exception;
+    rx.Observable<Void> update(ActivityUpdateEventDto command) throws Exception;
 
     /**
      * Echo ping pong method.

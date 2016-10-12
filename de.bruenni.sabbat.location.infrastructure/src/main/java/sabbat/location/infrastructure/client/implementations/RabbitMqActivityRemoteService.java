@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureAdapter;
 import rx.subjects.ReplaySubject;
+import sabbat.location.infrastructure.client.BadConfirmationException;
 import sabbat.location.infrastructure.client.Confirmation;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.*;
@@ -88,12 +89,12 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public rx.Observable<Confirmation<ActivityUpdateEventDto>> update(ActivityUpdateEventDto dto) throws Exception {
+    public rx.Observable<Void> update(ActivityUpdateEventDto dto) throws Exception {
 
 
         try {
 
-            ReplaySubject<Confirmation<ActivityUpdateEventDto>> subject = ReplaySubject.create();
+            ReplaySubject<Void> subject = ReplaySubject.create();
 
             String json = parser.serialize(dto);
 
@@ -118,7 +119,10 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
                 try
                 {
                     logger.debug(String.format("update confirmation [correlationId=%1s, %2s, cause=%3s]", correlationData, ack, cause));
-                    subject.onNext(new Confirmation<>(dto, ack, cause));
+                    if (ack)
+                        subject.onNext(null);
+                    else
+                        subject.onError(new BadConfirmationException(cause));
                 }
                 finally {
                     subject.onCompleted();

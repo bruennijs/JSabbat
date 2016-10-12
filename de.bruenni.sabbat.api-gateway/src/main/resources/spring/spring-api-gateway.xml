@@ -39,7 +39,7 @@
 
     <bean id="ActivityCommandFactory" class="sabbat.apigateway.location.command.ActivityCommandFactory">
         <lookup-method name="createStartActivityCommand"
-                       bean="StartActivityCommandDummy"/>
+                       bean="StartActivityCommand"/>
         <lookup-method name="createStopActivityCommand"
                        bean="StopActivityCommand"/>
         <lookup-method name="createUpdateActivityCommand"

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import rx.Observable;
 import sabbat.apigateway.location.command.IActivityCommandFactory;
 import sabbat.apigateway.location.command.ICommand;
 import sabbat.apigateway.location.controller.dto.ActivityUpdatedResponse;
@@ -111,7 +112,9 @@ public class MapMyTracksApiController {
             else
             {
                 // publish only command
-                command.publish();
+                Observable<Void> observable = command.publish();
+
+                observable.timeout(UPDATE_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS).toBlocking().single();
 
                 if (loggerTraffic.isDebugEnabled())
                     loggerTraffic.debug("<-- [200 OK]");
@@ -122,7 +125,7 @@ public class MapMyTracksApiController {
         catch(Exception exc)
         {
             logger.error("postMethod failed", exc);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(exc.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
