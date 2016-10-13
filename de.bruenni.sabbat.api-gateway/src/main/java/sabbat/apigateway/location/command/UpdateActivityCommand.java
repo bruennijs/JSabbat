@@ -3,9 +3,7 @@ package sabbat.apigateway.location.command;
 import org.springframework.util.concurrent.ListenableFuture;
 import rx.Observable;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
-import sabbat.location.infrastructure.client.Confirmation;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
-import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
 import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 /**

@@ -16,16 +16,16 @@ public class ActivityCoordinate {
     private ActivityCoordinatePrimaryKey Key;
 
     @Column("latitude")
-    private float latitude;
+    private double latitude;
 
     @Column("longitude")
-    private float longitude;
+    private double longitude;
 
     public ActivityCoordinate() {
     }
 
-    public ActivityCoordinate(ActivityCoordinatePrimaryKey key, float latitude, float longitude) {
-        Key = key;
+    public ActivityCoordinate(ActivityCoordinatePrimaryKey key, double latitude, double longitude) {
+        this.Key = key;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -34,11 +34,11 @@ public class ActivityCoordinate {
         return Key;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
@@ -49,17 +49,21 @@ public class ActivityCoordinate {
 
         ActivityCoordinate that = (ActivityCoordinate) o;
 
-        if (Float.compare(that.latitude, latitude) != 0) return false;
-        if (Float.compare(that.longitude, longitude) != 0) return false;
+        if (Double.compare(that.latitude, latitude) != 0) return false;
+        if (Double.compare(that.longitude, longitude) != 0) return false;
         return Key != null ? Key.equals(that.Key) : that.Key == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = Key != null ? Key.hashCode() : 0;
-        result = 31 * result + (latitude != +0.0f ? Float.floatToIntBits(latitude) : 0);
-        result = 31 * result + (longitude != +0.0f ? Float.floatToIntBits(longitude) : 0);
+        int result;
+        long temp;
+        result = Key != null ? Key.hashCode() : 0;
+        temp = Double.doubleToLongBits(latitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(longitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 

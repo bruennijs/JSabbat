@@ -8,6 +8,7 @@ import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityStopCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
@@ -39,7 +40,7 @@ public class ActivityApplicationService implements IActivityApplicationService {
     }
 
     @Override
-    public ListenableFuture<Void> update(ActivityUpdateCommand command) throws Exception {
-        throw new Exception("not implemented");
+    public void update(ActivityUpdateCommand command) throws Exception {
+        this.activityRepository.insertCoordinate(command.getCoordinates());
     }
 }

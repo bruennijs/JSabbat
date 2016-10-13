@@ -1,5 +1,6 @@
 package sabbat.location.infrastructure;
 
+import infrastructure.parser.IDtoParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Binding;
@@ -16,6 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
+import sabbat.location.infrastructure.client.IActivityRemoteService;
+import sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService;
+import sabbat.location.infrastructure.client.implementations.ReliableRabbitTemplate;
 
 import java.util.HashMap;
 
@@ -63,26 +67,29 @@ public class AmqpClientAutoConfiguration {
         @Qualifier("admin")
         public RabbitAdmin admin;
 
+        @Autowired
+        @Qualifier("locationJsonDtoParser")
+        public IDtoParser dtoParser;
+
         @Bean(name = "locationCommandRabbitTemplate")
         @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-        public AsyncRabbitTemplate commandRabbitTemplate() {
-                return new AsyncRabbitTemplate(connectionFactory,
+        public AsyncRabbitTemplate locationCommandRabbitTemplate() {
+                AsyncRabbitTemplate template = new AsyncRabbitTemplate(connectionFactory,
                         activityCommandExchangeName,
-                        activityCommandsRoutingKey,
+                        "",
                         commandReplyQueueName);
+                template.setAutoStartup(true);
+                template.start();
+                return template;
         }
 
         @Bean(name = "locationUpdateRabbitTemplate")
         @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-        public RabbitTemplate locationUpdateRabbitTemplate() {
-                RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        public ReliableRabbitTemplate locationUpdateRabbitTemplate() {
+                ReliableRabbitTemplate template = new ReliableRabbitTemplate(connectionFactory);
                 template.setExchange(trackingExchangeName);
                 template.setRoutingKey(trackingUpdateRoutingKey);
                 return template;
-
-/*                return new AsyncRabbitTemplate(connectionFactory,
-                        trackingExchangeName,
-                        trackingUpdateRoutingKey);*/
         }
 
         @Bean
@@ -154,4 +161,12 @@ public class AmqpClientAutoConfiguration {
                         .noargs();
         }
 
+        @Bean(name = "RabbitMqActivityRemoteService")
+        @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+        public IActivityRemoteService rabbitMqActivityremoteService(AsyncRabbitTemplate locationCommandRabbitTemplate, ReliableRabbitTemplate locationUpdateRabbitTemplate)
+        {
+                return new RabbitMqActivityRemoteService(locationCommandRabbitTemplate,
+                        locationUpdateRabbitTemplate,
+                        this.dtoParser);
+        }
 }

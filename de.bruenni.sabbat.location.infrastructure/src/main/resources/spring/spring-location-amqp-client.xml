@@ -68,13 +68,6 @@
                      <rabbit:reply-listener />
     </rabbit:template>-->
 
-    <bean id="locationCommandRabbitTemplate" class="org.springframework.amqp.rabbit.AsyncRabbitTemplate">
-        <constructor-arg index="0" ref="clientConnectionFactory" />
-        <constructor-arg index="1" value="${location.activity.exchange.command}" />
-        <constructor-arg index="2" value="${location.activity.routingkey.command.start}" />
-        <constructor-arg index="3" value="${location.activity.queue.command.reply}" />
-    </bean>
-
     <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
         <property name="backOffPolicy">
             <bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
@@ -85,9 +78,5 @@
         </property>
     </bean>
 
-    <bean id="RabbitMqActivityRemoteService" class="sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService">
-        <constructor-arg ref="locationCommandRabbitTemplate" />
-        <constructor-arg ref="locationUpdateRabbitTemplate" />
-        <constructor-arg ref="locationJsonDtoParser" />
-    </bean>
+
 </beans>

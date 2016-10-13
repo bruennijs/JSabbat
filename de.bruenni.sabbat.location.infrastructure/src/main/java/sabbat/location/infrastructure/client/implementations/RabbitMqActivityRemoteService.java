@@ -1,22 +1,19 @@
 package sabbat.location.infrastructure.client.implementations;
 
-import com.sun.javafx.binding.StringFormatter;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.AmqpMessageReturnedException;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureAdapter;
-import rx.Observable;
 import rx.subjects.ReplaySubject;
-import sabbat.location.infrastructure.client.BadConfirmationException;
-import sabbat.location.infrastructure.client.Confirmation;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.*;
 
@@ -33,8 +30,14 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
     final Logger logger = org.slf4j.LoggerFactory.getLogger(RabbitMqActivityRemoteService.class);
 
+    @Value("${location.activity.routingkey.command.start}")
+    public String startRoutingKey;
+
+    @Value("${location.activity.routingkey.command.stop}")
+    public String stopRoutingKey;
+
     private AsyncRabbitTemplate asyncRabbitTemplate;
-    private RabbitTemplate updateTemplate;
+    private ReliableRabbitTemplate updateTemplate;
     private infrastructure.parser.IDtoParser parser;
     private ConnectionFactory connectionFactory;
 
@@ -44,12 +47,15 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
      * @param parser
      */
     public RabbitMqActivityRemoteService(AsyncRabbitTemplate asyncRabbitTemplate,
-                                         RabbitTemplate updateTabbitTemplate,
+                                         ReliableRabbitTemplate updateTabbitTemplate,
                                          infrastructure.parser.IDtoParser parser)
     {
         this.asyncRabbitTemplate = asyncRabbitTemplate;
         this.updateTemplate = updateTabbitTemplate;
         this.parser = parser;
+
+        //// enable message returns: to ensure reliable queue delivery
+        asyncRabbitTemplate.setMandatory(true);
     }
 
     @Override
@@ -64,10 +70,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
             messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
             messageProperties.setCorrelationIdString(UUID.randomUUID().toString());
 
-            //// enable message returns: to ensure reliable queue delivery
-            asyncRabbitTemplate.setMandatory(true);
-
-            AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
+            AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.startRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
 /*            Observable.from(responseFuture).map(msg -> {
                 return parser.parse(msg.getBody(), ActivityCreatedResponseDto.class);
@@ -103,8 +106,6 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
         try {
 
-            ReplaySubject<Void> subject = ReplaySubject.create();
-
             String json = parser.serialize(dto);
 
             MessageProperties messageProperties = new MessageProperties();
@@ -113,33 +114,10 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
             logger.debug(String.format("Update activity [dto=%1s, correlationId=%2s]", json, messageProperties.getCorrelationIdString()));
 
-            //// enable message returns: to ensure reliable queue delivery
-            updateTemplate.setMandatory(true);
-            updateTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
-                logger.debug(String.format("update return %1s,%2s", replyCode, replyText));
-                subject.onError(new AmqpMessageReturnedException("Message returned", message, replyCode, replyText, exchange, routingKey));
-            });
-
-
-            updateTemplate.setConfirmCallback((correlationData, ack, cause) ->
-            {
-                try
-                {
-                    logger.debug(String.format("update confirmation [correlationId=%1s, %2s, cause=%3s]", correlationData, ack, cause));
-                    subject.onNext(null);
-                }
-                finally {
-                    subject.onCompleted();
-                }
-            });
-
-            updateTemplate.send(
+            return updateTemplate.sendReliable(
               new org.springframework.amqp.core.Message(json.getBytes(StandardCharsets.US_ASCII),
                 messageProperties));
 
-            logger.debug("update finished");
-
-            return subject;
         }
         catch (Exception exception)
         {

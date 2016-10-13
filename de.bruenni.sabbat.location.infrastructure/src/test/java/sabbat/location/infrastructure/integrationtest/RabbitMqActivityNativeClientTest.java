@@ -16,7 +16,6 @@ import sabbat.location.infrastructure.AmqpClientAutoConfiguration;
 import sabbat.location.infrastructure.builder.ActivityCreateRequestDtoBuilder;
 import sabbat.location.infrastructure.builder.ActivityUpdateEventDtoBuilder;
 import sabbat.location.infrastructure.builder.TimeSeriesCoordinateBuilder;
-import sabbat.location.infrastructure.client.Confirmation;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
@@ -24,7 +23,6 @@ import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
 import sabbat.location.infrastructure.client.implementations.RabbitMqActivityRemoteService;
 
 import java.io.IOException;
-import java.util.UUID;
 import java.util.concurrent.*;
 
 /**

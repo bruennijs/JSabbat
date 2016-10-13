@@ -3,6 +3,7 @@ package sabbat.location.infrastructure.service.adapter;
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.rabbitmq.client.Channel;
+import infrastructure.util.IterableUtils;
 import org.ietf.jgss.MessageProp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,19 +26,27 @@ import rx.Observable;
 import rx.Observer;
 import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
+import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.model.ActivityCoordinate;
+import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
+import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by bruenni on 07.09.16.
@@ -98,9 +107,22 @@ public class ActivityRabbitListener {
 
     @RabbitListener(queues = "${location.activity.queue.tracking}",
                     containerFactory = "rabbitListenerContainerFactory")
-    public void onTrackingMessage(Message message) throws IOException {
+    public void onTrackingMessage(Message message) throws Exception {
         ActivityUpdateEventDto dto = dtoParser.parse(message.getBody(), ActivityUpdateEventDto.class);
         logger.debug("--> tracking [" + message.toString() + "]");
         logger.debug("--> DTO      [" + dto.toString() + "]");
+
+        ActivityUpdateCommand command = new ActivityUpdateCommand(toActivityCoordinates(dto), null, null);
+
+        this.applicationService.update(command);
+    }
+
+    private List<ActivityCoordinate> toActivityCoordinates(ActivityUpdateEventDto dto) {
+        return IterableUtils.stream(dto.getTimeSeries()).map(ts -> {
+
+            ActivityCoordinatePrimaryKey pKey = new ActivityCoordinatePrimaryKey(dto.getIdentityToken(), dto.getId(), ts.getTimestamp());
+
+            return new ActivityCoordinate(pKey, ts.getLatitude(), ts.getLongitude());
+        }).collect(Collectors.toList());
     }
 }
