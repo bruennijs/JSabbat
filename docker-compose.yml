@@ -35,7 +35,7 @@ services:
 
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - JVM_XMX=-Xmx64m
+      - JVM_XMX=-Xmx128m
 
     links:
       - rabbitmq-prod:rabbitmq-host
