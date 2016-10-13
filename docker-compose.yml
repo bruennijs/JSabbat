@@ -84,8 +84,8 @@ services:
           - SPRING_PROFILES_ACTIVE=prod
         links:
           - rabbitmq-dev:rabbitmq-host
-          - cassandra-v22-prod-1:cassandra-host-1
-          - cassandra-v22-prod-2:cassandra-host-1
+          - cassandra-v22-dev-1:cassandra-host-1
+          - cassandra-v22-dev-2:cassandra-host-1
 
 
         depends_on:
