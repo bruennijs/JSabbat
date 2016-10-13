@@ -57,15 +57,15 @@ services:
   location-app-dev:
     image: bruenni/sabbat-location-app:latest
     hostname: sabbat-location-app-dev
-    container_name: sabbat-location-app
+    container_name: sabbat-location-app-prod
 
     environment:
       #THIS IS RIGHT: use the prod/docker profile bit link to dev conatiner in "links"
       - SPRING_PROFILES_ACTIVE=prod
     links:
       - rabbitmq-dev:rabbitmq-host
-      - cassandra-v22-dev-1:cassandra-dev-1
-      - cassandra-v22-dev-2:cassandra-dev-2
+      - cassandra-v22-dev-1:cassandra-host-1
+      - cassandra-v22-dev-2:cassandra-host-2
 
 
     depends_on:
@@ -73,6 +73,26 @@ services:
       - rabbitmq-dev
 
     network_mode: "bridge"  # default network with bridge adapter docker0
+
+  location-app-prod:
+        image: bruenni/sabbat-location-app:latest
+        hostname: sabbat-location-app-prod
+        container_name: sabbat-location-app-prod
+
+        environment:
+          #THIS IS RIGHT: use the prod/docker profile bit link to dev conatiner in "links"
+          - SPRING_PROFILES_ACTIVE=prod
+        links:
+          - rabbitmq-dev:rabbitmq-host
+          - cassandra-v22-prod-1:cassandra-host-1
+          - cassandra-v22-prod-2:cassandra-host-1
+
+
+        depends_on:
+          - cassandra-v22-dev-1
+          - rabbitmq-dev
+
+        network_mode: "bridge"  # default network with bridge adapter docker0
 
   # ========== CASSANDRA ===============
 
