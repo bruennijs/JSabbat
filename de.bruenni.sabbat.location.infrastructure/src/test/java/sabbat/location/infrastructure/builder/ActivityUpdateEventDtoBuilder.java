@@ -5,13 +5,14 @@ import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by bruenni on 08.10.16.
  */
 public class ActivityUpdateEventDtoBuilder {
-    private String activityId = "";
-    private String token = "";
+    private String activityId = UUID.randomUUID().toString();
+    private String token = UUID.randomUUID().toString();
     private List<TimeSeriesCoordinate> timeSeriesArray = new ArrayList<>();
 
     public ActivityUpdateEventDto build() {

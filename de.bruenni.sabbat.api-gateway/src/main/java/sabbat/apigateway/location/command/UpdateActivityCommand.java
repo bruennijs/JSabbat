@@ -23,7 +23,6 @@ public class UpdateActivityCommand implements ICommand {
     }
 
     private String id;
-    private String title;
     private String points;
 
     /**

@@ -1,29 +1,20 @@
 package sabbat.location.infrastructure.service.adapter;
 
-import com.google.common.base.Function;
-import com.google.common.util.concurrent.Futures;
 import com.rabbitmq.client.Channel;
 import infrastructure.util.IterableUtils;
-import org.ietf.jgss.MessageProp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureAdapter;
-import rx.Observable;
-import rx.Observer;
 import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
@@ -33,20 +24,11 @@ import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
-import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Created by bruenni on 07.09.16.
@@ -78,43 +60,68 @@ public class ActivityRabbitListener {
                              @Header(AmqpHeaders.CORRELATION_ID) byte[] correlationId) throws Exception {
         logger.debug("--> command [" + message.toString() + "cid=" + correlationId + ",routingkey=" + routingKey + "]");
 
-        if (routingKey.equals(ActivityStartRoutingKey)) {
+        try
+        {
+            if (routingKey.equals(ActivityStartRoutingKey)) {
 
 
-            ActivityCreateRequestDto dtoRequest = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
+                ActivityCreateRequestDto dtoRequest = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
-            ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID().toString(), dtoRequest.getId(), dtoRequest.getTitle());
+                ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID().toString(), dtoRequest.getId(), dtoRequest.getTitle());
 
-            Activity activity = this.applicationService.start(command);
+                Activity activity = this.applicationService.start(command);
 
-            //Observable.from(activityStartFuture)
-            ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
+                ack(message, channel);
 
-            MessageProperties msgProps = MessagePropertiesBuilder.newInstance()
-                    .setCorrelationId(correlationId)
-                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
-                    .build();
+                //Observable.from(activityStartFuture)
+                ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
 
-            return MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
-                    .andProperties(msgProps)
-                    .build();
+                MessageProperties msgProps = MessagePropertiesBuilder.newInstance()
+                        .setCorrelationId(correlationId)
+                        .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                        .build();
+
+                return MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
+                        .andProperties(msgProps)
+                        .build();
             }
-
-            //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        }
+        catch (Exception exception)
+        {
+            nack(message, channel, exception);
+        }
 
         throw new Exception("not implemented");
     }
 
     @RabbitListener(queues = "${location.activity.queue.tracking}",
                     containerFactory = "rabbitListenerContainerFactory")
-    public void onTrackingMessage(Message message) throws Exception {
+    public void onTrackingMessage(Message message,
+                                  Channel channel) throws Exception {
         ActivityUpdateEventDto dto = dtoParser.parse(message.getBody(), ActivityUpdateEventDto.class);
         logger.debug("--> tracking [" + message.toString() + "]");
         logger.debug("--> DTO      [" + dto.toString() + "]");
 
-        ActivityUpdateCommand command = new ActivityUpdateCommand(toActivityCoordinates(dto), null, null);
+        try
+        {
+            ActivityUpdateCommand command = new ActivityUpdateCommand(toActivityCoordinates(dto), null, null);
 
-        this.applicationService.update(command);
+            this.applicationService.update(command);
+
+            ack(message, channel);
+        }
+        catch (Exception exception) {
+            nack(message, channel, exception);
+        }
+    }
+
+    private void nack(Message message, Channel channel, Exception exception) throws IOException {
+        logger.error("nack AMQP message without requeue", exception);
+        channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+    }
+
+    private void ack(Message message, Channel channel) throws IOException {
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 
     private List<ActivityCoordinate> toActivityCoordinates(ActivityUpdateEventDto dto) {
