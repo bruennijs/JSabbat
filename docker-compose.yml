@@ -7,6 +7,8 @@ services:
       context: ./de.bruenni.sabbat.api-gateway
       dockerfile: Dockerfile
     image: bruenni/sabbat-api-gateway:latest
+    #environment:
+    #  - JVM_XMX=-Xmx1024m
 
   api-gateway-dev:
     image: bruenni/sabbat-api-gateway:latest
@@ -16,6 +18,7 @@ services:
     environment:
       #THIS IS RIGHT: use the prod/docker profile bit link to dev conatiner in "links"
       - SPRING_PROFILES_ACTIVE=prod
+      - JVM_XMX=-Xmx1024m
     links:
       - rabbitmq-dev:rabbitmq-host
 
@@ -32,6 +35,7 @@ services:
 
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - JVM_XMX=-Xmx64m
 
     links:
       - rabbitmq-prod:rabbitmq-host
