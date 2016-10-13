@@ -100,6 +100,18 @@ public class AmqpClientAutoConfiguration {
         }
 
         @Bean
+        public Queue locationCommandReplyQueue()
+        {
+                /*HashMap<String, Object> arguments = new HashMap<>();
+                arguments.put("x-message-ttl", 5000);*/
+                //Queue queue = new Queue(activityCommandQueueName, true, false, false, arguments);
+                Queue queue = new Queue(commandReplyQueueName, false, false, true);
+                queue.setAdminsThatShouldDeclare(admin);
+                queue.setShouldDeclare(true);
+                return queue;
+        }
+
+        @Bean
         public org.springframework.amqp.core.Exchange locationCommandExchange()
         {
                 return ExchangeBuilder.topicExchange(activityCommandExchangeName).autoDelete().build();
