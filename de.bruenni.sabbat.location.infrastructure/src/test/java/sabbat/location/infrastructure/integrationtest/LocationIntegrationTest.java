@@ -13,6 +13,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
+import rx.Observable;
 import rx.observables.BlockingObservable;
 import sabbat.location.infrastructure.builder.ActivityCreateRequestDtoBuilder;
 import sabbat.location.infrastructure.client.IActivityEventService;
@@ -59,8 +60,9 @@ public class LocationIntegrationTest {
         AtomicInteger atomicInteger = new AtomicInteger(3647);
 
         Integer integer = new Integer(atomicInteger.getAndIncrement());
-        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
-        ActivityCreatedResponseDto responseDto = future.get();
+        Observable<ActivityCreatedResponseDto> startObservable = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
+        ActivityCreatedResponseDto responseDto = startObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
+
         Assert.assertEquals(integer.intValue(), Integer.decode(responseDto.getId()).intValue());
     }
 
@@ -73,8 +75,8 @@ public class LocationIntegrationTest {
                 .timeout(2000, TimeUnit.MILLISECONDS)
                 .toBlocking();
 
-        ListenableFuture<ActivityCreatedResponseDto> future = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
-        ActivityCreatedResponseDto responseDto = future.get();
+        Observable<ActivityCreatedResponseDto> startObservable = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
+        ActivityCreatedResponseDto responseDto = startObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
         // get respons eform event
         IActivityResponseDto eventResponseDto = eventObs.first();
 

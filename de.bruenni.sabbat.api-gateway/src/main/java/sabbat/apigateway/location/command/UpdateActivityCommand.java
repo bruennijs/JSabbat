@@ -41,7 +41,7 @@ public class UpdateActivityCommand implements ICommand {
     }
 
     @Override
-    public ListenableFuture<IActivityResponseDto> requestAsync() throws Exception {
+    public Observable<IActivityResponseDto> requestAsync() throws Exception {
         throw new Exception("not implemented");
     }
 

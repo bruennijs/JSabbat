@@ -93,9 +93,11 @@ public class MapMyTracksApiController {
             ICommand command = activityCommandFactory.getCommand(requestType, title, points, source, activity_id);
 
             if (!command.getPublishOnly()) {
-                Future<? extends IActivityResponseDto> future = command.requestAsync();
+                Observable<? extends IActivityResponseDto> responseObservable = command.requestAsync();
 
-                MapMyTracksResponse response = transformation.transformResponse(future.get(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS));
+                IActivityResponseDto responseDto = responseObservable.timeout(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS).toBlocking().single();
+
+                MapMyTracksResponse response = transformation.transformResponse(responseDto);
 
                 //ActivityCreatedResponse response = new ActivityCreatedResponse(new Date().getTime());
                 if (loggerTraffic.isDebugEnabled())

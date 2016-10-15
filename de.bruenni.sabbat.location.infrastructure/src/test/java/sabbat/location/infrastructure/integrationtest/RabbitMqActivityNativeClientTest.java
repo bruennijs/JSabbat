@@ -49,8 +49,8 @@ public class RabbitMqActivityNativeClientTest {
 
         ActivityCreateRequestDto dto = new ActivityCreateRequestDtoBuilder().build();
 
-        ListenableFuture<ActivityCreatedResponseDto> responseFuture = Client.start(dto);
-        ActivityCreatedResponseDto response = responseFuture.get(5000, TimeUnit.MILLISECONDS);
+        Observable<ActivityCreatedResponseDto> startObservable = Client.start(dto);
+        ActivityCreatedResponseDto response = startObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
 
         Assert.assertEquals(dto.getId(), response.getId());
     }

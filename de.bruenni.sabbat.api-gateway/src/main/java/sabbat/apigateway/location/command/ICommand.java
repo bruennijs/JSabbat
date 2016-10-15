@@ -22,7 +22,7 @@ public interface ICommand {
      * Executes async.
      * @return
      */
-    Future<? extends IActivityResponseDto> requestAsync() throws Exception;
+    Observable<? extends IActivityResponseDto> requestAsync() throws Exception;
 
     /**
      * Publishes an event without service response synchronously.

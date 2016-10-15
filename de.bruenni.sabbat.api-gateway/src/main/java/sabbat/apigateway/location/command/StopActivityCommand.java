@@ -34,7 +34,7 @@ public class StopActivityCommand implements ICommand {
     }
 
     @Override
-    public ListenableFuture<ActivityStoppedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+    public Observable<ActivityStoppedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         // 1. authorize credentials credentials
 

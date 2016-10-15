@@ -38,7 +38,7 @@ public class StartActivityCommand implements ICommand {
     }
 
     @Override
-    public ListenableFuture<ActivityCreatedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+    public Observable<ActivityCreatedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         // 1. authorize credentials credentials
 

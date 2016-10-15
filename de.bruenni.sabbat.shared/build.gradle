@@ -1,0 +1,45 @@
+group 'de.bruenni'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    baseName = 'sabbat.shared'
+    version = version
+    manifest {
+        attributes 'sabbat-shared': 'shared (sub-) domain logic',
+                'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "http://repo.spring.io/release" }
+}
+
+dependencies {
+    compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
+
+    compile group: 'org.springframework', name: 'spring-context', version: '4.2.5.RELEASE'
+    compile group: 'org.springframework', name: 'spring-core', version: '4.2.5.RELEASE'
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: '1.3.5.RELEASE'
+
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    //compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
+    //compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
+    compile group: 'org.reactivestreams', name: 'reactive-streams', version: '1.0.0'
+    compile "io.projectreactor:reactor-core:2.5.0.M4"
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.0.52-beta'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

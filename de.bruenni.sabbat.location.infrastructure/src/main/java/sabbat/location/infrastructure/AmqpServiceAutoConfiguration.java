@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,8 +68,8 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         public ExtendedRabbitListenerContainerFactory rabbitListenerContainerFactory()
         {
                 ExtendedRabbitListenerContainerFactory factory = new ExtendedRabbitListenerContainerFactory();
-                //factory.setConcurrentConsumers(5);
-                //factory.setMaxConcurrentConsumers(10);
+                factory.setConcurrentConsumers(3);
+                factory.setMaxConcurrentConsumers(10);
                 factory.setTaskExecutor(taskExecutor);
                 factory.setConnectionFactory(connectionFactory);
                 factory.setMessageConverter(jackson2JsonMessageConverter());
@@ -100,16 +101,17 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
                 return queue;
         }
 
-        @Bean
-        public Jackson2JsonMessageConverter jackson2JsonMessageConverter()
-        {
-                return new Jackson2JsonMessageConverter();
-        }
-
         @Bean()
         @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
         public ActivityRabbitListener activityRabbitListener()
         {
                 return new ActivityRabbitListener();
+        }
+
+        @Bean(name = "jackson2JsonMessageConverter")
+        @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+        public MessageConverter jackson2JsonMessageConverter()
+        {
+                return new Jackson2JsonMessageConverter();
         }
 }
