@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.messenger.app" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.messenger.core" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.messenger.infrastructure" />
+            <option value="$PROJECT_DIR$/de.bruenni.sabbat.shared" />
           </set>
         </option>
       </GradleProjectSettings>
