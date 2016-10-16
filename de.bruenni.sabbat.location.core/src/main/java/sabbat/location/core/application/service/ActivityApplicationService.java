@@ -1,5 +1,8 @@
 package sabbat.location.core.application.service;
 
+import identity.IAuthenticationService;
+import identity.UserRef;
+import infrastructure.identity.AuthenticationFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -23,14 +26,25 @@ public class ActivityApplicationService implements IActivityApplicationService {
     private Logger logger = LoggerFactory.getLogger(ActivityApplicationService.class);
 
     private IActivityRepository activityRepository;
+    private IAuthenticationService authenticationService;
 
-    public ActivityApplicationService(IActivityRepository activityRepository) {
+    /**
+     * Constructor.
+     * @param activityRepository
+     * @param authenticationService
+     */
+    public ActivityApplicationService(IActivityRepository activityRepository, IAuthenticationService authenticationService) {
         this.activityRepository = activityRepository;
+        this.authenticationService = authenticationService;
     }
 
     @Override
-    public Activity start(ActivityCreateCommand command) {
-        Activity domainObject = new Activity(new ActivityPrimaryKey(command.getUserId(), command.getId()), command.getTitle(), new Date());
+    public Activity start(ActivityCreateCommand command) throws AuthenticationFailedException {
+
+        // verify token
+        UserRef userRef = this.authenticationService.verify(command.getIdentityToken());
+
+        Activity domainObject = new Activity(new ActivityPrimaryKey(userRef.getName(), command.getId()), command.getTitle(), new Date());
         return this.activityRepository.save(domainObject);
     }
 

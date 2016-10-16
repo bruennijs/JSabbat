@@ -81,9 +81,11 @@ public class ActivityRabbitListener {
                         .setContentType(MessageProperties.CONTENT_TYPE_JSON)
                         .build();
 
-                return MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
+                Message responseMessage = MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
                         .andProperties(msgProps)
                         .build();
+
+                logger.debug("<-- response [" + responseMessage.toString() + "cid=" + correlationId + "]");
             }
         }
         catch (Exception exception)

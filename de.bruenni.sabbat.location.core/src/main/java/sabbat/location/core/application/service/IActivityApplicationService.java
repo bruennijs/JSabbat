@@ -1,5 +1,6 @@
 package sabbat.location.core.application.service;
 
+import infrastructure.identity.AuthenticationFailedException;
 import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
@@ -14,7 +15,7 @@ public interface IActivityApplicationService {
      * @param command
      * @return
      */
-    Activity start(ActivityCreateCommand command);
+    Activity start(ActivityCreateCommand command) throws AuthenticationFailedException;
 
     /**
      * Stops a activity.

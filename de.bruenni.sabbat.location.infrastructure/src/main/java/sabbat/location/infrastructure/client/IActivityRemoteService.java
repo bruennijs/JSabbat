@@ -19,20 +19,19 @@ public interface IActivityRemoteService {
      * @param command
      * @return
      */
-    ListenableFuture<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException;
+    rx.Observable<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException;
 
     /**
      * Stops activity
      * @param command
      * @return
      */
-    ListenableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command);
+    rx.Observable<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command);
 
     /**
      * Update of activity with new geo points, heartrate and so on.
      * @param command
      * @return Observable publishing channel confirmation whether dto has been
-     * @exception BadConfirmationException no confirm by transport (e.g. RabbitMQ9
      */
     rx.Observable<Void> update(ActivityUpdateEventDto command) throws Exception;
 

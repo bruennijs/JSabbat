@@ -2,6 +2,7 @@ package identity.implementation;
 
 import identity.GroupRef;
 import identity.IAuthenticationService;
+import identity.UserJwtBuilder;
 import identity.UserRef;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.ITokenAuthentication;
@@ -19,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -26,8 +28,6 @@ import java.util.stream.Collectors;
  */
 public class JwtAuthenticationService implements IAuthenticationService {
 
-    public static final String USERNAME = "username";
-    private static final String GROUPS = "groups";
     private static Logger logger = LoggerFactory.getLogger(JwtAuthenticationService.class);
 
     private ITokenAuthentication tokenAuthentication;
@@ -48,23 +48,19 @@ public class JwtAuthenticationService implements IAuthenticationService {
 
         Jwt jwt = this.tokenAuthentication.verify(token);
 
-        String userName = (String)jwt.getClaims().get(USERNAME);
-        String groups = (String)jwt.getClaims().get(GROUPS);
+        String userName = new UserJwtBuilder().fromJwt(jwt).getUserName();
+        List<String> groupNames = new UserJwtBuilder().fromJwt(jwt).getGroupNames();
 
-        return new UserRef(userName, userName, Arrays.stream(groups.split("\\ *,\\ *")).map(GroupRef::new).collect(Collectors.toList()));
+        return new UserRef(userName, userName, groupNames.stream().map(GroupRef::new).collect(Collectors.toList()));
     }
 
     @Override
     public Token authenticate(String userName, String password) {
 
         Instant iat = Instant.now(Clock.systemUTC());
-        Instant exp = iat.plus(7, ChronoUnit.DAYS);
+        Instant exp = iat.plus(3, ChronoUnit.DAYS);
 
-        HashMap<String, Object> claims = new HashMap<>();
-        claims.put(USERNAME, userName);
-        claims.put(GROUPS, "users");
-
-        Jwt jwt = new Jwt(userName, Date.from(iat), Date.from(exp), claims);
+        Jwt jwt = new UserJwtBuilder().withData(userName, Arrays.asList("users"), iat, exp).build();
 
         return this.tokenAuthentication.create(jwt);
     }

@@ -34,7 +34,7 @@
             publisher-confirms="true"
             publisher-returns="true"/>
 
-    <rabbit:admin id="admin" connection-factory="clientConnectionFactory" />
+    <rabbit:admin id="admin" connection-factory="clientConnectionFactory"  />
 
     <!-- queue, topic, echange -->
 <!--    <rabbit:topic-exchange id="activityCommandExchange"

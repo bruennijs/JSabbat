@@ -1,0 +1,25 @@
+stormpath:
+  client:
+    apiKey:
+      file: null
+      id: null
+      secret: null
+    cacheManager:
+      enabled: true
+      defaultTtl: 3600
+      defaultTti: 3600
+      caches:
+        # Resource cache configurations, as needed.
+        # These are used to override the default TTL/TTI settings
+        # for a particular resource type.
+        account:
+          ttl: 3600
+          tti: 3600
+    baseUrl: "https://api.stormpath.com/v1"
+    connectionTimeout: 30
+    authenticationScheme: "SAUTHC1"
+    proxy:
+      port: null
+      host: null
+      username: null
+      password: null

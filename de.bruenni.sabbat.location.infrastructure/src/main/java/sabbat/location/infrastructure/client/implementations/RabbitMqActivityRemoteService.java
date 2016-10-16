@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureAdapter;
+import rx.Observable;
 import rx.subjects.ReplaySubject;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.*;
@@ -59,7 +60,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public ListenableFuture<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public Observable<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
         try {
             logger.debug("Start activity [" + command.toString() + "]");
@@ -72,20 +73,14 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
             AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.startRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
-/*            Observable.from(responseFuture).map(msg -> {
-                return parser.parse(msg.getBody(), ActivityCreatedResponseDto.class);
-            });*/
-
-            return new ListenableFutureAdapter<ActivityCreatedResponseDto, org.springframework.amqp.core.Message>(responseFuture) {
-                @Override
-                protected ActivityCreatedResponseDto adapt(org.springframework.amqp.core.Message msg) throws ExecutionException {
-                    try {
-                        return parser.parse(msg.getBody(), ActivityCreatedResponseDto.class);
-                    } catch (IOException e) {
-                        throw new ExecutionException(e);
-                    }
+            return Observable.from(responseFuture).map(msg -> {
+                try {
+                    return parser.parse(msg.getBody(), ActivityCreatedResponseDto.class);
+                } catch (IOException e) {
+                    logger.error("Parse DTO failed", e);
+                    return null;
                 }
-            };
+            });
         }
         catch (Exception exception)
         {
@@ -95,9 +90,10 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public ListenableFuture<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
-        //return AsyncResult.forExecutionException(new Exception("thrown in RabbitMqActRemoteService"));
-        return new AsyncResult<>(new ActivityStoppedResponseDto(command.getId()));
+    public Observable<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
+        ReplaySubject<ActivityStoppedResponseDto> subject = ReplaySubject.create();
+        subject.onNext(new ActivityStoppedResponseDto(command.getId()));
+        return subject;
     }
 
     @Override

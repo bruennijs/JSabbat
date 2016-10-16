@@ -1,7 +1,12 @@
 package sabbat.location.core.builder;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.mockito.AdditionalAnswers;
+import org.mockito.stubbing.OngoingStubbing;
+import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 /**
@@ -9,6 +14,8 @@ import sabbat.location.core.persistence.activity.IActivityRepository;
  */
 public class ActivityRepositoryBuilder {
     public IActivityRepository buildmocked() {
-        return mock(IActivityRepository.class);
+        IActivityRepository mockedObject = mock(IActivityRepository.class);
+        when(mockedObject.save(any(Activity.class))).then(AdditionalAnswers.returnsFirstArg());
+        return mockedObject;
     }
 }
