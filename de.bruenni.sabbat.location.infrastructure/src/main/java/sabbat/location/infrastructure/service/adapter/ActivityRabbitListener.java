@@ -1,6 +1,7 @@
 package sabbat.location.infrastructure.service.adapter;
 
 import com.rabbitmq.client.Channel;
+import infrastructure.identity.Token;
 import infrastructure.util.IterableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,9 @@ public class ActivityRabbitListener {
 
                 ActivityCreateRequestDto dtoRequest = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
-                ActivityCreateCommand command = new ActivityCreateCommand(UUID.randomUUID().toString(), dtoRequest.getId(), dtoRequest.getTitle());
+                ActivityCreateCommand command = new ActivityCreateCommand(Token.valueOf(dtoRequest.getIdentityToken()),
+                        dtoRequest.getId(),
+                        dtoRequest.getTitle());
 
                 Activity activity = this.applicationService.start(command);
 
