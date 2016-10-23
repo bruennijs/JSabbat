@@ -89,6 +89,8 @@ public class ActivityRabbitListener {
                         .build();
 
                 logger.debug("<-- response [" + responseMessage.toString() + "cid=" + correlationId + "]");
+
+                return responseMessage;
             }
         }
         catch (Exception exception)

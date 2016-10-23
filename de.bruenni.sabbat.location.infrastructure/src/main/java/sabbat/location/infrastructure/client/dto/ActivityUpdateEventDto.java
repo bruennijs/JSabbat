@@ -21,22 +21,6 @@ public class ActivityUpdateEventDto extends ActivityRequestDtoBase   {
     public ActivityUpdateEventDto() {
     }
 
-    /*    @JsonProperty("timestamp")
-    private Date timestamp;
-
-    @JsonProperty("coordinates")
-    private Point coordinate;*/
-
-    /**
-     * Constructor
-     * @param activityId
-     */
-    public ActivityUpdateEventDto(String activityId, String identitytoken, TimeSeriesCoordinate timeSeries) {
-        super(activityId, identitytoken);
-        this.timeSeries = new ArrayList<>();
-        this.timeSeries.add(timeSeries);
-    }
-
     /**
      * Constructor
      * @param id
@@ -47,7 +31,7 @@ public class ActivityUpdateEventDto extends ActivityRequestDtoBase   {
         this.timeSeries = timeSeriesArray;
     }
 
-    public Iterable<TimeSeriesCoordinate> getTimeSeries() {
+    public List<TimeSeriesCoordinate> getTimeSeries() {
         return timeSeries;
     }
 

@@ -1,11 +1,14 @@
 package sabbat.location.core;
 
+import identity.IAuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import sabbat.location.core.application.service.ActivityApplicationService;
+import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.core.persistence.activity.implementation.ActivityRepositoryDummy;
 
@@ -21,10 +24,22 @@ import sabbat.location.core.persistence.activity.implementation.ActivityReposito
         })
 public class LocationCoreConfiguration {
 
+        @Autowired()
+        @Qualifier("verifyingAuthenticationService")
+        public IAuthenticationService authenticationService;
+
         @Bean(name = "activityRepository")
         @ConditionalOnMissingBean(IActivityRepository.class)
         public IActivityRepository activityRepository()
         {
                 return new ActivityRepositoryDummy();
+        }
+
+        @Bean(name = "activityApplicationService")
+        @ConditionalOnMissingBean(IActivityApplicationService.class)
+        @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+        public IActivityApplicationService activityApplicationService(IActivityRepository activityRepository)
+        {
+                return new ActivityApplicationService(activityRepository, this.authenticationService);
         }
 }

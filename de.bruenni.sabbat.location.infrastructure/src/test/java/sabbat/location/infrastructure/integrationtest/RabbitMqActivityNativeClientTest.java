@@ -45,7 +45,7 @@ public class RabbitMqActivityNativeClientTest {
     @Test
     public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException {
 
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        //ExecutorService executorService = Executors.newFixedThreadPool(5);
 
         ActivityCreateRequestDto dto = new ActivityCreateRequestDtoBuilder().build();
 
@@ -56,7 +56,7 @@ public class RabbitMqActivityNativeClientTest {
     }
 
     @Test
-    public void When_uddate_activity_expect_message_send_to_exchange() throws Exception {
+    public void When_update_activity_expect_message_send_to_exchange() throws Exception {
 
         TimeSeriesCoordinate timeSeriesCoordinate = new TimeSeriesCoordinateBuilder().withLatitude(179.99).build();
         ActivityUpdateEventDto dto = new ActivityUpdateEventDtoBuilder().withTimeSeries(timeSeriesCoordinate).build();
@@ -64,15 +64,5 @@ public class RabbitMqActivityNativeClientTest {
         Observable<Void> observable = Client.update(dto);
 
         observable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
-    }
-
-    @Test
-    @Ignore
-    public void When_rest_exception_no_unknwonhostexception()
-    {
-        System.out.println(host);
-
-        String s = new RestTemplate().getForObject("http://" + host, String.class);
-        Assert.assertThat(s, s, new IsEqual<>(""));
     }
 }

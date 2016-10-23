@@ -55,18 +55,6 @@ public class LocationIntegrationTest {
     }
 
     @Test
-    public void when_send_ActivityCreateRequest_expect_response_returned() throws Exception {
-
-        AtomicInteger atomicInteger = new AtomicInteger(3647);
-
-        Integer integer = new Integer(atomicInteger.getAndIncrement());
-        Observable<ActivityCreatedResponseDto> startObservable = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
-        ActivityCreatedResponseDto responseDto = startObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
-
-        Assert.assertEquals(integer.intValue(), Integer.decode(responseDto.getId()).intValue());
-    }
-
-    @Test
     public void when_send_ActivityCreateRequest_expect_IActivityEventService_received_same_event() throws Exception {
 
         BlockingObservable<IActivityResponseDto> eventObs = ActivityEventService.OnResponse()

@@ -24,6 +24,12 @@ public class ActivityCoordinate {
     public ActivityCoordinate() {
     }
 
+    /**
+     * Constructor
+     * @param key
+     * @param latitude
+     * @param longitude
+     */
     public ActivityCoordinate(ActivityCoordinatePrimaryKey key, double latitude, double longitude) {
         this.Key = key;
         this.latitude = latitude;
