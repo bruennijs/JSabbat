@@ -4,10 +4,12 @@ package sabbat.apigateway.location.controller;
 import com.sun.javafx.binding.StringFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.support.SecurityContextProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -82,11 +84,11 @@ public class MapMyTracksApiController {
                                 @RequestParam(value= "title", required = false) String title,
                                 @RequestParam(value= "points", required = false) String points,
                                 @RequestParam(value= "source", required = false) String source,
-                                @RequestParam(value = "tags", required = false) String tags,
-                                @RequestHeader(value = "Authorization", required = true) String authorization) throws Exception {
+                                @RequestParam(value = "tags", required = false) String tags) throws Exception {
 
         if (loggerTraffic.isDebugEnabled())
-            loggerTraffic.debug(StringFormatter.format("--> [request=%1s, axtivity_id=%2s, title=%3s, points=%4s, authorization=%5s]", requestType, activity_id, title, points, authorization).getValue());
+            loggerTraffic.debug(StringFormatter.format("--> [request=%1s, axtivity_id=%2s, title=%3s, points=%4s]", requestType, activity_id, title, points).getValue());
+
 
         try {
 
@@ -95,7 +97,10 @@ public class MapMyTracksApiController {
             if (!command.getPublishOnly()) {
                 Observable<? extends IActivityResponseDto> responseObservable = command.requestAsync();
 
-                IActivityResponseDto responseDto = responseObservable.timeout(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS).toBlocking().single();
+                IActivityResponseDto responseDto = responseObservable
+                        .timeout(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS)
+                        .toBlocking()
+                        .single();
 
                 MapMyTracksResponse response = transformation.transformResponse(responseDto);
 

@@ -55,6 +55,7 @@ public class LocationIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void when_send_ActivityCreateRequest_expect_IActivityEventService_received_same_event() throws Exception {
 
         BlockingObservable<IActivityResponseDto> eventObs = ActivityEventService.OnResponse()

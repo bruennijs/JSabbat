@@ -1,7 +1,7 @@
 package identity;
 
+import builder.JJwtTokenAuthenticationBuilder;
 import builder.JwtAuthenticationServiceBuilder;
-import builder.JwtTokenAuthenticationBuilder;
 import identity.implementation.JwtAuthenticationService;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.Jwt;
@@ -20,7 +20,7 @@ import org.junit.runners.JUnit4;
 public class JwtAuthenticationServiceTest {
     @Test
     public void When_create_from_userref_expect_verify_succeeds_with_equal_userref_parsed() throws AuthenticationFailedException {
-        String userName = "bruenni";
+        String userName = "test";
         JwtAuthenticationService sut = new JwtAuthenticationServiceBuilder().build();
         Token token = sut.authenticate(userName, "");
         UserRef userRef = sut.verify(token);
@@ -29,9 +29,9 @@ public class JwtAuthenticationServiceTest {
 
     @Test
     public void When_verify_token_expect_no_exception() throws AuthenticationFailedException {
-        String userName = "bruenni";
+        String userName = "test";
         JwtAuthenticationService sut = new JwtAuthenticationServiceBuilder().build();
-        JJwtTokenAuthentication tokenAuthentication = new JwtTokenAuthenticationBuilder().build();
+        JJwtTokenAuthentication tokenAuthentication = new JJwtTokenAuthenticationBuilder().build();
         Token token = sut.authenticate(userName, "");
 
         tokenAuthentication.verify(token);

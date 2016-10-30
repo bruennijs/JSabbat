@@ -98,7 +98,8 @@ public class ActivityRabbitListener {
             nack(message, channel, exception);
         }
 
-        throw new Exception("not implemented");
+        logger.error("Message could not be handled -> return message == null");
+        return null;
     }
 
     @RabbitListener(queues = "${location.activity.queue.tracking}",

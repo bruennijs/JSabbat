@@ -45,7 +45,7 @@ public class StormpathAuthenticationService implements IAuthenticationService {
     @Value("${stormpath.application.name}")
     public String ApplicationName;
 
-    @Value("${sabbat.jwt.ttl}")
+    @Value("${sabbat.shared.jwt.ttl}")
     public long JwtTtl = 3600;
 
     @Value("${stormpath.cache.ttl}")

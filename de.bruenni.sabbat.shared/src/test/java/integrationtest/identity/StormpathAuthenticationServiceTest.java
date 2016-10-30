@@ -2,7 +2,6 @@ package integrationtest.identity;
 
 import builder.JJwtTokenAuthenticationBuilder;
 import builder.JwtAuthenticationServiceBuilder;
-import builder.JwtTokenAuthenticationBuilder;
 import builder.StormpathAuthenticationServiceBuilder;
 import identity.UserRef;
 import identity.implementation.JwtAuthenticationService;
@@ -41,15 +40,14 @@ public class StormpathAuthenticationServiceTest {
 
     @Test
     public void When_authenticate_expect_JWT_token_parsed_contains_username_and_groups() throws Exception {
-        List<String> expectedGroupNames = Arrays.asList("oldenburgerradsportfreunde", "all");
-        String userName = "bruenni";
+        String userName = "test";
 
         ITokenAuthentication tokenAuthentication = new JJwtTokenAuthenticationBuilder().build();
         StormpathAuthenticationService sut = new StormpathAuthenticationServiceBuilder()
                 .withTokenAuthentication(tokenAuthentication)
                 .withApplicationName(applicationName)
                 .build();
-        Token token = sut.authenticate(userName, "bruenni2016");
+        Token token = sut.authenticate(userName, "password");
 
         Jwt jwt = tokenAuthentication.verify(token);
         Assert.assertEquals(userName, jwt.getClaims().get("username"));
@@ -57,10 +55,10 @@ public class StormpathAuthenticationServiceTest {
 
     @Test
     public void When_create_from_userref_expect_verify_succeeds_with_equal_userref_parsed() throws Exception {
-        String userName = "bruenni";
+        String userName = "test";
 
         StormpathAuthenticationService sut = new StormpathAuthenticationServiceBuilder().withApplicationName(applicationName).build();
-        Token token = sut.authenticate(userName, "bruenni2016");
+        Token token = sut.authenticate(userName, "password");
         UserRef userRef = sut.verify(token);
 
         Assert.assertEquals(userName, userRef.getName());
@@ -70,12 +68,12 @@ public class StormpathAuthenticationServiceTest {
 
         Assert.assertThat(
                 actualGroupNames,
-                IsCollectionContaining.hasItems("oldenburgerradsportfreunde", "all"));
+                IsCollectionContaining.hasItems("users", "testusers"));
     }
 
     @Test
     public void When_authenticate_wiht_wrong_credentials_expect_AuthenticationFailedException() throws Exception {
-        String userName = "bruenni";
+        String userName = "test";
 
         StormpathAuthenticationService sut = new StormpathAuthenticationServiceBuilder().withApplicationName(applicationName).build();
         try {

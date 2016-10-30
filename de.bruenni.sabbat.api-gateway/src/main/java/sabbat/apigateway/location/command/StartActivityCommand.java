@@ -1,13 +1,16 @@
 package sabbat.apigateway.location.command;
 
-import org.springframework.util.concurrent.ListenableFuture;
+import infrastructure.identity.Token;
+import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import rx.Observable;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -15,6 +18,8 @@ import java.util.concurrent.TimeoutException;
  * Created by bruenni on 04.08.16.
  */
 public class StartActivityCommand implements ICommand {
+
+    private static Logger log = LoggerFactory.getLogger(StartActivityCommand.class);
 
     private IActivityRemoteService ActivityRemoteService;
 
@@ -40,11 +45,16 @@ public class StartActivityCommand implements ICommand {
     @Override
     public Observable<ActivityCreatedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
-        // 1. authorize credentials credentials
+        // 1. get credentials by SecurityContextHolder
+        infrastructure.identity.Token token = (infrastructure.identity.Token) SecurityContextHolder.getContext().getAuthentication().getDetails();
 
+        if (log.isDebugEnabled())
+        {
+            log.debug(String.format("identity token [%1s]", token.getValue()));
+        }
 
         // 2. start activity
-        return this.ActivityRemoteService.start(transformStartRequest(title, points));
+        return this.ActivityRemoteService.start(transformStartRequest(title, points, token));
     }
 
     @Override
@@ -56,10 +66,11 @@ public class StartActivityCommand implements ICommand {
      * Transforms controller request to IActivityApplicationService command.
      *
      * @param title
+     * @param token
      * @return
      */
-    private ActivityCreateRequestDto transformStartRequest(String title, String points)
+    private ActivityCreateRequestDto transformStartRequest(String title, String points, Token token)
     {
-        return new ActivityCreateRequestDto(id, "", title);
+        return new ActivityCreateRequestDto(id, title, token.getValue());
     }
 }
