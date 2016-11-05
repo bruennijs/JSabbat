@@ -51,6 +51,11 @@
             <!--<AppenderRef ref="DefaultFile"/>-->
         </Logger>
 
+        <Logger name="sabbat.shared"
+                level="debug">
+            <!--<AppenderRef ref="DefaultFile"/>-->
+        </Logger>
+
         <Root level="INFO">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>

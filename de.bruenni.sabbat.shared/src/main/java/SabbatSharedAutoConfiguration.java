@@ -96,9 +96,9 @@ public class SabbatSharedAutoConfiguration {
     @Bean(name = "authenticationProvider")
     @ConditionalOnBean(name = "verifyingAuthenticationProvider")
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    public SabbatJwtAuthenticationProvider sabbatJwtIssueingAuthenticationProvider(AuthenticationProvider verifyingAuthenticationProvider)
+    public SabbatJwtAuthenticationProvider sabbatJwtIssueingAuthenticationProvider(ITokenAuthentication verifyingTokenAuthentication, AuthenticationProvider verifyingAuthenticationProvider)
     {
-        return new SabbatJwtAuthenticationProvider(this.tokenAuthentication(), verifyingAuthenticationProvider);
+        return new SabbatJwtAuthenticationProvider(verifyingTokenAuthentication, verifyingAuthenticationProvider);
     }
 
     @Bean

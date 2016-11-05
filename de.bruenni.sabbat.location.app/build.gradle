@@ -54,11 +54,6 @@ dependencies {
                 exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
             }
 
-    compile group: 'org.springframework.amqp', name: 'spring-amqp', version: '1.6.2.RELEASE'
-    compile group: 'org.springframework.amqp', name: 'spring-rabbit', version: '1.6.2.RELEASE'
-
-    compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
-
     // =========== LOGGING with SLF4J with a adapter to log4j 1.2 -> POM of slf4j pulls log4j dependency ===============
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'    /// writes to log4j 1.2...

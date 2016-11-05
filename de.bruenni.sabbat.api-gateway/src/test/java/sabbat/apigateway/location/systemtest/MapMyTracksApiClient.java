@@ -34,7 +34,7 @@ public class MapMyTracksApiClient {
 
     public MapMyTracksApiClient(String url) {
         this.url = url;
-        this.restTemplate = new AuthenticationRestTemplate().addBasicAuthentication("MyUserName", "MyPassword");
+        this.restTemplate = new AuthenticationRestTemplate().addBasicAuthentication("test", "password");
         //this.restTemplate = new RestTemplate();
 
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();

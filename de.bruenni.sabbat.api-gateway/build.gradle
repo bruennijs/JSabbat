@@ -38,8 +38,8 @@ repositories {
 
 dependencies {
     // PROJECT DEPS
-    compile project(':de.bruenni.sabbat.location.infrastructure');
-    compile project(':de.bruenni.sabbat.shared');
+    compile project(':de.bruenni.sabbat.location.infrastructure')
+    compile project (path: ':de.bruenni.sabbat.shared', transitive: true)
     //compile project(':de.bruenni.sabbat.location.core');
 
     // EXTERNAL DEPS
@@ -52,8 +52,6 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.1.3.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.1.3.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.1.3.RELEASE'
-
-    runtime group: 'org.springframework.security', name: 'spring-security-web', version: '4.1.3.RELEASE'
 
     compile ("org.springframework.boot:spring-boot-starter-web:1.3.5.RELEASE")
             {

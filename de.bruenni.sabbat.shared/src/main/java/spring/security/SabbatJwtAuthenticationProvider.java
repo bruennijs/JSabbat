@@ -45,6 +45,7 @@ public class SabbatJwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
         Authentication providerAuthentication = this.authenticationProvider.authenticate(authentication);
 
         if (!(providerAuthentication instanceof UsernamePasswordAuthenticationToken))

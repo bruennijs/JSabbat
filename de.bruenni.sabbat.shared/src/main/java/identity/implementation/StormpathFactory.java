@@ -24,11 +24,13 @@ public class StormpathFactory {
      */
     public void connect()
     {
-        this.client = Clients.builder()
-                //.setApiKey(ApiKeys.builder().build())
-                //.setCacheManager(cacheManager)
-                .setCacheManager(new DefaultCacheManagerBuilder().withDefaultTimeToLive(CacheTtl, TimeUnit.SECONDS).build())
-                .build();
+        if (this.client == null) {
+            this.client = Clients.builder()
+                    //.setApiKey(ApiKeys.builder().build())
+                    //.setCacheManager(cacheManager)
+                    .setCacheManager(new DefaultCacheManagerBuilder().withDefaultTimeToLive(CacheTtl, TimeUnit.SECONDS).build())
+                    .build();
+        }
     }
 
     /**
