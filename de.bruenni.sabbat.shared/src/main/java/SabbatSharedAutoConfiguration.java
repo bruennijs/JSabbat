@@ -24,11 +24,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import spring.security.SabbatJwtAuthenticationProvider;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by bruenni on 15.10.16.
@@ -78,7 +81,12 @@ public class SabbatSharedAutoConfiguration {
     @ConditionalOnProperty(prefix = "sabbat.shared", value = "authenticationprovider", havingValue = "inmemory", matchIfMissing = false)
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public AuthenticationProvider inMemoryTestAthenticationProvider() throws Exception {
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager(Arrays.asList(new User("test", "password", Arrays.asList(new SimpleGrantedAuthority("USERS")))));
+
+        List<UserDetails> userList = Arrays.asList(new User("test", "password", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new User("anmema", "anmema", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new User("bruenni", "bruenni", Arrays.asList(new SimpleGrantedAuthority("USERS"))));
+
+        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager(userList);
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         return authenticationProvider;
