@@ -93,6 +93,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     public Observable<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
         ReplaySubject<ActivityStoppedResponseDto> subject = ReplaySubject.create();
         subject.onNext(new ActivityStoppedResponseDto(command.getId()));
+        subject.onCompleted();
         return subject;
     }
 

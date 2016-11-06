@@ -19,7 +19,7 @@ public class ActivityRequestDtoBuilderBase {
 
     public ActivityRequestDtoBuilderBase() {
 
-        Jwt jwt = new UserJwtBuilder().withData("username.infrastrcutrue.test", Arrays.asList("group1.infrastructrue.test"), Instant.now(), Instant.now().plusSeconds(3600)).build();
+        Jwt jwt = new UserJwtBuilder().withData("username.infrastructure.test", Arrays.asList("group1.infrastructure.test"), Instant.now(), Instant.now().plusSeconds(3600)).build();
 
         this.identityToken = tokenAuthentication.create(jwt);
     }

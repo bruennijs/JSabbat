@@ -22,7 +22,7 @@
         <property name="password" value="guest"/>
     </bean>-->
 
-    <task:executor id="serviceTaskExecuter" pool-size="5"/>
+    <task:executor id="serviceTaskExecuter" pool-size="10"/>
 
     <rabbit:connection-factory
             id="clientConnectionFactory"

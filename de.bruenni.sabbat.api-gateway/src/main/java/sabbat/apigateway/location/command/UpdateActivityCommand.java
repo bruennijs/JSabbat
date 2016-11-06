@@ -49,4 +49,9 @@ public class UpdateActivityCommand implements ICommand {
     public Observable<Void> publish() throws Exception {
         return this.ActivityRemoteService.update(dtoConverter.transformUpdateEvent(this.id, this.points));
     }
+
+    @Override
+    public IActivityResponseDto getDefault() {
+        return null;
+    }
 }

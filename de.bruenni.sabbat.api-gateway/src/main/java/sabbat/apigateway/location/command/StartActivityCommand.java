@@ -6,12 +6,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import rx.Observable;
+import sabbat.apigateway.location.controller.MapMyTracksApiController;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
+import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -20,6 +26,7 @@ import java.util.concurrent.TimeoutException;
 public class StartActivityCommand implements ICommand {
 
     private static Logger log = LoggerFactory.getLogger(StartActivityCommand.class);
+    private final String id;
 
     private IActivityRemoteService ActivityRemoteService;
 
@@ -27,12 +34,11 @@ public class StartActivityCommand implements ICommand {
         ActivityRemoteService = activityRemoteService;
     }
 
-    private String id;
     private String title;
     private String points;
 
-    public StartActivityCommand(String id, String title, String points) {
-        this.id = id;
+    public StartActivityCommand(String title, String points) {
+        this.id = Long.valueOf(createNewUniqueId()).toString();
         this.title = title;
         this.points = points;
     }
@@ -43,9 +49,9 @@ public class StartActivityCommand implements ICommand {
     }
 
     @Override
-    public Observable<ActivityCreatedResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+    public Observable<IActivityResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
-        // 1. get credentials by SecurityContextHolder
+        // 0. get credentials by SecurityContextHolder
         infrastructure.identity.Token token = (infrastructure.identity.Token) SecurityContextHolder.getContext().getAuthentication().getDetails();
 
         if (log.isDebugEnabled())
@@ -53,8 +59,12 @@ public class StartActivityCommand implements ICommand {
             log.debug(String.format("identity token [%1s]", token.getValue()));
         }
 
+        // 1. transform to DTO
+        ActivityCreateRequestDto dto = new ActivityCreateRequestDto(id, title, token.getValue());
+
+
         // 2. start activity
-        return this.ActivityRemoteService.start(transformStartRequest(title, points, token));
+        return this.ActivityRemoteService.start(dto).map(resp -> resp);
     }
 
     @Override
@@ -62,15 +72,12 @@ public class StartActivityCommand implements ICommand {
         throw new Exception("not implemented");
     }
 
-    /***
-     * Transforms controller request to IActivityApplicationService command.
-     *
-     * @param title
-     * @param token
-     * @return
-     */
-    private ActivityCreateRequestDto transformStartRequest(String title, String points, Token token)
-    {
-        return new ActivityCreateRequestDto(id, title, token.getValue());
+    @Override
+    public IActivityResponseDto getDefault() {
+        return new ActivityCreatedResponseDto(this.id);
+    }
+
+    private long createNewUniqueId() {
+        return new Date().getTime() % Integer.MAX_VALUE;
     }
 }

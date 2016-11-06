@@ -14,13 +14,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class ActivityCommandFactory implements IActivityCommandFactory {
 
+    private static final long REPLY_TIMEOUT = 5000;
+
     /**
      * Spring lookup method
      * @param title
      * @param points
      * @return
      */
-    protected abstract ICommand createStartActivityCommand(String id, String title, String points);
+    protected abstract ICommand createStartActivityCommand(String title, String points);
 
     /**
      * Stops activity
@@ -49,21 +51,17 @@ public abstract class ActivityCommandFactory implements IActivityCommandFactory 
     @Override
     public ICommand getCommand(String requestType, String title, String points, String source, String activity_id) throws Exception {
         if (requestType.equals("start_activity")) {
-            return createStartActivityCommand(Long.valueOf(createNewUniqueId()).toString(), title, points);
+            return new FaultTolerantCommandDecorator(createStartActivityCommand(title, points), REPLY_TIMEOUT);
             //return createStartActivityCommand(UUID.randomUUID().toString(), title, points);
         }
         else if (requestType.equals("stop_activity"))
         {
-            return createStopActivityCommand(activity_id);
+            return new FaultTolerantCommandDecorator(createStopActivityCommand(activity_id), REPLY_TIMEOUT);
         }
         else if (requestType.equals("update_activity")) {
             return createUpdateActivityCommand(activity_id, points);
         }
 
         throw new Exception(StringFormatter.format("requesttype not supported [type=%1s]", requestType).getValue());
-    }
-
-    private long createNewUniqueId() {
-        return new Date().getTime() % Integer.MAX_VALUE;
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfigurati
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.geo.Point;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.datetime.DateFormatter;
@@ -39,6 +40,7 @@ import java.util.*;
  * Created by bruenni on 14.07.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@Profile("test")
 @ActiveProfiles(value = "test")
 @SpringApplicationConfiguration(classes = { SystemTestConfig.class })
 public class MapMyTracksApiIntegrationTest {

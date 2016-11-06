@@ -72,7 +72,7 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
                 factory.setMaxConcurrentConsumers(10);
                 factory.setTaskExecutor(taskExecutor);
                 factory.setConnectionFactory(connectionFactory);
-                factory.setMessageConverter(jackson2JsonMessageConverter());
+                //factory.setMessageConverter(jackson2JsonMessageConverter());
                 factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
                 factory.setAutoStartup(true);
                 factory.setAutoDeclare(true);

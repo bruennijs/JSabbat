@@ -4,26 +4,24 @@ package sabbat.apigateway.location.controller;
 import com.sun.javafx.binding.StringFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.support.SecurityContextProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import rx.Observable;
 import sabbat.apigateway.location.command.IActivityCommandFactory;
 import sabbat.apigateway.location.command.ICommand;
+import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.ActivityUpdatedResponse;
 import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import org.slf4j.Logger;
+import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,10 +31,6 @@ import java.util.concurrent.TimeUnit;
 //@ResponseBody
 @RequestMapping(path = "/location/api/v1")
 public class MapMyTracksApiController {
-
-    private static final long START_ACTIVITY_RESPONSE_TIMEOUT = 5000;
-    private static final long UPDATE_ACTIVITY_RESPONSE_TIMEOUT = 5000;
-
 
     final Logger logger = org.slf4j.LoggerFactory.getLogger(MapMyTracksApiController.class);
     final Logger loggerTraffic = org.slf4j.LoggerFactory.getLogger("apigateway.traffic");
@@ -98,7 +92,6 @@ public class MapMyTracksApiController {
                 Observable<? extends IActivityResponseDto> responseObservable = command.requestAsync();
 
                 IActivityResponseDto responseDto = responseObservable
-                        .timeout(START_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS)
                         .toBlocking()
                         .single();
 
@@ -121,7 +114,7 @@ public class MapMyTracksApiController {
                 // publish only command
                 Observable<Void> observable = command.publish();
 
-                observable.timeout(UPDATE_ACTIVITY_RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS).toBlocking().single();
+                observable.toBlocking().single();
 
                 if (loggerTraffic.isDebugEnabled())
                     loggerTraffic.debug("<-- [200 OK]");

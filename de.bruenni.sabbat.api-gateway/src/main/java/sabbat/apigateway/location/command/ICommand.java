@@ -22,11 +22,17 @@ public interface ICommand {
      * Executes async.
      * @return
      */
-    Observable<? extends IActivityResponseDto> requestAsync() throws Exception;
+    Observable<IActivityResponseDto> requestAsync() throws Exception;
 
     /**
      * Publishes an event without service response synchronously.
      * @return
      */
     Observable<Void> publish() throws Exception;
+
+    /**
+     * Gets the default value to handle timeout error of requestAsync() replies e.g.!
+     * @return
+     */
+    IActivityResponseDto getDefault();
 }

@@ -63,6 +63,7 @@ public class ActivityRabbitListener {
 
         try
         {
+
             if (routingKey.equals(ActivityStartRoutingKey)) {
 
 
