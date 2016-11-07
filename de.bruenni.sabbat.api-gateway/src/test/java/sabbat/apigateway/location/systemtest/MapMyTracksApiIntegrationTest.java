@@ -89,11 +89,13 @@ public class MapMyTracksApiIntegrationTest {
 
         List<Tuple2<Point, Date>> tuples = Arrays.asList(new Tuple2<>(new Point(8.2, 54.5454), new Date()));
 
-        ResponseEntity<ActivityUpdatedResponse> response = new MapMyTracksApiClient(ApiUrl).updateActivity(startResponse.getBody().activityId, tuples);
+        for (int i=0; i<50; i++) {
+            ResponseEntity<ActivityUpdatedResponse> response = new MapMyTracksApiClient(ApiUrl).updateActivity(startResponse.getBody().activityId, tuples);
 
-        logger.debug(response.toString());
+            logger.debug(response.toString());
 
-        Assert.assertEquals(200, response.getStatusCode().value());
-        Assert.assertEquals("activity_updated", response.getBody().type);
+            Assert.assertEquals(200, response.getStatusCode().value());
+            Assert.assertEquals("activity_updated", response.getBody().type);
+        }
     }
 }

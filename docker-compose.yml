@@ -214,6 +214,7 @@ services:
 
   rabbitmq-ctl:
     #docker run -it --name rabbitmq-ctl --link some-rabbit:my-rabbit -e RABBITMQ_ERLANG_COOKIE='secret cookie here' rabbitmq:3 bash
+    #docker run -it --name rabbitmq-ctl --add-host rabbit:138.68.75.155 -e RABBITMQ_ERLANG_COOKIE='HXZQALONJINGVZQBVBMZ' rabbitmq:3.6.4 bash
     #docker run -it --name rabbitmq-ctl --link rabbitmq-dev:rabbit -e RABBITMQ_ERLANG_COOKIE='DDXFNKDEXRBEGNIOHNPO' rabbitmq:3.6.4 bash
     # then run in bash: rabbitmqctl -n rabbit@rabbitmq-dev list_queues
 
