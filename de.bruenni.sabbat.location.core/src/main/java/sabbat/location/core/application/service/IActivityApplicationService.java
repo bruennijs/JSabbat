@@ -1,10 +1,12 @@
 package sabbat.location.core.application.service;
 
 import infrastructure.identity.AuthenticationFailedException;
-import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.model.ActivityCoordinate;
+
+import java.util.List;
 
 /**
  * Created by bruenni on 04.07.16.
@@ -31,5 +33,5 @@ public interface IActivityApplicationService {
      * @return
      * @throws Exception
      */
-    void update(ActivityUpdateCommand command) throws Exception;
+    Iterable<ActivityCoordinate> update(ActivityUpdateCommand command) throws Exception;
 }

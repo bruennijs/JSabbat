@@ -26,6 +26,10 @@ public abstract class ActivityRequestDtoBase extends ActivityDtoBase {
         return identityToken;
     }
 
+    public void setIdentityToken(String identityToken) {
+        this.identityToken = identityToken;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -10,12 +10,11 @@ import java.util.UUID;
 /**
  * Created by bruenni on 08.10.16.
  */
-public class ActivityUpdateEventDtoBuilder extends ActivityRequestDtoBuilderBase {
-    private String activityId = UUID.randomUUID().toString();
+public class ActivityUpdateEventDtoBuilder extends ActivityRequestDtoBuilderBase<ActivityUpdateEventDtoBuilder> {
     private List<TimeSeriesCoordinate> timeSeriesArray = new ArrayList<>();
 
     public ActivityUpdateEventDto build() {
-        return new ActivityUpdateEventDto(this.activityId, this.identityToken.getValue(), timeSeriesArray);
+        return new ActivityUpdateEventDto(this.activityId, this.identityToken, timeSeriesArray);
     }
 
     public ActivityUpdateEventDtoBuilder withTimeSeries(TimeSeriesCoordinate value) {

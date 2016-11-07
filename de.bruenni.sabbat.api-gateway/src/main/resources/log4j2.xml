@@ -42,7 +42,7 @@
         </Logger>-->
 
         <Logger name="sabbat.apigateway"
-                level="debug">
+                level="DEBUG">
             <!--<AppenderRef ref="DefaultFile"/>-->
         </Logger>
 

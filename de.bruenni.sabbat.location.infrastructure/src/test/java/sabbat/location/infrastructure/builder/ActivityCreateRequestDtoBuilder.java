@@ -15,6 +15,6 @@ public class ActivityCreateRequestDtoBuilder extends ActivityRequestDtoBuilderBa
 
         return new ActivityCreateRequestDto(Long.valueOf(new Date().getTime()).toString(),
                 "title.infrastructure.test",
-                this.identityToken.getValue());
+                this.identityToken);
     }
 }

@@ -63,4 +63,16 @@ public class ActivityCoordinatePrimaryKey implements Serializable {
                 ", captured=" + captured +
                 '}';
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getActivityid() {
+        return activityid;
+    }
+
+    public Date getCaptured() {
+        return captured;
+    }
 }

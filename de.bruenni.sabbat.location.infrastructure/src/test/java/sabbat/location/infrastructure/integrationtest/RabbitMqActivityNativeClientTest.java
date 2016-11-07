@@ -59,7 +59,10 @@ public class RabbitMqActivityNativeClientTest {
     public void When_update_activity_expect_message_send_to_exchange() throws Exception {
 
         TimeSeriesCoordinate timeSeriesCoordinate = new TimeSeriesCoordinateBuilder().withLatitude(179.99).build();
-        ActivityUpdateEventDto dto = new ActivityUpdateEventDtoBuilder().withTimeSeries(timeSeriesCoordinate).build();
+        ActivityUpdateEventDto dto = new ActivityUpdateEventDtoBuilder()
+                .withActivityId("activity:id")
+                .withTimeSeries(timeSeriesCoordinate)
+                .build();
 
         Observable<Void> observable = Client.update(dto);
 

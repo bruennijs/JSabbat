@@ -1,15 +1,21 @@
 package sabbat.apigateway.location.command;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.concurrent.ListenableFuture;
 import rx.Observable;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
+import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
 import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 /**
  * Created by bruenni on 04.08.16.
  */
 public class UpdateActivityCommand implements ICommand {
+
+    private static Logger log = LoggerFactory.getLogger(UpdateActivityCommand.class);
 
     private IActivityRemoteService ActivityRemoteService;
     private LocationApiDtoConverter dtoConverter;
@@ -47,7 +53,14 @@ public class UpdateActivityCommand implements ICommand {
 
     @Override
     public Observable<Void> publish() throws Exception {
-        return this.ActivityRemoteService.update(dtoConverter.transformUpdateEvent(this.id, this.points));
+
+        ActivityUpdateEventDto dto = dtoConverter.transformUpdateEvent(this.id, this.points);
+
+        infrastructure.identity.Token token = (infrastructure.identity.Token) SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+        dto.setIdentityToken(token.getValue());
+
+        return this.ActivityRemoteService.update(dto);
     }
 
     @Override

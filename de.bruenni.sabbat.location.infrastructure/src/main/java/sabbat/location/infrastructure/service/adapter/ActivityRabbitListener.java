@@ -22,6 +22,8 @@ import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
+import sabbat.location.infrastructure.DtoToCommand.ActivityCreateRequestDtoConverter;
+import sabbat.location.infrastructure.DtoToCommand.ActivityUpdateEventDtoConverter;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
@@ -52,6 +54,9 @@ public class ActivityRabbitListener {
     @Qualifier("locationJsonDtoParser")
     private infrastructure.parser.IDtoParser dtoParser;
 
+    private ActivityCreateRequestDtoConverter dtoCreateConverter = new ActivityCreateRequestDtoConverter();
+    private ActivityUpdateEventDtoConverter dtoUpdateConverter = new ActivityUpdateEventDtoConverter();
+
     @RabbitListener(queues = "${location.activity.queue.command}",
                     containerFactory = "rabbitListenerContainerFactory")
     //@Header("correlationId") String correlationId
@@ -67,11 +72,9 @@ public class ActivityRabbitListener {
             if (routingKey.equals(ActivityStartRoutingKey)) {
 
 
-                ActivityCreateRequestDto dtoRequest = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
+                ActivityCreateRequestDto dto = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
-                ActivityCreateCommand command = new ActivityCreateCommand(Token.valueOf(dtoRequest.getIdentityToken()),
-                        dtoRequest.getId(),
-                        dtoRequest.getTitle());
+                ActivityCreateCommand command = dtoCreateConverter.convert(dto);
 
                 Activity activity = this.applicationService.start(command);
 
@@ -108,12 +111,13 @@ public class ActivityRabbitListener {
     public void onTrackingMessage(Message message,
                                   Channel channel) throws Exception {
         ActivityUpdateEventDto dto = dtoParser.parse(message.getBody(), ActivityUpdateEventDto.class);
+
         logger.debug("--> tracking [" + message.toString() + "]");
         logger.debug("--> DTO      [" + dto.toString() + "]");
 
         try
         {
-            ActivityUpdateCommand command = new ActivityUpdateCommand(toActivityCoordinates(dto), null, null);
+            ActivityUpdateCommand command = this.dtoUpdateConverter.convert(dto);
 
             this.applicationService.update(command);
 
@@ -131,14 +135,5 @@ public class ActivityRabbitListener {
 
     private void ack(Message message, Channel channel) throws IOException {
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-    }
-
-    private List<ActivityCoordinate> toActivityCoordinates(ActivityUpdateEventDto dto) {
-        return IterableUtils.stream(dto.getTimeSeries()).map(ts -> {
-
-            ActivityCoordinatePrimaryKey pKey = new ActivityCoordinatePrimaryKey(dto.getIdentityToken(), dto.getId(), ts.getTimestamp());
-
-            return new ActivityCoordinate(pKey, ts.getLatitude(), ts.getLongitude());
-        }).collect(Collectors.toList());
     }
 }

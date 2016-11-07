@@ -43,8 +43,6 @@ dependencies {
     compile project(':de.bruenni.sabbat.location.core');
     compile project(':de.bruenni.sabbat.location.infrastructure');
 
-    //compile project(':de.bruenni.sabbat.location.core');
-
     // EXTERNAL DEPS
     compile group: 'org.springframework', name: 'spring-context', version: '4.2.5.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '4.2.5.RELEASE'
