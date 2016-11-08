@@ -205,6 +205,7 @@ services:
     expose:
       - "15672" #plugin: rabbitmq_management
     ports:
+    - "4369:4369"
     - "5672:5672"
     - "15672:15672"
     volumes:
