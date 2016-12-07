@@ -191,7 +191,7 @@ services:
     - "5672:5672"
     - "15672:15672"
     volumes:
-     - /opt/tmp/rabbitmq-sabbat:/var/lib/rabbitmq
+     - /opt/rabbitmq-sabbat:/var/lib/rabbitmq
     network_mode: "bridge"  # default network with bridge adapter docker0
 
   rabbitmq-prod:

@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="api-gateway@dev" type="JarApplication" factoryName="JAR Application" singleton="true">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <option name="JAR_PATH" value="./build/libs/sabbat.api-gateway.jar" />
+    <option name="PROGRAM_PARAMETERS" value="--spring.profiles.active=dev" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <envs />
+    <method>
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="assemble" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>
