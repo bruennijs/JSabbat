@@ -2,6 +2,7 @@
 
 */build/*/*
 !*/build/libs/*jar
+*/target
 
 .gradle
 */.gradle

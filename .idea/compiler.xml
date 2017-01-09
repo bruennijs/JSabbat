@@ -10,8 +10,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="._.._JInfrastructure_de.bruenni.infrastructure.common_main" target="1.8" />
-      <module name="._.._JInfrastructure_de.bruenni.infrastructure.common_test" target="1.8" />
       <module name="de.bruenni.sabbat.api-gateway_main" target="1.8" />
       <module name="de.bruenni.sabbat.api-gateway_test" target="1.8" />
       <module name="de.bruenni.sabbat.location.app_main" target="1.8" />
@@ -28,23 +26,7 @@
       <module name="de.bruenni.sabbat.messenger.infrastructure_test" target="1.8" />
       <module name="de.bruenni.sabbat.shared_main" target="1.8" />
       <module name="de.bruenni.sabbat.shared_test" target="1.8" />
-      <module name="messenger-core_main" target="1.5" />
-      <module name="messenger-core_test" target="1.5" />
-      <module name="messenger.app.arsch_main" target="1.5" />
-      <module name="messenger.app.arsch_test" target="1.5" />
-      <module name="messenger.app_main" target="1.5" />
-      <module name="messenger.app_test" target="1.5" />
-      <module name="messenger.core.test_main" target="1.5" />
-      <module name="messenger.core.test_test" target="1.5" />
-      <module name="sabbat.api-gateway_main" target="1.5" />
-      <module name="sabbat.api-gateway_test" target="1.5" />
-      <module name="sabbat.location.cep" target="1.5" />
-      <module name="sabbat.location.core_main" target="1.8" />
-      <module name="sabbat.location.core_test" target="1.8" />
-      <module name="sabbat.location.infrastructure_main" target="1.8" />
-      <module name="sabbat.location.infrastructure_test" target="1.8" />
-      <module name="sabbat.messenger.infrastructure_main" target="1.8" />
-      <module name="sabbat.messenger.infrastructure_test" target="1.8" />
+      <module name="sabbat.location.cep" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
