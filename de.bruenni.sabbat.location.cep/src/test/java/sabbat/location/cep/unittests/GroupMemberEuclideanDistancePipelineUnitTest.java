@@ -1,7 +1,5 @@
 package sabbat.location.cep.unittests;
 
-import com.google.common.collect.Lists;
-import com.hazelcast.logging.ILogger;
 import de.bruenni.infrastructure.tracking.file.LtOverdriveGpxTrackFileParser;
 import infrastructure.resources.Resources;
 import infrastructure.time.BucketAdjuster;
@@ -10,15 +8,11 @@ import infrastructure.tracking.TrackPoint;
 import infrastructure.tracking.file.ITrackFileParser;
 import infrastructure.tracking.file.TrackFileParserException;
 import infrastructure.util.IterableUtils;
-import lt.overdrive.trackparser.domain.Trail;
 import lt.overdrive.trackparser.parsing.ParserException;
-import lt.overdrive.trackparser.parsing.gpx.GpxParser;
-import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -39,8 +33,6 @@ import java.io.InputStream;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -118,23 +110,33 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
     @Test
     public void when_two_coordinates_of_same_group_expect_group_distance_matrix_evented() throws ParserException, IOException, TrackFileParserException {
 
-        try (InputStream is = Resources.getResourceAsStream("gpx/ga1.gpx")) {
-					Iterable<Track> tracks = gpxParser.parse(is);
+			Iterable<Track> tracks1 = loadTracks("gpx/ga1.gpx");
+			Track track1 = IterableUtils.stream(tracks1).findFirst().get();
+			Map<Instant, List<TrackPoint>> trackPointsGroup1 = loadTrackPointMap(track1);
 
-					Stream<TrackPoint> trackPointStream = IterableUtils.stream(IterableUtils.stream(tracks).findFirst().get().getPoints());
-
-					Map<Instant, List<infrastructure.util.Tuple2>> trackPointsGroup = trackPointStream
-							.filter(tp -> tp.getTime().isPresent())
-							.map(tp -> new infrastructure.util.Tuple2<Instant, TrackPoint>(getBucket(tp), tp))
-							.collect(Collectors.groupingBy(tuple -> (Instant)tuple.getT1()));
-
+			Iterable<Track> tracks2 = loadTracks("gpx/112km.gpx");
+			Track track2 = IterableUtils.stream(tracks1).findFirst().get();
+			Map<Instant, List<TrackPoint>> trackPointsGroup2 = loadTrackPointMap(track2);
 
 					//trackPointsGroup.putAll();values().stream().collect(Collectors.)
-					trackPointsGroup.forEach((k, v) -> log.info(String.format("%1s->%2d", k.toString(), v.size())));
-				}
-        finally {
-        }
+			trackPointsGroup1.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track1.getName())));
+			trackPointsGroup2.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track2.getName())));
     }
+
+	private Iterable<Track> loadTracks(String resourceName) throws TrackFileParserException, IOException {
+		try (InputStream is = Resources.getResourceAsStream(resourceName)) {
+			return  gpxParser.parse(is);
+		}
+		finally{}
+	}
+
+	private Map<Instant, List<TrackPoint>> loadTrackPointMap(Track track) {
+		Stream<TrackPoint> trackPointStream = IterableUtils.stream(track.getPoints());
+
+		return trackPointStream
+				.filter(tp -> tp.getTime().isPresent())
+				.collect(Collectors.groupingBy(tp -> (Instant)getBucket(tp)));
+	}
 
 	private Instant getBucket(TrackPoint tp) {
 		return tp.getTime().get().with(new BucketAdjuster(Duration.ofMinutes(5)));
