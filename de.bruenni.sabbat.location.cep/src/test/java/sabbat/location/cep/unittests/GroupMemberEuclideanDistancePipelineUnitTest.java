@@ -112,15 +112,26 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
 
 			Iterable<Track> tracks1 = loadTracks("gpx/ga1.gpx");
 			Track track1 = IterableUtils.stream(tracks1).findFirst().get();
-			Map<Instant, List<TrackPoint>> trackPointsGroup1 = loadTrackPointMap(track1);
+			Map<Instant, Set<infrastructure.util.Tuple2<Track, TrackPoint>>> trackPointsGroup1 = loadTrackPointMap(track1);
 
 			Iterable<Track> tracks2 = loadTracks("gpx/112km.gpx");
-			Track track2 = IterableUtils.stream(tracks1).findFirst().get();
-			Map<Instant, List<TrackPoint>> trackPointsGroup2 = loadTrackPointMap(track2);
+			Track track2 = IterableUtils.stream(tracks2).findFirst().get();
+			Map<Instant, Set<infrastructure.util.Tuple2<Track, TrackPoint>>> trackPointsGroup2 = loadTrackPointMap(track2);
 
 					//trackPointsGroup.putAll();values().stream().collect(Collectors.)
 			trackPointsGroup1.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track1.getName())));
 			trackPointsGroup2.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track2.getName())));
+
+			trackPointsGroup1.forEach((k, v) -> trackPointsGroup2.merge(k,
+			v,
+			(v1, v2) ->
+			{
+				v1.addAll(v2);
+				return v1;
+			} ));
+
+
+		trackPointsGroup2.forEach((k, set) -> log.info(String.format("%3s: %1s->%2s", k.toString(), set.size(), set.stream().reduce(new StringBuilder(), (builder, tuple) -> builder.append("[" + tuple.getT1().getName().substring(0, 3) + ":" + tuple.getT2().getTime() + "]"), (sb1, sb2) -> sb1.append(sb2)))));
     }
 
 	private Iterable<Track> loadTracks(String resourceName) throws TrackFileParserException, IOException {
@@ -130,12 +141,15 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
 		finally{}
 	}
 
-	private Map<Instant, List<TrackPoint>> loadTrackPointMap(Track track) {
+	private Map<Instant, Set<infrastructure.util.Tuple2<Track, TrackPoint>>> loadTrackPointMap(Track track) {
 		Stream<TrackPoint> trackPointStream = IterableUtils.stream(track.getPoints());
 
 		return trackPointStream
 				.filter(tp -> tp.getTime().isPresent())
-				.collect(Collectors.groupingBy(tp -> (Instant)getBucket(tp)));
+				.collect(Collectors.groupingBy(tp -> (Instant)getBucket(tp),
+						                           Collectors.mapping(
+						                           			trpo -> new infrastructure.util.Tuple2<Track, TrackPoint>(track, trpo),
+																					 	Collectors.toSet())));
 	}
 
 	private Instant getBucket(TrackPoint tp) {

@@ -15,7 +15,7 @@ public class Sink2SubjectAdapter<IN> implements SinkFunction<IN> {
 
   @Override
   public void invoke(IN in) throws Exception {
-      subject.onNext(in);
+    subject.onNext(in);
   }
 
   /**
