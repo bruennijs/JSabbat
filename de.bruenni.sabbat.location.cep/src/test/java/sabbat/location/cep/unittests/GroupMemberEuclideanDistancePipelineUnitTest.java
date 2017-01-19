@@ -119,8 +119,8 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
 			Map<Instant, Set<infrastructure.util.Tuple2<Track, TrackPoint>>> trackPointsGroup2 = loadTrackPointMap(track2);
 
 					//trackPointsGroup.putAll();values().stream().collect(Collectors.)
-			trackPointsGroup1.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track1.getName())));
-			trackPointsGroup2.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track2.getName())));
+			//trackPointsGroup1.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track1.getName())));
+			//trackPointsGroup2.forEach((k, v) -> log.info(String.format("%3s: %1s->%2s", k.toString(), v.size(), track2.getName())));
 
 			trackPointsGroup1.forEach((k, v) -> trackPointsGroup2.merge(k,
 			v,
@@ -131,7 +131,7 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
 			} ));
 
 
-		trackPointsGroup2.forEach((k, set) -> log.info(String.format("%3s: %1s->%2s", k.toString(), set.size(), set.stream().reduce(new StringBuilder(), (builder, tuple) -> builder.append("[" + tuple.getT1().getName().substring(0, 3) + ":" + tuple.getT2().getTime() + "]"), (sb1, sb2) -> sb1.append(sb2)))));
+		//trackPointsGroup2.forEach((k, set) -> log.info(String.format("%3s: %1s->%2s", k.toString(), set.size(), set.stream().reduce(new StringBuilder(), (builder, tuple) -> builder.append("[" + tuple.getT1().getName().substring(0, 3) + ":" + tuple.getT2().getTime() + "]"), (sb1, sb2) -> sb1.append(sb2)))));
     }
 
 	private Iterable<Track> loadTracks(String resourceName) throws TrackFileParserException, IOException {
