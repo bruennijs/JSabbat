@@ -13,7 +13,7 @@ import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
+import org.apache.flink.streaming.api.functions.windowing.RichWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
@@ -24,9 +24,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.LoggerFactory;
+import sabbat.location.cep.DoubleAverageRichWindowFunction;
 import sabbat.location.cep.test.flink.FlinkStreamingTestBase;
 import sabbat.location.cep.test.flink.Sink2SubjectAdapter;
-import sabbat.location.cep.test.flink.TimestampVector2;
+import sabbat.location.cep.flink.TimestampTuple2;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,35 +66,19 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
       Sink2SubjectAdapter<Double> adapter = new Sink2SubjectAdapter<>();
 
       Instant t1 = Instant.now(Clock.systemUTC());
-        Instant t2 = t1.plus(Duration.ofSeconds(5));
+      Instant t2 = t1.plus(Duration.ofSeconds(5));
+		Instant t3 = t1.plus(Duration.ofSeconds(35));
 
-        TimestampVector2<String, Double> v1 = new TimestampVector2<>("group1", 7.2d, t1);
-        TimestampVector2<String, Double> v2 = new TimestampVector2<>("group1", 2.8d, t1);
-        TimestampVector2<String, Double> v3 = new TimestampVector2<>("group2", 9.5d, t2);
-        TimestampVector2<String, Double> v4 = new TimestampVector2<>("group2", 12.5d, t2);
+      TimestampTuple2<String, Double> v1 = new TimestampTuple2<>("group1", 7.2d, t1);
+      TimestampTuple2<String, Double> v2 = new TimestampTuple2<>("group1", 2.8d, t2);
+      TimestampTuple2<String, Double> v3 = new TimestampTuple2<>("group2", 9.5d, t1);
+      TimestampTuple2<String, Double> v4 = new TimestampTuple2<>("group2", 12.5d, t2);
+      TimestampTuple2<String, Double> v5 = new TimestampTuple2<>("group2", 12.5d, t2);
 
-        DataStreamSource<TimestampVector2<String, Double>> source = localEnvironment.fromCollection(Arrays.asList(v1, v2, v3));
-        source.keyBy(v -> v.getT1())
-            .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
-            .apply(new WindowFunction<TimestampVector2<String,Double>, Double, String, TimeWindow>() {
-
-                public ValueState<Tuple2<Long, Double>> avgData;
-
-                @Override
-                public void apply(String key, TimeWindow timeWindow, Iterable<TimestampVector2<String, Double>> iterable, Collector<Double> collector) throws Exception {
-                    //// calculate max
-                    Tuple2<Long, Double> avgTuple = avgData.value();
-
-                    Tuple2<Long, Double> windowAvg = IterableUtils.stream(iterable).reduce(new Tuple2<Long, Double>(),
-                      (acc, item) -> Tuple2.of(acc.f0 + 1, acc.f1 + item.getT2().doubleValue()),
-                      (acc1, acc2) -> Tuple2.of(acc1.f0 + acc2.f0, acc1.f1 + acc2.f1));
-
-                    avgTuple.f0 += windowAvg.f0;
-                    avgTuple.f1 += windowAvg.f1;
-
-                    avgData.update(avgTuple);
-                }
-            })
+      DataStreamSource<TimestampTuple2<String, Double>> source = localEnvironment.fromCollection(Arrays.asList(v1, v2, v3, v4, v5));
+      source.keyBy(v -> v.getT1())
+            .window(TumblingProcessingTimeWindows.of(Time.seconds(30)))
+            .apply(new DoubleAverageRichWindowFunction())
             .filter(avg -> avg > 10.0 )
             .addSink(adapter);
 
