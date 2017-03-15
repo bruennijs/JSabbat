@@ -1,4 +1,4 @@
-version: '2'
+version : '2'
 services:
 
   # ========== API-GATEWAY ===============
@@ -224,3 +224,25 @@ services:
     image: rabbitmq:3.6.4
     entrypoint: bash
     network_mode: "bridge"  # default network with bridge adapter docker0
+
+  postgresql-dev:
+    container_name: postgresql-dev
+    image: postgres:9.6.2
+    ports:
+      - "5432:5432"
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres#2017
+    volumes:
+      - /opt/postgresql-sabbat:/var/lib/postgresql/data
+
+  postgresql-94-dev:
+    container_name: postgresql-94-dev
+    image: postgres:9.4.11
+    ports:
+      - "5433:5432"
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres#2017
+    volumes:
+      - /opt/postgresql-94-sabbat:/var/lib/postgresql/data
