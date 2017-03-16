@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="de.bruenni.sabbat.location.cep" type="MavenRunConfiguration" factoryName="Maven" singleton="true" show_console_on_std_out="true" show_console_on_std_err="true">
+  <configuration default="false" name="de.bruenni.sabbat.location.cep compile" type="MavenRunConfiguration" factoryName="Maven" singleton="true" show_console_on_std_out="true" show_console_on_std_err="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -9,7 +9,9 @@
             <set />
           </option>
           <option name="goals">
-            <list />
+            <list>
+              <option value="compile" />
+            </list>
           </option>
           <option name="profilesMap">
             <map />
