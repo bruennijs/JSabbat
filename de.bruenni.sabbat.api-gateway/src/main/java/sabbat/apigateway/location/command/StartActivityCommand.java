@@ -1,6 +1,7 @@
 package sabbat.apigateway.location.command;
 
 import infrastructure.identity.Token;
+import infrastructure.parser.SerializingException;
 import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class StartActivityCommand implements ICommand {
     }
 
     @Override
-    public Observable<IActivityResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+    public Observable<IActivityResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, SerializingException {
 
         // 0. get credentials by SecurityContextHolder
         infrastructure.identity.Token token = (infrastructure.identity.Token) SecurityContextHolder.getContext().getAuthentication().getDetails();
