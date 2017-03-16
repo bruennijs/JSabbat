@@ -36,8 +36,8 @@ repositories {
 
 dependencies {
     // PROJECT DEPS
-    compile project(':de.bruenni.sabbat.location.core');
-    //compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'
+    //compile project(':de.bruenni.sabbat.location.core');
+    compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'
     compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
 
     // EXTERNAL DEPS

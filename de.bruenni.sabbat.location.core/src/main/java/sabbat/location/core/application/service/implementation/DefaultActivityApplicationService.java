@@ -1,19 +1,26 @@
-package sabbat.location.core.application.service;
+package sabbat.location.core.application.service.implementation;
 
 import identity.IAuthenticationService;
 import identity.UserRef;
+import infrastructure.common.event.IDomainEventBus;
+import infrastructure.common.event.IEvent;
 import infrastructure.identity.AuthenticationFailedException;
-import infrastructure.util.IterableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
+import sabbat.location.core.domain.events.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
+import java.lang.reflect.Type;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,21 +28,23 @@ import java.util.stream.Collectors;
 /**
  * Created by bruenni on 24.09.16.
  */
-public class ActivityApplicationService implements IActivityApplicationService {
+public class DefaultActivityApplicationService implements IActivityApplicationService {
 
-    private Logger logger = LoggerFactory.getLogger(ActivityApplicationService.class);
+    private Logger logger = LoggerFactory.getLogger(DefaultActivityApplicationService.class);
 
     private IActivityRepository activityRepository;
     private IAuthenticationService authenticationService;
+    private IDomainEventBus domainEventBus;
 
     /**
      * Constructor.
      * @param activityRepository
      * @param authenticationService
      */
-    public ActivityApplicationService(IActivityRepository activityRepository, IAuthenticationService authenticationService) {
+    public DefaultActivityApplicationService(IActivityRepository activityRepository, IAuthenticationService authenticationService, IDomainEventBus domainEventBus) {
         this.activityRepository = activityRepository;
         this.authenticationService = authenticationService;
+        this.domainEventBus = domainEventBus;
     }
 
     @Override
@@ -44,7 +53,13 @@ public class ActivityApplicationService implements IActivityApplicationService {
         // verify token
         UserRef userRef = this.authenticationService.verify(command.getIdentityToken());
 
-        Activity domainObject = new Activity(new ActivityPrimaryKey(userRef.getId(), command.getId()), command.getTitle(), new Date());
+        Instant now = Instant.now(Clock.systemUTC());
+        Date nowDate = Date.from(now);
+        Activity domainObject = new Activity(new ActivityPrimaryKey(userRef.getId(), command.getId()), command.getTitle(), nowDate);
+
+        // fire domain event
+        domainEventBus.publish(new ActivityStartedEvent(nowDate, domainObject.getId(), 0l));
+
         return this.activityRepository.save(domainObject);
     }
 
@@ -70,5 +85,15 @@ public class ActivityApplicationService implements IActivityApplicationService {
 
             return new ActivityCoordinate(pKey, coordinate.getLatitude(), coordinate.getLongitude());
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void OnEvent(IEvent iEvent) {
+
+    }
+
+    @Override
+    public Type[] getSupportedEvents() {
+        return new Type[0];
     }
 }

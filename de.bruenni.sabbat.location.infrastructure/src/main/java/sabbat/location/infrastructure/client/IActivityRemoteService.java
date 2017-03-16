@@ -1,5 +1,6 @@
 package sabbat.location.infrastructure.client;
 
+import infrastructure.parser.SerializingException;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -19,7 +20,7 @@ public interface IActivityRemoteService {
      * @param command
      * @return
      */
-    rx.Observable<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException;
+    rx.Observable<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws InterruptedException, ExecutionException, TimeoutException, SerializingException;
 
     /**
      * Stops activity

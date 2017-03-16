@@ -31,6 +31,11 @@ public class CassandraActivityRepository extends CassandraActivityBaseRepository
     }
 
     @Override
+    public Iterable<Activity> findByUserIds(String[] associatedUserIds) throws Exception {
+        throw new Exception("not implemented");
+    }
+
+    @Override
     public Iterable<ActivityCoordinate> insertCoordinate(List<ActivityCoordinate> coordinates) {
 
         log.debug(StringFormatter.format("INSERT into activity_coordinates [count=%1d, ConsistencyLevel=%2s]",

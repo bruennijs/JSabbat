@@ -9,10 +9,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.springframework.data.geo.Point;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.application.service.command.TimeCoordinate;
+import sabbat.location.core.application.service.implementation.DefaultActivityApplicationService;
 import sabbat.location.core.builder.ActivityApplicationServiceBuilder;
 import sabbat.location.core.builder.AuthenticationServiceBuilder;
 import sabbat.location.core.domain.model.Activity;
@@ -34,7 +34,7 @@ public class ActivityApplicationServiceTest {
 
         IAuthenticationService authenticationService = buildAuthenticationService(user);
 
-        ActivityApplicationService sut = new ActivityApplicationServiceBuilder()
+        DefaultActivityApplicationService sut = new ActivityApplicationServiceBuilder()
                 .withAuthenticationService(authenticationService)
                 .build();
 
@@ -62,7 +62,7 @@ public class ActivityApplicationServiceTest {
 
         ActivityUpdateCommand command = new ActivityUpdateCommand(Token.valueOf("something"), UUID.randomUUID().toString(), Arrays.asList(timeCoordinate), null, null);
 
-        ActivityApplicationService sut = new ActivityApplicationServiceBuilder()
+        DefaultActivityApplicationService sut = new ActivityApplicationServiceBuilder()
                 .withAuthenticationService(authenticationService)
                 .build();
 

@@ -1,7 +1,6 @@
 package sabbat.location.infrastructure.unittest.dto;
 
-import com.codahale.metrics.Clock;
-import infrastructure.extensions.ZonedDateTimeExtensions;
+
 import infrastructure.parser.JsonDtoParser;
 import infrastructure.util.IterableUtils;
 import org.junit.Assert;

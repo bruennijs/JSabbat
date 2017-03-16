@@ -1,5 +1,7 @@
 package sabbat.location.infrastructure.client.implementations;
 
+import infrastructure.parser.ParserException;
+import infrastructure.parser.SerializingException;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.AmqpMessageReturnedException;
 import org.springframework.amqp.core.MessageProperties;
@@ -60,7 +62,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public Observable<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public Observable<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws InterruptedException, ExecutionException, TimeoutException, SerializingException {
 
         try {
             logger.debug("Start activity [" + command.toString() + "]");
@@ -76,7 +78,7 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
             return Observable.from(responseFuture).map(msg -> {
                 try {
                     return parser.parse(msg.getBody(), ActivityCreatedResponseDto.class);
-                } catch (IOException e) {
+                } catch (ParserException e) {
                     logger.error("Parse DTO failed", e);
                     return null;
                 }

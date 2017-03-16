@@ -12,6 +12,14 @@ import java.util.List;
  * Created by bruenni on 13.09.16.
  */
 public interface IActivityRepository extends CrudRepository<Activity, ActivityPrimaryKey> {
+
+    /***
+     * Finds all activities related to a set of users.
+     * @param associatedUserIds
+     * @return
+     */
+    Iterable<Activity> findByUserIds(String[] associatedUserIds) throws Exception;
+
     /**
      * Inserts coordinate time series entry as composition of Activity aggregate.
      * Batch insert of all coordinates.

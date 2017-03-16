@@ -1,5 +1,6 @@
 package sabbat.location.core.application.service;
 
+import infrastructure.common.event.IEventHandler;
 import infrastructure.identity.AuthenticationFailedException;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by bruenni on 04.07.16.
  */
-public interface IActivityApplicationService {
+public interface IActivityApplicationService extends IEventHandler {
     /**
      * Starts a activity.
      * @param command

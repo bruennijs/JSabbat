@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class ActivityRepositoryDummy implements IActivityRepository {
     @Override
+    public Iterable<Activity> findByUserIds(String[] associatedUserIds) throws Exception {
+        throw new Exception("not implemented");
+    }
+
+    @Override
     public Iterable<ActivityCoordinate> insertCoordinate(List<ActivityCoordinate> coordinate) {
         return null;
     }

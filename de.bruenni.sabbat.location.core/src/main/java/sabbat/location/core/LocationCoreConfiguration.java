@@ -1,13 +1,14 @@
 package sabbat.location.core;
 
 import identity.IAuthenticationService;
+import infrastructure.common.event.IDomainEventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
-import sabbat.location.core.application.service.ActivityApplicationService;
+import sabbat.location.core.application.service.implementation.DefaultActivityApplicationService;
 import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.core.persistence.activity.implementation.ActivityRepositoryDummy;
@@ -28,6 +29,10 @@ public class LocationCoreConfiguration {
         @Qualifier("verifyingAuthenticationService")
         public IAuthenticationService authenticationService;
 
+        @Autowired
+        @Qualifier("DomainEventBus")
+        private IDomainEventBus domainEventBus;
+
         @Bean(name = "activityRepository")
         @ConditionalOnMissingBean(IActivityRepository.class)
         public IActivityRepository activityRepository()
@@ -40,6 +45,6 @@ public class LocationCoreConfiguration {
         @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
         public IActivityApplicationService activityApplicationService(IActivityRepository activityRepository)
         {
-                return new ActivityApplicationService(activityRepository, this.authenticationService);
+                return new DefaultActivityApplicationService(activityRepository, this.authenticationService, this.domainEventBus);
         }
 }

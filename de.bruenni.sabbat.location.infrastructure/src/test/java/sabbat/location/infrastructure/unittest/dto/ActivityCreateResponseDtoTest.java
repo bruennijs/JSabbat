@@ -3,6 +3,8 @@ package sabbat.location.infrastructure.unittest.dto;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import infrastructure.parser.JsonDtoParser;
+import infrastructure.parser.ParserException;
+import infrastructure.parser.SerializingException;
 import org.junit.Assert;
 import org.junit.Test;
 import sabbat.location.infrastructure.builder.ActivityCreateRequestDtoBuilder;
@@ -15,7 +17,7 @@ import java.io.IOException;
  */
 public class ActivityCreateResponseDtoTest {
     @Test
-    public void When_serialize_and_parse_expect_same_object() throws IOException {
+    public void When_serialize_and_parse_expect_same_object() throws SerializingException, ParserException {
         ActivityCreateRequestDto dto = new ActivityCreateRequestDtoBuilder().build();
         JsonDtoParser jsonDtoParser = new JsonDtoParser();
         ActivityCreateRequestDto dtoParsed = jsonDtoParser.parse(jsonDtoParser.serialize(dto), ActivityCreateRequestDto.class);

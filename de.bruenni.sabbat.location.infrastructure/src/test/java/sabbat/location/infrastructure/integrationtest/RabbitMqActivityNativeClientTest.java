@@ -1,5 +1,6 @@
 package sabbat.location.infrastructure.integrationtest;
 
+import infrastructure.parser.SerializingException;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -43,7 +44,7 @@ public class RabbitMqActivityNativeClientTest {
     public RabbitMqActivityRemoteService Client;
 
     @Test
-    public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    public void When_start_activity_expect_message_send_to_exchange() throws IOException, InterruptedException, ExecutionException, TimeoutException, SerializingException {
 
         //ExecutorService executorService = Executors.newFixedThreadPool(5);
 

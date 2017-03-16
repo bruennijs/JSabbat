@@ -1,13 +1,24 @@
 package sabbat.location.core.domain.model;
 
+import infrastructure.common.event.IEvent;
+import infrastructure.common.event.IEventHandler;
 import org.springframework.data.cassandra.mapping.Column;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
+import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
+import sabbat.location.core.domain.events.ActivityRelationUpdatedEvent;
+import sabbat.location.core.domain.model.relation.ActivityRelation;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Table(value = "activity")
-public class Activity {
+public class Activity implements IEventHandler {
+
+	@Column("notused")
+	private Long id;
 
     @PrimaryKey
     private ActivityPrimaryKey key;
@@ -21,6 +32,8 @@ public class Activity {
     @Column("title")
     private String title;
 
+    //private List<ActivityRelation> relations;
+
     public Activity() {
     }
 
@@ -33,6 +46,7 @@ public class Activity {
         this.key = key;
         this.title = title;
         this.started = started;
+        //this.relations = new ArrayList<ActivityRelation>();
     }
 
     public ActivityPrimaryKey getKey() {
@@ -49,6 +63,20 @@ public class Activity {
 
     public Date getFinished() {
         return finished;
+    }
+
+    /**
+     * Relates an activity with the current activity.
+     * For each activity to be related a new ActivityRelation will
+	 * be created.
+     * @param toBeRelated
+     * @return
+     */
+    public IEvent[] relateActivity(Activity toBeRelated)
+    {
+		ActivityRelation activityRelation = new ActivityRelation(0, getId(), toBeRelated.getId());
+		//relations.add(activityRelation);
+		return new IEvent[] {};
     }
 
     /**
@@ -91,4 +119,25 @@ public class Activity {
         result = 31 * result + title.hashCode();
         return result;
     }
+
+/*    public List<ActivityRelation> getRelations() {
+        return relations;
+    }*/
+
+	@Override
+	public void OnEvent(IEvent iEvent) {
+		if (iEvent instanceof ActivityRelationCreatedEvent)
+		{
+
+		}
+	}
+
+	@Override
+	public Type[] getSupportedEvents() {
+		return new Type[] {ActivityRelationCreatedEvent.class, ActivityRelationUpdatedEvent.class};
+	}
+
+	public Long getId() {
+		return id;
+	}
 }
