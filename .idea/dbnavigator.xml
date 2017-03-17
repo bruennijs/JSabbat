@@ -23,7 +23,14 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="false" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4">
+        <schema name="information_schema" object-types="sequence, table, view" />
+        <schema name="loc" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
+        <schema name="pg_catalog" object-types="function, sequence, table, view" />
+        <schema name="public" object-types="function, sequence, table, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="e1d4605f-2acf-4880-ab78-fe5b17a881b4">
@@ -31,20 +38,74 @@
       <console name="Connection-localhost-sabbat" type="STANDARD"><![CDATA[select * from pg_catalog.pg_roles;
 
 -- CREATE database sabbat;]]></console>
-      <console name="sabbat-localhost" type="STANDARD"><![CDATA[insert into activity (finished,
+      <console name="sabbat-localhost" type="STANDARD"><![CDATA[-- TRUNCATE loc.activity;
+
+insert into loc.activity (finished,
     "uuid",
     started,
     title,
     userid)
-values ('2017-03-03T01:02:59Z',
-    'activityid6',
+values (null,
+    :aid,
+    '2017-03-03T01:01:59Z',
+    'some title',
+    :uid);
+
+insert into loc.activity (finished,
+    "uuid",
+    started,
+    title,
+    userid)
+values (null,
+    'activityid2',
     '2017-03-03T01:01:59Z',
     'some title',
     'username2');
 
+    insert into loc.activity (finished,
+    "uuid",
+    started,
+    title,
+    userid)
+values (null,
+    'activityid3',
+    '2017-03-03T01:01:59Z',
+    'some title',
+    'username3');
+
+insert into activityrelation (
+    activityid1,
+    activityid2)
+values (
+    :activityid1,
+    :activityid2)
+;
+
+
+
 -- SELECT currval(pg_get_serial_sequence('activity', 'id'));
 
-select * from loc.activity where userid IN ('username1', 'username2');]]></console>
+-- select * from loc.activity where userid IN ('username1', 'username2');
+EXPLAIN select * from loc.activity where uuid = 'activityid3';
+select * from loc.activityrelation ;
+
+EXPLAIN select a.uuid,
+        a.userid,
+        b.uuid,
+        b.userid
+        from loc.activity as a
+inner join loc.activityrelation as ar ON a.id = ar.activityid2
+inner join loc.activity as b ON ar.activityid1 = b.id
+where a.uuid = :activityid;
+UNION
+select a.uuid,
+        a.userid,
+        b.uuid,
+        b.userid
+        from loc.activity as a
+inner join loc.activityrelation as ar ON a.id = ar.activityid1
+inner join loc.activity as b ON ar.activityid2 = b.id
+where a.uuid = :activityid;]]></console>
     </connection>
     <connection id="4ff58e04-1c53-4f23-97ae-c981d83b00ef">
       <console name="Connection" type="STANDARD" />
@@ -75,8 +136,9 @@ select * from loc.activity where userid IN ('username1', 'username2');]]></conso
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/sabbat_init_db.sql" connection-id="4ff58e04-1c53-4f23-97ae-c981d83b00ef" current-schema="information_schema" />
-    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/sabbat_init_tables.sql" connection-id="52d298b5-7067-470a-86c0-c5277751def1" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_db.sql" connection-id="4ff58e04-1c53-4f23-97ae-c981d83b00ef" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_tables.sql" connection-id="52d298b5-7067-470a-86c0-c5277751def1" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_queries.sql" connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4" current-schema="information_schema" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
@@ -723,6 +785,15 @@ select * from loc.activity where userid IN ('username1', 'username2');]]></conso
     </general-settings>
   </component>
   <component name="DBNavigator.Project.StatementExecutionManager">
-    <execution-variables />
+    <execution-variables>
+      <file path="db://e1d4605f-2acf-4880-ab78-fe5b17a881b4/console#sabbat-localhost">
+        <variable name=":activityid1" dataType="NUMERIC" values="2, 4, 3, 1" />
+        <variable name=":activityid" dataType="LITERAL" values="activityid1, activityid2, activityid3" />
+        <variable name=":aid" dataType="LITERAL" values="a20, a19, a18, a17, a16, a15, a14, a13, a12, a11, a10, a9, a8, a7, a6, a5" />
+        <variable name=":uid" dataType="LITERAL" values="u20, u19, u18, u17, u16, u15, u13, u12, u11, u10, u9, u8, u67, u6, u5" />
+        <variable name=":activityid2" dataType="LITERAL" values="3, 2, 1" />
+        <variable name=":id" dataType="LITERAL" values="" />
+      </file>
+    </execution-variables>
   </component>
 </project>

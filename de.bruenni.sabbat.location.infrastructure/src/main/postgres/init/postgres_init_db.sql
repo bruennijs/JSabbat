@@ -2,7 +2,7 @@
 -- do this with connection to server with user 'postgres' having
 -- right to create roles
 -- command line
--- psql -h localhost -U postgres -f de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/sabbat_init_db.sql
+-- psql -h localhost -U postgres -f de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_db.sql
 
 BEGIN;
 --DROP ROLE sabbat;

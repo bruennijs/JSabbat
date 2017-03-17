@@ -1,4 +1,4 @@
-package sabbat.location.core.domain.model.relation;
+package sabbat.location.core.domain.model;
 
 import java.time.Instant;
 

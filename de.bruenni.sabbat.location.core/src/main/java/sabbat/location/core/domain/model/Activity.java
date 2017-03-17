@@ -1,57 +1,70 @@
 package sabbat.location.core.domain.model;
 
+import com.google.common.collect.Lists;
 import infrastructure.common.event.IEvent;
 import infrastructure.common.event.IEventHandler;
-import org.springframework.data.cassandra.mapping.Column;
-import org.springframework.data.cassandra.mapping.PrimaryKey;
-import org.springframework.data.cassandra.mapping.Table;
 import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.ActivityRelationUpdatedEvent;
-import sabbat.location.core.domain.model.relation.ActivityRelation;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@Table(value = "activity")
-public class Activity implements IEventHandler {
+@Entity
+@Table(name = "activity", schema = "loc")
+public class Activity implements IEventHandler, Serializable {
 
-	@Column("notused")
+	@Id
+	@Convert(converter = IntegerToLongConverter.class)
+	@SequenceGenerator(name="activity_eq", sequenceName="activity_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "activity_eq")
 	private Long id;
 
-    @PrimaryKey
-    private ActivityPrimaryKey key;
+	@Column(name = "uuid")
+	private String uuid;
 
-    @Column("started")
+	@Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "started")
     private Date started;
 
-    @Column("finished")
+	@Column(name = "finished")
     private Date finished;
 
-    @Column("title")
+	@Column(name = "title")
     private String title;
 
-    //private List<ActivityRelation> relations;
+	@Column(name = "userid")
+	private String userId;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "activity1", orphanRemoval = true)
+    private List<ActivityRelation> relations1 = Lists.newArrayList();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "activity2", orphanRemoval = true)
+	private List<ActivityRelation> relations2 = Lists.newArrayList();
 
     public Activity() {
     }
 
     /**
      * Activity primary key.
-     * @param key
      * @param title
      */
-    public Activity(ActivityPrimaryKey key, String title, Date started) {
-        this.key = key;
-        this.title = title;
+    public Activity(Long id, String uuid, String title, Date started, String userId) {
+		this.id = id;
+		this.uuid = uuid;
+		this.title = title;
         this.started = started;
-        //this.relations = new ArrayList<ActivityRelation>();
-    }
+		this.userId = userId;
+	}
 
-    public ActivityPrimaryKey getKey() {
-        return key;
-    }
+	public Long getId() {
+		return id;
+	}
 
     public String getTitle() {
         return title;
@@ -65,6 +78,22 @@ public class Activity implements IEventHandler {
         return finished;
     }
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	/**
+	 * Set finished after activity stopped.
+	 * @param finished
+	 */
+	public void setFinished(Date finished) {
+		this.finished = finished;
+	}
+
     /**
      * Relates an activity with the current activity.
      * For each activity to be related a new ActivityRelation will
@@ -74,55 +103,18 @@ public class Activity implements IEventHandler {
      */
     public IEvent[] relateActivity(Activity toBeRelated)
     {
-		ActivityRelation activityRelation = new ActivityRelation(0, getId(), toBeRelated.getId());
+		ActivityRelation activityRelation = new ActivityRelation(0l, this, toBeRelated);
 		//relations.add(activityRelation);
 		return new IEvent[] {};
     }
 
-    /**
-     * Set finished after activity stopped.
-     * @param finished
-     */
-    public void setFinished(Date finished) {
-        this.finished = finished;
+	/**
+	 * Merges both related activity relation lists.
+	 * @return
+	 */
+    public List<ActivityRelation> getRelations() {
+        return Stream.concat(relations1.stream(), relations2.stream()).collect(Collectors.toList());
     }
-
-    @Override
-    public String toString() {
-        return "Activity{" +
-                "key=" + key +
-                ", started=" + started +
-                ", finished=" + finished +
-                ", title='" + title + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Activity activity = (Activity) o;
-
-        if (!key.equals(activity.key)) return false;
-        if (!started.equals(activity.started)) return false;
-        if (finished != null ? !finished.equals(activity.finished) : activity.finished != null) return false;
-        return title.equals(activity.title);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = key.hashCode();
-        result = 31 * result + started.hashCode();
-        result = 31 * result + (finished != null ? finished.hashCode() : 0);
-        result = 31 * result + title.hashCode();
-        return result;
-    }
-
-/*    public List<ActivityRelation> getRelations() {
-        return relations;
-    }*/
 
 	@Override
 	public void OnEvent(IEvent iEvent) {
@@ -137,7 +129,30 @@ public class Activity implements IEventHandler {
 		return new Type[] {ActivityRelationCreatedEvent.class, ActivityRelationUpdatedEvent.class};
 	}
 
-	public Long getId() {
-		return id;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Activity activity = (Activity) o;
+
+		return id.equals(activity.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Activity{" +
+			"id=" + id +
+			", started=" + started +
+			", finished=" + finished +
+			", title='" + title + '\'' +
+			", relations1=" + relations1 +
+			", relations2=" + relations2 +
+			'}';
 	}
 }

@@ -1,5 +1,5 @@
 -- Command line
--- psql -h localhost -U postgres -d sabbat -f de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/sabbat_init_tables.sql
+-- psql -h localhost -U postgres -d sabbat -f de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_tables.sql
 
 -- Schema containing all location domain specific tables
 
@@ -17,6 +17,10 @@ BEGIN;
         finished TIMESTAMP null -- if null means activity is still active, not stopped yet
     );
 
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_activity_uuid ON loc.activity (uuid);
+
+
+
     ---------------------------------------
 
     CREATE TABLE IF NOT EXISTS loc.activityrelation (
@@ -24,6 +28,9 @@ BEGIN;
         activityid1 SERIAL not null REFERENCES loc.activity (id) ON DELETE CASCADE,
         activityid2 SERIAL not null REFERENCES loc.activity (id) ON DELETE CASCADE
     );
+
+    --ALTER TABLE IF EXISTS loc.activityrelation
+      --  ADD COLUMN IF NOT EXISTS activityids SERIAL [ column_constraint [ ... ] ]
 
     -- time series events coming in from CEP with new distances between activities --
     CREATE TABLE IF NOT EXISTS loc.activityrelationevents (

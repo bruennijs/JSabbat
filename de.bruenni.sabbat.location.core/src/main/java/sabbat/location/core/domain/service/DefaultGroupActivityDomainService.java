@@ -28,7 +28,7 @@ public class DefaultGroupActivityDomainService {
 		Activity startedActivity = activityRepository.findOne(null);
 
 		// 0.5 get groups the user of started activity is in
-		User startedActivityUser = accountService.getUserById(startedActivity.getKey().getUserId());
+		User startedActivityUser = accountService.getUserById(startedActivity.getUserId());
 
 		// 1. find all users of all groups the user of the started activity is in
 		//Arrays.stream(startedActivityUser.getGroups()).map()

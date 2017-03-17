@@ -12,6 +12,6 @@ import java.util.UUID;
 public class ActivityBuilder {
     public Activity build()
     {
-        return new Activity(new ActivityPrimaryKey(UUID.randomUUID().toString(), UUID.randomUUID().toString()), "mein erstes rennen in Köln", new Date());
+        return new Activity(0l, UUID.randomUUID().toString(), "mein erstes rennen in Köln", new Date(), UUID.randomUUID().toString());
     }
 }

@@ -41,8 +41,8 @@ public class ActivityApplicationServiceTest {
         ActivityCreateCommand command = new ActivityCreateCommand(Token.valueOf("something"), UUID.randomUUID().toString(), "hello");
         Activity activity = sut.start(command);
 
-        Assert.assertEquals(command.getId(), activity.getKey().getId());
-        Assert.assertEquals(user.getId(), activity.getKey().getUserId());
+        Assert.assertEquals(command.getId(), activity.getUuid());
+        Assert.assertEquals(user.getId(), activity.getUserId());
     }
 
     private IAuthenticationService buildAuthenticationService(UserRef user) throws AuthenticationFailedException {

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by bruenni on 13.09.16.
  */
-public interface IActivityRepository extends CrudRepository<Activity, ActivityPrimaryKey> {
+public interface IActivityRepository extends CrudRepository<Activity, Long> {
 
     /***
      * Finds all activities related to a set of users.

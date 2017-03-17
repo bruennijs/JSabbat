@@ -37,12 +37,12 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
-    public Activity findOne(ActivityPrimaryKey activityPrimaryKey) {
+    public Activity findOne(Long activityPrimaryKey) {
         return null;
     }
 
     @Override
-    public boolean exists(ActivityPrimaryKey activityPrimaryKey) {
+    public boolean exists(Long activityPrimaryKey) {
         return false;
     }
 
@@ -52,7 +52,7 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
-    public Iterable<Activity> findAll(Iterable<ActivityPrimaryKey> activityPrimaryKeys) {
+    public Iterable<Activity> findAll(Iterable<Long> activityPrimaryKeys) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
-    public void delete(ActivityPrimaryKey activityPrimaryKey) {
+    public void delete(Long activityPrimaryKey) {
 
     }
 

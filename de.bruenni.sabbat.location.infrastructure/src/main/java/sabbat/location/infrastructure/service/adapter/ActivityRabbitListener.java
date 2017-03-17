@@ -81,7 +81,7 @@ public class ActivityRabbitListener {
                 ack(message, channel);
 
                 //Observable.from(activityStartFuture)
-                ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getKey().getId().toString());
+                ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getUuid());
 
                 MessageProperties msgProps = MessagePropertiesBuilder.newInstance()
                         .setCorrelationId(correlationId)

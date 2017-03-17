@@ -55,7 +55,7 @@ public class DefaultActivityApplicationService implements IActivityApplicationSe
 
         Instant now = Instant.now(Clock.systemUTC());
         Date nowDate = Date.from(now);
-        Activity domainObject = new Activity(new ActivityPrimaryKey(userRef.getId(), command.getId()), command.getTitle(), nowDate);
+        Activity domainObject = new Activity(0l, command.getId(), command.getTitle(), nowDate, userRef.getId());
 
         // fire domain event
         domainEventBus.publish(new ActivityStartedEvent(nowDate, domainObject.getId(), 0l));
