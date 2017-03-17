@@ -1,7 +1,9 @@
 # Created by author Oliver Brüntje
 
 */build/*/*
-!*/build/libs/*jar
+# !*/build/libs/*jar
+!/de.bruenni.sabbat.api-gateway/build/libs/*jar
+!/de.bruenni.sabbat.location.app/build/libs/*jar
 */target
 
 .gradle
