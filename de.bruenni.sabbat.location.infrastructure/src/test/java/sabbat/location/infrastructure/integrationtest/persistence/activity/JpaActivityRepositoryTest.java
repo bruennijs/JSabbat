@@ -108,7 +108,32 @@ public class JpaActivityRepositoryTest {
 
 	public void when_relate_two_activities_via_activitys_relation_list_expect_both_activities_contains_activityrelation_referencing_both_activities()
 	{
+		Activity activity1 = new ActivityBuilder().build();
+		Activity activity2 = new ActivityBuilder().build();
 
+		Activity mergedActivity1 = activityRepository.save(activity1);
+		Activity mergedActivity2 = activityRepository.save(activity2);
+
+		activityRepository.save(new ActivityRelation(mergedActivity1, mergedActivity2));
+
+		Activity readActivity1 = activityRepository.findOne(mergedActivity2.getId());
+		Activity readActivity2 = activityRepository.findOne(mergedActivity2.getId());
+
+		Assert.assertThat(readActivity1.getRelations().size(), IsEqual.equalTo(1));
+
+		Assert.assertThat(readActivity1.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
+			r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1")));
+
+		Assert.assertThat(readActivity1.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
+			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2")));
+
+		Assert.assertThat(readActivity2.getRelations().size(), IsEqual.equalTo(1));
+
+		Assert.assertThat(readActivity2.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
+			r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1")));
+
+		Assert.assertThat(readActivity2.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
+			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2")));
 	}
 
 	@Test
