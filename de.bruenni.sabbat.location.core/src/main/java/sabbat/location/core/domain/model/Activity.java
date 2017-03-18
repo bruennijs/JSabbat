@@ -21,7 +21,7 @@ public class Activity implements IEventHandler, Serializable {
 
 	@Id
 	@Convert(converter = IntegerToLongConverter.class)
-	@SequenceGenerator(name="activity_eq", sequenceName="activity_id_seq")
+	@SequenceGenerator(name="activity_eq", sequenceName="loc.activity_id_seq")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "activity_eq")
 	private Long id;
 

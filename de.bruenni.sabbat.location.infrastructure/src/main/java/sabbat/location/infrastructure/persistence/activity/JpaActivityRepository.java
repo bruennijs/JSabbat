@@ -13,6 +13,7 @@ import sabbat.location.infrastructure.persistence.TransactionScope;
 
 import javax.annotation.Resource;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +71,13 @@ public class JpaActivityRepository implements IActivityRepository {
 	public <S extends Activity> S save(S entity) {
 		return new TransactionScope(getEMF().createEntityManager()).run(em ->
 		{
-			em.persist(entity);
+			if (entity.getId() == 0l)
+			{
+				return em.merge(entity);
+			}
+			else {
+				em.persist(entity);
+			}
 			return entity;
 		});
 	}

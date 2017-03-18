@@ -1,0 +1,22 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="gradle sabbat.location.infrastructure.integrationtest.persistence.activity.JpaActivityRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" singleton="true" show_console_on_std_out="true" show_console_on_std_err="true">
+    <ExternalSystemSettings>
+      <option name="executionName" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="scriptParameters" value="--tests sabbat.location.infrastructure.integrationtest.persistence.activity.JpaActivityRepositoryTest" />
+      <option name="taskDescriptions">
+        <list />
+      </option>
+      <option name="taskNames">
+        <list>
+          <option value="test" />
+        </list>
+      </option>
+      <option name="vmOptions" value="" />
+    </ExternalSystemSettings>
+    <method>
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.core" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>

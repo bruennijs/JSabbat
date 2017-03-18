@@ -27,6 +27,13 @@
             <property name="javax.persistence.jdbc.password"
                       value="sabbat#2017" />
 
+
+            <property name="hibernate.connection.initial_pool_size"
+                      value="2" />
+            
+            <property name="hibernate.connection.pool_size"
+                      value="2" />
+
             <property name="hibernate.show_sql"
                       value="true" />
 

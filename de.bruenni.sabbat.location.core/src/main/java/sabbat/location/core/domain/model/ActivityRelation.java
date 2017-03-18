@@ -34,9 +34,11 @@ public class ActivityRelation implements Serializable{
 */
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "activityid1")
 	private Activity activity1;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "activityid2")
 	private Activity activity2;
 
 	@Transient

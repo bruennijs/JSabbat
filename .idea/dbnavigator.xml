@@ -86,7 +86,7 @@ values (
 -- SELECT currval(pg_get_serial_sequence('activity', 'id'));
 
 -- select * from loc.activity where userid IN ('username1', 'username2');
-EXPLAIN select * from loc.activity where uuid = 'activityid3';
+select * from loc.activity ; -- where uuid = 'activityid3';
 select * from loc.activityrelation ;
 
 EXPLAIN select a.uuid,
