@@ -3,6 +3,7 @@ package sabbat.location.core.persistence.activity.implementation;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
+import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.util.List;
@@ -23,6 +24,11 @@ public class ActivityRepositoryDummy implements IActivityRepository {
 
     @Override
     public Iterable<ActivityCoordinate> findActivityCoordinates(Activity aggregateRoot) {
+        return null;
+    }
+
+    @Override
+    public ActivityRelation save(ActivityRelation relation) {
         return null;
     }
 

@@ -21,7 +21,7 @@ import java.util.Optional;
 @Table(name = "activityrelation", schema = "loc")
 public class ActivityRelation implements Serializable{
 	@Id
-	@SequenceGenerator(name = "activityrelation_seq", sequenceName = "activityrelation_id_seq")
+	@SequenceGenerator(name = "activityrelation_seq", sequenceName = "loc.activityrelation_id_seq",  initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "activityrelation_seq")
 	private Long id;
 
@@ -33,39 +33,32 @@ public class ActivityRelation implements Serializable{
 	private Long activityId2;
 */
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,
+				cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "activityid1")
 	private Activity activity1;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,
+				cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "activityid2")
 	private Activity activity2;
 
 	@Transient
-	private List<ActivityRelationEventBase> events;
+	private List<ActivityRelationEventBase> events =  new ArrayList<ActivityRelationEventBase>();
 
 	public ActivityRelation() {
 	}
 
-	/**
-	 * Constructor
-	 * @param id
-	 */
-	public ActivityRelation(long id) {
-		this.id = id;
-		events = new ArrayList<ActivityRelationEventBase>();
-	}
 
-	public ActivityRelation(long id, List<ActivityRelationEventBase> events) {
-		this.id = id;
+	public ActivityRelation(Activity activity1, Activity activity2, List<ActivityRelationEventBase> events) {
+		this.activity1 = activity1;
+		this.activity2 = activity2;
 		this.events = events;
 	}
 
-	public ActivityRelation(long id, Activity activity1, Activity activity2) {
-		this.id = id;
+	public ActivityRelation(Activity activity1, Activity activity2) {
 		this.activity1 = activity1;
 		this.activity2 = activity2;
-		this.events = new ArrayList<ActivityRelationEventBase>();
 	}
 
 	public long getId() {
@@ -108,11 +101,26 @@ public class ActivityRelation implements Serializable{
 	}
 
 	/**
-	 *
+	 * List of both related activities
 	 * @return
 	 */
 	public List<Activity> getRelatedActivities()
 	{
 		return Lists.newArrayList(this.activity1, this.activity2);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ActivityRelation that = (ActivityRelation) o;
+
+		return id.equals(that.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
 	}
 }

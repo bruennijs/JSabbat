@@ -27,10 +27,6 @@ public class TransactionScope {
 			trx.rollback();
 			throw e;
 		}
-		finally
-		{
-			this.entityManager.close();
-		}
 
 	}
 }

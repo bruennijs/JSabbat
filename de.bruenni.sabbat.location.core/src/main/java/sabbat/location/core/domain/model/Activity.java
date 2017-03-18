@@ -9,7 +9,6 @@ import sabbat.location.core.domain.events.ActivityRelationUpdatedEvent;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ public class Activity implements IEventHandler, Serializable {
 
 	@Id
 	@Convert(converter = IntegerToLongConverter.class)
-	@SequenceGenerator(name="activity_eq", sequenceName="loc.activity_id_seq")
+	@SequenceGenerator(name="activity_eq", sequenceName="loc.activity_id_seq", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "activity_eq")
 	private Long id;
 
@@ -41,10 +40,14 @@ public class Activity implements IEventHandler, Serializable {
 	@Column(name = "userid")
 	private String userId;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "activity1", orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.ALL},
+			mappedBy = "activity1",
+			orphanRemoval = true)
     private List<ActivityRelation> relations1 = Lists.newArrayList();
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "activity2", orphanRemoval = true)
+	@OneToMany(cascade = {CascadeType.ALL},
+				mappedBy = "activity2",
+		orphanRemoval = true)
 	private List<ActivityRelation> relations2 = Lists.newArrayList();
 
     public Activity() {
@@ -101,11 +104,11 @@ public class Activity implements IEventHandler, Serializable {
      * @param toBeRelated
      * @return
      */
-    public IEvent[] relateActivity(Activity toBeRelated)
+    public ActivityRelation relateActivity(Activity toBeRelated)
     {
-		ActivityRelation activityRelation = new ActivityRelation(0l, this, toBeRelated);
-		//relations.add(activityRelation);
-		return new IEvent[] {};
+		ActivityRelation activityRelation = new ActivityRelation(this, toBeRelated);
+		relations1.add(activityRelation);
+		return activityRelation;
     }
 
 	/**

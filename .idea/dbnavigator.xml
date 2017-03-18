@@ -105,7 +105,13 @@ select a.uuid,
         from loc.activity as a
 inner join loc.activityrelation as ar ON a.id = ar.activityid1
 inner join loc.activity as b ON ar.activityid2 = b.id
-where a.uuid = :activityid;]]></console>
+where a.uuid = :activityid;
+
+select activity0_.id as id1_0_2_, activity0_.finished as finished2_0_2_, activity0_.started as started3_0_2_, activity0_.title as title4_0_2_, activity0_.userid as userid5_0_2_, activity0_.uuid as uuid6_0_2_, relations1x1_.activityid1 as activity2_1_4_, relations1x1_.id as id1_1_4_, relations1x1_.id as id1_1_0_, relations1x1_.activityid1 as activity2_1_0_, relations1x1_.activityid2 as activity3_1_0_, activity2_.id as id1_0_1_, activity2_.finished as finished2_0_1_, activity2_.started as started3_0_1_, activity2_.title as title4_0_1_, activity2_.userid as userid5_0_1_, activity2_.uuid as uuid6_0_1_
+from loc.activity activity0_
+left outer join loc.activityrelation relations1x1_ on activity0_.id=relations1x1_.activityid1
+left outer join loc.activity activity2_ on relations1x1_.activityid2=activity2_.id
+where activity0_.id=67;]]></console>
     </connection>
     <connection id="4ff58e04-1c53-4f23-97ae-c981d83b00ef">
       <console name="Connection" type="STANDARD" />

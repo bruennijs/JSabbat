@@ -1,20 +1,14 @@
 package sabbat.location.infrastructure.persistence.activity;
 
-import infrastructure.util.IterableUtils;
-import infrastructure.util.StreamUtils;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Value;
-import sabbat.location.core.builder.ActivityBuilder;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
-import sabbat.location.core.domain.model.ActivityPrimaryKey;
+import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
+import sabbat.location.infrastructure.persistence.JpaRepositoryBase;
 import sabbat.location.infrastructure.persistence.TransactionScope;
 
-import javax.annotation.Resource;
 import javax.persistence.*;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,21 +16,23 @@ import java.util.stream.Stream;
 /**
  * Created by bruenni on 16.03.17.
  */
-public class JpaActivityRepository implements IActivityRepository {
+public class JpaActivityRepository extends JpaRepositoryBase implements IActivityRepository {
 
-	@Value(value = "${jpa.persistence-unit}")
+	@Value(value = "${jpa.persistence-unit.activity}")
 	public String persistenceUnit;
-
-	//@PersistenceUnit(unitName ="activity")
-	private EntityManagerFactory entityManagerFactory;
 
 	public JpaActivityRepository() {
 	}
 
 	@Override
+	protected String getPersistenceUnit() {
+		return persistenceUnit;
+	}
+
+	@Override
 	public Iterable<Activity> findByUserIds(String[] userIds) throws Exception {
 
-		return new TransactionScope(getEMF().createEntityManager()).run(em ->
+		return new TransactionScope(getEntityManager()).run(em ->
 		{
 			Stream<Activity> activityStream = em
 				.createQuery("SELECT * FROM loc.activity as a WHERE a.userid IN {:array}")
@@ -46,15 +42,6 @@ public class JpaActivityRepository implements IActivityRepository {
 
 			return activityStream.collect(Collectors.toList());
 		});
-	}
-
-	private EntityManagerFactory getEMF() {
-		if (entityManagerFactory == null)
-		{
-			entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnit);
-		}
-
-		return entityManagerFactory;
 	}
 
 	@Override
@@ -68,16 +55,29 @@ public class JpaActivityRepository implements IActivityRepository {
 	}
 
 	@Override
-	public <S extends Activity> S save(S entity) {
-		return new TransactionScope(getEMF().createEntityManager()).run(em ->
+	public ActivityRelation save(ActivityRelation entity) {
+		return new TransactionScope(getEntityManager()).run(em ->
 		{
-			if (entity.getId() == 0l)
-			{
+			if (!em.contains(entity)) {
+				// when not managed and part of the current persistence context
 				return em.merge(entity);
 			}
-			else {
-				em.persist(entity);
+
+			//// ...else transaction is comitted with only the possibly in memory changed managed entity
+			return entity;
+		});
+	}
+
+	@Override
+	public <S extends Activity> S save(S entity) {
+		return new TransactionScope(getEntityManager()).run(em ->
+		{
+			if (!em.contains(entity)) {
+				// when not managed and part of the current persistence context
+				return em.merge(entity);
 			}
+
+			//// ...else transaction is comitted with only the possibly in memory changed managed entity
 			return entity;
 		});
 	}
@@ -89,7 +89,12 @@ public class JpaActivityRepository implements IActivityRepository {
 
 	@Override
 	public Activity findOne(Long activityPrimaryKey) {
-		return null;
+		return new TransactionScope(getEntityManager()).run(em ->
+		{
+			Activity activity = em.find(Activity.class, activityPrimaryKey);
+			em.refresh(activity);
+			return activity;
+		});
 	}
 
 	@Override

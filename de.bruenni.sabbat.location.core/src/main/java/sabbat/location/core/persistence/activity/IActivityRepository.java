@@ -5,6 +5,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityPrimaryKey;
 import sabbat.location.core.domain.model.ActivityCoordinate;
+import sabbat.location.core.domain.model.ActivityRelation;
 
 import java.util.List;
 
@@ -34,4 +35,11 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
      * @return
      */
     Iterable<ActivityCoordinate> findActivityCoordinates(Activity aggregateRoot);
+
+    /**
+     * Persists the activity relation to database.
+     * @param relation
+     * @return
+     */
+    ActivityRelation save(ActivityRelation relation);
 }
