@@ -2,6 +2,7 @@ package sabbat.location.core.application.service;
 
 import infrastructure.common.event.IEventHandler;
 import infrastructure.identity.AuthenticationFailedException;
+import infrastructure.parser.SerializingException;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
@@ -18,7 +19,7 @@ public interface IActivityApplicationService extends IEventHandler {
      * @param command
      * @return
      */
-    Activity start(ActivityCreateCommand command) throws AuthenticationFailedException;
+    Activity start(ActivityCreateCommand command) throws AuthenticationFailedException, SerializingException;
 
     /**
      * Stops a activity.

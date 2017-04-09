@@ -27,7 +27,6 @@ repositories {
 dependencies {
 
     //compile project(':de.bruenni.sabbat.shared');
-
     compile group: 'de.bruenni', name: 'sabbat.shared', version: '1.0.0'
 
     compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'

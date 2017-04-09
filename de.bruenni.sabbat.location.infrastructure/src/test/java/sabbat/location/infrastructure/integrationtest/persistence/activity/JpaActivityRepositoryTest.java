@@ -1,8 +1,11 @@
 package sabbat.location.infrastructure.integrationtest.persistence.activity;
 
 import infrastructure.common.event.IEvent;
+import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.collection.IsIn;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.hamcrest.collection.IsIterableContainingInOrder;
+import org.hamcrest.core.Is;
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNot;
 import org.hibernate.SessionFactory;
@@ -17,6 +20,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.location.core.builder.ActivityBuilder;
+import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
+import sabbat.location.core.domain.events.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
@@ -28,6 +33,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Created by bruenni on 17.03.17.
@@ -68,7 +75,7 @@ public class JpaActivityRepositoryTest {
 		Activity mergedActivity1 = activityRepository.save(activity1);
 		Activity mergedActivity2 = activityRepository.save(activity2);
 
-		ActivityRelation relateActivity = mergedActivity1.relateActivity(mergedActivity2);
+		mergedActivity1.relateActivity(mergedActivity2);
 
 		//activityRepository.save(relateActivity);
 		activityRepository.save(mergedActivity1);
@@ -91,7 +98,7 @@ public class JpaActivityRepositoryTest {
 		Activity mergedActivity1 = activityRepository.save(activity1);
 		Activity mergedActivity2 = activityRepository.save(activity2);
 
-		ActivityRelation relateActivity = mergedActivity1.relateActivity(mergedActivity2);
+		mergedActivity1.relateActivity(mergedActivity2);
 
 		activityRepository.save(mergedActivity1);
 
@@ -142,7 +149,23 @@ public class JpaActivityRepositoryTest {
 
 	}
 
-/*	private JpaActivityRepository CreateRepository() {
+	@Test
+	public void when_start_activity_expect_domain_event_persisted() throws Exception {
+		Activity activity1 = new ActivityBuilder().build();
+		activity1.start();
+
+		Activity activitySaved = activityRepository.save(activity1);
+
+		Assert.assertThat(activity1.getEvents(), IsIterableContainingInAnyOrder.containsInAnyOrder(activitySaved.getEvents()));
+	}
+
+	@Test
+	public void when_relate_activity_expect_domain_event_for_both_activities_persisted() throws Exception {
+
+
+	}
+
+	/*	private JpaActivityRepository CreateRepository() {
 		return new JpaActivityRepository();
 	}*/
 }

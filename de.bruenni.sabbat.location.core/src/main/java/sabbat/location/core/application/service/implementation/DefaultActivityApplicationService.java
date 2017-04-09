@@ -5,6 +5,7 @@ import identity.UserRef;
 import infrastructure.common.event.IDomainEventBus;
 import infrastructure.common.event.IEvent;
 import infrastructure.identity.AuthenticationFailedException;
+import infrastructure.parser.SerializingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sabbat.location.core.application.service.IActivityApplicationService;
@@ -48,19 +49,22 @@ public class DefaultActivityApplicationService implements IActivityApplicationSe
     }
 
     @Override
-    public Activity start(ActivityCreateCommand command) throws AuthenticationFailedException {
+    public Activity start(ActivityCreateCommand command) throws AuthenticationFailedException, SerializingException {
 
         // verify token
         UserRef userRef = this.authenticationService.verify(command.getIdentityToken());
 
         Instant now = Instant.now(Clock.systemUTC());
         Date nowDate = Date.from(now);
-        Activity domainObject = new Activity(0l, command.getId(), command.getTitle(), nowDate, userRef.getId());
+        Activity activity = new Activity(0l, command.getId(), command.getTitle(), nowDate, userRef.getId());
+
+        // start activity
+        IEvent domainEvent = activity.start();
 
         // fire domain event
-        domainEventBus.publish(new ActivityStartedEvent(nowDate, domainObject.getId(), 0l));
+        domainEventBus.publish(domainEvent);
 
-        return this.activityRepository.save(domainObject);
+        return this.activityRepository.save(activity);
     }
 
     @Override

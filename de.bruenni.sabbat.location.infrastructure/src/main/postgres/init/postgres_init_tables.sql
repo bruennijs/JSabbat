@@ -6,7 +6,7 @@
 BEGIN;
     CREATE SCHEMA IF NOT EXISTS loc;
 
-    CREATE TYPE domain_event_type AS ENUM ('activity');
+    --CREATE TYPE domain_event_type AS ENUM ('activity');
 
     CREATE TABLE IF NOT EXISTS loc.activity (
         id BIGSERIAL PRIMARY KEY,
@@ -31,18 +31,18 @@ BEGIN;
       --  ADD COLUMN IF NOT EXISTS activityids BIGSERIAL [ column_constraint [ ... ] ]
 
     -- time series events coming in from CEP with new distances between activities --
-    CREATE TABLE IF NOT EXISTS loc.activityrelationevents (
-        id BIGSERIAL PRIMARY KEY,
-        aggregateid BIGSERIAL not null REFERENCES loc.activityrelation (id) ON DELETE CASCADE,
-        document JSONB not null
-    );
+    --CREATE TABLE IF NOT EXISTS loc.activityrelationevents (
+    --    id BIGSERIAL PRIMARY KEY,
+    --    aggregateid BIGSERIAL not null REFERENCES loc.activityrelation (id) ON DELETE CASCADE,
+    --    document JSONB not null
+    --);
 
         -- -- DOMAIN events --
     CREATE TABLE IF NOT EXISTS loc.domainevents (
         id BIGSERIAL PRIMARY KEY,
         aggregateid BIGSERIAL not null,
-        type domain_event_type not null,
-        document JSONB not null
+        typeid smallint not null,   -- set by application to store type id for deserialization of JSON documents
+        document VARCHAR(4096) not null
         -- FOREIGN KEY (aggregateid) REFERENCES loc.activity (id) ON DELETE CASCADE,
         -- FOREIGN KEY (aggregateid) REFERENCES loc.activityrelation (id) ON DELETE CASCADE
     );

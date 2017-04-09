@@ -8,12 +8,16 @@ import java.util.Date;
 public class ActivityRelationCreatedEvent extends ActivityRelationEventBase {
 
 	/**
+	 * JSON deserialization.
+	 */
+	public ActivityRelationCreatedEvent() {}
+
+	/**
 	 * Constructor
 	 * @param timestamp
 	 * @param aggregateId
 	 */
-	public ActivityRelationCreatedEvent(Date timestamp, Long aggregateId, Long id, Long[] activityIds) {
-		super(timestamp, aggregateId, id, activityIds);
+	public ActivityRelationCreatedEvent(Long id, Long aggregateId, Long relatedActivity, Date timestamp) {
+		super(timestamp, aggregateId, id, relatedActivity);
 	}
-
 }

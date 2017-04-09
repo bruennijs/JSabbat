@@ -91,9 +91,7 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	public Activity findOne(Long activityPrimaryKey) {
 		return new TransactionScope(getEntityManager()).run(em ->
 		{
-			Activity activity = em.find(Activity.class, activityPrimaryKey);
-			em.refresh(activity);
-			return activity;
+			return em.find(Activity.class, activityPrimaryKey);
 		});
 	}
 

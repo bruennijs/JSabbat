@@ -17,6 +17,7 @@
     </ExternalSystemSettings>
     <method>
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.core" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>

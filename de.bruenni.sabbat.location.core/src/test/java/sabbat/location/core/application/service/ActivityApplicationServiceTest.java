@@ -4,6 +4,7 @@ import identity.IAuthenticationService;
 import identity.UserRef;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.Token;
+import infrastructure.parser.SerializingException;
 import infrastructure.util.IterableUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 @RunWith(JUnit4.class)
 public class ActivityApplicationServiceTest {
     @Test
-    public void When_start_expect_returned_activity_contains_id() throws ExecutionException, InterruptedException, AuthenticationFailedException {
+    public void When_start_expect_returned_activity_contains_id() throws ExecutionException, InterruptedException, AuthenticationFailedException, SerializingException {
 
         UserRef user = new UserRef("userid", "username", new ArrayList<>());
 

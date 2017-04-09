@@ -13,6 +13,7 @@
 
         <class>sabbat.location.core.domain.model.Activity</class>
         <class>sabbat.location.core.domain.model.ActivityRelation</class>
+        <class>sabbat.location.core.domain.model.DomainEvent</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver"
@@ -38,7 +39,7 @@
                       value="true" />
 
             <property name="hibernate.dialect"
-                      value="PostgreSQL9" />
+                    value="PostgreSQL9" />
 
             <!-- http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
             <property name="hibernate.hbm2ddl.auto"
