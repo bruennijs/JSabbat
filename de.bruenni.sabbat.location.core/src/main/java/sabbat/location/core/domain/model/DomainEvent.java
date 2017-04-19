@@ -1,41 +1,39 @@
 package sabbat.location.core.domain.model;
 
 import com.sun.javafx.binding.StringFormatter;
-import domain.events.EventBase;
 import infrastructure.common.event.IEvent;
 import infrastructure.parser.JsonDtoParser;
-import infrastructure.parser.ParserException;
 import infrastructure.parser.SerializingException;
 import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.ActivityStartedEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
  * Created by bruenni on 18.03.17.
  */
+@Entity
 @Table(name = "domainevents", schema = "loc")
 public class DomainEvent implements Serializable {
+
+	private static LocationDomainEventTypeConverter converter = new LocationDomainEventTypeConverter();
 
 	@Id
 	@SequenceGenerator(name = "domainevents_seq", sequenceName = "loc.domainevents_id_seq",  initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "domainevents_seq")
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER,
-		cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "activityid1")
-	private Long aggregateid;
+	@JoinColumn(name = "aggregateid")
+	@Column(name = "aggregateid")
+	private Long aggregateId;
 
 	@Column(name = "typeid")
-	@Convert(converter = LocationDomainEventTypeConverter.class)
-	private LocationDomainEventType typeid;
+	//@Convert(converter = LocationDomainEventTypeConverter.class)
+	private Short typeidShort;
 
 	@Column(name = "document")
-	//@Convert(converter = LocationDomainEventConverter.class)
 	private String document;
 
 	private static JsonDtoParser parser = new JsonDtoParser();
@@ -51,6 +49,20 @@ public class DomainEvent implements Serializable {
 		type2Enum.put(ActivityRelationCreatedEvent.class, LocationDomainEventType.ActivityRelationCreated);
 	}
 
+	private String Serialize(IEvent<Long, Long> domainevent) throws SerializingException {
+		return parser.serialize(domainevent);
+	}
+
+	private static LocationDomainEventType getTypeId(IEvent<Long, Long> event) {
+		return type2Enum.get(event.getClass());
+	}
+
+	/**
+	 * Default constructor used by hibernate
+	 */
+	public DomainEvent() {
+	}
+
 	/**
 	 * Constructor
 	 * @param id
@@ -60,13 +72,9 @@ public class DomainEvent implements Serializable {
 	 */
 	public DomainEvent(Long id, Long aggregateid, IEvent<Long, Long> event) throws SerializingException {
 		this.id = id;
-		this.aggregateid = aggregateid;
+		this.aggregateId = aggregateid;
 		this.document = Serialize(event);
-		this.typeid = getTypeId(event);
-	}
-
-	private static LocationDomainEventType getTypeId(IEvent<Long, Long> event) {
-		return type2Enum.get(event.getClass());
+		setEventType(getTypeId(event));
 	}
 
 	public Long getId() {
@@ -79,18 +87,24 @@ public class DomainEvent implements Serializable {
 	 * @throws Exception
 	 */
 	public IEvent<Long, Long> getDomainEvent() throws Exception {
-		switch (typeid)
+		switch (getEventType())
 		{
 			case ActivityStarted:
 				return parser.parse(document, ActivityStartedEvent.class);
 			case ActivityRelationCreated:
 				return parser.parse(document, ActivityRelationCreatedEvent.class);
 			default:
-				throw new Exception(StringFormatter.format("not mapped domain event type [%1%]", typeid).getValue());
+				throw new Exception(StringFormatter.format("not mapped domain event type [%1%]", getEventType()).getValue());
 		}
 	}
 
-	private String Serialize(IEvent<Long, Long> domainevent) throws SerializingException {
-		return parser.serialize(domainevent);
+	public LocationDomainEventType getEventType()
+	{
+		return converter.convertToEntityAttribute(typeidShort);
+	}
+
+	public void setEventType(LocationDomainEventType eventType)
+	{
+		typeidShort = converter.convertToDatabaseColumn(eventType);
 	}
 }

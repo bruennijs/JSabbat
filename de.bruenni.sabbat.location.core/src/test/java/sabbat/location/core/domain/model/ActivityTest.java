@@ -12,6 +12,8 @@ import sabbat.location.core.builder.ActivityBuilder;
 import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.ActivityStartedEvent;
 
+import java.util.List;
+
 /**
  * Created by bruenni on 09.04.17.
  */
@@ -30,7 +32,7 @@ public class ActivityTest {
 		ActivityRelationCreatedEvent event1 = (ActivityRelationCreatedEvent) domainEvents[0];
 		ActivityRelationCreatedEvent event2 = (ActivityRelationCreatedEvent) domainEvents[1];
 
-
+		Assert.fail();
 	}
 
 	@Test
@@ -40,7 +42,9 @@ public class ActivityTest {
 
 		Assert.assertThat(ActivityStartedEvent.class, IsEqual.equalTo(event.getClass()));
 
-		IEvent<Long, Long> domainEvent = IterableUtils.toList(activity1.getEvents()).get(0);
+		List<IEvent<Long, Long>> activityEvents = IterableUtils.toList(activity1.getEvents());
+		Assert.assertThat(1, IsEqual.equalTo(activityEvents.size()));
+		IEvent<Long, Long> domainEvent = activityEvents.get(0);
 		Assert.assertThat(activity1.getId(), IsEqual.equalTo(domainEvent.getAggregateId()));
 		Assert.assertThat(activity1.getStarted(), IsEqual.equalTo(domainEvent.getTimestamp()));
 	}

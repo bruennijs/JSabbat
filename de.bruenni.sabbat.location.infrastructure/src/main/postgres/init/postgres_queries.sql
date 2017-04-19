@@ -48,6 +48,7 @@ values (
 -- select * from loc.activity where userid IN ('username1', 'username2');
 EXPLAIN select * from loc.activity where uuid = 'activityid3';
 select * from loc.activityrelation ;
+select * from loc.activity ;
 
 EXPLAIN select a.uuid,
         a.userid,

@@ -7,8 +7,14 @@ import java.util.Arrays;
  */
 public enum LocationDomainEventType {
 
+	/**
+	 * See ActivtyStartedEvent
+	 */
 	ActivityStarted ((short)1),
 
+	/**
+	 * See ActivityRelationCreatedEvent
+	 */
 	ActivityRelationCreated((short)2);
 
 	private final Short value;

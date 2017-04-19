@@ -9,7 +9,7 @@ BEGIN;
     --CREATE TYPE domain_event_type AS ENUM ('activity');
 
     CREATE TABLE IF NOT EXISTS loc.activity (
-        id BIGSERIAL PRIMARY KEY,
+        id BIGSERIAL PRIMARY KEY not null,
         uuid VARCHAR(40) not null UNIQUE,    -- activity uuid created by clients (Oruxmaps e.g.)
         userid VARCHAR(255) not null,
         title VARCHAR(255) not null,
@@ -22,7 +22,7 @@ BEGIN;
     ---------------------------------------
 
     CREATE TABLE IF NOT EXISTS loc.activityrelation (
-        id BIGSERIAL PRIMARY KEY,
+        id BIGSERIAL PRIMARY KEY not null,
         activityid1 BIGSERIAL not null REFERENCES loc.activity (id) ON DELETE CASCADE,
         activityid2 BIGSERIAL not null REFERENCES loc.activity (id) ON DELETE CASCADE
     );
@@ -39,10 +39,10 @@ BEGIN;
 
         -- -- DOMAIN events --
     CREATE TABLE IF NOT EXISTS loc.domainevents (
-        id BIGSERIAL PRIMARY KEY,
+        id BIGSERIAL PRIMARY KEY not null,
         aggregateid BIGSERIAL not null,
         typeid smallint not null,   -- set by application to store type id for deserialization of JSON documents
-        document VARCHAR(4096) not null
+        document VARCHAR(8192) not null
         -- FOREIGN KEY (aggregateid) REFERENCES loc.activity (id) ON DELETE CASCADE,
         -- FOREIGN KEY (aggregateid) REFERENCES loc.activityrelation (id) ON DELETE CASCADE
     );

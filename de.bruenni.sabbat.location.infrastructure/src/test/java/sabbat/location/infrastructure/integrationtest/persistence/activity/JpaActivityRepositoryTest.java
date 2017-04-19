@@ -146,7 +146,7 @@ public class JpaActivityRepositoryTest {
 	@Test
 	public void when_find_activity_relation_expect_references_both_activities()
 	{
-
+		Assert.fail();
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class JpaActivityRepositoryTest {
 	@Test
 	public void when_relate_activity_expect_domain_event_for_both_activities_persisted() throws Exception {
 
-
+		Assert.fail();
 	}
 
 	/*	private JpaActivityRepository CreateRepository() {

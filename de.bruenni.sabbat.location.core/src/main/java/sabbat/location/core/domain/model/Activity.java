@@ -1,6 +1,7 @@
 package sabbat.location.core.domain.model;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import infrastructure.common.event.IEvent;
 import infrastructure.common.event.IEventHandler;
 import infrastructure.parser.SerializingException;
@@ -15,6 +16,7 @@ import javax.persistence.Entity;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,10 +58,9 @@ public class Activity implements IEventHandler {
 		orphanRemoval = true)
 	private List<ActivityRelation> relations2 = Lists.newArrayList();
 
-	@OneToMany(cascade = {CascadeType.ALL},
-				mappedBy = "aggregateid",
-				orphanRemoval = true)
-	private List<DomainEvent> domainEvents = Lists.newArrayList();
+	@OneToMany(orphanRemoval = true)
+	@JoinColumn(name = "aggregateid")
+	private Set<DomainEvent> domainEvents = new java.util.HashSet<DomainEvent>();
 
 	/**
 	 * Constructor

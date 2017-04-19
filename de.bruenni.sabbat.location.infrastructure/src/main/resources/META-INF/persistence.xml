@@ -39,7 +39,7 @@
                       value="true" />
 
             <property name="hibernate.dialect"
-                    value="PostgreSQL9" />
+                    value="org.hibernate.dialect.PostgreSQL95Dialect" />
 
             <!-- http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
             <property name="hibernate.hbm2ddl.auto"
