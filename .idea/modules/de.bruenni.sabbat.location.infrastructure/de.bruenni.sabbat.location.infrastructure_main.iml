@@ -88,5 +88,6 @@
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.2" level="project" />
+    <orderEntry type="module" module-name="de.bruenni.sabbat.location.core_main" />
   </component>
 </module>
