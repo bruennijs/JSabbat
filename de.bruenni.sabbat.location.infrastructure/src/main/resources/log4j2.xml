@@ -33,7 +33,7 @@
             <AppenderRef ref="TrafficFile"/>
         </Logger>
 
-        <Root level="INFO">
+        <Root level="DEBUG">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
         </Root>

@@ -25,10 +25,10 @@
     <show-object-properties value="false" />
     <loaded-nodes>
       <connection connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4">
-        <schema name="information_schema" object-types="table, view" />
+        <schema name="information_schema" object-types="function, table, view" />
         <schema name="loc" object-types="column, constraint, function, index, sequence, table, dataset trigger, view" />
-        <schema name="pg_catalog" object-types="table, view" />
-        <schema name="public" object-types="table, view" />
+        <schema name="pg_catalog" object-types="function, table, view" />
+        <schema name="public" object-types="function, table, view" />
       </connection>
     </loaded-nodes>
   </component>

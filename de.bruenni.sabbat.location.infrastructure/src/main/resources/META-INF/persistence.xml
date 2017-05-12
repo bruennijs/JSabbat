@@ -13,7 +13,7 @@
 
         <class>sabbat.location.core.domain.model.Activity</class>
         <class>sabbat.location.core.domain.model.ActivityRelation</class>
-        <class>sabbat.location.core.domain.model.DomainEvent</class>
+        <class>sabbat.location.core.domain.model.ActivityEvent</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver"

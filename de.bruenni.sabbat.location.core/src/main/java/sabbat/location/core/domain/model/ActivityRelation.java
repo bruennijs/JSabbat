@@ -1,7 +1,7 @@
 package sabbat.location.core.domain.model;
 
 import com.google.common.collect.Lists;
-import infrastructure.common.event.IEvent;
+import sabbat.location.core.domain.events.NewDistanceEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 @Entity
 @Table(name = "activityrelation", schema = "loc")
-public class ActivityRelation implements Serializable{
+public class ActivityRelation implements Serializable {
 	@Id
 	@SequenceGenerator(name = "activityrelation_seq", sequenceName = "loc.activityrelation_id_seq",  initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "activityrelation_seq")

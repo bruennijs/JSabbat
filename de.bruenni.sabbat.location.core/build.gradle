@@ -46,7 +46,7 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-1.2-api', version: '2.5'    //...maps 1.2 to 2 api
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'    // this is log4j 2 api
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
-    
+
     compile group: 'org.reactivestreams', name: 'reactive-streams', version: '1.0.0'
     compile "io.projectreactor:reactor-core:2.5.0.M4"
 

@@ -1,18 +1,17 @@
 package sabbat.location.infrastructure.integrationtest.persistence.activity;
 
-import infrastructure.common.event.IEvent;
-import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.collection.IsIn;
+import com.google.common.collect.Lists;
+import infrastructure.util.Tuple2;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.hamcrest.collection.IsIterableContainingInOrder;
-import org.hamcrest.core.Is;
+import org.hamcrest.core.IsCollectionContaining;
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNot;
-import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.internal.matchers.Equals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,21 +19,11 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.location.core.builder.ActivityBuilder;
-import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
-import sabbat.location.infrastructure.persistence.activity.JpaActivityRepository;
 import test.matcher.LambdaMatcher;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Created by bruenni on 17.03.17.
@@ -128,19 +117,19 @@ public class JpaActivityRepositoryTest {
 
 		Assert.assertThat(readActivity1.getRelations().size(), IsEqual.equalTo(1));
 
-		Assert.assertThat(readActivity1.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
-			r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1")));
+		Assert.assertThat(readActivity1.getRelations(),
+							IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r -> r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1"))));
 
-		Assert.assertThat(readActivity1.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
-			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2")));
+		Assert.assertThat(readActivity1.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r ->
+			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2"))));
 
 		Assert.assertThat(readActivity2.getRelations().size(), IsEqual.equalTo(1));
 
-		Assert.assertThat(readActivity2.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
-			r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1")));
+		Assert.assertThat(readActivity2.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r ->
+			r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1"))));
 
-		Assert.assertThat(readActivity2.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(new LambdaMatcher<>(r ->
-			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2")));
+		Assert.assertThat(readActivity2.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r ->
+			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2"))));
 	}
 
 	@Test
@@ -156,13 +145,29 @@ public class JpaActivityRepositoryTest {
 
 		Activity activitySaved = activityRepository.save(activity1);
 
-		Assert.assertThat(activity1.getEvents(), IsIterableContainingInAnyOrder.containsInAnyOrder(activitySaved.getEvents()));
+		//Assert.assertThat(activity1.getEvents(), Matchers.contains(IsEqual.equalTo()));
 	}
 
 	@Test
 	public void when_relate_activity_expect_domain_event_for_both_activities_persisted() throws Exception {
 
 		Assert.fail();
+	}
+
+	@Test
+	public void test_iterable_matchers() throws Exception
+	{
+		Tuple2<Integer, String> t1 = new Tuple2<>(5, "hello");
+		Tuple2<Integer, String> t2 = new Tuple2<>(7, "test");
+
+		Assert.assertThat(Lists.newArrayList(t1, t2), Matchers.contains(
+				IsEqual.equalTo(new Tuple2<>(5, "hello")),
+				IsEqual.equalTo(new Tuple2<>(7, "test"))));
+
+		// or...
+
+		Assert.assertThat(Lists.newArrayList(t1, t2), Matchers.hasItem(IsEqual.equalTo(new Tuple2<>(5, "hello"))));
+		Assert.assertThat(Lists.newArrayList(t1, t2), Matchers.hasItem(IsEqual.equalTo(new Tuple2<>(7, "test"))));
 	}
 
 	/*	private JpaActivityRepository CreateRepository() {

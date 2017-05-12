@@ -13,6 +13,10 @@
     <orderEntry type="library" name="Gradle: de.bruenni:infrastructure.common:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.3.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-cassandra:1.4.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.21" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-log4j12:1.7.21" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-1.2-api:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.0" level="project" />
@@ -20,7 +24,6 @@
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-core:4.1.3.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.stormpath.sdk:stormpath-sdk-impl:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.stormpath.sdk:stormpath-sdk-httpclient:1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.21" level="project" />
     <orderEntry type="library" name="Gradle: com.stormpath.sdk:stormpath-sdk-api:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.stormpath.sdk:stormpath-sdk-hazelcast:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security:spring-security-config:4.1.3.RELEASE" level="project" />
@@ -34,6 +37,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-cql:1.4.3.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.datastax.cassandra:cassandra-driver-dse:2.1.7.1" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" level="project" />
+    <orderEntry type="library" name="Gradle: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Gradle: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.3.2.RELEASE" level="project" />
@@ -63,6 +67,5 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.2" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" level="project" />
   </component>
 </module>

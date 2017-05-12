@@ -1,7 +1,6 @@
 package sabbat.location.core.domain.model;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import infrastructure.common.event.IEvent;
 import infrastructure.common.event.IEventHandler;
 import infrastructure.parser.SerializingException;
@@ -58,9 +57,10 @@ public class Activity implements IEventHandler {
 		orphanRemoval = true)
 	private List<ActivityRelation> relations2 = Lists.newArrayList();
 
-	@OneToMany(orphanRemoval = true)
-	@JoinColumn(name = "aggregateid")
-	private Set<DomainEvent> domainEvents = new java.util.HashSet<DomainEvent>();
+	@OneToMany(cascade = {CascadeType.ALL},
+				mappedBy = "aggregate",
+		       orphanRemoval = true)
+	private Set<ActivityEvent> domainEvents = new java.util.HashSet<ActivityEvent>();
 
 	/**
 	 * Constructor
@@ -138,7 +138,7 @@ public class Activity implements IEventHandler {
 
 
 	private void addEvent(IEvent<Long, Long> domainEvent) throws SerializingException {
-		this.domainEvents.add(new DomainEvent(domainEvent.getId(), domainEvent.getAggregateId(), domainEvent));
+		this.domainEvents.add(new ActivityEvent(domainEvent.getId(), this, domainEvent));
 	}
 
 	/**
@@ -195,14 +195,18 @@ public class Activity implements IEventHandler {
 	 * @throws Exception
 	 */
 	public Iterable<IEvent<Long, Long>> getEvents() {
-		return domainEvents.stream().map(de ->
-		{
-			try {
-				return de.getDomainEvent();
-			} catch (Exception e) {
-				Log.error("getDomainEvents failed!", e);
-				return null;
-			}
-		}).collect(Collectors.toList());
+		return domainEvents
+			.stream()
+			.map(de ->
+				{
+					try
+					{
+						return (IEvent<Long, Long>)de.getDomainEvent();
+					} catch (Exception e) {
+						Log.error("getDomainEvents failed!", e);
+						return null;
+					}
+				})
+			.collect(Collectors.toList());
 	}
 }

@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 @Entity
 @Table(name = "domainevents", schema = "loc")
-public class DomainEvent implements Serializable {
+public class ActivityEvent implements Serializable {
 
 	private static LocationDomainEventTypeConverter converter = new LocationDomainEventTypeConverter();
 
@@ -25,9 +25,11 @@ public class DomainEvent implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "domainevents_seq")
 	private Long id;
 
+	@ManyToOne(fetch = FetchType.LAZY,
+				cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "aggregateid")
-	@Column(name = "aggregateid")
-	private Long aggregateId;
+	//@Column(name = "aggregateid")
+	private Activity aggregate;
 
 	@Column(name = "typeid")
 	//@Convert(converter = LocationDomainEventTypeConverter.class)
@@ -60,19 +62,19 @@ public class DomainEvent implements Serializable {
 	/**
 	 * Default constructor used by hibernate
 	 */
-	public DomainEvent() {
+	public ActivityEvent() {
 	}
 
 	/**
 	 * Constructor
 	 * @param id
-	 * @param aggregateid
+	 * @param aggregate
 	 * @param event
 	 * @throws SerializingException
 	 */
-	public DomainEvent(Long id, Long aggregateid, IEvent<Long, Long> event) throws SerializingException {
+	public ActivityEvent(Long id, Activity aggregate, IEvent<Long, Long> event) throws SerializingException {
 		this.id = id;
-		this.aggregateId = aggregateid;
+		this.aggregate = aggregate;
 		this.document = Serialize(event);
 		setEventType(getTypeId(event));
 	}

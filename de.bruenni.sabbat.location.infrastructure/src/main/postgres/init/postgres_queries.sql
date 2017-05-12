@@ -48,7 +48,7 @@ values (
 -- select * from loc.activity where userid IN ('username1', 'username2');
 EXPLAIN select * from loc.activity where uuid = 'activityid3';
 select * from loc.activityrelation ;
-select * from loc.activity ;
+select * from loc.activity ORDER BY started DESC;
 
 EXPLAIN select a.uuid,
         a.userid,
@@ -67,3 +67,5 @@ select a.uuid,
 inner join loc.activityrelation as ar ON a.id = ar.activityid1
 inner join loc.activity as b ON ar.activityid2 = b.id
 where a.uuid = :activityid;
+
+select activity0_.id as id1_0_1_, activity0_.finished as finished2_0_1_, activity0_.started as started3_0_1_, activity0_.title as title4_0_1_, activity0_.userid as userid5_0_1_, activity0_.uuid as uuid6_0_1_, domaineven1_.aggregateid as aggregat4_2_3_, domaineven1_.id as id1_2_3_, domaineven1_.id as id1_2_0_, domaineven1_.aggregateid as aggregat4_2_0_, domaineven1_.document as document2_2_0_, domaineven1_.typeid as typeid3_2_0_ from loc.activity activity0_ left outer join loc.domainevents domaineven1_ on activity0_.id=domaineven1_.aggregateid where activity0_.id=66;
