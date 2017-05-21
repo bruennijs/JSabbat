@@ -60,6 +60,8 @@ dependencies {
     //compile group: 'org.springframework.data', name: 'spring-data-releasetrain', version: 'Hopper-SR1'
     compile group: 'org.springframework.data', name: 'spring-data-cassandra', version: '1.4.3.RELEASE'
 
+    //compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.4.3.RELEASE'
+
     // hibernate & JPA
     compile group: 'org.hibernate', name: "hibernate-core", version: '5.2.8.Final'
     compile group: 'org.postgresql', name: "postgresql", version: '42.0.0'  // for jre8

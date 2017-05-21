@@ -33,6 +33,11 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
+    public void refresh(Activity torefresh) {
+
+    }
+
+    @Override
     public Activity save(Activity entity) {
         return entity;
     }

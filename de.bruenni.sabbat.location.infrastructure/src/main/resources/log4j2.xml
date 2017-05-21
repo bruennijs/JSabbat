@@ -28,6 +28,12 @@
         </Console>
     </Appenders>
     <Loggers>
+        <logger name="org.hibernate" level="INFO">
+        </logger>
+
+        <logger name="org.springframework" level="INFO">
+        </logger>
+
         <Logger name="location.infrastructure.traffic" level="INFO">
             <!--<AppenderRef ref="Console"/>-->
             <AppenderRef ref="TrafficFile"/>

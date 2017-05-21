@@ -149,6 +149,14 @@ public class Activity implements IEventHandler {
         return Stream.concat(relations1.stream(), relations2.stream()).collect(Collectors.toList());
     }
 
+	/**
+	 * Gets all related activities except this instance.
+	 * @return
+	 */
+	public List<Activity> getRelatedActivities() {
+    	return getRelations().stream().flatMap(ar -> ar.getRelatedActivities().stream()).filter(activity -> activity != this).collect(Collectors.toList());
+	}
+
 	@Override
 	public void OnEvent(IEvent iEvent) {
 		if (iEvent instanceof ActivityRelationCreatedEvent)

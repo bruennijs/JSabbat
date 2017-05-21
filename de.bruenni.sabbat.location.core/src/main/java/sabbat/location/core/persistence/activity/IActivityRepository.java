@@ -42,4 +42,10 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
      * @return
      */
     ActivityRelation save(ActivityRelation relation);
+
+    /**
+     * refreshes
+     * @param torefresh
+     */
+    void refresh(Activity torefresh);
 }

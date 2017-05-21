@@ -69,6 +69,11 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	}
 
 	@Override
+	public void refresh(Activity torefresh) {
+		getEntityManager().refresh(torefresh);
+	}
+
+	@Override
 	public <S extends Activity> S save(S entity) {
 		return new TransactionScope(getEntityManager()).run(em ->
 		{
@@ -91,7 +96,9 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	public Activity findOne(Long activityPrimaryKey) {
 		return new TransactionScope(getEntityManager()).run(em ->
 		{
-			return em.find(Activity.class, activityPrimaryKey);
+			Activity activity = em.find(Activity.class, activityPrimaryKey);
+			//em.refresh(activity);
+			return activity;
 		});
 	}
 

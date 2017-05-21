@@ -5,10 +5,7 @@ import sabbat.location.core.domain.events.NewDistanceEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by bruenni on 14.03.17.
@@ -106,7 +103,7 @@ public class ActivityRelation implements Serializable {
 	 */
 	public List<Activity> getRelatedActivities()
 	{
-		return Lists.newArrayList(this.activity1, this.activity2);
+		return Arrays.asList(this.activity1, this.activity2);
 	}
 
 	@Override
@@ -122,5 +119,14 @@ public class ActivityRelation implements Serializable {
 	@Override
 	public int hashCode() {
 		return id.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "ActivityRelation{" +
+			"id=" + id +
+			", activity1.id=" + activity1.getId() +
+			", activity2.id=" + activity2.getId() +
+			'}';
 	}
 }
