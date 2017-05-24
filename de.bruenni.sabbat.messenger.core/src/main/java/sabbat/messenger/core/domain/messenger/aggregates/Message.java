@@ -1,6 +1,6 @@
 package sabbat.messenger.core.domain.messenger.aggregates;
 
-import infrastructure.common.event.IEvent;
+import infrastructure.common.event.Event;
 import infrastructure.common.gateway.AggregateCorrelationException;
 import infrastructure.common.gateway.AsyncRequestBase;
 import infrastructure.persistence.Entity;
@@ -93,7 +93,7 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
      * @param iEvent
      * @return new events created.
      */
-    public IEvent OnEvent(IEvent iEvent) {
+    public Event OnEvent(Event iEvent) {
         DeliveryResponseReceivedEvent deliveryResponseReceivedEvent = iEvent instanceof DeliveryResponseReceivedEvent ? ((DeliveryResponseReceivedEvent) iEvent) : null;
 
         if (deliveryResponseReceivedEvent != null)
@@ -110,22 +110,22 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
         return null;
     }
 
-    private IEvent HandleDeliveryRequestResult() {
+    private Event HandleDeliveryRequestResult() {
         if (this.getState() == MessageState.New)
             setState(MessageState.Pending);
         return null;
     }
 
-    private IEvent HandleDeliveryResponseEvent(DeliveryResponseReceivedEvent deliveryResponseReceivedEvent) {
+    private Event HandleDeliveryResponseEvent(DeliveryResponseReceivedEvent deliveryResponseReceivedEvent) {
         if (deliveryResponseReceivedEvent.getDeliveryResponse().isDeliverySuccessful()) {
-            this.deliveredOn = deliveryResponseReceivedEvent.getTimestamp();
+            this.deliveredOn = deliveryResponseReceivedEvent.getCreatedOn();
             setState(MessageState.Delivered);
 
             logger.debug("Message delivered {" + deliveryResponseReceivedEvent.getDeliveryResponse() + "}");
 
             return new MessageDeliveredEvent(UUID.randomUUID(),
                     this.getId(),
-                    deliveryResponseReceivedEvent.getTimestamp());
+                    deliveryResponseReceivedEvent.getCreatedOn());
         }
         else
         {
@@ -140,7 +140,7 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
      * A message delivery request has been acked.
      * @param result
      */
-    public IEvent onDeliveryRequestResult(DeliveryRequestResult result) {
+    public Event onDeliveryRequestResult(DeliveryRequestResult result) {
 
         //ValidateCorrelation(result);
         if (result.getResult())
@@ -151,7 +151,7 @@ public class Message extends Entity<UUID> implements IMessage {//extends EnumSta
         return null;
     }
 
-    public IEvent onDeliveryResponse(DeliveryResponse response) {
+    public Event onDeliveryResponse(DeliveryResponse response) {
 
         //ValidateCorrelation(response);
 

@@ -5,30 +5,40 @@ import java.util.Arrays;
 /**
  * Created by bruenni on 09.04.17.
  */
-public enum LocationDomainEventType {
+public enum DomainEventType {
 
 	/**
 	 * See ActivtyStartedEvent
 	 */
-	ActivityStarted ((short)1),
+	ActivityStarted (1),
 
 	/**
 	 * See ActivityRelationCreatedEvent
 	 */
-	ActivityRelationCreated((short)2);
+	ActivityRelationCreated(2),
 
-	private final Short value;
+	/**
+	 * TBD
+	 */
+	NewDistanceEvent(3),
+
+	/**
+	 * TBD
+	 */
+	ActivityRelationUpdated(4);
+
+	private final Integer value;
 
 	/**
 	 * Constructor
 	 * @param value
 	 */
-	LocationDomainEventType(Short value)
+	DomainEventType(Integer value)
 	{
 		this.value = value;
 	}
 
-	public short getValue() {
+	public Integer getValue() {
 		return value;
 	}
 
@@ -37,7 +47,7 @@ public enum LocationDomainEventType {
 	 * @param value
 	 * @return
 	 */
-	public static LocationDomainEventType fromValue(Short value) {
+	public static DomainEventType fromValue(Integer value) {
 		return Arrays.stream(values()).filter(cur -> cur.getValue() == value).findFirst().get();
 	}
 }

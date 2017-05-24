@@ -7,14 +7,14 @@ import javax.persistence.Converter;
  * Created by bruenni on 09.04.17.
  */
 @Converter()
-public class LocationDomainEventTypeConverter implements AttributeConverter<LocationDomainEventType, Short> {
+public class LocationDomainEventTypeConverter implements AttributeConverter<DomainEventType, Integer> {
 	@Override
-	public Short convertToDatabaseColumn(LocationDomainEventType attribute) {
+	public Integer convertToDatabaseColumn(DomainEventType attribute) {
 		return attribute.getValue();
 	}
 
 	@Override
-	public LocationDomainEventType convertToEntityAttribute(Short dbData) {
-		return LocationDomainEventType.fromValue(dbData);
+	public DomainEventType convertToEntityAttribute(Integer dbData) {
+		return DomainEventType.fromValue(dbData);
 	}
 }

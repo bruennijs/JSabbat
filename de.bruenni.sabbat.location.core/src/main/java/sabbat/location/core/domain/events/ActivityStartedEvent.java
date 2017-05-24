@@ -1,23 +1,28 @@
 package sabbat.location.core.domain.events;
 
 import domain.events.EventBase;
+import infrastructure.parser.JsonDtoParser;
+import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.model.ActivityEvent;
+import sabbat.location.core.domain.model.DomainEventType;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.Date;
 
 /**
  * Created by bruenni on 14.03.17.
  */
-public class ActivityStartedEvent extends EventBase<Long, Long> {
+@Entity
+@DiscriminatorValue(value = "ActivityStartedEvent")
+public class ActivityStartedEvent extends ActivityEvent {
 
-	/**
-	 * JSON deserialization.
-	 */
 	public ActivityStartedEvent()
 	{
 	}
 
-	public ActivityStartedEvent(Date timestamp, Long aggregateId, Long id) {
-		super(timestamp, aggregateId, id);
+	public ActivityStartedEvent(Date timestamp, Activity aggregate) {
+		super(aggregate, timestamp, DomainEventType.ActivityStarted);
 	}
 
 	@Override

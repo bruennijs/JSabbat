@@ -2,8 +2,8 @@ package sabbat.location.core.application.service.implementation;
 
 import identity.IAuthenticationService;
 import identity.UserRef;
+import infrastructure.common.event.Event;
 import infrastructure.common.event.IDomainEventBus;
-import infrastructure.common.event.IEvent;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.parser.SerializingException;
 import org.slf4j.Logger;
@@ -11,17 +11,14 @@ import org.slf4j.LoggerFactory;
 import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
-import sabbat.location.core.domain.model.ActivityPrimaryKey;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.lang.reflect.Type;
 import java.time.Clock;
 import java.time.Instant;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,7 +56,7 @@ public class DefaultActivityApplicationService implements IActivityApplicationSe
         Activity activity = new Activity(0l, command.getId(), command.getTitle(), nowDate, userRef.getId());
 
         // start activity
-        IEvent domainEvent = activity.start();
+        Event domainEvent = activity.start();
 
         // fire domain event
         domainEventBus.publish(domainEvent);
@@ -92,7 +89,7 @@ public class DefaultActivityApplicationService implements IActivityApplicationSe
     }
 
     @Override
-    public void OnEvent(IEvent iEvent) {
+    public void OnEvent(Event iEvent) {
 
     }
 

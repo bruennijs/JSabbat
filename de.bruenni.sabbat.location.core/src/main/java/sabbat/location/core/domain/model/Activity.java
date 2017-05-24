@@ -1,7 +1,7 @@
 package sabbat.location.core.domain.model;
 
 import com.google.common.collect.Lists;
-import infrastructure.common.event.IEvent;
+import infrastructure.common.event.Event;
 import infrastructure.common.event.IEventHandler;
 import infrastructure.parser.SerializingException;
 import org.slf4j.Logger;
@@ -13,6 +13,9 @@ import sabbat.location.core.domain.events.ActivityStartedEvent;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.lang.reflect.Type;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +63,7 @@ public class Activity implements IEventHandler {
 	@OneToMany(cascade = {CascadeType.ALL},
 				mappedBy = "aggregate",
 		       orphanRemoval = true)
-	private Set<ActivityEvent> domainEvents = new java.util.HashSet<ActivityEvent>();
+	private Set<ActivityEvent> domainEvents = new java.util.HashSet<>();
 
 	/**
 	 * Constructor
@@ -119,27 +122,29 @@ public class Activity implements IEventHandler {
      * @param toBeRelated
      * @return
      */
-    public IEvent[] relateActivity(Activity toBeRelated)
+    public List<ActivityEvent> relateActivity(Activity toBeRelated)
     {
+		Instant now = Instant.now(Clock.systemUTC());
+
 		ActivityRelation activityRelation = new ActivityRelation(this, toBeRelated);
 		relations1.add(activityRelation);
-		return new IEvent[0];
-    }
+		ActivityEvent event = new ActivityRelationCreatedEvent(this, Date.from(now), toBeRelated.getId());
+
+		this.domainEvents.add(event);
+
+		return Arrays.asList(event);
+	}
 
 	/**
 	 * Starts the activity and creates domainevent
 	 * @return
 	 */
-	public IEvent start() throws SerializingException {
-		ActivityStartedEvent domainEvent = new ActivityStartedEvent(this.getStarted(), getId(), 0l);
-		addEvent(domainEvent);
+	public ActivityEvent start() throws SerializingException {
+		ActivityStartedEvent domainEvent = new ActivityStartedEvent(this.getStarted(), this);
+		this.domainEvents.add(domainEvent);
 		return domainEvent;
 	}
 
-
-	private void addEvent(IEvent<Long, Long> domainEvent) throws SerializingException {
-		this.domainEvents.add(new ActivityEvent(domainEvent.getId(), this, domainEvent));
-	}
 
 	/**
 	 * Merges both related activity relation lists.
@@ -157,9 +162,10 @@ public class Activity implements IEventHandler {
     	return getRelations().stream().flatMap(ar -> ar.getRelatedActivities().stream()).filter(activity -> activity != this).collect(Collectors.toList());
 	}
 
+
 	@Override
-	public void OnEvent(IEvent iEvent) {
-		if (iEvent instanceof ActivityRelationCreatedEvent)
+	public void OnEvent(Event event) {
+		if (event instanceof ActivityRelationCreatedEvent)
 		{
 
 		}
@@ -202,19 +208,7 @@ public class Activity implements IEventHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public Iterable<IEvent<Long, Long>> getEvents() {
-		return domainEvents
-			.stream()
-			.map(de ->
-				{
-					try
-					{
-						return (IEvent<Long, Long>)de.getDomainEvent();
-					} catch (Exception e) {
-						Log.error("getDomainEvents failed!", e);
-						return null;
-					}
-				})
-			.collect(Collectors.toList());
+	public Iterable<ActivityEvent> getEvents() {
+		return domainEvents;
 	}
 }

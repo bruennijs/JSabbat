@@ -1,14 +1,11 @@
 package sabbat.location.core.domain.model;
 
-import com.sun.javafx.binding.StringFormatter;
-import infrastructure.common.event.IEvent;
-import infrastructure.parser.JsonDtoParser;
+import infrastructure.common.event.Event;
 import infrastructure.parser.SerializingException;
-import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -16,48 +13,31 @@ import java.util.HashMap;
  */
 @Entity
 @Table(name = "domainevents", schema = "loc")
-public class ActivityEvent implements Serializable {
-
-	private static LocationDomainEventTypeConverter converter = new LocationDomainEventTypeConverter();
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.STRING)
+public class ActivityEvent implements Event<Long, Activity>, Serializable {
 
 	@Id
 	@SequenceGenerator(name = "domainevents_seq", sequenceName = "loc.domainevents_id_seq",  initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "domainevents_seq")
-	private Long id;
+	private Long id = Long.valueOf(0);
 
 	@ManyToOne(fetch = FetchType.LAZY,
 				cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "aggregateid")
-	//@Column(name = "aggregateid")
 	private Activity aggregate;
 
-	@Column(name = "typeid")
-	//@Convert(converter = LocationDomainEventTypeConverter.class)
-	private Short typeidShort;
+	//@Column(name = "dtype")
+	//@Enumerated(EnumType.ORDINAL)
+	@Transient
+	private DomainEventType eventType;
 
 	@Column(name = "document")
 	private String document;
 
-	private static JsonDtoParser parser = new JsonDtoParser();
-
-	private static HashMap<Class, LocationDomainEventType> type2Enum = new HashMap<>();
-
-	/**
-	 * Init hashmap
-	 */
-	static
-	{
-		type2Enum.put(ActivityStartedEvent.class, LocationDomainEventType.ActivityStarted);
-		type2Enum.put(ActivityRelationCreatedEvent.class, LocationDomainEventType.ActivityRelationCreated);
-	}
-
-	private String Serialize(IEvent<Long, Long> domainevent) throws SerializingException {
-		return parser.serialize(domainevent);
-	}
-
-	private static LocationDomainEventType getTypeId(IEvent<Long, Long> event) {
-		return type2Enum.get(event.getClass());
-	}
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "created")
+	private Date createdOn;
 
 	/**
 	 * Default constructor used by hibernate
@@ -67,46 +47,60 @@ public class ActivityEvent implements Serializable {
 
 	/**
 	 * Constructor
-	 * @param id
 	 * @param aggregate
-	 * @param event
 	 * @throws SerializingException
 	 */
-	public ActivityEvent(Long id, Activity aggregate, IEvent<Long, Long> event) throws SerializingException {
-		this.id = id;
+	public ActivityEvent(Activity aggregate, Date createdOn, DomainEventType type) {
 		this.aggregate = aggregate;
-		this.document = Serialize(event);
-		setEventType(getTypeId(event));
+		this.createdOn = createdOn;
+		this.eventType = type;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * Parses domain event from document string.
-	 * @return
-	 * @throws Exception
-	 */
-	public IEvent<Long, Long> getDomainEvent() throws Exception {
-		switch (getEventType())
-		{
-			case ActivityStarted:
-				return parser.parse(document, ActivityStartedEvent.class);
-			case ActivityRelationCreated:
-				return parser.parse(document, ActivityRelationCreatedEvent.class);
-			default:
-				throw new Exception(StringFormatter.format("not mapped domain event type [%1%]", getEventType()).getValue());
-		}
+	@Override
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public LocationDomainEventType getEventType()
-	{
-		return converter.convertToEntityAttribute(typeidShort);
+	@Override
+	public Activity getAggregate() {
+		return aggregate;
 	}
 
-	public void setEventType(LocationDomainEventType eventType)
-	{
-		typeidShort = converter.convertToDatabaseColumn(eventType);
+	public DomainEventType getEventType() {
+		return eventType;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ActivityEvent that = (ActivityEvent) o;
+
+		if (!id.equals(that.id)) return false;
+		if (!aggregate.getId().equals(that.aggregate.getId())) return false;
+		//if (eventType != that.eventType) return false;
+		return createdOn.equals(that.createdOn);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id.hashCode();
+		result = 31 * result + aggregate.hashCode();
+		//result = 31 * result + eventType.hashCode();
+		result = 31 * result + createdOn.hashCode();
+		return result;
+	}
+
+	protected void setDocument(String document) {
+		this.document = document;
+	}
+
+	protected String getDocument() {
+		return document;
 	}
 }

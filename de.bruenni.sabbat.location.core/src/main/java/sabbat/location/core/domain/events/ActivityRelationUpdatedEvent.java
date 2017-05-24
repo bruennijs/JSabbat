@@ -1,13 +1,19 @@
 package sabbat.location.core.domain.events;
 
-import infrastructure.common.event.implementation.Event;
+import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.model.ActivityEvent;
+import sabbat.location.core.domain.model.DomainEventType;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.Date;
 
 /**
  * Created by bruenni on 16.03.17.
  */
-public class ActivityRelationUpdatedEvent extends ActivityRelationEventBase {
+@Entity
+@DiscriminatorValue(value = "U")
+public class ActivityRelationUpdatedEvent extends ActivityEvent {
 
 	/**
 	 * JSON deserialization.
@@ -17,12 +23,10 @@ public class ActivityRelationUpdatedEvent extends ActivityRelationEventBase {
 
 	/**
 	 * Constructor
-	 * @param id
-	 * @param aggregateId
 	 * @param relatedActivity
 	 * @param timestamp
 	 */
-	public ActivityRelationUpdatedEvent(Long id, Long aggregateId, Long relatedActivity, Date timestamp) {
-		super(timestamp, aggregateId, id, relatedActivity);
+	public ActivityRelationUpdatedEvent(Activity aggregate, Long relatedActivity, Date timestamp) {
+		super(aggregate, timestamp, DomainEventType.ActivityRelationUpdated);
 	}
 }

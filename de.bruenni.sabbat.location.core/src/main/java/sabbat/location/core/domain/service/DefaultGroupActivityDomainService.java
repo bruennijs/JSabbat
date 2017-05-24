@@ -2,12 +2,14 @@ package sabbat.location.core.domain.service;
 
 import account.IAccountService;
 import account.User;
-import infrastructure.common.event.IEvent;
+import infrastructure.common.event.Event;
 import sabbat.location.core.domain.events.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by bruenni on 16.03.17.
@@ -22,7 +24,7 @@ public class DefaultGroupActivityDomainService {
 		this.accountService = accountService;
 	}
 
-	public IEvent[] onNewActivityStarted(ActivityStartedEvent iEvent)
+	public List<Event> onNewActivityStarted(ActivityStartedEvent iEvent)
 	{
 		// 0. find started activity
 		Activity startedActivity = activityRepository.findOne(null);
@@ -41,6 +43,6 @@ public class DefaultGroupActivityDomainService {
 
 			// 3. relate associated activities with each other
 		//startedActivity.relateActivity(null);
-		return new IEvent[0];
+		return Arrays.asList();
 	}
 }

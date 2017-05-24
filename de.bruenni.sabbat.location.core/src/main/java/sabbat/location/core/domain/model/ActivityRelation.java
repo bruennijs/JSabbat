@@ -1,6 +1,7 @@
 package sabbat.location.core.domain.model;
 
 import com.google.common.collect.Lists;
+import infrastructure.util.IterableUtils;
 import sabbat.location.core.domain.events.NewDistanceEvent;
 
 import javax.persistence.*;
@@ -40,18 +41,9 @@ public class ActivityRelation implements Serializable {
 	@JoinColumn(name = "activityid2")
 	private Activity activity2;
 
-	@Transient
-	private List<ActivityRelationEventBase> events =  new ArrayList<ActivityRelationEventBase>();
-
 	public ActivityRelation() {
 	}
 
-
-	public ActivityRelation(Activity activity1, Activity activity2, List<ActivityRelationEventBase> events) {
-		this.activity1 = activity1;
-		this.activity2 = activity2;
-		this.events = events;
-	}
 
 	public ActivityRelation(Activity activity1, Activity activity2) {
 		this.activity1 = activity1;
@@ -71,25 +63,15 @@ public class ActivityRelation implements Serializable {
 	}
 
 	/**
-	 * Adds relation event.
-	 * @param event
-	 */
-	public void addEvent(ActivityRelationEventBase event)
-	{
-		events.add(event);
-	}
-
-	/**
 	 * Calculates latest distance
 	 * @return
 	 * @throws Exception
 	 */
 	public double latestDistance() throws Exception
 	{
-			Optional<ActivityRelationEventBase> latestEvent = events
-				.stream()
+			Optional<ActivityEvent> latestEvent = IterableUtils.stream(activity1.getEvents())
 				.filter(e -> e instanceof NewDistanceEvent)
-				.max(Comparator.comparing(e -> e.getTimestamp()));
+				.max(Comparator.comparing(e -> e.getCreatedOn()));
 
 			if (latestEvent.isPresent())
 				return ((NewDistanceEvent) latestEvent.get()).getDistance();

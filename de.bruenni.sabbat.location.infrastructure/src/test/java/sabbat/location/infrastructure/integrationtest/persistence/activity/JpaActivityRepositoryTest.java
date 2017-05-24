@@ -1,6 +1,7 @@
 package sabbat.location.infrastructure.integrationtest.persistence.activity;
 
 import com.google.common.collect.Lists;
+import infrastructure.common.event.Event;
 import infrastructure.util.Tuple2;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -16,15 +17,20 @@ import org.mockito.internal.matchers.Equals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.location.core.builder.ActivityBuilder;
+import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
+import sabbat.location.core.domain.events.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.model.ActivityEvent;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
 import test.matcher.LambdaMatcher;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +46,9 @@ public class JpaActivityRepositoryTest {
 	@Autowired
 	@Qualifier("activityRepository")
 	public IActivityRepository activityRepository;
+
+	@Autowired
+	public ApplicationContext ctx;
 
 	@org.junit.Before
 	public void setup()
@@ -69,12 +78,15 @@ public class JpaActivityRepositoryTest {
 
 		activity1.relateActivity(activity2);
 		activity1 = activityRepository.save(activity1);
-		activityRepository.refresh(activity2);
+		this.activityRepository.refresh(activity2);
 
-		//activity2 = activityRepository.findOne(activity2.getId());
+		//IActivityRepository activityRepositoryTmp = ctx.getBean("activityRepository", IActivityRepository.class);
+		//Activity activity2Tmp = activityRepositoryTmp.findOne(activity2.getId());
+
 
 		Assert.assertThat(activity1.getRelations().size(), IsEqual.equalTo(1));
 		Assert.assertThat(activity2.getRelations().size(), IsEqual.equalTo(1));
+		//Assert.assertThat(activity2Tmp.getRelations().size(), IsEqual.equalTo(1));
 
 		final Activity a1Tmp = activity1;
 		final Activity a2Tmp = activity2;
@@ -125,11 +137,16 @@ public class JpaActivityRepositoryTest {
 	@Test
 	public void when_start_activity_expect_domain_event_persisted() throws Exception {
 		Activity activity1 = new ActivityBuilder().build();
-		activity1.start();
+		final ActivityEvent startedEvent = activity1.start();
 
-		Activity activitySaved = activityRepository.save(activity1);
+		activity1 = activityRepository.save(activity1);
 
-		//Assert.assertThat(activity1.getEvents(), Matchers.contains(IsEqual.equalTo()));
+		IActivityRepository activityRepositoryTmp = ctx.getBean("activityRepository", IActivityRepository.class);
+
+		// find in new first level cache to generate new SQL query
+		Activity activityRead = activityRepositoryTmp.findOne(activity1.getId());
+
+		Assert.assertThat(activityRead.getEvents(), Matchers.contains(Arrays.asList(new LambdaMatcher<Event>(event -> event instanceof ActivityStartedEvent, "Event is instance of ActivityStartedEvent"))));
 	}
 
 	@Test

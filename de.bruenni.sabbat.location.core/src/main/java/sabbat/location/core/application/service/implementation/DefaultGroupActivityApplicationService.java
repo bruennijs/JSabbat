@@ -2,8 +2,8 @@ package sabbat.location.core.application.service.implementation;
 
 import identity.IAuthenticationService;
 import identity.UserRef;
+import infrastructure.common.event.Event;
 import infrastructure.common.event.IDomainEventBus;
-import infrastructure.common.event.IEvent;
 import infrastructure.identity.AuthenticationFailedException;
 import sabbat.location.core.application.service.GroupActivityApplicationService;
 import sabbat.location.core.domain.events.ActivityStartedEvent;
@@ -11,7 +11,9 @@ import sabbat.location.core.domain.service.DefaultGroupActivityDomainService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by bruenni on 14.03.17.
@@ -42,11 +44,11 @@ public class DefaultGroupActivityApplicationService implements GroupActivityAppl
 	 * @param iEvent
 	 */
 	@Override
-	public void OnEvent(IEvent iEvent) {
-		if (iEvent.getClass().equals(ActivityStartedEvent.class))
+	public void OnEvent(Event iEvent) {
+		if (iEvent instanceof ActivityStartedEvent)
 		{
-			IEvent[] domainEvents = domainService.onNewActivityStarted((ActivityStartedEvent) iEvent);
-			Arrays.stream(domainEvents).forEach(e -> domainEventBus.publish(e));
+			List<Event> domainEvents = domainService.onNewActivityStarted((ActivityStartedEvent) iEvent);
+			domainEvents.stream().forEach(e -> domainEventBus.publish(e));
 		}
 	}
 

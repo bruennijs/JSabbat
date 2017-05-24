@@ -13,7 +13,11 @@
 
         <class>sabbat.location.core.domain.model.Activity</class>
         <class>sabbat.location.core.domain.model.ActivityRelation</class>
-        <class>sabbat.location.core.domain.model.ActivityEvent</class>
+        <!--<class>sabbat.location.core.domain.model.ActivityEvent</class>-->
+        <class>sabbat.location.core.domain.events.ActivityStartedEvent</class>
+        <class>sabbat.location.core.domain.events.ActivityRelationCreatedEvent</class>
+        <class>sabbat.location.core.domain.events.ActivityRelationUpdatedEvent</class>
+        <class>sabbat.location.core.domain.events.NewDistanceEvent</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver"

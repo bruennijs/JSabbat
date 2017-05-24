@@ -27,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Created by bruenni on 28.05.16.
  */
-public class MessageApplicationService implements IEventHandler<IEvent> {
+public class MessageApplicationService implements IEventHandler<Event> {
     static final Logger logger = LogManager.getLogger(MessageApplicationService.class.getName());
 
     private IDomainEventPublisher domainEventPublisher;
@@ -99,7 +99,7 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
         Message message = messageRepository.findOne(msgId);
 
         if (message != null) {
-            IEvent eventToPublish = message.onDeliveryResponse(deliveryResponse);
+            Event eventToPublish = message.onDeliveryResponse(deliveryResponse);
 
             this.domainEventPublisher.publish(eventToPublish);
         }
@@ -108,14 +108,14 @@ public class MessageApplicationService implements IEventHandler<IEvent> {
     }
 
     @Override
-    public void OnEvent(IEvent event)
+    public void OnEvent(Event event)
     {
         logger.debug("OnEvent IEventHandler [" + event.toString() + "]");
 
-        UUID msgId = UUID.fromString(event.getAggregateId().toString());
+        UUID msgId = UUID.fromString(event.getAggregate().toString());
         Message message = messageRepository.findOne(msgId);
         if (message != null) {
-            IEvent newEvent = message.OnEvent(event);
+            Event newEvent = message.OnEvent(event);
             this.domainEventPublisher.publish(newEvent);
         }
         else
