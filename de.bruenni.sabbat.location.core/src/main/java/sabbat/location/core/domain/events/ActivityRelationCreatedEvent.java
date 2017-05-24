@@ -7,7 +7,6 @@ import infrastructure.parser.ParserException;
 import infrastructure.parser.SerializingException;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityEvent;
-import sabbat.location.core.domain.model.DomainEventType;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -18,7 +17,7 @@ import java.util.Date;
  * Created by bruenni on 16.03.17.
  */
 @Entity
-@DiscriminatorValue(value = "ActivityRelationCreatedEvent")
+@DiscriminatorValue(value = "2")
 public class ActivityRelationCreatedEvent extends ActivityEvent {
 
 	@Transient
@@ -38,7 +37,7 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 	 * @param timestamp
 	 */
 	public ActivityRelationCreatedEvent(Activity aggregate, Date timestamp, Long relatedActivityId) {
-		super(aggregate, timestamp, DomainEventType.ActivityRelationCreated);
+		super(aggregate, timestamp);
 		this.attributes = new Attributes(relatedActivityId);
 
 		try {

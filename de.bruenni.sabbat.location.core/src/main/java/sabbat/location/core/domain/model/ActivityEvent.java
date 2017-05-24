@@ -6,7 +6,6 @@ import infrastructure.parser.SerializingException;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created by bruenni on 18.03.17.
@@ -14,7 +13,7 @@ import java.util.HashMap;
 @Entity
 @Table(name = "domainevents", schema = "loc")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.INTEGER)
 public class ActivityEvent implements Event<Long, Activity>, Serializable {
 
 	@Id
@@ -27,10 +26,9 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 	@JoinColumn(name = "aggregateid")
 	private Activity aggregate;
 
-	//@Column(name = "dtype")
+	//@Column(name = "DTYPE", updatable = false, insertable = false)
 	//@Enumerated(EnumType.ORDINAL)
-	@Transient
-	private DomainEventType eventType;
+	//private DomainEventType eventType;
 
 	@Column(name = "document")
 	private String document;
@@ -50,10 +48,9 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 	 * @param aggregate
 	 * @throws SerializingException
 	 */
-	public ActivityEvent(Activity aggregate, Date createdOn, DomainEventType type) {
+	public ActivityEvent(Activity aggregate, Date createdOn) {
 		this.aggregate = aggregate;
 		this.createdOn = createdOn;
-		this.eventType = type;
 	}
 
 	public Long getId() {
@@ -70,10 +67,6 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 		return aggregate;
 	}
 
-	public DomainEventType getEventType() {
-		return eventType;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -83,7 +76,6 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 
 		if (!id.equals(that.id)) return false;
 		if (!aggregate.getId().equals(that.aggregate.getId())) return false;
-		//if (eventType != that.eventType) return false;
 		return createdOn.equals(that.createdOn);
 	}
 
@@ -91,7 +83,6 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 	public int hashCode() {
 		int result = id.hashCode();
 		result = 31 * result + aggregate.hashCode();
-		//result = 31 * result + eventType.hashCode();
 		result = 31 * result + createdOn.hashCode();
 		return result;
 	}
@@ -102,5 +93,15 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 
 	protected String getDocument() {
 		return document;
+	}
+
+	@Override
+	public String toString() {
+		return "ActivityEvent{" +
+			"id=" + id +
+			", aggregate=" + aggregate +
+			", document='" + document + '\'' +
+			", createdOn=" + createdOn +
+			'}';
 	}
 }

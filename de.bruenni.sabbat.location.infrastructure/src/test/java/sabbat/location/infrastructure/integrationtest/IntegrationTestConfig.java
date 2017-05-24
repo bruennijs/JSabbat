@@ -1,9 +1,7 @@
 package sabbat.location.infrastructure.integrationtest;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.*;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.persistence.activity.JpaActivityRepository;
 
@@ -24,6 +22,7 @@ import sabbat.location.infrastructure.persistence.activity.JpaActivityRepository
 public class IntegrationTestConfig {
 
         @Bean(name = "activityRepository")
+        @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
         public IActivityRepository activityRepository()
         {
                 return new JpaActivityRepository();

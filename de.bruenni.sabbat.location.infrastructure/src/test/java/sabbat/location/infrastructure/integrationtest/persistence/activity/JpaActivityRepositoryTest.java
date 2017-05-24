@@ -26,6 +26,7 @@ import sabbat.location.core.domain.events.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityEvent;
 import sabbat.location.core.domain.model.ActivityRelation;
+import sabbat.location.core.domain.model.DomainEventType;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
 import test.matcher.LambdaMatcher;
@@ -146,7 +147,9 @@ public class JpaActivityRepositoryTest {
 		// find in new first level cache to generate new SQL query
 		Activity activityRead = activityRepositoryTmp.findOne(activity1.getId());
 
-		Assert.assertThat(activityRead.getEvents(), Matchers.contains(Arrays.asList(new LambdaMatcher<Event>(event -> event instanceof ActivityStartedEvent, "Event is instance of ActivityStartedEvent"))));
+		Assert.assertThat(activityRead.getEvents(),
+			Matchers.contains(
+				Matchers.allOf(new LambdaMatcher<Event>(event -> event instanceof ActivityStartedEvent, "Event is instance of ActivityStartedEvent"))));
 	}
 
 	@Test
