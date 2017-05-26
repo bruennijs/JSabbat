@@ -2,12 +2,10 @@ package sabbat.location.infrastructure.integrationtest.persistence.activity;
 
 import com.google.common.collect.Lists;
 import infrastructure.common.event.Event;
+import infrastructure.util.IterableUtils;
 import infrastructure.util.Tuple2;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
-import org.hamcrest.collection.IsIterableContainingInOrder;
-import org.hamcrest.core.IsCollectionContaining;
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNot;
 import org.junit.Assert;
@@ -20,21 +18,19 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StreamUtils;
 import sabbat.location.core.builder.ActivityBuilder;
-import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
+import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
+import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityEvent;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.ActivityRelation;
-import sabbat.location.core.domain.model.DomainEventType;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
 import test.matcher.LambdaMatcher;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by bruenni on 17.03.17.
@@ -155,7 +151,20 @@ public class JpaActivityRepositoryTest {
 	@Test
 	public void when_relate_activity_expect_domain_event_for_both_activities_persisted() throws Exception {
 
-		Assert.fail();
+		Activity activity1 = new ActivityBuilder().build();
+		Activity activity2 = new ActivityBuilder().build();
+
+		activity1 = activityRepository.save(activity1);
+		activity2 = activityRepository.save(activity2);
+
+		activity1.relateActivity(activity2);
+
+		activity1 = activityRepository.save(activity1);
+
+		final Activity a2Tmp = activity2;
+
+		Assert.assertThat(activity1.getEvents(), Matchers.contains(Matchers.allOf(new LambdaMatcher<ActivityEvent>(e -> e instanceof ActivityRelationCreatedEvent, "Event is of correct type"),
+			new LambdaMatcher<ActivityEvent>(e -> ((ActivityRelationCreatedEvent)e).getAttributes().getRelatedActivityId().equals(a2Tmp.getId()), "event relates to activity2 id"))));
 	}
 
 	@Test

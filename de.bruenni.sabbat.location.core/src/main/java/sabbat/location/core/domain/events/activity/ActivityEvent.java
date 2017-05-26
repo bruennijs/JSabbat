@@ -1,10 +1,12 @@
-package sabbat.location.core.domain.model;
+package sabbat.location.core.domain.events.activity;
 
 import infrastructure.common.event.Event;
 import infrastructure.parser.SerializingException;
+import sabbat.location.core.domain.model.Activity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -29,9 +31,6 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 	//@Column(name = "DTYPE", updatable = false, insertable = false)
 	//@Enumerated(EnumType.ORDINAL)
 	//private DomainEventType eventType;
-
-	@Column(name = "document")
-	private String document;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "created")
@@ -87,21 +86,62 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 		return result;
 	}
 
-	protected void setDocument(String document) {
-		this.document = document;
-	}
-
-	protected String getDocument() {
-		return document;
-	}
-
 	@Override
 	public String toString() {
 		return "ActivityEvent{" +
 			"id=" + id +
 			", aggregate=" + aggregate +
-			", document='" + document + '\'' +
 			", createdOn=" + createdOn +
 			'}';
+	}
+
+	/**
+	 * Created by bruenni on 09.04.17.
+	 */
+	public static enum DomainEventType {
+
+		/**
+		 * See ActivtyStartedEvent
+		 */
+		ActivityStarted (1),
+
+		/**
+		 * See ActivityRelationCreatedEvent
+		 */
+		ActivityRelationCreated(2),
+
+		/**
+		 * TBD
+		 */
+		NewDistanceEvent(3),
+
+		/**
+		 * TBD
+		 */
+		ActivityRelationUpdated(4);
+
+		private final Integer value;
+
+		/**
+		 * Constructor
+		 * @param value
+		 */
+		DomainEventType(Integer value)
+		{
+			this.value = value;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+
+		/**
+		 * Converts short to corresponding enum type.
+		 * @param value
+		 * @return
+		 */
+		public static DomainEventType fromValue(Integer value) {
+			return Arrays.stream(DomainEventType.values()).filter(cur -> cur.getValue() == value).findFirst().get();
+		}
 	}
 }

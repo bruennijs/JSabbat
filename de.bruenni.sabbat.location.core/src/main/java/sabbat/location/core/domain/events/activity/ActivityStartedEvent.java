@@ -1,8 +1,8 @@
-package sabbat.location.core.domain.events;
+package sabbat.location.core.domain.events.activity;
 
 import domain.events.EventBase;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityEvent;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

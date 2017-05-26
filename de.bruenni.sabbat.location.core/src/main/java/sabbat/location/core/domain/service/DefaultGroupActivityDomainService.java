@@ -3,11 +3,10 @@ package sabbat.location.core.domain.service;
 import account.IAccountService;
 import account.User;
 import infrastructure.common.event.Event;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
+import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

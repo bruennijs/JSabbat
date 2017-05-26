@@ -1,6 +1,5 @@
 package sabbat.location.core.domain.model;
 
-import com.hazelcast.util.IterableUtil;
 import infrastructure.common.event.IEvent;
 import infrastructure.util.IterableUtils;
 import org.hamcrest.core.IsEqual;
@@ -10,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.LoggerFactory;
 import sabbat.location.core.builder.ActivityBuilder;
-import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
+import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
+import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 
 import java.util.List;
 import java.util.regex.Matcher;

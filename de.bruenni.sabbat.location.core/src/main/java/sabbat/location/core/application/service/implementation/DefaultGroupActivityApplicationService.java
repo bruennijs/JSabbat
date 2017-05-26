@@ -6,13 +6,11 @@ import infrastructure.common.event.Event;
 import infrastructure.common.event.IDomainEventBus;
 import infrastructure.identity.AuthenticationFailedException;
 import sabbat.location.core.application.service.GroupActivityApplicationService;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
+import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.service.DefaultGroupActivityDomainService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,7 +38,7 @@ public class DefaultGroupActivityApplicationService implements GroupActivityAppl
 
 	/**
 	 * Domain events handling:
-	 * 1) @{@link sabbat.location.core.domain.events.ActivityStartedEvent}
+	 * 1) @{@link ActivityStartedEvent}
 	 * @param iEvent
 	 */
 	@Override

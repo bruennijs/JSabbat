@@ -1,16 +1,14 @@
-package sabbat.location.core.domain.events;
+package sabbat.location.core.domain.events.activity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import infrastructure.parser.IDtoParser;
 import infrastructure.parser.JsonDtoParser;
 import infrastructure.parser.ParserException;
 import infrastructure.parser.SerializingException;
+import sabbat.location.core.domain.events.activity.converter.JsonToAttributeConverter;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityEvent;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -20,16 +18,11 @@ import java.util.Date;
 @DiscriminatorValue(value = "2")
 public class ActivityRelationCreatedEvent extends ActivityEvent {
 
-	@Transient
+	@Convert(converter = AttributesConverter.class)
+	@Column(name = "document")
 	private ActivityRelationCreatedEvent.Attributes attributes;
 
-	private static IDtoParser jsonParser = new JsonDtoParser();
-
 	public ActivityRelationCreatedEvent() {
-	}
-
-	private Attributes parseAttributes() throws ParserException {
-		return jsonParser.parse(getDocument(), Attributes.class);
 	}
 
 	/**
@@ -39,16 +32,10 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 	public ActivityRelationCreatedEvent(Activity aggregate, Date timestamp, Long relatedActivityId) {
 		super(aggregate, timestamp);
 		this.attributes = new Attributes(relatedActivityId);
-
-		try {
-			serializeAttributes();
-		} catch (SerializingException e) {
-			e.printStackTrace();
-		}
 	}
 
-	private void serializeAttributes() throws SerializingException {
-		this.setDocument(this.jsonParser.serialize(this.attributes));
+	public Attributes getAttributes() {
+		return attributes;
 	}
 
 	/**
@@ -56,7 +43,7 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 	 */
 	public class Attributes {
 		@JsonProperty("relatedId")
-		protected Long relatedActivityId;
+		private Long relatedActivityId;
 
 		/**
 		 * JSON deserialization.
@@ -84,7 +71,7 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 			if (this == o) return true;
 			if (o == null || getClass() != o.getClass()) return false;
 
-			Attributes that = (sabbat.location.core.domain.events.ActivityRelationCreatedEvent.Attributes) o;
+			Attributes that = (ActivityRelationCreatedEvent.Attributes) o;
 
 			return relatedActivityId.equals(that.relatedActivityId);
 		}
@@ -92,6 +79,15 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 		@Override
 		public int hashCode() {
 			return relatedActivityId.hashCode();
+		}
+	}
+
+	/**
+	 * Converts JSON to type
+	 */
+	public static class AttributesConverter extends JsonToAttributeConverter<ActivityRelationCreatedEvent.Attributes> {
+		public AttributesConverter() {
+			super(ActivityRelationCreatedEvent.Attributes.class);
 		}
 	}
 }

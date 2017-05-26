@@ -1,8 +1,8 @@
 package sabbat.location.core.domain.model;
 
-import com.google.common.collect.Lists;
 import infrastructure.util.IterableUtils;
-import sabbat.location.core.domain.events.NewDistanceEvent;
+import sabbat.location.core.domain.events.activity.NewDistanceEvent;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 
 import javax.persistence.*;
 import java.io.Serializable;

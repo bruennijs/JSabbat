@@ -6,9 +6,10 @@ import infrastructure.common.event.IEventHandler;
 import infrastructure.parser.SerializingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sabbat.location.core.domain.events.ActivityRelationCreatedEvent;
-import sabbat.location.core.domain.events.ActivityRelationUpdatedEvent;
-import sabbat.location.core.domain.events.ActivityStartedEvent;
+import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
+import sabbat.location.core.domain.events.activity.ActivityRelationUpdatedEvent;
+import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 
 import javax.persistence.*;
 import javax.persistence.Entity;

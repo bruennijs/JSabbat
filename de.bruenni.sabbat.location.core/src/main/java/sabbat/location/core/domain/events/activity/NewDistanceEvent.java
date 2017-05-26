@@ -1,11 +1,11 @@
-package sabbat.location.core.domain.events;
+package sabbat.location.core.domain.events.activity;
 
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.*;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.time.Instant;
 import java.util.Date;
 
 /**
