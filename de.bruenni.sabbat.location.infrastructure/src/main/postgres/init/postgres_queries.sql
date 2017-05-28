@@ -87,8 +87,8 @@ de.DTYPE  from loc.activity as ac
 LEFT OUTER join loc.domainevents as de ON de.aggregateid = ac.id
 where de.DTYPE is null;
 
---select activitis started but not stopped yet
--- TBD
+--select activitis started but not stopped yet to react to activitystartedevent and find relating activities in the group
+
 
 
 UPDATE loc.domainevents
