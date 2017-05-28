@@ -74,6 +74,15 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	}
 
 	@Override
+	public void truncate() {
+		new TransactionScope(getEntityManager()).run(em ->
+			em.createNativeQuery("truncate table loc.activity cascade")
+				//.setLockMode(LockModeType.PESSIMISTIC_WRITE)
+				.executeUpdate()
+		);
+	}
+
+	@Override
 	public <S extends Activity> S save(S entity) {
 		return new TransactionScope(getEntityManager()).run(em ->
 		{

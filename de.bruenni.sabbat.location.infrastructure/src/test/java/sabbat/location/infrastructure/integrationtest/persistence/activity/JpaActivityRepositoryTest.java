@@ -27,6 +27,7 @@ import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
+import sabbat.location.infrastructure.persistence.TransactionScope;
 import test.matcher.LambdaMatcher;
 
 import java.util.Arrays;
@@ -48,9 +49,19 @@ public class JpaActivityRepositoryTest {
 
 	@Autowired
 	public ApplicationContext ctx;
+	private boolean truncated = false;
 
 	@org.junit.Before
 	public void setup() {
+
+		//truncateDb();
+	}
+
+	private void truncateDb() {
+		if (!truncated) {
+			activityRepository.truncate();
+			truncated = true;
+		}
 	}
 
 	@Test
@@ -75,6 +86,7 @@ public class JpaActivityRepositoryTest {
 
 		activity1.relateActivity(activity2);
 		activity1 = activityRepository.save(activity1);
+		activity2 = activityRepository.save(activity2);
 		this.activityRepository.refresh(activity2);
 
 		//IActivityRepository activityRepositoryTmp = ctx.getBean("activityRepository", IActivityRepository.class);
@@ -89,10 +101,10 @@ public class JpaActivityRepositoryTest {
 		final Activity a2Tmp = activity2;
 
 
-		Assert.assertThat(activity1.getRelatedActivities(), Matchers.contains(new LambdaMatcher<>(activity -> activity.getId() == a2Tmp.getId(), "activity1 does relate to activity2")));
+		Assert.assertThat(activity1.getRelatedActivities(), Matchers.contains(LambdaMatcher.<Activity>isMatching(activity -> activity.getId().equals(a2Tmp.getId()), "activity1 does relate to activity2")));
 
 		Assert.assertThat(activity2.getRelatedActivities(),
-			Matchers.contains(new LambdaMatcher<>(activity -> activity.getId() == a1Tmp.getId(), "activity2 does not relate to activity1")));
+			Matchers.contains(LambdaMatcher.<Activity>isMatching(activity -> activity.getId().equals(a1Tmp.getId()), "activity2 does not relate to activity1")));
 	}
 
 	public void when_relate_two_activities_via_activitys_relation_list_expect_both_activities_contains_activityrelation_referencing_both_activities() {
@@ -122,11 +134,6 @@ public class JpaActivityRepositoryTest {
 
 		Assert.assertThat(readActivity2.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r ->
 			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2"))));
-	}
-
-	@Test
-	public void when_find_activity_relation_expect_references_both_activities() {
-		Assert.fail();
 	}
 
 	@Test

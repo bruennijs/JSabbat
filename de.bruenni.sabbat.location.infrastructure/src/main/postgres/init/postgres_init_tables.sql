@@ -45,7 +45,7 @@ BEGIN;
         created TIMESTAMP not null,
         document VARCHAR(8192)
         --DTYPE varchar(31) not null,   -- JPA 2.1 discriminator column
-        -- FOREIGN KEY (aggregateid) REFERENCES loc.activity (id) ON DELETE CASCADE,
+        FOREIGN KEY (aggregateid) REFERENCES loc.activity (id) ON DELETE CASCADE
         -- FOREIGN KEY (aggregateid) REFERENCES loc.activityrelation (id) ON DELETE CASCADE
     );
 

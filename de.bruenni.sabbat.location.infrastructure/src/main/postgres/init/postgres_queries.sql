@@ -89,6 +89,7 @@ where de.DTYPE is null;
 
 --select activitis started but not stopped yet to react to activitystartedevent and find relating activities in the group
 
+truncate table loc.activity cascade ;
 
 
 UPDATE loc.domainevents
@@ -99,3 +100,5 @@ select ac.id, de.dtype as dt from loc.activity as ac
 inner join loc.domainevents as de ON de.aggregateid = ac.id
 
 select * from loc.domainevents;
+select * from loc.activity;
+select * from loc.activityrelation;
