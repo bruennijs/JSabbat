@@ -50,6 +50,17 @@ public class ActivityTest {
 	}
 
 	@Test
+	public void when_relate_activity_expect_getrelatedactivities_returns_related_activity_only() throws Exception {
+		Activity activity1 = new ActivityBuilder().build();
+		Activity activity2 = new ActivityBuilder().build();
+		activity1.relateActivity(activity2);
+
+		// assert activity1 relates to activity2
+		Assert.assertThat(activity1.getRelatedActivities(), Matchers.contains(IsEqual.equalTo(activity2)));
+		//Assert.assertThat(activity2.getRelatedActivities(), Matchers.contains(IsEqual.equalTo(activity1)));
+	}
+
+	@Test
 	public void when_start_activity_expect_domain_event_created() throws Exception {
 		Activity activity1 = new ActivityBuilder().build();
 		ActivityStartedEvent startedEvent = activity1.start();

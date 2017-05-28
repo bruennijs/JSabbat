@@ -101,7 +101,8 @@ public class JpaActivityRepositoryTest {
 		final Activity a2Tmp = activity2;
 
 
-		Assert.assertThat(activity1.getRelatedActivities(), Matchers.contains(LambdaMatcher.<Activity>isMatching(activity -> activity.getId().equals(a2Tmp.getId()), "activity1 does relate to activity2")));
+		Assert.assertThat(activity1.getRelatedActivities(),
+			Matchers.contains(LambdaMatcher.<Activity>isMatching(activity -> activity.getId().equals(a2Tmp.getId()), "activity1 does relate to activity2")));
 
 		Assert.assertThat(activity2.getRelatedActivities(),
 			Matchers.contains(LambdaMatcher.<Activity>isMatching(activity -> activity.getId().equals(a1Tmp.getId()), "activity2 does not relate to activity1")));

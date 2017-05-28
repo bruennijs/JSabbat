@@ -1,5 +1,6 @@
 package sabbat.location.core.domain.events.activity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import infrastructure.parser.IDtoParser;
 import infrastructure.parser.JsonDtoParser;
