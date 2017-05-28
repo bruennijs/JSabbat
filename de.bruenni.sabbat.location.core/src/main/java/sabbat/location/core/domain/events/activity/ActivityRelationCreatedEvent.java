@@ -48,7 +48,7 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 	/**
 	 * Created by bruenni on 16.03.17.
 	 */
-	public class Attributes {
+	public static class Attributes {
 		@JsonProperty("relatedId")
 		private Long relatedActivityId;
 

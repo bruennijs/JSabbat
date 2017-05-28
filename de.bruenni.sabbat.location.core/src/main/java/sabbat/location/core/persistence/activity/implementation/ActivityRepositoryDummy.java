@@ -38,6 +38,10 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
+    public void truncate() {
+    }
+
+    @Override
     public Activity save(Activity entity) {
         return entity;
     }

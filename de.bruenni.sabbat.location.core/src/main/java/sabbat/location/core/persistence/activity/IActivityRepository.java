@@ -48,4 +48,9 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
      * @param torefresh
      */
     void refresh(Activity torefresh);
+
+    /**
+     * deletes all entities in table 'activity'
+     */
+    void truncate();
 }

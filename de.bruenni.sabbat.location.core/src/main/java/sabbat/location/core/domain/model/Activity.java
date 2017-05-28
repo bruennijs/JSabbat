@@ -52,7 +52,7 @@ public class Activity implements Aggregate<Long, ActivityEvent>, IEventHandler {
     @OneToMany(cascade = {CascadeType.ALL},
 			mappedBy = "activity1",
 			orphanRemoval = true)
-    private List<ActivityRelation> relations1 = Lists.newArrayList();
+    private List<ActivityRelation> relations1 = Lists.newLinkedList();
 
 	@OneToMany(cascade = {CascadeType.ALL},
 				mappedBy = "activity2",
