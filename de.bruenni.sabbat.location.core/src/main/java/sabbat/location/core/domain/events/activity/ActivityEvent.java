@@ -118,7 +118,12 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 		/**
 		 * TBD
 		 */
-		ActivityRelationUpdated(4);
+		ActivityRelationUpdated(4),
+
+		/**
+		 * See ActivityStopped
+		 */
+		ActivityStopped(5);
 
 		private final Integer value;
 

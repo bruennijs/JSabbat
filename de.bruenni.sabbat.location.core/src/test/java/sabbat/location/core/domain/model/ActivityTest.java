@@ -1,7 +1,8 @@
 package sabbat.location.core.domain.model;
 
-import infrastructure.common.event.IEvent;
 import infrastructure.util.IterableUtils;
+import org.hamcrest.Matchers;
+import org.hamcrest.core.Is;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,12 +10,17 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.LoggerFactory;
 import sabbat.location.core.builder.ActivityBuilder;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
+import sabbat.location.core.domain.events.activity.ActivityStoppedEvent;
+import test.matcher.LambdaMatcher;
 
+import java.lang.invoke.LambdaConversionException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by bruenni on 09.04.17.
@@ -28,28 +34,37 @@ public class ActivityTest {
 	public void when_relate_activity_expect_domain_event_for_both_activities_created() throws Exception {
 		Activity activity1 = new ActivityBuilder().build();
 		Activity activity2 = new ActivityBuilder().build();
-		IEvent[] domainEvents = activity1.relateActivity(activity2);
+		List<ActivityEvent> activityEvents = activity1.relateActivity(activity2);
 
-		//Assert.assertThat(ActivityRelationCreatedEvent.class, IsIn.isIn(Arrays.stream(domainEvents).map(e -> e.getClass()).toArray()));
-		Assert.assertThat(2, IsEqual.equalTo(domainEvents.length));
-		ActivityRelationCreatedEvent event1 = (ActivityRelationCreatedEvent) domainEvents[0];
-		ActivityRelationCreatedEvent event2 = (ActivityRelationCreatedEvent) domainEvents[1];
+		Assert.assertThat(activityEvents, Matchers.contains(Matchers.instanceOf(ActivityRelationCreatedEvent.class),Matchers.instanceOf(ActivityRelationCreatedEvent.class)));
 
-		Assert.fail();
+		List<ActivityRelationCreatedEvent> concreteEvents = activityEvents.stream().map(e -> (ActivityRelationCreatedEvent)e).collect(Collectors.toList());
+
+		Assert.assertThat(concreteEvents, Matchers.hasItem(
+			LambdaMatcher.<ActivityRelationCreatedEvent>isMatching(e -> e.getAggregate() == activity1 && e.getAttributes().getRelatedActivityId().equals(activity2.getId()))
+		));
+
+		Assert.assertThat(concreteEvents, Matchers.hasItem(
+			LambdaMatcher.<ActivityRelationCreatedEvent>isMatching(e -> e.getAggregate() == activity2 && e.getAttributes().getRelatedActivityId().equals(activity1.getId()))
+		));
 	}
 
 	@Test
 	public void when_start_activity_expect_domain_event_created() throws Exception {
 		Activity activity1 = new ActivityBuilder().build();
-		IEvent event = activity1.start();
+		ActivityStartedEvent startedEvent = activity1.start();
 
-		Assert.assertThat(ActivityStartedEvent.class, IsEqual.equalTo(event.getClass()));
+		Assert.assertThat(activity1, Matchers.is(startedEvent.getAggregate()));
+		Assert.assertThat(activity1.getStarted(), IsEqual.equalTo(startedEvent.getCreatedOn()));
+	}
 
-		List<IEvent<Long, Long>> activityEvents = IterableUtils.toList(activity1.getEvents());
-		Assert.assertThat(1, IsEqual.equalTo(activityEvents.size()));
-		IEvent<Long, Long> domainEvent = activityEvents.get(0);
-		Assert.assertThat(activity1.getId(), IsEqual.equalTo(domainEvent.getAggregateId()));
-		Assert.assertThat(activity1.getStarted(), IsEqual.equalTo(domainEvent.getTimestamp()));
+	@Test
+	public void when_stop_expect_domain_ActivityStoppedEvent_created() throws Exception {
+		Activity activity1 = new ActivityBuilder().build();
+		activity1.start();
+		ActivityEvent stopEvent = activity1.stop();
+
+		Assert.assertThat(stopEvent, Matchers.instanceOf(ActivityStoppedEvent.class));
 	}
 
 	@Test

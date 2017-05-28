@@ -30,6 +30,8 @@ import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
 import test.matcher.LambdaMatcher;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -48,13 +50,11 @@ public class JpaActivityRepositoryTest {
 	public ApplicationContext ctx;
 
 	@org.junit.Before
-	public void setup()
-	{
+	public void setup() {
 	}
 
 	@Test
-	public void store_and_query_activity_by_id()
-	{
+	public void store_and_query_activity_by_id() {
 		Activity activity = new ActivityBuilder().build();
 		Activity saved = activityRepository.save(activity);
 
@@ -95,8 +95,7 @@ public class JpaActivityRepositoryTest {
 			Matchers.contains(new LambdaMatcher<>(activity -> activity.getId() == a1Tmp.getId(), "activity2 does not relate to activity1")));
 	}
 
-	public void when_relate_two_activities_via_activitys_relation_list_expect_both_activities_contains_activityrelation_referencing_both_activities()
-	{
+	public void when_relate_two_activities_via_activitys_relation_list_expect_both_activities_contains_activityrelation_referencing_both_activities() {
 		Activity activity1 = new ActivityBuilder().build();
 		Activity activity2 = new ActivityBuilder().build();
 
@@ -111,7 +110,7 @@ public class JpaActivityRepositoryTest {
 		Assert.assertThat(readActivity1.getRelations().size(), IsEqual.equalTo(1));
 
 		Assert.assertThat(readActivity1.getRelations(),
-							IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r -> r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1"))));
+			IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r -> r.getRelatedActivities().contains(mergedActivity1), "cannot find activity 1"))));
 
 		Assert.assertThat(readActivity1.getRelations(), IsIterableContainingInAnyOrder.containsInAnyOrder(Lists.newArrayList(new LambdaMatcher<>(r ->
 			r.getRelatedActivities().contains(mergedActivity2), "cannot find activity 2"))));
@@ -126,8 +125,7 @@ public class JpaActivityRepositoryTest {
 	}
 
 	@Test
-	public void when_find_activity_relation_expect_references_both_activities()
-	{
+	public void when_find_activity_relation_expect_references_both_activities() {
 		Assert.fail();
 	}
 
@@ -138,7 +136,7 @@ public class JpaActivityRepositoryTest {
 
 		activity1 = activityRepository.save(activity1);
 
-		IActivityRepository activityRepositoryTmp = ctx.getBean("activityRepository", IActivityRepository.class);
+		IActivityRepository activityRepositoryTmp = getRepo();
 
 		// find in new first level cache to generate new SQL query
 		Activity activityRead = activityRepositoryTmp.findOne(activity1.getId());
@@ -149,7 +147,7 @@ public class JpaActivityRepositoryTest {
 	}
 
 	@Test
-	public void when_relate_activity_expect_domain_event_for_both_activities_persisted() throws Exception {
+	public void when_relate_activity_expect_ActivityRelationCreatedEvent_with_related_activity_persisted() throws Exception {
 
 		Activity activity1 = new ActivityBuilder().build();
 		Activity activity2 = new ActivityBuilder().build();
@@ -161,29 +159,19 @@ public class JpaActivityRepositoryTest {
 
 		activity1 = activityRepository.save(activity1);
 
+		// build new first level cache
+		IActivityRepository activityRepositoryTmp = getRepo();
+		activity1 = activityRepositoryTmp.findOne(activity1.getId());
+
+		List<ActivityRelationCreatedEvent> activityRelationCreatedEvents = IterableUtils.stream(activity1.getEvents()).filter(e -> e instanceof ActivityRelationCreatedEvent).map(e -> (ActivityRelationCreatedEvent) e).collect(Collectors.toList());
+
 		final Activity a2Tmp = activity2;
 
-		Assert.assertThat(activity1.getEvents(), Matchers.contains(Matchers.allOf(new LambdaMatcher<ActivityEvent>(e -> e instanceof ActivityRelationCreatedEvent, "Event is of correct type"),
-			new LambdaMatcher<ActivityEvent>(e -> ((ActivityRelationCreatedEvent)e).getAttributes().getRelatedActivityId().equals(a2Tmp.getId()), "event relates to activity2 id"))));
+		Assert.assertThat(activityRelationCreatedEvents, Matchers.contains(
+			LambdaMatcher.<ActivityRelationCreatedEvent>isMatching(e -> e.getAttributes().getRelatedActivityId().equals(a2Tmp.getId()), "event relates to activity2 id")));
 	}
 
-	@Test
-	public void test_iterable_matchers() throws Exception
-	{
-		Tuple2<Integer, String> t1 = new Tuple2<>(5, "hello");
-		Tuple2<Integer, String> t2 = new Tuple2<>(7, "test");
-
-		Assert.assertThat(Lists.newArrayList(t1, t2), Matchers.contains(
-				IsEqual.equalTo(new Tuple2<>(5, "hello")),
-				IsEqual.equalTo(new Tuple2<>(7, "test"))));
-
-		// or...
-
-		Assert.assertThat(Lists.newArrayList(t1, t2), Matchers.hasItem(IsEqual.equalTo(new Tuple2<>(5, "hello"))));
-		Assert.assertThat(Lists.newArrayList(t1, t2), Matchers.hasItem(IsEqual.equalTo(new Tuple2<>(7, "test"))));
+	private IActivityRepository getRepo() {
+		return ctx.getBean("activityRepository", IActivityRepository.class);
 	}
-
-	/*	private JpaActivityRepository CreateRepository() {
-		return new JpaActivityRepository();
-	}*/
 }

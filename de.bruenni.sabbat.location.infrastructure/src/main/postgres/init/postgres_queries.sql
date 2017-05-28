@@ -71,4 +71,31 @@ where a.uuid = :activityid;
 select activity0_.id as id1_0_1_, activity0_.finished as finished2_0_1_, activity0_.started as started3_0_1_, activity0_.title as title4_0_1_, activity0_.userid as userid5_0_1_, activity0_.uuid as uuid6_0_1_, domaineven1_.aggregateid as aggregat4_2_3_, domaineven1_.id as id1_2_3_, domaineven1_.id as id1_2_0_, domaineven1_.aggregateid as aggregat4_2_0_, domaineven1_.document as document2_2_0_, domaineven1_.typeid as typeid3_2_0_ from loc.activity activity0_ left outer join loc.domainevents domaineven1_ on activity0_.id=domaineven1_.aggregateid where activity0_.id=66;
     domainevents d;
 
+select ac."id",
+ac.title,
+ac.started,
+de.DTYPE  from loc.activity as ac
+LEFT OUTER join loc.domainevents as de ON de.aggregateid = ac.id AND de.DTYPE = 1;
+--where ac."id" IN (160, 151, 152, 150);
+
+--select activity that are not started yet
+
+select ac."id",
+ac.title,
+ac.started,
+de.DTYPE  from loc.activity as ac
+LEFT OUTER join loc.domainevents as de ON de.aggregateid = ac.id
+where de.DTYPE is null;
+
+--select activitis started but not stopped yet
+-- TBD
+
+
+UPDATE loc.domainevents
+SET aggregateid = 160
+where id = 79;
+
+select ac.id, de.dtype as dt from loc.activity as ac
+inner join loc.domainevents as de ON de.aggregateid = ac.id
+
 select * from loc.domainevents;

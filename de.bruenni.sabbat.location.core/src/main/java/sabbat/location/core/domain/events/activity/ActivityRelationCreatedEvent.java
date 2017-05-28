@@ -38,6 +38,13 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 		return attributes;
 	}
 
+	@Override
+	public String toString() {
+		return "ActivityRelationCreatedEvent{" +
+			"attributes=" + attributes +
+			"} " + super.toString();
+	}
+
 	/**
 	 * Created by bruenni on 16.03.17.
 	 */
@@ -79,6 +86,13 @@ public class ActivityRelationCreatedEvent extends ActivityEvent {
 		@Override
 		public int hashCode() {
 			return relatedActivityId.hashCode();
+		}
+
+		@Override
+		public String toString() {
+			return "Attributes{" +
+				"relatedActivityId=" + relatedActivityId +
+				'}';
 		}
 	}
 
