@@ -5,6 +5,7 @@ import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -53,11 +54,25 @@ public class ActivityTest {
 	public void when_relate_activity_expect_getrelatedactivities_returns_related_activity_only() throws Exception {
 		Activity activity1 = new ActivityBuilder().build();
 		Activity activity2 = new ActivityBuilder().build();
+
 		activity1.relateActivity(activity2);
 
 		// assert activity1 relates to activity2
 		Assert.assertThat(activity1.getRelatedActivities(), Matchers.contains(IsEqual.equalTo(activity2)));
-		//Assert.assertThat(activity2.getRelatedActivities(), Matchers.contains(IsEqual.equalTo(activity1)));
+
+		// assert activity2 relates to activity1
+		Assert.assertThat(activity2.getRelatedActivities(), Matchers.contains(IsEqual.equalTo(activity1)));
+	}
+
+	@Test
+	@Ignore("Cannot run cause ID of ActivityRelation instance is still null cause not persisted. Equals() will fail!")
+	public void when_relate_activity_expect_relations_of_both_are_identical() throws Exception {
+		Activity activity1 = new ActivityBuilder().build();
+		Activity activity2 = new ActivityBuilder().build();
+
+		activity1.relateActivity(activity2);
+
+		Assert.assertThat(activity1.getRelations(), Matchers.contains(activity2.getRelations()));
 	}
 
 	@Test

@@ -87,10 +87,12 @@ public class JpaActivityRepositoryTest {
 		activity1.relateActivity(activity2);
 		activity1 = activityRepository.save(activity1);
 		activity2 = activityRepository.save(activity2);
-		this.activityRepository.refresh(activity2);
+		//this.activityRepository.refresh(activity2);
 
-		//IActivityRepository activityRepositoryTmp = ctx.getBean("activityRepository", IActivityRepository.class);
-		//Activity activity2Tmp = activityRepositoryTmp.findOne(activity2.getId());
+		IActivityRepository activityRepositoryTmp = getRepo();
+
+		activity1 = activityRepositoryTmp.findOne(activity1.getId());
+		activity2 = activityRepositoryTmp.findOne(activity2.getId());
 
 
 		Assert.assertThat(activity1.getRelations().size(), IsEqual.equalTo(1));
@@ -102,10 +104,10 @@ public class JpaActivityRepositoryTest {
 
 
 		Assert.assertThat(activity1.getRelatedActivities(),
-			Matchers.contains(LambdaMatcher.<Activity>isMatching(activity -> activity.getId().equals(a2Tmp.getId()), "activity1 does relate to activity2")));
+			Matchers.contains(IsEqual.equalTo(activity2)));
 
 		Assert.assertThat(activity2.getRelatedActivities(),
-			Matchers.contains(LambdaMatcher.<Activity>isMatching(activity -> activity.getId().equals(a1Tmp.getId()), "activity2 does not relate to activity1")));
+			Matchers.contains(IsEqual.equalTo(activity1)));
 	}
 
 	public void when_relate_two_activities_via_activitys_relation_list_expect_both_activities_contains_activityrelation_referencing_both_activities() {

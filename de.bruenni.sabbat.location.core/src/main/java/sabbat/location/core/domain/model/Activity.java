@@ -127,6 +127,7 @@ public class Activity implements Aggregate<Long, ActivityEvent>, IEventHandler {
 
 		ActivityRelation activityRelation = new ActivityRelation(this, toBeRelated);
 		relations1.add(activityRelation);
+		toBeRelated.relations2.add(activityRelation);
 
 		// create events
 		ActivityEvent eventOfThisActivity = new ActivityRelationCreatedEvent(this, Date.from(now), toBeRelated.getId());

@@ -23,14 +23,6 @@ public class ActivityRelation implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "activityrelation_seq")
 	private Long id;
 
-/*
-	@Column(name = "activityid1")
-	private Long activityId1;
-
-	@Column(name = "activityid2")
-	private Long activityId2;
-*/
-
 	@ManyToOne(fetch = FetchType.LAZY,
 				cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "activityid1")
@@ -52,14 +44,6 @@ public class ActivityRelation implements Serializable {
 
 	public long getId() {
 		return id;
-	}
-
-	public void setActivity1(Activity activity1) {
-		this.activity1 = activity1;
-	}
-
-	public void setActivity2(Activity activity2) {
-		this.activity2 = activity2;
 	}
 
 	/**
