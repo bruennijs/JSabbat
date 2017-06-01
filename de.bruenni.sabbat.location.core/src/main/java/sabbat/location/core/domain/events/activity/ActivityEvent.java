@@ -37,11 +37,14 @@ public class ActivityEvent extends ApplicationEvent implements Event<Long, Activ
 	@Column(name = "created")
 	private Date createdOn;
 
+	private static Object sourceDummy = new Object();
+
 	/**
 	 * Default constructor used by hibernate
 	 */
-	public ActivityEvent() {
-		super(null);
+	public ActivityEvent()
+	{
+		super(sourceDummy);
 	}
 
 	/**

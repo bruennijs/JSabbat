@@ -22,7 +22,7 @@
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-1.2-api:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.5" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-test:4.3.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="library" name="Gradle: org.mockito:mockito-core:2.0.52-beta" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:infrastructure.common:1.0.0" level="project" />
