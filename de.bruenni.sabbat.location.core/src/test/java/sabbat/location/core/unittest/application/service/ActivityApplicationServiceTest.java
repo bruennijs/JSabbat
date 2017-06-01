@@ -1,4 +1,4 @@
-package sabbat.location.core.application.service;
+package sabbat.location.core.unittest.application.service;
 
 import identity.IAuthenticationService;
 import identity.UserRef;

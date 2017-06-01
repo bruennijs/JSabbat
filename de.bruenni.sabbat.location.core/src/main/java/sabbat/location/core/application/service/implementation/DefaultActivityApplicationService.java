@@ -3,23 +3,20 @@ package sabbat.location.core.application.service.implementation;
 import identity.IAuthenticationService;
 import identity.UserRef;
 import infrastructure.common.event.Event;
-import infrastructure.common.event.IDomainEventBus;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.parser.SerializingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import sabbat.location.core.application.service.IActivityApplicationService;
+import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
-import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
-import java.lang.reflect.Type;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
@@ -29,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * Created by bruenni on 24.09.16.
  */
-public class DefaultActivityApplicationService implements IActivityApplicationService, ApplicationEventPublisherAware {
+public class DefaultActivityApplicationService implements ActivityApplicationService, ApplicationEventPublisherAware {
 
     private Logger logger = LoggerFactory.getLogger(DefaultActivityApplicationService.class);
 

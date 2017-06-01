@@ -1,8 +1,6 @@
-package sabbat.location.core.domain.model;
+package sabbat.location.core.unittest.domain.model;
 
-import infrastructure.util.IterableUtils;
 import org.hamcrest.Matchers;
-import org.hamcrest.core.Is;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -15,9 +13,9 @@ import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.events.activity.ActivityStoppedEvent;
+import sabbat.location.core.domain.model.Activity;
 import test.matcher.LambdaMatcher;
 
-import java.lang.invoke.LambdaConversionException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

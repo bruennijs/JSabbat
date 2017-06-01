@@ -14,6 +14,17 @@ public class User {
     String email;
     GroupRef[] groups;
 
+    public User(String id, String name, String email, GroupRef[] groups) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.groups = groups;
+    }
+
+    public User(String id, String name) {
+        this(id, name, "", new GroupRef[0]);
+    }
+
     public String getName() {
         return name;
     }

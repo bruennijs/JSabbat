@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by bruenni on 04.07.16.
  */
-public interface IActivityApplicationService {
+public interface ActivityApplicationService {
     /**
      * Starts a activity.
      * @param command

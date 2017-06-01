@@ -1,10 +1,11 @@
-package sabbat.location.core.domain.service;
+package sabbat.location.core.domain.service.implementation;
 
 import account.IAccountService;
 import account.User;
 import infrastructure.common.event.Event;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
+import sabbat.location.core.domain.service.GroupActivityDomainService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by bruenni on 16.03.17.
  */
-public class DefaultGroupActivityDomainService {
+public class DefaultGroupActivityDomainService implements GroupActivityDomainService {
 
 	private IActivityRepository activityRepository;
 	private IAccountService accountService;
@@ -30,7 +31,8 @@ public class DefaultGroupActivityDomainService {
 	 * @param event
 	 * @return list of domain events created by relating activities.
 	 */
-	public List<Event> onNewActivityStarted(ActivityStartedEvent event)
+	@Override
+	public List<Event> onActivityStarted(ActivityStartedEvent event)
 	{
 		// 0.5 get groups the user of started activity is in
 		User startedActivityUser = accountService.getUserById(event.getAggregate().getUserId());

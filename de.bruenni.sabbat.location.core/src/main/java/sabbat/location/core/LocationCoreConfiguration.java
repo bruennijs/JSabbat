@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
 import sabbat.location.core.application.service.implementation.DefaultActivityApplicationService;
-import sabbat.location.core.application.service.IActivityApplicationService;
+import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.core.persistence.activity.implementation.ActivityRepositoryDummy;
 
@@ -41,9 +41,9 @@ public class LocationCoreConfiguration {
         }
 
         @Bean(name = "activityApplicationService")
-        @ConditionalOnMissingBean(IActivityApplicationService.class)
+        @ConditionalOnMissingBean(ActivityApplicationService.class)
         @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-        public IActivityApplicationService activityApplicationService(IActivityRepository activityRepository)
+        public ActivityApplicationService activityApplicationService(IActivityRepository activityRepository)
         {
                 return new DefaultActivityApplicationService(activityRepository, this.authenticationService);
         }

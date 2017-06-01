@@ -54,7 +54,7 @@ public class StopActivityCommand implements ICommand {
     }
 
     /***
-     * Transforms controller request to IActivityApplicationService command.
+     * Transforms controller request to ActivityApplicationService command.
      *
      * @return
      */

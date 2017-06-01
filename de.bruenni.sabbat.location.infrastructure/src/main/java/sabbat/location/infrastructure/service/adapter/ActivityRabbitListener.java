@@ -1,8 +1,6 @@
 package sabbat.location.infrastructure.service.adapter;
 
 import com.rabbitmq.client.Channel;
-import infrastructure.identity.Token;
-import infrastructure.util.IterableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -16,12 +14,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
-import sabbat.location.core.application.service.IActivityApplicationService;
+import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
-import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
 import sabbat.location.infrastructure.DtoToCommand.ActivityCreateRequestDtoConverter;
 import sabbat.location.infrastructure.DtoToCommand.ActivityUpdateEventDtoConverter;
 import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
@@ -29,9 +25,6 @@ import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Created by bruenni on 07.09.16.
@@ -48,7 +41,7 @@ public class ActivityRabbitListener {
     public String ActivityStopRoutingKey;
 
     @Autowired
-    public IActivityApplicationService applicationService;
+    public ActivityApplicationService applicationService;
 
     @Autowired
     @Qualifier("locationJsonDtoParser")
