@@ -8,9 +8,12 @@ import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.parser.SerializingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import sabbat.location.core.application.service.IActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
@@ -26,23 +29,22 @@ import java.util.stream.Collectors;
 /**
  * Created by bruenni on 24.09.16.
  */
-public class DefaultActivityApplicationService implements IActivityApplicationService {
+public class DefaultActivityApplicationService implements IActivityApplicationService, ApplicationEventPublisherAware {
 
     private Logger logger = LoggerFactory.getLogger(DefaultActivityApplicationService.class);
 
     private IActivityRepository activityRepository;
     private IAuthenticationService authenticationService;
-    private IDomainEventBus domainEventBus;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     /**
      * Constructor.
      * @param activityRepository
      * @param authenticationService
      */
-    public DefaultActivityApplicationService(IActivityRepository activityRepository, IAuthenticationService authenticationService, IDomainEventBus domainEventBus) {
+    public DefaultActivityApplicationService(IActivityRepository activityRepository, IAuthenticationService authenticationService) {
         this.activityRepository = activityRepository;
         this.authenticationService = authenticationService;
-        this.domainEventBus = domainEventBus;
     }
 
     @Override
@@ -58,10 +60,12 @@ public class DefaultActivityApplicationService implements IActivityApplicationSe
         // start activity
         Event domainEvent = activity.start();
 
-        // fire domain event
-        domainEventBus.publish(domainEvent);
+        Activity activityPersisted = this.activityRepository.save(activity);
 
-        return this.activityRepository.save(activity);
+        // fire domain event
+        applicationEventPublisher.publishEvent(domainEvent);
+
+        return activityPersisted;
     }
 
     @Override
@@ -89,12 +93,7 @@ public class DefaultActivityApplicationService implements IActivityApplicationSe
     }
 
     @Override
-    public void OnEvent(Event iEvent) {
-
-    }
-
-    @Override
-    public Type[] getSupportedEvents() {
-        return new Type[0];
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 }

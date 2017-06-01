@@ -4,17 +4,23 @@ package identity;
  * Created by bruenni on 15.10.16.
  */
 public class GroupRef {
-    String name;
+    /**
+     * Natural identifier of the group.
+     */
+    String id;
 
     /**
      * Constructor
-     * @param name
+     * @param id
      */
-    public GroupRef(String name) {
-        this.name = name;
+    public GroupRef(String id) {
+        this.id = id;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * Natural identifier of the group.
+     */
+    public String getId() {
+        return id;
     }
 }

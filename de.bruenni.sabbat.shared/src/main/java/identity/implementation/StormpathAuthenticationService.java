@@ -37,7 +37,9 @@ import java.util.stream.Stream;
 
 /**
  * Created by bruenni on 16.10.16.
+ * We have an spring.security Authenticationprovider implementation
  */
+@Deprecated
 public class StormpathAuthenticationService implements IAuthenticationService {
 
     private static Logger logger = LoggerFactory.getLogger(StormpathAuthenticationService.class);

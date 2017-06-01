@@ -1,6 +1,5 @@
 package builder;
 
-import infrastructure.identity.ITokenAuthentication;
 import infrastructure.identity.implementation.JJwtTokenAuthentication;
 
 /**

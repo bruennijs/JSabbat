@@ -4,13 +4,11 @@ import builder.JJwtTokenAuthenticationBuilder;
 import builder.JwtAuthenticationServiceBuilder;
 import identity.implementation.JwtAuthenticationService;
 import infrastructure.identity.AuthenticationFailedException;
-import infrastructure.identity.Jwt;
 import infrastructure.identity.Token;
 import infrastructure.identity.implementation.JJwtTokenAuthentication;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runner.Runner;
 import org.junit.runners.JUnit4;
 
 /**

@@ -23,13 +23,17 @@ public class DefaultGroupActivityDomainService {
 		this.accountService = accountService;
 	}
 
-	public List<Event> onNewActivityStarted(ActivityStartedEvent iEvent)
+	/**
+	 * 0. Find user of who started activity
+	 * 1. Find all users of the group the user is in who started the activity
+	 * 2.
+	 * @param event
+	 * @return list of domain events created by relating activities.
+	 */
+	public List<Event> onNewActivityStarted(ActivityStartedEvent event)
 	{
-		// 0. find started activity
-		Activity startedActivity = activityRepository.findOne(null);
-
 		// 0.5 get groups the user of started activity is in
-		User startedActivityUser = accountService.getUserById(startedActivity.getUserId());
+		User startedActivityUser = accountService.getUserById(event.getAggregate().getUserId());
 
 		// 1. find all users of all groups the user of the started activity is in
 		//Arrays.stream(startedActivityUser.getGroups()).map()

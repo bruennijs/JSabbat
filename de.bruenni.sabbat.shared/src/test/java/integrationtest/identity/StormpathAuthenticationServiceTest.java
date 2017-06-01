@@ -1,36 +1,28 @@
 package integrationtest.identity;
 
 import builder.JJwtTokenAuthenticationBuilder;
-import builder.JwtAuthenticationServiceBuilder;
 import builder.StormpathAuthenticationServiceBuilder;
 import identity.UserRef;
-import identity.implementation.JwtAuthenticationService;
 import identity.implementation.StormpathAuthenticationService;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.ITokenAuthentication;
 import infrastructure.identity.Jwt;
 import infrastructure.identity.Token;
-import infrastructure.identity.implementation.JJwtTokenAuthentication;
-import infrastructure.identity.implementation.JJwtTokenAuthenticationFactory;
-import infrastructure.util.StreamUtils;
-import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
  * Created by bruenni on 15.10.16.
  */
+@Deprecated
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = IntegrationTestConfig.class)
 public class StormpathAuthenticationServiceTest {
@@ -63,7 +55,7 @@ public class StormpathAuthenticationServiceTest {
 
         Assert.assertEquals(userName, userRef.getName());
         List<String> actualGroupNames = userRef.getGroups().stream().map(gref -> {
-            return gref.getName();
+            return gref.getId();
         }).collect(Collectors.toList());
 
         Assert.assertThat(

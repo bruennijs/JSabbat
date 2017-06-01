@@ -1,5 +1,6 @@
 package account;
 
+import identity.GroupRef;
 import identity.UserRef;
 
 /**
@@ -23,8 +24,8 @@ public interface IAccountService {
 
     /**
      * Gets all users by group name.
-     * @param groupName
+     * @param group group reference to get users for
      * @return
      */
-    Iterable<User> getUsersByGroup(String groupName);
+    Iterable<User> getUsersByGroup(GroupRef group);
 }

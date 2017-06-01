@@ -1,9 +1,7 @@
 package sabbat.location.core.persistence.activity;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.util.concurrent.ListenableFuture;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityPrimaryKey;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityRelation;
 

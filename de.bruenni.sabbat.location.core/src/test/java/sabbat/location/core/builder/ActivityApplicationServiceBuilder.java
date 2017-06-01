@@ -1,10 +1,10 @@
 package sabbat.location.core.builder;
 
 import identity.IAuthenticationService;
-import infrastructure.common.event.IDomainEventBus;
-import infrastructure.common.event.implementation.DomainEventBusImpl;
 import infrastructure.identity.AuthenticationFailedException;
+import org.springframework.context.ApplicationEventPublisher;
 import sabbat.location.core.application.service.implementation.DefaultActivityApplicationService;
+import sabbat.location.core.builder.org.springframework.context.ApplicationEventPublisherBuilder;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import static org.mockito.Mockito.mock;
@@ -17,13 +17,15 @@ public class ActivityApplicationServiceBuilder {
 
     private IActivityRepository repository = new ActivityRepositoryBuilder().buildmocked();
     private identity.IAuthenticationService authenticationService = new AuthenticationServiceBuilder().buildMocked();
-    private IDomainEventBus domainEventBus = new DomainEventBusImpl();
+    private ApplicationEventPublisher applicationEventPublisherMock = new ApplicationEventPublisherBuilder().buildMocked();
 
     public ActivityApplicationServiceBuilder() throws AuthenticationFailedException {
     }
 
     public DefaultActivityApplicationService build() {
-        return new DefaultActivityApplicationService(this.repository, this.authenticationService, this.domainEventBus);
+        DefaultActivityApplicationService instance = new DefaultActivityApplicationService(this.repository, this.authenticationService);
+        instance.setApplicationEventPublisher(applicationEventPublisherMock);
+        return instance;
     }
 
     public ActivityApplicationServiceBuilder withAuthenticationService(IAuthenticationService value) {

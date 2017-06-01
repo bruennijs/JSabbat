@@ -12,7 +12,7 @@ public class UserRef {
 
     /**
      * Constructor
-     * @param id
+     * @param id Natural identifier of the user.
      * @param name
      * @param groups
      */
@@ -22,6 +22,10 @@ public class UserRef {
         this.groups = groups;
     }
 
+    /**
+     * Natural identifier of the user.
+     * @return
+     */
     public String getId() {
         return id;
     }

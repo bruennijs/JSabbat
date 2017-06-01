@@ -7,7 +7,7 @@ import infrastructure.identity.Token;
 /**
  * Created by bruenni on 14.03.17.
  */
-public interface GroupActivityApplicationService extends IEventHandler {
+public interface GroupActivityApplicationService  {
 
 	/**
 	 * External applications like the CEP receiving and processing

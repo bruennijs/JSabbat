@@ -1,5 +1,6 @@
 package account;
 
+import identity.GroupRef;
 import jdk.nashorn.internal.runtime.URIUtils;
 
 import java.net.URI;
@@ -11,13 +12,13 @@ public class User {
     String id;
     String name;
     String email;
-    Group[] groups;
+    GroupRef[] groups;
 
     public String getName() {
         return name;
     }
 
-    public Group[] getGroups() {
+    public GroupRef[] getGroupRefs() {
         return groups;
     }
 

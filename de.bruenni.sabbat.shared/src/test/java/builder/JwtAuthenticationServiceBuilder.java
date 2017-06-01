@@ -2,7 +2,6 @@ package builder;
 
 import identity.implementation.JwtAuthenticationService;
 import infrastructure.identity.ITokenAuthentication;
-import infrastructure.identity.implementation.JJwtTokenAuthentication;
 
 /**
  * Created by bruenni on 15.10.16.

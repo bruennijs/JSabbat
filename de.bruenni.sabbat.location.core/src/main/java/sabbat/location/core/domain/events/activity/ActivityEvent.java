@@ -2,6 +2,7 @@ package sabbat.location.core.domain.events.activity;
 
 import infrastructure.common.event.Event;
 import infrastructure.parser.SerializingException;
+import org.springframework.context.ApplicationEvent;
 import sabbat.location.core.domain.model.Activity;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import java.util.Date;
 @Table(name = "domainevents", schema = "loc")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.INTEGER)
-public class ActivityEvent implements Event<Long, Activity>, Serializable {
+public class ActivityEvent extends ApplicationEvent implements Event<Long, Activity>, Serializable {
 
 	@Id
 	@SequenceGenerator(name = "domainevents_seq", sequenceName = "loc.domainevents_id_seq",  initialValue = 1, allocationSize = 1)
@@ -40,6 +41,7 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 	 * Default constructor used by hibernate
 	 */
 	public ActivityEvent() {
+		super(null);
 	}
 
 	/**
@@ -48,6 +50,7 @@ public class ActivityEvent implements Event<Long, Activity>, Serializable {
 	 * @throws SerializingException
 	 */
 	public ActivityEvent(Activity aggregate, Date createdOn) {
+		super(aggregate);
 		this.aggregate = aggregate;
 		this.createdOn = createdOn;
 	}

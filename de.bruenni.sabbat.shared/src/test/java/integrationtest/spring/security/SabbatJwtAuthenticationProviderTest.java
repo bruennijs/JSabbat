@@ -1,14 +1,7 @@
 package integrationtest.spring.security;
 
-import builder.JJwtTokenAuthenticationBuilder;
-import builder.StormpathAuthenticationServiceBuilder;
 import identity.IAuthenticationService;
-import identity.UserJwtBuilder;
 import identity.UserRef;
-import identity.implementation.StormpathAuthenticationService;
-import infrastructure.identity.AuthenticationFailedException;
-import infrastructure.identity.ITokenAuthentication;
-import infrastructure.identity.Jwt;
 import infrastructure.identity.Token;
 import integrationtest.identity.IntegrationTestConfig;
 import org.hamcrest.core.IsCollectionContaining;
@@ -19,17 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import spring.security.SabbatJwtAuthenticationProvider;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -64,7 +53,7 @@ public class SabbatJwtAuthenticationProviderTest {
         UserRef userRef = authService.verify(token);
 
         Assert.assertEquals("https://api.stormpath.com/v1/accounts/2630FgFzIutkN2IK8H4jk2", userRef.getName());
-        Assert.assertThat(userRef.getGroups().stream().map(gref -> gref.getName()).collect(Collectors.toList())
+        Assert.assertThat(userRef.getGroups().stream().map(gref -> gref.getId()).collect(Collectors.toList())
                         , IsCollectionContaining.hasItems("https://api.stormpath.com/v1/groups/2xHJtcQf2PxAqAZuFmEiao",
                                                             "https://api.stormpath.com/v1/groups/6vTQw8pRzoRoFHZbtvOPUj"));
     }

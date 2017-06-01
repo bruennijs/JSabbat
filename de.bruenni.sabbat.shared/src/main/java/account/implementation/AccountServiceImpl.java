@@ -2,6 +2,7 @@ package account.implementation;
 
 import account.IAccountService;
 import account.User;
+import identity.GroupRef;
 import identity.UserRef;
 
 /**
@@ -19,7 +20,7 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public Iterable<User> getUsersByGroup(String groupName) {
+	public Iterable<User> getUsersByGroup(GroupRef group) {
 		return null;
 	}
 }

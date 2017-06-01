@@ -50,15 +50,6 @@ public class SabbatSharedAutoConfiguration {
         return JJwtTokenAuthenticationFactory.createWithoutSign();
     }
 
-    @Bean(name = "issueingAuthenticationService")
-    @Lazy
-    //@ConditionalOnProperty(prefix = "sabbat.shared.isAuthenticationAuthority", value = "enabled", havingValue = "true", matchIfMissing = false)
-    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    public IAuthenticationService issueingAuthenticationService(ITokenAuthentication tokenAuthentication)
-    {
-        return new StormpathAuthenticationService(tokenAuthentication);
-    }
-
     @Bean(name = "verifyingAuthenticationService")
     @Lazy
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)

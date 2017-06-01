@@ -5,6 +5,9 @@ import identity.UserRef;
 import infrastructure.common.event.Event;
 import infrastructure.common.event.IDomainEventBus;
 import infrastructure.identity.AuthenticationFailedException;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.context.event.EventListener;
 import sabbat.location.core.application.service.GroupActivityApplicationService;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.service.DefaultGroupActivityDomainService;
@@ -16,18 +19,22 @@ import java.util.List;
 /**
  * Created by bruenni on 14.03.17.
  */
-public class DefaultGroupActivityApplicationService implements GroupActivityApplicationService {
+public class DefaultGroupActivityApplicationService implements GroupActivityApplicationService, ApplicationEventPublisherAware {
 
 	private IAuthenticationService authenticationService;
 	private DefaultGroupActivityDomainService domainService;
 	private IActivityRepository activityRepository;
-	private IDomainEventBus domainEventBus;
+	private ApplicationEventPublisher applicationEventPublisher;
 
-	public DefaultGroupActivityApplicationService(IAuthenticationService authenticationService, DefaultGroupActivityDomainService domainService, IDomainEventBus domainEventBus) {
+	/**
+	 * Constructor
+	 * @param authenticationService
+	 * @param domainService
+	 */
+	public DefaultGroupActivityApplicationService(IAuthenticationService authenticationService, DefaultGroupActivityDomainService domainService) {
 		this.authenticationService = authenticationService;
 		this.domainService = domainService;
 		this.activityRepository = activityRepository;
-		this.domainEventBus = domainEventBus;
 	}
 
 	@Override
@@ -39,19 +46,16 @@ public class DefaultGroupActivityApplicationService implements GroupActivityAppl
 	/**
 	 * Domain events handling:
 	 * 1) @{@link ActivityStartedEvent}
-	 * @param iEvent
 	 */
-	@Override
-	public void OnEvent(Event iEvent) {
-		if (iEvent instanceof ActivityStartedEvent)
-		{
-			List<Event> domainEvents = domainService.onNewActivityStarted((ActivityStartedEvent) iEvent);
-			domainEvents.stream().forEach(e -> domainEventBus.publish(e));
-		}
+	@EventListener
+	public void onActivityStarted(ActivityStartedEvent activityStarted)
+	{
+		List<Event> domainEvents = domainService.onNewActivityStarted(activityStarted);
+		domainEvents.stream().forEach(e -> applicationEventPublisher.publishEvent(e));
 	}
 
 	@Override
-	public Type[] getSupportedEvents() {
-		return new Type[] {ActivityStartedEvent.class};
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 }
