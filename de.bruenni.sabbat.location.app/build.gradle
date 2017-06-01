@@ -39,9 +39,10 @@ repositories {
 
 dependencies {
     // PROJECT DEPS
-    compile project(':de.bruenni.sabbat.shared');
-    compile project(':de.bruenni.sabbat.location.core');
-    compile project(':de.bruenni.sabbat.location.infrastructure');
+    //compile project(':de.bruenni.sabbat.shared');
+    compile group: 'de.bruenni', name: 'sabbat.shared', version: '1.0.0'
+    compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'
+    compile group: 'de.bruenni', name: 'sabbat.location.infrastructure', version: '1.0.0'
 
     // EXTERNAL DEPS
     compile group: 'org.springframework', name: 'spring-context', version: '4.2.5.RELEASE'
