@@ -45,6 +45,6 @@ public class LocationCoreConfiguration {
         @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
         public IActivityApplicationService activityApplicationService(IActivityRepository activityRepository)
         {
-                return new DefaultActivityApplicationService(activityRepository, this.authenticationService, this.domainEventBus);
+                return new DefaultActivityApplicationService(activityRepository, this.authenticationService);
         }
 }
