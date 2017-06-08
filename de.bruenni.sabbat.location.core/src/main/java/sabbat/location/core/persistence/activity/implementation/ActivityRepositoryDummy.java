@@ -7,14 +7,21 @@ import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by bruenni on 10.10.16.
  */
 public class ActivityRepositoryDummy implements IActivityRepository {
+
     @Override
-    public Iterable<Activity> findByUserIds(String[] associatedUserIds) throws Exception {
-        throw new Exception("not implemented");
+    public Iterable<Activity> findByUserIds(Iterable<String> associatedUserIds) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Iterable<Activity> findActiveActivitiesByUserIds(Iterable<String> userIds) {
+        return null;
     }
 
     @Override

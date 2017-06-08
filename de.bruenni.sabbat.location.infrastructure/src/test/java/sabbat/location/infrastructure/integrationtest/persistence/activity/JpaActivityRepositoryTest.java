@@ -31,7 +31,9 @@ import sabbat.location.infrastructure.persistence.TransactionScope;
 import test.matcher.LambdaMatcher;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -179,6 +181,62 @@ public class JpaActivityRepositoryTest {
 
 		Assert.assertThat(activityRelationCreatedEvents, Matchers.contains(
 			LambdaMatcher.<ActivityRelationCreatedEvent>isMatching(e -> e.getAttributes().getRelatedActivityId().equals(a2Tmp.getId()), "event relates to activity2 id")));
+	}
+
+	@Test
+	public void when_find_by_userd_id_expect_all_activities_of_multiple_users_are_returned() throws Exception {
+		String userId1 = "1";
+		String userId2 = "2";
+		String useridNotPartOfSet = "3";
+
+		Activity activity1 = new ActivityBuilder().withUserId(userId1).build();
+		Activity activity2 = new ActivityBuilder().withUserId(userId2).build();
+		Activity activityNotIn1 = new ActivityBuilder().withUserId(useridNotPartOfSet).build();
+
+		activity1 = activityRepository.save(activity1);
+		activity2 = activityRepository.save(activity2);
+		activityNotIn1 = activityRepository.save(activityNotIn1);
+
+		Iterable<Activity> activities = activityRepository.findByUserIds(Arrays.asList(userId1, userId2));
+
+		Assert.assertThat(activities, Matchers.contains(IsEqual.equalTo(activity1), IsEqual.equalTo(activity2)));
+		//Assert.assertThat(activities, Matchers.hasItem(IsEqual.equalTo(activity1)));
+		//Assert.assertThat(activities, Matchers.hasItem(IsEqual.equalTo(activity2)));
+	}
+
+	@Test
+	public void when_find_active_activities_by_user_id_list_in_set_of_started_activties_not_in_parameter_set() throws Exception {
+		Activity activityInAndStarted = new ActivityBuilder().build();
+		Activity activityInAndNotStarted = new ActivityBuilder().withUserId(activityInAndStarted.getUserId()).build();
+		Activity activityNotInAndStarted = new ActivityBuilder().build();
+
+		activityInAndStarted.start();
+		activityNotInAndStarted.start();
+
+		activityInAndStarted = activityRepository.save(activityInAndStarted);
+		activityInAndNotStarted = activityRepository.save(activityInAndNotStarted);
+		activityNotInAndStarted = activityRepository.save(activityNotInAndStarted);
+
+		Iterable<Activity> activities = activityRepository.findActiveActivitiesByUserIds(Arrays.asList(activityInAndStarted.getUserId()));
+
+		Assert.assertThat(activities, Matchers.contains(IsEqual.equalTo(activityInAndStarted)));
+	}
+
+	@Test
+	public void when_find_active_activities_by_user_id_list_in_set_of_started_and_stopped_activities_in_set_of_parameter_list() throws Exception {
+		Activity activityInAndStarted = new ActivityBuilder().build();
+		Activity activityInAndStopped = new ActivityBuilder().withUserId(activityInAndStarted.getUserId()).build();
+
+		activityInAndStarted.start();
+		activityInAndStopped.start();
+		activityInAndStopped.stop();
+
+		activityInAndStarted = activityRepository.save(activityInAndStarted);
+		activityRepository.save(activityInAndStopped);
+
+		Iterable<Activity> activities = activityRepository.findActiveActivitiesByUserIds(Arrays.asList(activityInAndStarted.getUserId()));
+
+		Assert.assertThat(activities, Matchers.contains(IsEqual.equalTo(activityInAndStarted)));
 	}
 
 	private IActivityRepository getRepo() {

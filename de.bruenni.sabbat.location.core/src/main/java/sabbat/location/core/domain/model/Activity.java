@@ -209,9 +209,11 @@ public class Activity implements Aggregate<Long, ActivityEvent>, IEventHandler {
 	public String toString() {
 		return "Activity{" +
 			"id=" + id +
+			", uuid='" + uuid + '\'' +
 			", started=" + started +
 			", finished=" + finished +
 			", title='" + title + '\'' +
+			", userId='" + userId + '\'' +
 			", relations1=" + relations1 +
 			", relations2=" + relations2 +
 			'}';

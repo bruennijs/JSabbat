@@ -6,6 +6,7 @@ import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityRelation;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by bruenni on 13.09.16.
@@ -17,7 +18,14 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
      * @param associatedUserIds
      * @return
      */
-    Iterable<Activity> findByUserIds(String[] associatedUserIds) throws Exception;
+    Iterable<Activity> findByUserIds(Iterable<String> associatedUserIds) throws Exception;
+
+    /***
+     * Finds acivity in state "Started" but not stopped yet of all given user ids.
+     * @param userIds
+     * @return
+     */
+    Iterable<Activity> findActiveActivitiesByUserIds(Iterable<String> userIds);
 
     /**
      * Inserts coordinate time series entry as composition of Activity aggregate.

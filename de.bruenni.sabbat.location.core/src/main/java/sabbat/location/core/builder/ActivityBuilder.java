@@ -12,13 +12,23 @@ import java.util.UUID;
 public class ActivityBuilder {
 
     private static Long idCounter = 1l;
+    private String userId = UUID.randomUUID().toString();
 
     public Activity build() {
-        return new Activity(getNextid(), UUID.randomUUID().toString(), "mein erstes rennen in Köln", new Date(), UUID.randomUUID().toString());
+        return new Activity(getNextid(),
+            UUID.randomUUID().toString(),
+            "mein erstes rennen in Köln",
+            new Date(),
+            userId);
     }
 
     public Long getNextid() {
         idCounter++;
         return idCounter;
+    }
+
+    public ActivityBuilder withUserId(String userId) {
+        this.userId = userId;
+        return this;
     }
 }

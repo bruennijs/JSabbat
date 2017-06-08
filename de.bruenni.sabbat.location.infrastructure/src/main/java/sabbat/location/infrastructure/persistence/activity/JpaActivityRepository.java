@@ -1,5 +1,7 @@
 package sabbat.location.infrastructure.persistence.activity;
 
+import org.hibernate.criterion.CriteriaQuery;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
@@ -9,7 +11,9 @@ import sabbat.location.infrastructure.persistence.JpaRepositoryBase;
 import sabbat.location.infrastructure.persistence.TransactionScope;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,18 +34,28 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	}
 
 	@Override
-	public Iterable<Activity> findByUserIds(String[] userIds) throws Exception {
+	public Iterable<Activity> findByUserIds(Iterable<String> userIds) throws Exception {
 
 		return new TransactionScope(getEntityManager()).run(em ->
-		{
-			Stream<Activity> activityStream = em
-				.createQuery("SELECT * FROM loc.activity as a WHERE a.userid IN {:array}")
+			em.createQuery("SELECT a FROM Activity as a WHERE a.userId IN :array", Activity.class)
 				.setParameter("array", userIds)
-				.getResultList()
-				.stream();
+				.setLockMode(LockModeType.PESSIMISTIC_READ)
+				.getResultList());
+	}
 
-			return activityStream.collect(Collectors.toList());
-		});
+	@Override
+	public Iterable<Activity> findActiveActivitiesByUserIds(Iterable<String> userIds) {
+		return new TransactionScope(getEntityManager()).run(em -> em.createQuery(
+			"SELECT a FROM Activity as a" +
+			"WHERE a.userId IN :userIds " +
+				" AND " +
+				"  (SELECT TYPE(de), MAX(de.createdOn)" +
+				"	FROM a.domainevents as de " +
+				"	WHERE TYPE(de) IN (ActivityStartedEvent, ActivityStoppedEvent) " +
+				"	GROUP BY TYPE(de)" +
+				"	HAVING createdOnMax = MAX(createdOn)) = TYPE(ActivityStartedEvent)", Activity.class)
+			.setParameter("userIds", userIds)
+			.getResultList());
 	}
 
 	@Override

@@ -99,6 +99,17 @@ where id = 79;
 select ac.id, de.dtype as dt from loc.activity as ac
 inner join loc.domainevents as de ON de.aggregateid = ac.id
 
-select * from loc.domainevents;
+select aggregateid, Count(dtype) as "count", MAX(dtype) from loc.domainevents
+GROUP BY aggregateid
+order by "count" DESC;
+
+select a."id",
+de.id as "deId",
+de.dtype as "de.dtype",
+de2.dtype as "de2.dtype"
+from loc.activity as a
+INNER JOIN loc.domainevents as de ON de.aggregateid = a."id"
+INNER JOIN loc.domainevents as de2 ON de.dtype = 2 AND de.created > de2.created;
+
 select * from loc.activity;
 select * from loc.activityrelation;
