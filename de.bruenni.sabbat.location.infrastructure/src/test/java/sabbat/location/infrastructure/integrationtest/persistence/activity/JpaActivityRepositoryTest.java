@@ -33,6 +33,7 @@ import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -183,9 +184,9 @@ public class JpaActivityRepositoryTest {
 
 	@Test
 	public void when_find_by_userd_id_expect_all_activities_of_multiple_users_are_returned() throws Exception {
-		String userId1 = "1";
-		String userId2 = "2";
-		String useridNotPartOfSet = "3";
+		String userId1 = UUID.randomUUID().toString();
+		String userId2 = UUID.randomUUID().toString();
+		String useridNotPartOfSet = UUID.randomUUID().toString();
 
 		Activity activity1 = new ActivityBuilder().withUserId(userId1).build();
 		Activity activity2 = new ActivityBuilder().withUserId(userId2).build();
