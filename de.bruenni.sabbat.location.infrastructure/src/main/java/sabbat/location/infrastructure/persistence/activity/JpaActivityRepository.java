@@ -46,14 +46,10 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	@Override
 	public Iterable<Activity> findActiveActivitiesByUserIds(Iterable<String> userIds) {
 		return new TransactionScope(getEntityManager()).run(em -> em.createQuery(
-			"SELECT a FROM Activity as a" +
-			"WHERE a.userId IN :userIds " +
-				" AND " +
-				"  (SELECT TYPE(de), MAX(de.createdOn)" +
-				"	FROM a.domainevents as de " +
-				"	WHERE TYPE(de) IN (ActivityStartedEvent, ActivityStoppedEvent) " +
-				"	GROUP BY TYPE(de)" +
-				"	HAVING createdOnMax = MAX(createdOn)) = TYPE(ActivityStartedEvent)", Activity.class)
+			"SELECT a FROM Activity as a " +
+					"JOIN      a.domainEvents as  de ON TYPE(de)  = ActivityStartedEvent " +
+					"LEFT JOIN a.domainEvents as de2 ON TYPE(de2) = ActivityStoppedEvent AND de.createdOn < de2.createdOn " +
+					"WHERE a.userId IN :userIds AND de2.id IS NULL", Activity.class)
 			.setParameter("userIds", userIds)
 			.getResultList());
 	}

@@ -13,8 +13,8 @@
 
         <class>sabbat.location.core.domain.model.Activity</class>
         <class>sabbat.location.core.domain.model.ActivityRelation</class>
-        <!--<clsabbat.location.core.domain.events.activity.ActivityEventvent</class>-->
         <class>sabbat.location.core.domain.events.activity.ActivityStartedEvent</class>
+        <class>sabbat.location.core.domain.events.activity.ActivityStoppedEvent</class>
         <class>sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent</class>
         <class>sabbat.location.core.domain.events.activity.ActivityRelationUpdatedEvent</class>
         <class>sabbat.location.core.domain.events.activity.NewDistanceEvent</class>

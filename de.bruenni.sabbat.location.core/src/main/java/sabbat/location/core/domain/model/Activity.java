@@ -62,7 +62,7 @@ public class Activity implements Aggregate<Long, ActivityEvent>, IEventHandler {
 	@OneToMany(cascade = {CascadeType.ALL},
 				mappedBy = "aggregate",
 		       orphanRemoval = true)
-	private Set<ActivityEvent> domainEvents = new java.util.HashSet<>();
+	private List<ActivityEvent> domainEvents = Lists.newArrayList();
 
 	/**
 	 * Constructor
@@ -145,16 +145,28 @@ public class Activity implements Aggregate<Long, ActivityEvent>, IEventHandler {
 	 * @return
 	 */
 	public ActivityStartedEvent start() throws SerializingException {
-		ActivityStartedEvent domainEvent = new ActivityStartedEvent(this.getStarted(), this);
+
+		Instant now = Instant.now(Clock.systemUTC());
+
+		return start(now);
+	}
+
+
+	public ActivityStartedEvent start(Instant timestamp) {
+		ActivityStartedEvent domainEvent = new ActivityStartedEvent(Date.from(timestamp), this);
 		this.domainEvents.add(domainEvent);
 		return domainEvent;
 	}
-
 
 	public ActivityEvent stop() {
 
 		Instant now = Instant.now(Clock.systemUTC());
 
+		return stop(now);
+	}
+
+
+	public ActivityEvent stop(Instant now) {
 		ActivityEvent domainEvent = new ActivityStoppedEvent(Date.from(now), this);
 		this.domainEvents.add(domainEvent);
 		return domainEvent;
@@ -167,7 +179,6 @@ public class Activity implements Aggregate<Long, ActivityEvent>, IEventHandler {
     public List<ActivityRelation> getRelations() {
         return Stream.concat(relations1.stream(), relations2.stream()).collect(Collectors.toList());
     }
-
 
 	/**
 	 * Gets all related activities except this instance.

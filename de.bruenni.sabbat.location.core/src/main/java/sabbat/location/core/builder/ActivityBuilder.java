@@ -13,11 +13,12 @@ public class ActivityBuilder {
 
     private static Long idCounter = 1l;
     private String userId = UUID.randomUUID().toString();
+    private String title = "RuK 2017";
 
     public Activity build() {
         return new Activity(getNextid(),
             UUID.randomUUID().toString(),
-            "mein erstes rennen in Köln",
+            title,
             new Date(),
             userId);
     }
@@ -29,6 +30,11 @@ public class ActivityBuilder {
 
     public ActivityBuilder withUserId(String userId) {
         this.userId = userId;
+        return this;
+    }
+
+    public ActivityBuilder withTitle(String value) {
+        this.title = value;
         return this;
     }
 }

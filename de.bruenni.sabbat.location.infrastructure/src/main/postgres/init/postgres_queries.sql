@@ -84,8 +84,7 @@ select ac."id",
 ac.title,
 ac.started,
 de.DTYPE  from loc.activity as ac
-LEFT OUTER join loc.domainevents as de ON de.aggregateid = ac.id
-where de.DTYPE is null;
+inner join loc.domainevents as de ON de.aggregateid = ac.id
 
 --select activitis started but not stopped yet to react to activitystartedevent and find relating activities in the group
 
@@ -96,20 +95,57 @@ UPDATE loc.domainevents
 SET aggregateid = 160
 where id = 79;
 
-select ac.id, de.dtype as dt from loc.activity as ac
+select ac.id, de.dtype as dt, ac.started from loc.activity as ac
 inner join loc.domainevents as de ON de.aggregateid = ac.id
+ORDER BY ac.started DESC;
 
-select aggregateid, Count(dtype) as "count", MAX(dtype) from loc.domainevents
+select aggregateid, MAX(created), Count(dtype) as "count", MAX(dtype) from loc.domainevents
 GROUP BY aggregateid
 order by "count" DESC;
 
-select a."id",
+select a.id,
+a.title,
+de.created,
 de.id as "deId",
 de.dtype as "de.dtype",
+de2.id as "de2Id",
 de2.dtype as "de2.dtype"
 from loc.activity as a
-INNER JOIN loc.domainevents as de ON de.aggregateid = a."id"
-INNER JOIN loc.domainevents as de2 ON de.dtype = 2 AND de.created > de2.created;
+INNER JOIN loc.domainevents as de ON de.aggregateid = a.id AND de.dtype = 1
+LEFT JOIN loc.domainevents as de2 ON de2.aggregateid = a.id AND de2.dtype = 5 AND de.created < de2.created    -- find all stooped activities and use the complementary set
+where de2.id IS NULL
+ORDER BY a.started DESC;
+
+select a.id,
+a.title,
+de.created,
+de.id as "deId",
+de.dtype as "de.dtype"
+from loc.activity as a
+INNER JOIN loc.domainevents as de ON de.aggregateid = a.id
+--where de2.id IS NULL
+ORDER BY a.started DESC;
+
+select a.id,
+a.title,
+de.created,
+de.id as "deId",
+de.dtype as "de.dtype",
+de2.id as "de2Id",
+de2.dtype as "de2.dtype"
+from loc.activity as a
+INNER JOIN loc.domainevents as de ON de.aggregateid = a.id AND de.dtype = 1
+LEFT JOIN loc.domainevents as de2 ON de2.aggregateid = a.id AND de2.dtype = 5-- find all stooped activities and use the complementary set
+--where de2.id IS NULL
+ORDER BY a.started DESC;
+
+
+SELECT * FROM loc.activity as a " +
+					"WHERE a.aggregateid = 461 " +
+					" AND " +
+					"  (SELECT dtype" +
+					"	FROM a.domainEvents as de " +
+					"	WHERE TYPE(de) IN (ActivityStartedEvent, ActivityStoppedEvent) AND de.createdOn = MAX(de.createdOn)
 
 select * from loc.activity;
 select * from loc.activityrelation;

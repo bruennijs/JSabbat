@@ -3,7 +3,6 @@ package sabbat.location.infrastructure.integrationtest.persistence.activity;
 import com.google.common.collect.Lists;
 import infrastructure.common.event.Event;
 import infrastructure.util.IterableUtils;
-import infrastructure.util.Tuple2;
 import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.hamcrest.core.IsEqual;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.StreamUtils;
 import sabbat.location.core.builder.ActivityBuilder;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
@@ -27,15 +25,15 @@ import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
-import sabbat.location.infrastructure.persistence.TransactionScope;
 import test.matcher.LambdaMatcher;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.TemporalAmount;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by bruenni on 17.03.17.
@@ -224,15 +222,35 @@ public class JpaActivityRepositoryTest {
 
 	@Test
 	public void when_find_active_activities_by_user_id_list_in_set_of_started_and_stopped_activities_in_set_of_parameter_list() throws Exception {
-		Activity activityInAndStarted = new ActivityBuilder().build();
-		Activity activityInAndStopped = new ActivityBuilder().withUserId(activityInAndStarted.getUserId()).build();
+		Activity activityInAndStarted = new ActivityBuilder().withTitle("startedAndNotStoppedYet").build();
+		Activity activityInAndStopped = new ActivityBuilder()
+			.withUserId(activityInAndStarted.getUserId())
+			.withTitle("stoppedactivity")
+			.build();
 
 		activityInAndStarted.start();
 		activityInAndStopped.start();
-		activityInAndStopped.stop();
+		activityInAndStopped.stop(activityInAndStarted.getStarted().toInstant().plus(Duration.ofMinutes(5)));
 
 		activityInAndStarted = activityRepository.save(activityInAndStarted);
 		activityRepository.save(activityInAndStopped);
+
+		Iterable<Activity> activities = activityRepository.findActiveActivitiesByUserIds(Arrays.asList(activityInAndStarted.getUserId()));
+
+		Assert.assertThat(activities, Matchers.contains(IsEqual.equalTo(activityInAndStarted)));
+	}
+
+	@Test
+	public void when_find_active_activities_by_user_id_list_where_activity_was_started_and_stopped_multiple_times() throws Exception {
+		Activity activityInAndStarted = new ActivityBuilder().withTitle("startedAndStoppedMultipleTimesNotStoppedYet").build();
+
+		Instant now = Instant.now(Clock.systemUTC());
+
+		activityInAndStarted.start();
+		activityInAndStarted.stop(now.plus(Duration.ofMinutes(1)));
+		activityInAndStarted.start(now.plus(Duration.ofMinutes(2)));
+
+		activityInAndStarted = activityRepository.save(activityInAndStarted);
 
 		Iterable<Activity> activities = activityRepository.findActiveActivitiesByUserIds(Arrays.asList(activityInAndStarted.getUserId()));
 
