@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All in de.bruenni.sabbat.location.core_test" type="JUnit" factoryName="JUnit" singleton="true" show_console_on_std_out="true" show_console_on_std_err="true" nameIsGenerated="true">
+  <configuration default="false" name="All in de.bruenni.sabbat.location.core_test" type="JUnit" factoryName="JUnit" singleton="false" show_console_on_std_out="true" show_console_on_std_err="true" nameIsGenerated="true">
     <output_file path="/var/log/messages/location.core.log" />
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <module name="de.bruenni.sabbat.location.core_test" />

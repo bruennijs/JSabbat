@@ -72,3 +72,4 @@ fabric.properties
 hs_err_pid*
 
 
+/de.bruenni.sabbat.shared.okta/src/main/resources/application-testokta.properties

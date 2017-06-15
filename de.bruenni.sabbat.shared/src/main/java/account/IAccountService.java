@@ -13,6 +13,7 @@ public interface IAccountService {
      * @param userId
      * @return null if not existing.
      */
+
     User getUserById(String userId);
 
     /**

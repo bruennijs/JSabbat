@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @Configuration
 @Profile("test")
-@ActiveProfiles(value = "test")
+//@ActiveProfiles(value = "test")
 /*@SpringBootApplication(exclude =
         {
                 CassandraAutoConfiguration.class,

@@ -4,18 +4,20 @@ import account.IAccountService;
 import account.User;
 import identity.GroupRef;
 import identity.UserRef;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * Created by bruenni on 16.03.17.
  */
-public class DefaultAccountService implements IAccountService {
+public class StormpathAccountService implements IAccountService {
+	@Cacheable()
 	@Override
 	public User getUserById(String userId) {
 		return null;
 	}
 
 	@Override
-	public User getUserByRef(UserRef uderRef) {
+	public User getUserByRef(UserRef userRef) {
 		return null;
 	}
 

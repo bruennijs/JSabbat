@@ -40,7 +40,6 @@ import java.util.*;
  * Created by bruenni on 14.07.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Profile("test")
 @ActiveProfiles(value = "test")
 @SpringApplicationConfiguration(classes = { SystemTestConfig.class })
 public class MapMyTracksApiIntegrationTest {

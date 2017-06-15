@@ -19,6 +19,11 @@ public class DefaultGroupActivityDomainService implements GroupActivityDomainSer
 	private IActivityRepository activityRepository;
 	private IAccountService accountService;
 
+	/**
+	 * Constructor.
+	 * @param activityRepository
+	 * @param accountService
+	 */
 	public DefaultGroupActivityDomainService(IActivityRepository activityRepository, IAccountService accountService) {
 		this.activityRepository = activityRepository;
 		this.accountService = accountService;

@@ -52,7 +52,8 @@ public class SabbatJwtAuthenticationProviderTest {
 
         UserRef userRef = authService.verify(token);
 
-        Assert.assertEquals("https://api.stormpath.com/v1/accounts/2630FgFzIutkN2IK8H4jk2", userRef.getName());
+        Assert.assertEquals("https://api.stormpath.com/v1/accounts/2630FgFzIutkN2IK8H4jk2", userRef.getId());
+        Assert.assertEquals("test", userRef.getName());
         Assert.assertThat(userRef.getGroups().stream().map(gref -> gref.getId()).collect(Collectors.toList())
                         , IsCollectionContaining.hasItems("https://api.stormpath.com/v1/groups/2xHJtcQf2PxAqAZuFmEiao",
                                                             "https://api.stormpath.com/v1/groups/6vTQw8pRzoRoFHZbtvOPUj"));

@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @Configuration
 @Profile("test")
-@ActiveProfiles(value = "test")
+//@ActiveProfiles(value = "test")
 //@Import(value = UnitTestBaseConfig.class)
 //@PropertySource("classpath:test/application-test.properties")
 @ImportResource("classpath:test/spring-api-gateway-test.xml")
