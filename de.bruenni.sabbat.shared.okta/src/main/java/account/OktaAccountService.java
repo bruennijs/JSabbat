@@ -28,9 +28,9 @@ public class OktaAccountService implements IAccountService {
 	 * @return user instance.
 	 */
 	public User getUserById(String userId) {
-		com.okta.sdk.resource.user.User oktaUser = StreamSupport.stream(client.listUsers().spliterator(), false).filter(u -> u.getId().equals(userId)).findFirst().get();
+		//com.okta.sdk.resource.user.User oktaUser = StreamSupport.stream(client.listUsers().spliterator(), false).filter(u -> u.getId().equals(userId)).findFirst().get();
 
-		//com.okta.sdk.resource.user.User oktaUser = client.getUser(userId);
+		com.okta.sdk.resource.user.User oktaUser = client.getUser(userId);
 
 		GroupList groups = oktaUser.listGroups();
 
