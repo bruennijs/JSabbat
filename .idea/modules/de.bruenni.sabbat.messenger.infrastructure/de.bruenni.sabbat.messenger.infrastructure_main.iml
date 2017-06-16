@@ -10,32 +10,31 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: io.reactivex:rxjava:1.1.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.3.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.3.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-commons:1.12.1.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:infrastructure.common:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:sabbat.messenger.core:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.3.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.3.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-expression:4.3.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.19" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.19" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-web:4.3.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-web:4.2.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-all:1.3" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.3" level="project" />
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt:0.7.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.statemachine:spring-statemachine-core:1.1.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.3" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-tx:4.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-messaging:4.2.4.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.2.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.2.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.2.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.2.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-expression:4.2.8.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.2" level="project" />
   </component>

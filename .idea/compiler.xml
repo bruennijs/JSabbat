@@ -28,7 +28,7 @@
       <module name="de.bruenni.sabbat.shared.okta" target="1.8" />
       <module name="de.bruenni.sabbat.shared_main" target="1.8" />
       <module name="de.bruenni.sabbat.shared_test" target="1.8" />
-      <module name="sabbat.location.cep" target="1.5" />
+      <module name="sabbat.location.cep" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

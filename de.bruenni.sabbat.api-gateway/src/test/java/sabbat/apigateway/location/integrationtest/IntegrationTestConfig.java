@@ -10,7 +10,6 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @Configuration
 @Profile("test")
-@ActiveProfiles(value = "test")
 //@PropertySource("classpath:test/application-test.properties")
 @ImportResource(locations = {"classpath:test/spring-api-gateway-test.xml"})
 public class IntegrationTestConfig {
