@@ -41,6 +41,7 @@ public class OktaApiConfiguration {
 // in pre-defined locations.
 		return builder
 			.setOrgUrl(url)
+			.setConnectionTimeout(30000)
 			.setClientCredentials(clientCredentials).build();
 	}
 }
