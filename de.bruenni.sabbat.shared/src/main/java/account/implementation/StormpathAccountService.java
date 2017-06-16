@@ -6,6 +6,8 @@ import identity.GroupRef;
 import identity.UserRef;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
  * Created by bruenni on 16.03.17.
  */
@@ -22,7 +24,7 @@ public class StormpathAccountService implements IAccountService {
 	}
 
 	@Override
-	public Iterable<User> getUsersByGroup(GroupRef group) {
+	public List<UserRef> getUsersByGroup(GroupRef group) {
 		return null;
 	}
 }

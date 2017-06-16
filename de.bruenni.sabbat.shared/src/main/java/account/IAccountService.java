@@ -3,6 +3,8 @@ package account;
 import identity.GroupRef;
 import identity.UserRef;
 
+import java.util.List;
+
 /**
  * Created by bruenni on 15.10.16.
  */
@@ -28,5 +30,5 @@ public interface IAccountService {
      * @param group group reference to get users for
      * @return
      */
-    Iterable<User> getUsersByGroup(GroupRef group);
+    List<UserRef> getUsersByGroup(GroupRef group);
 }
