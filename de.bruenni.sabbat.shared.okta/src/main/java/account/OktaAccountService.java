@@ -6,6 +6,8 @@ import com.okta.sdk.resource.group.Group;
 import com.okta.sdk.resource.user.UserProfile;
 import identity.GroupRef;
 import identity.UserRef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +18,8 @@ import java.util.stream.StreamSupport;
  * Created by bruenni on 15.06.17.
  */
 public class OktaAccountService implements IAccountService {
+
+	private static Logger log = LoggerFactory.getLogger(OktaAccountService.class);
 
 	private Client client;
 
@@ -54,6 +58,9 @@ public class OktaAccountService implements IAccountService {
 	 */
 	public List<UserRef> getUsersByGroup(GroupRef group) {
 		Group oktaGroup = client.getGroup(group.getId());
+
+		//log.debug("GROUP: " + oktaGroup.getId());
+
 		return StreamSupport.stream(oktaGroup.listUsers().spliterator(), false).map(og -> toUserRef(og, og.listGroups())).collect(Collectors.toList());
 	}
 
