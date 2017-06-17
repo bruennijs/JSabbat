@@ -1,6 +1,7 @@
 package account;
 
 import identity.GroupRef;
+import identity.UserRef;
 import jdk.nashorn.internal.runtime.URIUtils;
 
 import java.net.URI;
@@ -10,13 +11,14 @@ import java.util.List;
 /**
  * Created by bruenni on 15.10.16.
  */
-public class User {
+public class User extends UserRef {
     String id;
     String name;
     String email;
     List<GroupRef> groups;
 
     public User(String id, String name, String email, List<GroupRef> groups) {
+        super(id, name, groups);
         this.id = id;
         this.name = name;
         this.email = email;

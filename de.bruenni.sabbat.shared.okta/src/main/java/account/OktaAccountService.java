@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -37,9 +38,14 @@ public class OktaAccountService implements IAccountService {
 
 		com.okta.sdk.resource.user.User oktaUser = client.getUser(userId);
 
-		GroupList groups = oktaUser.listGroups();
+		OktaUserConverter<User> converter = new OktaUserConverter<>((u, g) ->
+		{
+			UserProfile userProfile = oktaUser.getProfile();
+			return new User(u.getId(), userProfile.getLogin(), userProfile.getEmail(), g);
+		});
 
-		return toUser(oktaUser, groups);
+
+		return converter.convert(oktaUser);
 	}
 
 	/**
@@ -60,25 +66,13 @@ public class OktaAccountService implements IAccountService {
 		Group oktaGroup = client.getGroup(group.getId());
 
 		//log.debug("GROUP: " + oktaGroup.getId());
+		OktaUserConverter<UserRef> converter = new OktaUserConverter<>((u, g) ->
+		{
+			UserProfile userProfile = u.getProfile();
+			return new UserRef(u.getId(), userProfile.getLogin(), g);
+		});
 
-		return StreamSupport.stream(oktaGroup.listUsers().spliterator(), false).map(og -> toUserRef(og, og.listGroups())).collect(Collectors.toList());
-	}
 
-	private User toUser(com.okta.sdk.resource.user.User oktaUser, GroupList groups) {
-
-		Stream<com.okta.sdk.resource.group.Group> groupStream = StreamSupport.stream(groups.spliterator(), false);
-
-		UserProfile userProfile = oktaUser.getProfile();
-		return new User(oktaUser.getId(), userProfile.getLogin(), userProfile.getEmail(), groupStream.map(g -> toGroupRef(g)).collect(Collectors.toList()));
-	}
-
-	private UserRef toUserRef(com.okta.sdk.resource.user.User oktaUser, GroupList groups) {
-		Stream<com.okta.sdk.resource.group.Group> groupStream = StreamSupport.stream(groups.spliterator(), false);
-
-		return new UserRef(oktaUser.getId(), oktaUser.getProfile().getLogin(), groupStream.map(g -> toGroupRef(g)).collect(Collectors.toList()));
-	}
-
-	private GroupRef toGroupRef(com.okta.sdk.resource.group.Group group) {
-		return new GroupRef(group.getId());
+		return StreamSupport.stream(oktaGroup.listUsers().spliterator(), false).map(oktaUser -> converter.convert(oktaUser)).collect(Collectors.toList());
 	}
 }
