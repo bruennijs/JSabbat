@@ -8,6 +8,7 @@ import identity.GroupRef;
 import identity.UserRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.function.Function;
@@ -33,6 +34,7 @@ public class OktaAccountService implements IAccountService {
 	 * @param userId
 	 * @return user instance.
 	 */
+	@Cacheable(cacheNames = "users", cacheManager = "defaultCacheManager", key = "#userId")
 	public User getUserById(String userId) {
 		//com.okta.sdk.resource.user.User oktaUser = StreamSupport.stream(client.listUsers().spliterator(), false).filter(u -> u.getId().equals(userId)).findFirst().get();
 
