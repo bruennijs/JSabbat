@@ -34,7 +34,7 @@ public class OktaAccountService implements IAccountService {
 	 * @param userId
 	 * @return user instance.
 	 */
-	@Cacheable(cacheNames = "users", cacheManager = "defaultCacheManager", key = "#userId")
+	@Cacheable(cacheNames = "users", cacheManager = "cacheManager", key = "#userId")
 	public User getUserById(String userId) {
 		//com.okta.sdk.resource.user.User oktaUser = StreamSupport.stream(client.listUsers().spliterator(), false).filter(u -> u.getId().equals(userId)).findFirst().get();
 
