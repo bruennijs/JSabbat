@@ -37,7 +37,7 @@ public class OktaAccountServiceTest {
 	public IAccountService accountService;
 
 	private static String userId = "00uau41fdzjgnUYSt0h7";
-	private String GROUP_ID = "00gau3v9ge9TFTTbq0h7";
+	private String GROUP_ID = "00gaujhs4dquEIAUX0h7";
 
 	@org.junit.Test
 	public void getUserById_expect_properties_correct() throws Exception {
@@ -48,7 +48,7 @@ public class OktaAccountServiceTest {
 
 		Assert.assertThat(userById.getId(), IsEqual.equalTo("00uau41fdzjgnUYSt0h7"));
 		Assert.assertThat(userById.getName(), IsEqual.equalTo("user@test.de"));
-		Assert.assertThat(userById.getEmail(), IsEqual.equalTo("user@test.de"));
+		Assert.assertThat(userById.getEmail(), IsEqual.equalTo("testemailaddress@mail.com"));
 
 		//client.listUsers();
 	}

@@ -64,6 +64,9 @@ public class OktaAccountService implements IAccountService {
 	 * @param group group reference to get users for
 	 * @return list of users of that group.
 	 */
+	@Cacheable(cacheNames = "groups",
+		key = "#group.id",
+		cacheManager = "cacheManager")
 	public List<UserRef> getUsersByGroup(GroupRef group) {
 		Group oktaGroup = client.getGroup(group.getId());
 
