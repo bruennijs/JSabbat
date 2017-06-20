@@ -27,14 +27,14 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfiguration {
 
-//	@Value("${spring.cache.cache-names}")
-//	public String cacheNames;
+	@Value("${sabbat.shared.okta.cache.ttlInSeconds}")
+	public long ttlInSeconds;
 
 	@Bean(name = "cacheManager")
 	@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 	public CacheManager cacheManager()
 	{
-		Duration ttlDuration = Duration.ofSeconds(10);
+		Duration ttlDuration = Duration.ofSeconds(ttlInSeconds);
 
 		//Caffeine.from(CaffeineSpec.parse("some key value pair https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-caffeine"))
 		Caffeine<Object, Object> caffeineConfig = Caffeine.newBuilder()
