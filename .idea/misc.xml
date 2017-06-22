@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.cep/pom.xml" />
         <option value="$PROJECT_DIR$/de.bruenni.sabbat.shared.okta/pom.xml" />
+        <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.integrationtest/pom.xml" />
       </list>
     </option>
   </component>

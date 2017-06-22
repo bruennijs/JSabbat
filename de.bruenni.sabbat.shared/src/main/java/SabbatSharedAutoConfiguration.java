@@ -1,5 +1,3 @@
-package sabbat.shared;
-
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
 import identity.IAuthenticationService;
 import identity.implementation.JwtAuthenticationService;
@@ -8,6 +6,8 @@ import identity.implementation.StormpathFactory;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.ITokenAuthentication;
 import infrastructure.identity.implementation.JJwtTokenAuthenticationFactory;
+import notification.NotificationService;
+import notification.implementation.EmailNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -98,6 +98,13 @@ public class SabbatSharedAutoConfiguration {
     public SabbatJwtAuthenticationProvider sabbatJwtIssueingAuthenticationProvider(ITokenAuthentication verifyingTokenAuthentication, AuthenticationProvider verifyingAuthenticationProvider)
     {
         return new SabbatJwtAuthenticationProvider(verifyingTokenAuthentication, verifyingAuthenticationProvider);
+    }
+
+    @Bean(name = "emailNotificationService")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public NotificationService emailNotificationService()
+    {
+        return new EmailNotificationService();
     }
 
     @Bean

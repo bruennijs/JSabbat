@@ -22,7 +22,7 @@ import sabbat.location.core.persistence.activity.implementation.ActivityReposito
  * Created by bruenni on 25.09.16.
  */
 @Configuration
-@ConditionalOnProperty(prefix = "location.core", value = "enabled", havingValue = "true", matchIfMissing = false)
+//@ConditionalOnProperty(prefix = "location.core", value = "enabled", havingValue = "true", matchIfMissing = false)
 @PropertySource("classpath:spring/spring-location-core.properties")
 @ImportResource(locations =
         {
@@ -34,7 +34,7 @@ public class LocationCoreConfiguration {
         @Qualifier("verifyingAuthenticationService")
         public IAuthenticationService authenticationService;
 
-        @Bean(name = "activityRepository")
+        @Bean(name = "dummyActivityRepository")
         @ConditionalOnMissingBean(IActivityRepository.class)
         public IActivityRepository activityRepository()
         {
@@ -42,10 +42,11 @@ public class LocationCoreConfiguration {
         }
 
         @Autowired()
+        @Qualifier("accountService")
         public IAccountService accountService;
 
         @Bean(name = "activityApplicationService")
-        @ConditionalOnMissingBean(ActivityApplicationService.class)
+        //@ConditionalOnMissingBean(ActivityApplicationService.class)
         @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
         public ActivityApplicationService activityApplicationService(IActivityRepository activityRepository)
         {

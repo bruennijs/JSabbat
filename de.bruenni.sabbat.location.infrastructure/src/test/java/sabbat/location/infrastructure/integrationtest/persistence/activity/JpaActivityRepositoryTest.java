@@ -44,8 +44,10 @@ import java.util.stream.Collectors;
 @SpringApplicationConfiguration(classes = { IntegrationTestConfig.class })
 public class JpaActivityRepositoryTest {
 
+	public static final String JPA_ACTIVITY_REPOSITORY_QUALIFIER = "jpaActivityRepository";
+
 	@Autowired
-	@Qualifier("activityRepository")
+	@Qualifier(JPA_ACTIVITY_REPOSITORY_QUALIFIER)
 	public IActivityRepository activityRepository;
 
 	@Autowired
@@ -259,6 +261,6 @@ public class JpaActivityRepositoryTest {
 	}
 
 	private IActivityRepository getRepo() {
-		return ctx.getBean("activityRepository", IActivityRepository.class);
+		return ctx.getBean(JPA_ACTIVITY_REPOSITORY_QUALIFIER, IActivityRepository.class);
 	}
 }

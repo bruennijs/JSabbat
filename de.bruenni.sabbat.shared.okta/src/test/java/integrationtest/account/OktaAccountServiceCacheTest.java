@@ -65,8 +65,6 @@ public class OktaAccountServiceCacheTest {
 			.take(20)
 			.doOnEach(l -> {
 
-				String usersString = "";
-
 				List<UserRef> usersByGroup = accountService.getUsersByGroup(new GroupRef(GROUP_ID));
 
 				Optional<String> reduced = usersByGroup.stream()

@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="de.bruenni.sabbat.location.integrationtest" />
         <module name="de.bruenni.sabbat.shared.okta" />
         <module name="sabbat.location.cep" />
       </profile>
@@ -19,6 +20,7 @@
       <module name="de.bruenni.sabbat.location.core_test" target="1.8" />
       <module name="de.bruenni.sabbat.location.infrastructure_main" target="1.8" />
       <module name="de.bruenni.sabbat.location.infrastructure_test" target="1.8" />
+      <module name="de.bruenni.sabbat.location.integrationtest" target="1.5" />
       <module name="de.bruenni.sabbat.messenger.app_main" target="1.8" />
       <module name="de.bruenni.sabbat.messenger.app_test" target="1.8" />
       <module name="de.bruenni.sabbat.messenger.core_main" target="1.8" />
