@@ -43,7 +43,8 @@ public class OktaAccountService implements IAccountService {
 		OktaUserConverter<User> converter = new OktaUserConverter<>((u, g) ->
 		{
 			UserProfile userProfile = oktaUser.getProfile();
-			return new User(u.getId(), userProfile.getLogin(), userProfile.getEmail(), g);
+			//Object content = userProfile.getOrDefault("ActivityNotificationEnabled", null);
+			return new User(u.getId(), userProfile.getLogin(), userProfile.getEmail(), g, userProfile.entrySet());
 		});
 
 

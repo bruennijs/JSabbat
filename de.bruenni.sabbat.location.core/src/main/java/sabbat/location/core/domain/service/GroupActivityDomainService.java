@@ -15,5 +15,5 @@ public interface GroupActivityDomainService {
 	 * @param event event of the activity started.
 	 * @return events created during handling if this event.
 	 */
-	List<Event> onActivityStarted(ActivityStartedEvent event);
+	List<? extends Event> onActivityStarted(ActivityStartedEvent event);
 }

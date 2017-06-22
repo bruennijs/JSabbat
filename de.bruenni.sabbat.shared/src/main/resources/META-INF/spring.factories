@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-sabbat.shared.SabbatSharedAutoConfiguration
+sabbat.shared.SabbatSharedAutoConfiguration,\
+NotificationAutoConfiguration

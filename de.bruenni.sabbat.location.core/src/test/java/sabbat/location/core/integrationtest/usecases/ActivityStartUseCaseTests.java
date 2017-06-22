@@ -45,6 +45,7 @@ public class ActivityStartUseCaseTests {
 		//ActivityApplicationService activityApplicationService = (ActivityApplicationService) ctx.getBean("activityApplicationService", domainServiceMock);
 
 		Activity activity = this.activityApplicationService.start(new ActivityCreateCommand(Token.valueOf("some token"), "4711", "my title"));
+		Activity activity2 = this.activityApplicationService.start(new ActivityCreateCommand(Token.valueOf("some token"), "4711", "my title"));
 
 		//verify(domainServiceMock).onActivityStarted(argThat(new LambdaArgumentMatcher<>(startedEvent -> startedEvent.getAggregate().equals(activity))));
 	}

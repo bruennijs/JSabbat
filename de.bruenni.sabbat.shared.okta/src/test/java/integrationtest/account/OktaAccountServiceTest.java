@@ -9,9 +9,14 @@ import com.okta.sdk.client.ClientBuilder;
 import com.okta.sdk.client.Clients;
 import identity.GroupRef;
 import identity.UserRef;
+import infrastructure.util.StreamUtils;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsInstanceOf;
+import org.hamcrest.core.IsNot;
+import org.hamcrest.core.IsNull;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +27,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -67,5 +73,17 @@ public class OktaAccountServiceTest {
 
 		Assert.assertThat(usersByGroup.stream().map(u -> u.getId()).collect(Collectors.toList()),
 			Matchers.hasItem(IsEqual.equalTo(userId)));
+	}
+
+	@Test
+	public void ActivityNotificationEnabled_flag_must_be_set_() throws Exception {
+		User userById = accountService.getUserById(userId);
+
+		Map<String, Object> propertyMap = StreamUtils.toMap(userById.getProperties().stream());
+		Assert.assertThat("Contains key 'ActivityNotificationEnabled'", true, IsEqual.equalTo(propertyMap.containsKey("ActivityNotificationEnabled")));
+		Object value = propertyMap.get("ActivityNotificationEnabled");
+		Assert.assertThat(value, IsNull.notNullValue());
+		Assert.assertThat(value, IsInstanceOf.instanceOf(Boolean.class));
+		Assert.assertThat((Boolean)value, IsEqual.equalTo(true));
 	}
 }

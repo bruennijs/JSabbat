@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.event.EventListener;
 import sabbat.location.core.application.service.GroupActivityApplicationService;
+import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.service.GroupActivityDomainService;
 import sabbat.location.core.domain.service.implementation.DefaultGroupActivityDomainService;
@@ -54,7 +55,7 @@ public class DefaultGroupActivityApplicationService implements GroupActivityAppl
 	{
 		Log.debug("onActivityStarted [%1%]", activityStarted.toString());
 
-		List<Event> domainEvents = domainService.onActivityStarted(activityStarted);
+		List<? extends Event> domainEvents = domainService.onActivityStarted(activityStarted);
 		domainEvents.stream().forEach(e -> applicationEventPublisher.publishEvent(e));
 	}
 

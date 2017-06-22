@@ -6,8 +6,10 @@ import identity.GroupRef;
 import identity.IAuthenticationService;
 import identity.UserRef;
 import infrastructure.identity.AuthenticationFailedException;
+import notification.NotificationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import rx.Observable;
 import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.GroupActivityApplicationService;
 import sabbat.location.core.application.service.implementation.DefaultActivityApplicationService;
@@ -16,6 +18,7 @@ import sabbat.location.core.builder.AuthenticationServiceBuilder;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.service.GroupActivityDomainService;
 import sabbat.location.core.domain.service.implementation.DefaultGroupActivityDomainService;
+import sabbat.location.core.domain.service.implementation.NotificationDomainService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.util.Arrays;
@@ -52,6 +55,7 @@ public class UseCasesTestConfig {
 	{
 		IAccountService mock = mock(IAccountService.class);
 		when(mock.getUsersByGroup(org.mockito.Matchers.any(GroupRef.class))).thenReturn(Arrays.asList(new User("", "")));
+		//when(mock.getUserById(org.mockito.Matcherss.)).thenReturn();
 		return mock;
 	}
 
@@ -71,5 +75,19 @@ public class UseCasesTestConfig {
 	public GroupActivityApplicationService groupActivityApplicationService(IAuthenticationService authenticationService, GroupActivityDomainService groupActivityDomainService)
 	{
 		return new DefaultGroupActivityApplicationService(authenticationService, groupActivityDomainService);
+	}
+
+	@Bean
+	public NotificationDomainService notificationDomainService(NotificationService notificationService)
+	{
+		return new NotificationDomainService(accountService(), activityRepository(), notificationService);
+	}
+
+	@Bean
+	public NotificationService notificationService()
+	{
+		NotificationService mock = mock(NotificationService.class);
+		when(mock.notify(org.mockito.Matchers.any(User.class), org.mockito.Matchers.any(String.class))).thenReturn(Observable.empty());
+		return mock;
 	}
 }
