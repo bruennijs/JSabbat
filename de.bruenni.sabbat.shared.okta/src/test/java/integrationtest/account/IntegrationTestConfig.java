@@ -11,7 +11,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 @Configuration
 @Import( { SabbatSharedOktaAutoConfiguration.class, OktaApiConfiguration.class, CacheConfiguration.class})
-//@Profile("testokta")    // this will behave as if you crfeate a application-testokta.properties file
 public class IntegrationTestConfig {
     @Bean
     public PropertySourcesPlaceholderConfigurer propertySource()

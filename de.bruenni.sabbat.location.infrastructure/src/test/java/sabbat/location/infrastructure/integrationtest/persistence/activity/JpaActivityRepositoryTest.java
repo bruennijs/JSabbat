@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  * Created by bruenni on 17.03.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles(profiles = { "test" })
+@ActiveProfiles(profiles = { "dev" })
 @SpringApplicationConfiguration(classes = { IntegrationTestConfig.class })
 public class JpaActivityRepositoryTest {
 

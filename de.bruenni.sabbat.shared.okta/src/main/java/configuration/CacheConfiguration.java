@@ -12,9 +12,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.*;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -24,10 +23,11 @@ import java.util.concurrent.TimeUnit;
  * Created by bruenni on 15.06.17.
  */
 @Configuration
+@PropertySource({"classpath:sabbat-shared-okta.properties"})
 @EnableCaching
 public class CacheConfiguration {
 
-	@Value("${sabbat.shared.okta.cache.ttlInSeconds}")
+	@Value(value = "${sabbat.shared.okta.cache.ttlInSeconds}")
 	public long ttlInSeconds;
 
 	@Bean(name = "cacheManager")
@@ -62,6 +62,12 @@ public class CacheConfiguration {
 		caffeineCacheManager.setCaffeine(caffeineConfig);
 		caffeineCacheManager.setCacheNames(Arrays.asList("users", "groups"));
 		return caffeineCacheManager;
+	}
+
+	@Bean
+	public PropertySourcesPlaceholderConfigurer propertySource()
+	{
+		return new PropertySourcesPlaceholderConfigurer();
 	}
 
 /*	@Bean(name = "simpleCacheManager")

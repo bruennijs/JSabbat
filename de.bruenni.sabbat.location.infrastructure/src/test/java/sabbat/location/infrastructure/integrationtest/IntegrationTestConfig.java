@@ -11,7 +11,6 @@ import sabbat.location.infrastructure.persistence.activity.JpaActivityRepository
  * Created by bruenni on 13.07.16.
  */
 @Configuration
-@Profile(value = "test")
 @PropertySource(
         {
                 "classpath:sabbat-location-infrastructure.properties",

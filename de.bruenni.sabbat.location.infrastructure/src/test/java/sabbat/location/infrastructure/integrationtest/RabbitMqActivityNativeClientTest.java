@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
@@ -30,6 +31,7 @@ import java.util.concurrent.*;
  * Created by bruenni on 28.08.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@ActiveProfiles({"dev"})
 @SpringApplicationConfiguration(classes =
         {
                 IntegrationTestConfig.class,

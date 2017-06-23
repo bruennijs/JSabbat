@@ -17,10 +17,10 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 public class OktaApiConfiguration {
 
-	@Value("${okta.apitoken}")
+	@Value("${sabbat.shared.okta.apitoken}")
 	public String apiToken;
 
-	@Value("${okta.url}")
+	@Value("${sabbat.shared.okta.url}")
 	public String url;
 
 	@Bean(name = "oktaApiClient")

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * Created by bruenni on 15.06.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles({"testokta"})
+@ActiveProfiles({"dev"})
 @SpringApplicationConfiguration(classes = IntegrationTestConfig.class)
 @Ignore
 public class OktaAccountServiceCacheTest {
