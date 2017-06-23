@@ -44,7 +44,7 @@ public class OktaAccountService implements IAccountService {
 		{
 			UserProfile userProfile = oktaUser.getProfile();
 			//Object content = userProfile.getOrDefault("ActivityNotificationEnabled", null);
-			return new User(u.getId(), userProfile.getLogin(), userProfile.getEmail(), g, userProfile.entrySet());
+			return new User(u.getId(), userProfile.getLogin(), userProfile.getEmail(), g, userProfile);
 		});
 
 

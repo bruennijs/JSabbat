@@ -79,9 +79,10 @@ public class OktaAccountServiceTest {
 	public void ActivityNotificationEnabled_flag_must_be_set_() throws Exception {
 		User userById = accountService.getUserById(userId);
 
-		Map<String, Object> propertyMap = StreamUtils.toMap(userById.getProperties().stream());
-		Assert.assertThat("Contains key 'ActivityNotificationEnabled'", true, IsEqual.equalTo(propertyMap.containsKey("ActivityNotificationEnabled")));
-		Object value = propertyMap.get("ActivityNotificationEnabled");
+		Assert.assertThat("Contains key 'ActivityNotificationEnabled'",
+			true,
+			IsEqual.equalTo(userById.getProperties().containsKey("ActivityNotificationEnabled")));
+		Object value = userById.getProperties().get("ActivityNotificationEnabled");
 		Assert.assertThat(value, IsNull.notNullValue());
 		Assert.assertThat(value, IsInstanceOf.instanceOf(Boolean.class));
 		Assert.assertThat((Boolean)value, IsEqual.equalTo(true));

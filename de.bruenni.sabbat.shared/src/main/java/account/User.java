@@ -15,19 +15,33 @@ public class User extends UserRef {
     String name;
     String email;
     List<GroupRef> groups;
-    private Set<Map.Entry<String, Object>> properties;
+    private Map<String, Object> properties;
 
-
+    /**
+     * Constructor.
+     * @param id
+     * @param name
+     * @param email
+     * @param groups
+     */
     public User(String id, String name, String email, List<GroupRef> groups) {
         super(id, name, groups);
         this.id = id;
         this.name = name;
         this.email = email;
         this.groups = groups;
-        this.properties = new HashSet<>();
+        this.properties = new HashMap<>();
     }
 
-    public User(String id, String name, String email, List<GroupRef> groups, Set<Map.Entry<String, Object>> properties) {
+    /**
+     * Constructor
+     * @param id
+     * @param name
+     * @param email
+     * @param groups
+     * @param properties
+     */
+    public User(String id, String name, String email, List<GroupRef> groups, Map<String, Object> properties) {
         super(id, name, groups);
         this.id = id;
         this.name = name;
@@ -37,7 +51,7 @@ public class User extends UserRef {
     }
 
     public User(String id, String name) {
-        this(id, name, "", Arrays.asList(), new HashSet<>());
+        this(id, name, "", Arrays.asList(), new HashMap<>());
     }
 
     public String getName() {
@@ -62,7 +76,7 @@ public class User extends UserRef {
      * sepecific properties out of it.
      * @return
      */
-    public Set<Map.Entry<String, Object>> getProperties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
