@@ -5,7 +5,7 @@ import account.User;
 /**
  * Created by bruenni on 22.06.17.
  */
-public interface NotificationService {
+public interface UserNotificationService {
 	/**
 	 * Sends a notification message to the specified user
 	 */

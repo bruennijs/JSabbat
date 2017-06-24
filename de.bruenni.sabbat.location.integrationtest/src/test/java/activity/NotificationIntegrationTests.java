@@ -6,8 +6,8 @@ import infrastructure.identity.Jwt;
 import infrastructure.identity.Token;
 import notification.NotificationContent;
 import notification.NotificationMessage;
-import notification.NotificationService;
 import notification.TextNotificationContent;
+import notification.UserNotificationService;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,11 +39,11 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"dev"})
 //@SpringBootApplication()
-@SpringApplicationConfiguration(classes = GroupActivityIntegrationTestConfiguration.class)
+@SpringApplicationConfiguration(classes = NotificationIntegrationTestConfiguration.class)
 public class NotificationIntegrationTests {
 	@Autowired
-	@Qualifier("emailNotificationService")
-	public NotificationService notificationService;
+	@Qualifier("emailUserNotificationService")
+	public UserNotificationService notificationService;
 
     @Value("${sabbat.location.integrationtest.userid}")
 	private static String userId = "00uau41fdzjgnUYSt0h7";
@@ -59,6 +59,8 @@ public class NotificationIntegrationTests {
         NotificationMessage<TextNotificationContent> message = new NotificationMessage<>(user, "this is the subject", new TextNotificationContent("text content of the email [NotificationIntegrationTests]"));
 
         Observable<NotificationMessage<? extends NotificationContent>> result = notificationService.notify(message);
+
+        //Observable.interval(1, TimeUnit.SECONDS)
 
         BlockingObservable<NotificationMessage<? extends NotificationContent>> resultBlocking = result.take(1)
             .timeout(10, TimeUnit.SECONDS)

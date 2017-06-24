@@ -46,30 +46,34 @@ public class DefaultGroupActivityDomainService implements GroupActivityDomainSer
 	 * @return list of domain events created by relating activities.
 	 */
 	@Override
-	public List<? extends Event> onActivityStarted(ActivityStartedEvent event)
-	{
+	public List<? extends Event> onActivityStarted(ActivityStartedEvent event) {
 		// 0.5 get groups the user of started activity is in
-		User startedActivityUser = accountService.getUserById(event.getAggregate().getUserId());
+		User userOfStartedActivity = accountService.getUserById(event.getAggregate().getUserId());
 
 		// 1. find all users of all groups the user of the started activity is in
-		//Arrays.stream(startedActivityUser.getGroups()).map()
-		//accountService.getUsersByGroup()
-		List<UserRef> groupsUsers = startedActivityUser
+		List<UserRef> groupsUsers = userOfStartedActivity
 			.getGroupRefs()
 			.stream()
 			.flatMap(gr -> accountService.getUsersByGroup(gr).stream())    // gets all users per group
+			.distinct()    // same users can be part of multiple groups so remove duplicates
+			.filter(user -> !user.getId().equals(userOfStartedActivity.getId()))    // remove user of started activity
 			.collect(Collectors.toList());
 
-		// 2. find still active activities of the users from 1)
-		Stream<String> groupsUsersIds = StreamSupport.stream(groupsUsers.spliterator(), false)
-			.map(user -> user.getId());
+		if (groupsUsers.size() > 0) {
+			// 2. find still active activities of the users from 1)
 
-		Iterable<Activity> groupsUsersActiveActivities = activityRepository.findActiveActivitiesByUserIds(groupsUsersIds.collect(Collectors.toList()));
+			Stream<String> groupsUsersIds = StreamSupport.stream(groupsUsers.spliterator(), false)
+				.map(user -> user.getId());
 
-		// 3. relate associated activities with each other
-		Stream<ActivityEvent> domainEventStream = IterableUtils.stream(groupsUsersActiveActivities)
-			.flatMap(activity -> event.getAggregate().relateActivity(activity).stream());
+			Iterable<Activity> groupsUsersActiveActivities = activityRepository.findActiveActivitiesByUserIds(groupsUsersIds.collect(Collectors.toList()));
 
-		return domainEventStream.collect(Collectors.toList());
+			// 3. relate associated activities with each other
+			Stream<ActivityEvent> domainEventStream = IterableUtils.stream(groupsUsersActiveActivities)
+				.flatMap(activity -> event.getAggregate().relateActivity(activity).stream());
+
+			return domainEventStream.collect(Collectors.toList());
+		}
+
+		return Arrays.asList();
 	}
 }

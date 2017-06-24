@@ -25,7 +25,7 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
      * @param userIds
      * @return
      */
-    Iterable<Activity> findActiveActivitiesByUserIds(Iterable<String> userIds);
+    Iterable<Activity> findActiveActivitiesByUserIds(List<String> userIds);
 
     /**
      * Inserts coordinate time series entry as composition of Activity aggregate.

@@ -9,7 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="de.bruenni.sabbat.location.core_main" />
     <orderEntry type="library" name="Gradle: de.bruenni:sabbat.shared:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:infrastructure.common:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.3.8.RELEASE" level="project" />
@@ -77,6 +76,7 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.2" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.8.2" level="project" />
+    <orderEntry type="module" module-name="de.bruenni.sabbat.location.core_main" scope="TEST" />
   </component>
   <component name="TestModuleProperties" production-module="de.bruenni.sabbat.location.core_main" />
 </module>

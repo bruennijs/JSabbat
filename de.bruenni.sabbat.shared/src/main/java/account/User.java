@@ -11,10 +11,8 @@ import java.util.*;
  * Created by bruenni on 15.10.16.
  */
 public class User extends UserRef {
-    String id;
-    String name;
+
     String email;
-    List<GroupRef> groups;
     private Map<String, Object> properties;
 
     /**
@@ -48,21 +46,11 @@ public class User extends UserRef {
         this(id, name, "", Arrays.asList(), new HashMap<>());
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public List<GroupRef> getGroupRefs() {
-        return groups;
-    }
 
     public String getEmail() {
         return email;
     }
 
-    public String getId() {
-        return id;
-    }
 
     /**
      * Gets all properties associated with a user.
@@ -77,8 +65,8 @@ public class User extends UserRef {
     @Override
     public String toString() {
         return "User{" +
-            "id='" + id + '\'' +
-            ", name='" + name + '\'' +
+            "email='" + email + '\'' +
+            ", properties=" + properties +
             "} " + super.toString();
     }
 }

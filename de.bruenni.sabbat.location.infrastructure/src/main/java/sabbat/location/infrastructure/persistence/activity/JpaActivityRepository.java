@@ -1,7 +1,5 @@
 package sabbat.location.infrastructure.persistence.activity;
 
-import org.hibernate.criterion.CriteriaQuery;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
@@ -11,11 +9,7 @@ import sabbat.location.infrastructure.persistence.JpaRepositoryBase;
 import sabbat.location.infrastructure.persistence.TransactionScope;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by bruenni on 16.03.17.
@@ -44,7 +38,8 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	}
 
 	@Override
-	public Iterable<Activity> findActiveActivitiesByUserIds(Iterable<String> userIds) {
+	public Iterable<Activity> findActiveActivitiesByUserIds(List<String> userIds) {
+
 		return new TransactionScope(getEntityManager()).run(em -> em.createQuery(
 			"SELECT a FROM Activity as a " +
 					"JOIN      a.domainEvents as  de ON TYPE(de)  = ActivityStartedEvent " +

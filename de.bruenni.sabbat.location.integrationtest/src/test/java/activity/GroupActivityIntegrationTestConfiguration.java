@@ -4,7 +4,7 @@ import account.User;
 import infrastructure.util.Tuple2;
 import notification.NotificationContent;
 import notification.NotificationMessage;
-import notification.NotificationService;
+import notification.UserNotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -47,9 +47,9 @@ public class GroupActivityIntegrationTestConfiguration {
 
 	@Bean(name = "stubNotificationService")
 	@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-	public NotificationService notificationService()
+	public UserNotificationService notificationService()
 	{
-		return new NotificationService() {
+		return new UserNotificationService() {
 			@Override
 			public Observable<NotificationMessage<? extends NotificationContent>> notify(NotificationMessage<? extends NotificationContent> message) {
 				Log.info("[%1s]",  message);

@@ -23,6 +23,9 @@
     </option>
     <envs />
     <patterns />
-    <method />
+    <method>
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.core" vmOptions="" scriptParameters="" />
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>

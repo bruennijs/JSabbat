@@ -4,7 +4,7 @@ import account.IAccountService;
 import account.User;
 import notification.NotificationContent;
 import notification.NotificationMessage;
-import notification.NotificationService;
+import notification.UserNotificationService;
 import notification.TextNotificationContent;
 import org.springframework.context.event.EventListener;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
@@ -19,9 +19,9 @@ public class NotificationDomainService {
 
 	private IAccountService accountService;
 	private IActivityRepository activityRepository;
-	private NotificationService notificationService;
+	private UserNotificationService notificationService;
 
-	public NotificationDomainService(IAccountService accountService, IActivityRepository activityRepository, NotificationService notificationService) {
+	public NotificationDomainService(IAccountService accountService, IActivityRepository activityRepository, UserNotificationService notificationService) {
 		this.accountService = accountService;
 		this.activityRepository = activityRepository;
 		this.notificationService = notificationService;

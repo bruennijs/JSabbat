@@ -54,7 +54,7 @@ public class StormpathAuthenticationServiceTest {
         UserRef userRef = sut.verify(token);
 
         Assert.assertEquals(userName, userRef.getName());
-        List<String> actualGroupNames = userRef.getGroups().stream().map(gref -> {
+        List<String> actualGroupNames = userRef.getGroupRefs().stream().map(gref -> {
             return gref.getId();
         }).collect(Collectors.toList());
 

@@ -1,13 +1,11 @@
 package sabbat.location.core;
 
 import account.IAccountService;
-import identity.IAuthenticationService;
-import infrastructure.common.event.IDomainEventBus;
+import notification.UserNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
 import sabbat.location.core.application.service.GroupActivityApplicationService;
 import sabbat.location.core.application.service.implementation.DefaultActivityApplicationService;
@@ -15,6 +13,7 @@ import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.implementation.DefaultGroupActivityApplicationService;
 import sabbat.location.core.domain.service.GroupActivityDomainService;
 import sabbat.location.core.domain.service.implementation.DefaultGroupActivityDomainService;
+import sabbat.location.core.domain.service.implementation.NotificationDomainService;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.core.persistence.activity.implementation.ActivityRepositoryDummy;
 
@@ -30,9 +29,17 @@ import sabbat.location.core.persistence.activity.implementation.ActivityReposito
         })
 public class LocationCoreConfiguration {
 
-        @Bean(name = "dummyActivityRepository")
-        @ConditionalOnMissingBean(IActivityRepository.class)
-        public IActivityRepository activityRepository()
+        @Autowired
+        @Qualifier("activityRepository")
+        public IActivityRepository activityRepository;
+
+    @Autowired
+    @Qualifier("userNotificationService")
+    private UserNotificationService userNotificationService;
+
+    @Bean(name = "dummyActivityRepository")
+    @ConditionalOnMissingBean(IActivityRepository.class)
+    public IActivityRepository activityRepository()
         {
                 return new ActivityRepositoryDummy();
         }
@@ -53,7 +60,7 @@ public class LocationCoreConfiguration {
         @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
         public GroupActivityDomainService groupActivityDomainService()
         {
-                return new DefaultGroupActivityDomainService(this.activityRepository(), this.accountService);
+                return new DefaultGroupActivityDomainService(this.activityRepository, this.accountService);
         }
 
         @Bean(name = "groupActivityApplicationService")
@@ -61,5 +68,12 @@ public class LocationCoreConfiguration {
         public GroupActivityApplicationService groupActivityApplicationService()
         {
                 return new DefaultGroupActivityApplicationService(groupActivityDomainService());
+        }
+
+        @Bean("notificationDomainService")
+        @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+        public NotificationDomainService notificationDomainService()
+        {
+            return new NotificationDomainService(this.accountService, this.activityRepository, this.userNotificationService);
         }
 }

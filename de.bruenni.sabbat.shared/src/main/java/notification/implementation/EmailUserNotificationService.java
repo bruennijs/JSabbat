@@ -1,6 +1,5 @@
 package notification.implementation;
 
-import account.IAccountService;
 import account.User;
 import infrastructure.util.Tuple2;
 import notification.*;
@@ -15,9 +14,9 @@ import java.util.concurrent.Executor;
 /**
  * Created by bruenni on 22.06.17.
  */
-public class EmailNotificationService implements NotificationService {
+public class EmailUserNotificationService implements UserNotificationService {
 
-	private static Logger Log = LoggerFactory.getLogger(EmailNotificationService.class);
+	private static Logger Log = LoggerFactory.getLogger(EmailUserNotificationService.class);
 	private Executor executor;
 	private EmailSender sender;
 
@@ -26,7 +25,7 @@ public class EmailNotificationService implements NotificationService {
 	 * @param executor
 	 * @param sender
 	 */
-	public EmailNotificationService(Executor executor, EmailSender sender) {
+	public EmailUserNotificationService(Executor executor, EmailSender sender) {
 		this.executor = executor;
 		this.sender = sender;
 	}

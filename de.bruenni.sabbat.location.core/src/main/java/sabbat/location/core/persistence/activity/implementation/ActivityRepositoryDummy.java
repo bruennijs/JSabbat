@@ -20,7 +20,7 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
-    public Iterable<Activity> findActiveActivitiesByUserIds(Iterable<String> userIds) {
+    public Iterable<Activity> findActiveActivitiesByUserIds(List<String> userIds) {
         return null;
     }
 

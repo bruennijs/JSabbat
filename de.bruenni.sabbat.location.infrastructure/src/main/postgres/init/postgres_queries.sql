@@ -147,5 +147,5 @@ SELECT * FROM loc.activity as a " +
 					"	FROM a.domainEvents as de " +
 					"	WHERE TYPE(de) IN (ActivityStartedEvent, ActivityStoppedEvent) AND de.createdOn = MAX(de.createdOn)
 
-select * from loc.activity;
+select * from loc.activity as  a ORDER by a.started DESC;
 select * from loc.activityrelation;

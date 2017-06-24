@@ -1,20 +1,15 @@
 package configuration;
 
-import account.IAccountService;
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
 import identity.IAuthenticationService;
 import identity.implementation.JwtAuthenticationService;
-import identity.implementation.StormpathAuthenticationService;
 import identity.implementation.StormpathFactory;
-import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.ITokenAuthentication;
 import infrastructure.identity.implementation.JJwtTokenAuthenticationFactory;
 import notification.EmailSender;
-import notification.NotificationService;
-import notification.implementation.EmailNotificationService;
+import notification.UserNotificationService;
+import notification.implementation.EmailUserNotificationService;
 import notification.implementation.JavaxMailEmailSender;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -22,24 +17,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.SecurityConfigurer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import spring.security.SabbatJwtAuthenticationProvider;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.stream.Collectors;
 
 /**
  * Created by bruenni on 15.10.16.
@@ -126,11 +114,11 @@ public class SabbatSharedAutoConfiguration {
         return new JavaxMailEmailSender();
     }
 
-    @Bean(name = "emailNotificationService")
+    @Bean(name = "emailUserNotificationService")
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    public NotificationService emailNotificationService(Executor sabbatSharedThreadPoolTaskExecutor, EmailSender emailSender)
+    public UserNotificationService emailUserNotificationService(Executor sabbatSharedThreadPoolTaskExecutor, EmailSender emailSender)
     {
-        return new EmailNotificationService(sabbatSharedThreadPoolTaskExecutor, emailSender);
+        return new EmailUserNotificationService(sabbatSharedThreadPoolTaskExecutor, emailSender);
     }
 
     @Bean

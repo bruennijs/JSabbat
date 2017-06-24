@@ -42,9 +42,9 @@ public class JavaxMailEmailSender implements EmailSender {
     public void sendText(List<String> toAddresses, String subject, String text) throws Exception {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", "false");
         props.put("mail.smtp.host", hostAddress);
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.port", "25");
 
         Session session = Session.getInstance(props,
             new javax.mail.Authenticator() {

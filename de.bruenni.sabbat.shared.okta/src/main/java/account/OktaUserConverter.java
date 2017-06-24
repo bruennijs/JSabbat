@@ -18,6 +18,8 @@ import java.util.stream.StreamSupport;
  */
 class OktaUserConverter<TUser extends UserRef> implements Converter<com.okta.sdk.resource.user.User, TUser> {
 
+	public static final String GROUP_ID_EVERYONE = "00gau004jw4PlFs1J0h7";
+
 	private BiFunction<User, List<GroupRef>, ? extends TUser> converterFunction;
 
 	public OktaUserConverter(BiFunction<com.okta.sdk.resource.user.User, List<GroupRef>, ? extends TUser> converterFunction) {
@@ -27,9 +29,12 @@ class OktaUserConverter<TUser extends UserRef> implements Converter<com.okta.sdk
 	@Override
 	public TUser convert(com.okta.sdk.resource.user.User user) {
 
-		Stream<com.okta.sdk.resource.group.Group> groupStream = StreamSupport.stream(user.listGroups().spliterator(), false);
+		List<GroupRef> groupRefList = StreamSupport.stream(user.listGroups().spliterator(), false)
+			.filter(oktaGroup -> !oktaGroup.getId().equals(GROUP_ID_EVERYONE))	// in okta is every user in group 'everyone' per default , cannot be changed
+			.map(OktaUserConverter::toGroupRef)
+			.collect(Collectors.toList());
 
-		return converterFunction.apply(user, groupStream.map(OktaUserConverter::toGroupRef).collect(Collectors.toList()));
+		return converterFunction.apply(user, groupRefList);
 	}
 
 	/**

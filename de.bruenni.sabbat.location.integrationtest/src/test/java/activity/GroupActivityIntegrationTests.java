@@ -18,6 +18,7 @@ import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.domain.model.Activity;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAmount;
@@ -45,7 +46,7 @@ public class GroupActivityIntegrationTests {
 	@Test
 	public void when_start_activity_expect_spring_context_fires_event_to_eventlistener_of_GroupActivityApplicationService() throws Exception {
 
-		Activity activity = this.activityApplicationService.start(new ActivityCreateCommand(createUser(), "4711", "my title"));
+		Activity activity = this.activityApplicationService.start(new ActivityCreateCommand(createUser(), String.format("%1s", Instant.now(Clock.systemUTC()).toString()), "my title"));
 		//Activity activity2 = this.activityApplicationService.start(new ActivityCreateCommand(Token.valueOf("some token"), "4711", "my title"));
 
 		//verify(domainServiceMock).onActivityStarted(argThat(new LambdaArgumentMatcher<>(startedEvent -> startedEvent.getAggregate().equals(activity))));
