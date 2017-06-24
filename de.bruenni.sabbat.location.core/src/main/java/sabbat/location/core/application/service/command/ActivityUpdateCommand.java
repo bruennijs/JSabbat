@@ -1,5 +1,6 @@
 package sabbat.location.core.application.service.command;
 
+import identity.UserRef;
 import infrastructure.identity.Token;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
  */
 public class ActivityUpdateCommand {
 
-    private Token identityToken;
+    private UserRef user;
     private String activityId;
     private List<TimeCoordinate> coordinates;
     private Optional<Integer> heartRate;
@@ -19,12 +20,12 @@ public class ActivityUpdateCommand {
     /**
      * Constructor
      */
-    public ActivityUpdateCommand(Token identityToken,
+    public ActivityUpdateCommand(UserRef user,
                                  String activityId,
                                  List<TimeCoordinate> coordinates,
                                  Optional<Integer> heartRate,
                                  Optional<Integer> cadence) {
-        this.identityToken = identityToken;
+        this.user = user;
         this.activityId = activityId;
         this.coordinates = coordinates;
         this.heartRate = heartRate;
@@ -39,15 +40,15 @@ public class ActivityUpdateCommand {
         return cadence;
     }
 
-    public Token getIdentityToken() {
-        return identityToken;
-    }
-
     public List<TimeCoordinate> getCoordinates() {
         return coordinates;
     }
 
     public String getActivityId() {
         return activityId;
+    }
+
+    public UserRef getUser() {
+        return user;
     }
 }

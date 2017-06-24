@@ -33,13 +33,10 @@ public class ActivityApplicationServiceTest {
 
         UserRef user = new UserRef("userid", "username", new ArrayList<>());
 
-        IAuthenticationService authenticationService = buildAuthenticationService(user);
-
         DefaultActivityApplicationService sut = new ActivityApplicationServiceBuilder()
-                .withAuthenticationService(authenticationService)
                 .build();
 
-        ActivityCreateCommand command = new ActivityCreateCommand(Token.valueOf("something"), UUID.randomUUID().toString(), "hello");
+        ActivityCreateCommand command = new ActivityCreateCommand(user, UUID.randomUUID().toString(), "hello");
         Activity activity = sut.start(command);
 
         Assert.assertEquals(command.getId(), activity.getUuid());
@@ -57,14 +54,11 @@ public class ActivityApplicationServiceTest {
     public void When_update_expect_ActivityCoordinates_userid_equals_userref_userid() throws Exception {
         UserRef user = new UserRef("userid", "username", new ArrayList<>());
 
-        IAuthenticationService authenticationService = buildAuthenticationService(user);
-
         TimeCoordinate timeCoordinate = new TimeCoordinate(34.2, 22.889, new Date());
 
-        ActivityUpdateCommand command = new ActivityUpdateCommand(Token.valueOf("something"), UUID.randomUUID().toString(), Arrays.asList(timeCoordinate), null, null);
+        ActivityUpdateCommand command = new ActivityUpdateCommand(user, UUID.randomUUID().toString(), Arrays.asList(timeCoordinate), null, null);
 
         DefaultActivityApplicationService sut = new ActivityApplicationServiceBuilder()
-                .withAuthenticationService(authenticationService)
                 .build();
 
         List<ActivityCoordinate> coordinateEntities = IterableUtils.stream(sut.update(command)).collect(Collectors.toList());

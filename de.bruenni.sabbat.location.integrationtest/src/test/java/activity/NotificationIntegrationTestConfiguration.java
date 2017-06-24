@@ -2,8 +2,6 @@ package activity;
 
 import account.User;
 import infrastructure.util.Tuple2;
-import notification.NotificationContent;
-import notification.NotificationMessage;
 import notification.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,17 +12,12 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import rx.Observable;
-import rx.internal.schedulers.ExecutorScheduler;
 import rx.subjects.AsyncSubject;
-import rx.subjects.Subject;
-import sabbat.location.core.LocationCoreConfiguration;
 import sabbat.location.infrastructure.AmqpClientAutoConfiguration;
 import sabbat.location.infrastructure.AmqpServiceAutoConfiguration;
 import sabbat.location.infrastructure.CassandraAutoConfiguration;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -41,22 +34,7 @@ import java.util.concurrent.TimeUnit;
 	AmqpClientAutoConfiguration.class,
 	AmqpServiceAutoConfiguration.class})
 @ComponentScan
-public class GroupActivityIntegrationTestConfiguration {
-
-	private static Logger Log = LoggerFactory.getLogger(GroupActivityIntegrationTestConfiguration.class);
-
-	@Bean(name = "stubNotificationService")
-	@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-	public NotificationService notificationService()
-	{
-		return new NotificationService() {
-			@Override
-			public Observable<NotificationMessage<? extends NotificationContent>> notify(NotificationMessage<? extends NotificationContent> message) {
-				Log.info("[%1s]",  message);
-				return Observable.empty();
-			}
-		};
-	}
+public class NotificationIntegrationTestConfiguration {
 
 	@Bean
 	public PropertySourcesPlaceholderConfigurer propertySource()

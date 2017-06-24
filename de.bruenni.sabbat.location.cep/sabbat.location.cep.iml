@@ -1044,7 +1044,6 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-cassandra:1.4.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-cql:1.4.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.2.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.2.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.12.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-dse:2.1.7.1" level="project" />
     <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-core:2.1.7.1" level="project" />

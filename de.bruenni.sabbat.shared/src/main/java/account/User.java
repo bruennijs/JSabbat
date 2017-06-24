@@ -26,10 +26,7 @@ public class User extends UserRef {
      */
     public User(String id, String name, String email, List<GroupRef> groups) {
         super(id, name, groups);
-        this.id = id;
-        this.name = name;
         this.email = email;
-        this.groups = groups;
         this.properties = new HashMap<>();
     }
 
@@ -43,10 +40,7 @@ public class User extends UserRef {
      */
     public User(String id, String name, String email, List<GroupRef> groups, Map<String, Object> properties) {
         super(id, name, groups);
-        this.id = id;
-        this.name = name;
         this.email = email;
-        this.groups = groups;
         this.properties = properties;
     }
 

@@ -24,7 +24,6 @@ import java.util.Optional;
  */
 @Configuration
 @EnableWebMvc
-//@ComponentScan(basePackages = "sabbat.apigateway.location.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     Logger logger = org.slf4j.LoggerFactory.getLogger(WebConfig.class);

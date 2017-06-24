@@ -30,10 +30,6 @@ import sabbat.location.core.persistence.activity.implementation.ActivityReposito
         })
 public class LocationCoreConfiguration {
 
-        @Autowired()
-        @Qualifier("verifyingAuthenticationService")
-        public IAuthenticationService authenticationService;
-
         @Bean(name = "dummyActivityRepository")
         @ConditionalOnMissingBean(IActivityRepository.class)
         public IActivityRepository activityRepository()
@@ -50,7 +46,7 @@ public class LocationCoreConfiguration {
         @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
         public ActivityApplicationService activityApplicationService(IActivityRepository activityRepository)
         {
-                return new DefaultActivityApplicationService(activityRepository, this.authenticationService);
+                return new DefaultActivityApplicationService(activityRepository);
         }
 
         @Bean(name = "groupActivityDomainService")
@@ -64,6 +60,6 @@ public class LocationCoreConfiguration {
         @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
         public GroupActivityApplicationService groupActivityApplicationService()
         {
-                return new DefaultGroupActivityApplicationService(this.authenticationService, groupActivityDomainService());
+                return new DefaultGroupActivityApplicationService(groupActivityDomainService());
         }
 }

@@ -1,5 +1,6 @@
 package sabbat.location.core.application.service;
 
+import identity.UserRef;
 import infrastructure.common.event.IEventHandler;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.Token;
@@ -23,27 +24,25 @@ public interface GroupActivityApplicationService  {
 	 */
 	class GroupActivityUpdateCommand {
 
-		private Token userToken1;
-
-		private Token userToken2;
-
 		private double distanceInMeters;
+		private UserRef user1;
+		private UserRef user2;
 
-		public GroupActivityUpdateCommand(Token userToken1, Token userToken2) {
-			this.userToken1 = userToken1;
-			this.userToken2 = userToken2;
-		}
-
-		public Token getUserToken1() {
-			return userToken1;
-		}
-
-		public Token getUserToken2() {
-			return userToken2;
+		public GroupActivityUpdateCommand(UserRef user1, UserRef user2) {
+			this.user1 = user1;
+			this.user2 = user2;
 		}
 
 		public double getDistanceInMeters() {
 			return distanceInMeters;
+		}
+
+		public UserRef getUser1() {
+			return user1;
+		}
+
+		public UserRef getUser2() {
+			return user2;
 		}
 	}
 }

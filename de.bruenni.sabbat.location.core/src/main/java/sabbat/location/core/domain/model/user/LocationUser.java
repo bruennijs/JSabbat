@@ -19,9 +19,7 @@ public class LocationUser {
 	public LocationUser(User genericDomainUser) {
 		user = genericDomainUser;
 
-		Map<String, Object> propertyMap = StreamUtils.toMap(IterableUtils.stream(user.getProperties()));
-
-		this.notificationEnabled = parseNotificationEnabled(propertyMap);
+		this.notificationEnabled = parseNotificationEnabled(user.getProperties());
 	}
 
 	/**

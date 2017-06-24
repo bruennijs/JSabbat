@@ -140,9 +140,9 @@ where activity0_.id=67;]]></console>
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
+    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_tables.sql" connection-id="52d298b5-7067-470a-86c0-c5277751def1" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_db.sql" connection-id="4ff58e04-1c53-4f23-97ae-c981d83b00ef" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_queries.sql" connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4" current-schema="information_schema" />
-    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_tables.sql" connection-id="52d298b5-7067-470a-86c0-c5277751def1" current-schema="information_schema" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />

@@ -1,5 +1,7 @@
 package sabbat.location.infrastructure.unittest.command;
 
+import identity.UserRef;
+import infrastructure.util.Tuple2;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
@@ -33,9 +35,10 @@ public class ActivityUpdateCommandTests {
                 .build();
 
         ActivityUpdateEventDtoConverter converter = new ActivityUpdateEventDtoConverter();
-        ActivityUpdateCommand command = converter.convert(dto);
+        UserRef userRef = createUserRef();
+        ActivityUpdateCommand command = converter.convert(new Tuple2<>(userRef, dto));
 
-        Assert.assertThat(command.getIdentityToken().getValue(), new IsEqual(identityToken));
+        Assert.assertThat(command.getUser(), new IsEqual(userRef));
     }
 
     @Test
@@ -50,7 +53,7 @@ public class ActivityUpdateCommandTests {
                 .build();
 
         ActivityUpdateEventDtoConverter converter = new ActivityUpdateEventDtoConverter();
-        ActivityUpdateCommand command = converter.convert(dto);
+        ActivityUpdateCommand command = converter.convert(new Tuple2<>(createUserRef(), dto));
 
         Assert.assertEquals(2, command.getCoordinates().size());
         Assert.assertThat(
@@ -58,5 +61,9 @@ public class ActivityUpdateCommandTests {
                         .withLatitude(tc.getLatitude())
                         .build()).collect(Collectors.toList()),
                 IsIterableContainingInAnyOrder.containsInAnyOrder(timeCoordinate0, timeCoordinate1));
+    }
+
+    private UserRef createUserRef() {
+        return new UserRef("someid", "name", Arrays.asList());
     }
 }

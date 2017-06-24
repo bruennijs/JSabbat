@@ -1,6 +1,6 @@
 package sabbat.messenger.infrastructure.delivery;
 
-import infrastructure.common.event.IEvent;
+import infrastructure.common.event.Event;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryRequest;
 import sabbat.messenger.core.infrastructure.delivery.DeliveryRequestResult;
 import rx.Observable;
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class RabbitMqMessageDeliveryService implements IMessageDeliveryService {
 
-    private Observable<IEvent> eventObservable = PublishSubject.create();
+    private Observable<Event> eventObservable = PublishSubject.create();
 
 
     /**

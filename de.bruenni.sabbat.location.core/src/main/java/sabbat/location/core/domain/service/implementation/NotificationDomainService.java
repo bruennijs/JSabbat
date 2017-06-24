@@ -2,9 +2,10 @@ package sabbat.location.core.domain.service.implementation;
 
 import account.IAccountService;
 import account.User;
+import notification.NotificationContent;
+import notification.NotificationMessage;
 import notification.NotificationService;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
+import notification.TextNotificationContent;
 import org.springframework.context.event.EventListener;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.model.Activity;
@@ -42,19 +43,24 @@ public class NotificationDomainService {
 		// 2. notify user if enabled
 		if (locationUser1.getNotificationEnabled())
 		{
-			notificationService.notify(user1, buildNotificationMessage(user2, relatedActivity));
+			notificationService.notify(buildNotificationMessage(user1, user2, relatedActivity));
 		}
 
 		if (locationUser2.getNotificationEnabled())
 		{
-			notificationService.notify(user2, buildNotificationMessage(user1, event.getAggregate()));
+			notificationService.notify(buildNotificationMessage(user2, user1, event.getAggregate()));
 		}
 	}
 
-	private String buildNotificationMessage(User user, Activity activity) {
-		return String.format("The user [%1s] is also active currently and started an activity [%2s] at [%3s].",
-			user.getName(),
+	private NotificationMessage<? extends NotificationContent> buildNotificationMessage(User userToSendTo, User userAlsoActive, Activity activity) {
+
+		String contextText = String.format("The user [%1s] is also active currently and started an activity [%2s] at [%3s].",
+			userAlsoActive.getName(),
 			activity.getTitle(),
 			activity.getStarted().toString());
+
+		return new NotificationMessage<TextNotificationContent>(userToSendTo,
+			"Sabbat location: User is active!",
+			new TextNotificationContent(contextText));
 	}
 }

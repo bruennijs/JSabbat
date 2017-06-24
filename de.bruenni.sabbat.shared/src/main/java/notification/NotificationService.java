@@ -9,5 +9,5 @@ public interface NotificationService {
 	/**
 	 * Sends a notification message to the specified user
 	 */
-	rx.Observable notify(User user, String message);
+	rx.Observable<NotificationMessage<? extends NotificationContent>> notify(NotificationMessage<? extends NotificationContent> message);
 }

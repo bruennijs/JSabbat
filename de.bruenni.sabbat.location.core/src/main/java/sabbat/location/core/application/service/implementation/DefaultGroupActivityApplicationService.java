@@ -24,26 +24,19 @@ public class DefaultGroupActivityApplicationService implements GroupActivityAppl
 
 	private static org.slf4j.Logger Log = LoggerFactory.getLogger(DefaultGroupActivityApplicationService.class);
 
-	private IAuthenticationService authenticationService;
 	private GroupActivityDomainService domainService;
-	private IActivityRepository activityRepository;
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * Constructor
-	 * @param authenticationService
 	 * @param domainService
 	 */
-	public DefaultGroupActivityApplicationService(IAuthenticationService authenticationService, GroupActivityDomainService domainService) {
-		this.authenticationService = authenticationService;
+	public DefaultGroupActivityApplicationService(GroupActivityDomainService domainService) {
 		this.domainService = domainService;
-		this.activityRepository = activityRepository;
 	}
 
 	@Override
 	public void updateGroupActivity(GroupActivityUpdateCommand command) throws AuthenticationFailedException {
-		UserRef userRef1 = authenticationService.verify(command.getUserToken1());
-		UserRef userRef2 = authenticationService.verify(command.getUserToken2());
 	}
 
 	/**

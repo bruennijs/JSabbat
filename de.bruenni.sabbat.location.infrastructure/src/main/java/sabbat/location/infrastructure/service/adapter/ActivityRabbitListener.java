@@ -1,6 +1,11 @@
 package sabbat.location.infrastructure.service.adapter;
 
 import com.rabbitmq.client.Channel;
+import identity.IAuthenticationService;
+import identity.UserRef;
+import infrastructure.identity.Token;
+import infrastructure.util.Tuple2;
+import jdk.nashorn.internal.parser.DateParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -12,6 +17,7 @@ import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import sabbat.location.core.application.service.ActivityApplicationService;
@@ -44,6 +50,10 @@ public class ActivityRabbitListener {
     public ActivityApplicationService applicationService;
 
     @Autowired
+    @Qualifier("verifyingAuthenticationService")
+    public IAuthenticationService authenticationService;
+
+    @Autowired
     @Qualifier("locationJsonDtoParser")
     private infrastructure.parser.IDtoParser dtoParser;
 
@@ -67,7 +77,10 @@ public class ActivityRabbitListener {
 
                 ActivityCreateRequestDto dto = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
-                ActivityCreateCommand command = dtoCreateConverter.convert(dto);
+                // veryify token
+                UserRef userRef = authenticationService.verify(Token.valueOf(dto.getIdentityToken()));
+
+                ActivityCreateCommand command = dtoCreateConverter.convert(new Tuple2<>(userRef, dto));
 
                 Activity activity = this.applicationService.start(command);
 
@@ -110,7 +123,10 @@ public class ActivityRabbitListener {
 
         try
         {
-            ActivityUpdateCommand command = this.dtoUpdateConverter.convert(dto);
+            // veryify token
+            UserRef userRef = authenticationService.verify(Token.valueOf(dto.getIdentityToken()));
+
+            ActivityUpdateCommand command = this.dtoUpdateConverter.convert(new Tuple2<>(userRef, dto));
 
             this.applicationService.update(command);
 

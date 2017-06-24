@@ -1,5 +1,6 @@
 package sabbat.location.infrastructure;
 
+import identity.IAuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
+import sabbat.location.infrastructure.DtoToCommand.ActivityCreateRequestDtoConverter;
+import sabbat.location.infrastructure.DtoToCommand.ActivityUpdateEventDtoConverter;
 import sabbat.location.infrastructure.common.ExtendedRabbitListenerContainerFactory;
 import sabbat.location.infrastructure.service.adapter.ActivityRabbitListener;
 
@@ -59,6 +62,9 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         @Qualifier("serviceTaskExecuter")
         private Executor taskExecutor;
 
+        @Autowired()
+        @Qualifier("verifyingAuthenticationService")
+        public IAuthenticationService authenticationService;
 
         @Override
         public void configureRabbitListeners(RabbitListenerEndpointRegistrar registrar) {

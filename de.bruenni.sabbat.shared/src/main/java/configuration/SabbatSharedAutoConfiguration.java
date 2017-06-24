@@ -1,3 +1,6 @@
+package configuration;
+
+import account.IAccountService;
 import com.stormpath.spring.security.provider.StormpathAuthenticationProvider;
 import identity.IAuthenticationService;
 import identity.implementation.JwtAuthenticationService;
@@ -6,8 +9,10 @@ import identity.implementation.StormpathFactory;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.ITokenAuthentication;
 import infrastructure.identity.implementation.JJwtTokenAuthenticationFactory;
+import notification.EmailSender;
 import notification.NotificationService;
 import notification.implementation.EmailNotificationService;
+import notification.implementation.JavaxMailEmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +21,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,13 +38,14 @@ import spring.security.SabbatJwtAuthenticationProvider;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /**
  * Created by bruenni on 15.10.16.
  */
 @Configuration
-@PropertySource("classpath:/sabbat/shared/default.properties")
+@PropertySource("classpath:sabbat-shared.properties")
 public class SabbatSharedAutoConfiguration {
 
     @Value("${stormpath.application.name}")
@@ -100,11 +108,29 @@ public class SabbatSharedAutoConfiguration {
         return new SabbatJwtAuthenticationProvider(verifyingTokenAuthentication, verifyingAuthenticationProvider);
     }
 
+    @Bean("sabbatSharedThreadPoolTaskExecutor")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public Executor threadPoolTaskExecutor()
+    {
+        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+        threadPoolTaskExecutor.setCorePoolSize(1);
+        threadPoolTaskExecutor.setMaxPoolSize(2);
+        threadPoolTaskExecutor.setMaxPoolSize(1000);
+        return threadPoolTaskExecutor;
+    }
+
+    @Bean(name = "javaxEmailSender")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public EmailSender javaxEmailSender()
+    {
+        return new JavaxMailEmailSender();
+    }
+
     @Bean(name = "emailNotificationService")
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    public NotificationService emailNotificationService()
+    public NotificationService emailNotificationService(Executor sabbatSharedThreadPoolTaskExecutor, EmailSender emailSender)
     {
-        return new EmailNotificationService();
+        return new EmailNotificationService(sabbatSharedThreadPoolTaskExecutor, emailSender);
     }
 
     @Bean

@@ -1,5 +1,6 @@
 package activity;
 
+import account.User;
 import identity.UserJwtBuilder;
 import infrastructure.identity.Jwt;
 import infrastructure.identity.Token;
@@ -29,15 +30,14 @@ import java.util.Arrays;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"dev"})
-//@SpringBootApplication()
 @SpringApplicationConfiguration(classes = GroupActivityIntegrationTestConfiguration.class)
 public class GroupActivityIntegrationTests {
 	@Autowired
 	@Qualifier("activityApplicationService")
 	public ActivityApplicationService activityApplicationService;
 
-	@Value("${sabbat.shared.okta.url}")
-	public String url;
+	@Value("${sabbat.location.integrationtest.userid}")
+	private static String userId = "00uau41fdzjgnUYSt0h7";
 
 	@Autowired
 	public ApplicationContext ctx;
@@ -45,14 +45,13 @@ public class GroupActivityIntegrationTests {
 	@Test
 	public void when_start_activity_expect_spring_context_fires_event_to_eventlistener_of_GroupActivityApplicationService() throws Exception {
 
-
-		Jwt jwt = new UserJwtBuilder().withData("user@test.de", Arrays.asList(), Instant.now(), Instant.now().plus(100, ChronoUnit.SECONDS)).build();
-
-
-
-		Activity activity = this.activityApplicationService.start(new ActivityCreateCommand(Token.valueOf("some token"), "4711", "my title"));
+		Activity activity = this.activityApplicationService.start(new ActivityCreateCommand(createUser(), "4711", "my title"));
 		//Activity activity2 = this.activityApplicationService.start(new ActivityCreateCommand(Token.valueOf("some token"), "4711", "my title"));
 
 		//verify(domainServiceMock).onActivityStarted(argThat(new LambdaArgumentMatcher<>(startedEvent -> startedEvent.getAggregate().equals(activity))));
+	}
+
+	private User createUser() {
+		return new User(userId, "name", "oliver.bruentje@gmx.de", Arrays.asList());
 	}
 }

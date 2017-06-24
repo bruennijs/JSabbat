@@ -37,9 +37,8 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
     /**
      * Constructor.
      * @param activityRepository
-     * @param authenticationService
      */
-    public DefaultActivityApplicationService(IActivityRepository activityRepository, IAuthenticationService authenticationService) {
+    public DefaultActivityApplicationService(IActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
         this.authenticationService = authenticationService;
     }
@@ -47,12 +46,9 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
     @Override
     public Activity start(ActivityCreateCommand command) throws AuthenticationFailedException, SerializingException {
 
-        // verify token
-        UserRef userRef = this.authenticationService.verify(command.getIdentityToken());
-
         Instant now = Instant.now(Clock.systemUTC());
         Date nowDate = Date.from(now);
-        Activity activity = new Activity(0l, command.getId(), command.getTitle(), nowDate, userRef.getId());
+        Activity activity = new Activity(0l, command.getId(), command.getTitle(), nowDate, command.getUser().getId());
 
         // start activity
         Event domainEvent = activity.start();
@@ -73,9 +69,7 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
     @Override
     public Iterable<ActivityCoordinate> update(ActivityUpdateCommand command) throws Exception {
 
-        UserRef userRef = this.authenticationService.verify(command.getIdentityToken());
-
-        List<ActivityCoordinate> activityCoordinates = toActivityCoordinates(userRef, command);
+        List<ActivityCoordinate> activityCoordinates = toActivityCoordinates(command.getUser(), command);
 
         return this.activityRepository.insertCoordinate(activityCoordinates);
     }

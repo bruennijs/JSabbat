@@ -16,20 +16,14 @@ public class ActivityApplicationServiceBuilder {
 
 
     private IActivityRepository repository = new ActivityRepositoryBuilder().buildmocked();
-    private identity.IAuthenticationService authenticationService = new AuthenticationServiceBuilder().buildMocked();
     private ApplicationEventPublisher applicationEventPublisherMock = new ApplicationEventPublisherBuilder().buildMocked();
 
     public ActivityApplicationServiceBuilder() throws AuthenticationFailedException {
     }
 
     public DefaultActivityApplicationService build() {
-        DefaultActivityApplicationService instance = new DefaultActivityApplicationService(this.repository, this.authenticationService);
+        DefaultActivityApplicationService instance = new DefaultActivityApplicationService(this.repository);
         instance.setApplicationEventPublisher(applicationEventPublisherMock);
         return instance;
-    }
-
-    public ActivityApplicationServiceBuilder withAuthenticationService(IAuthenticationService value) {
-        this.authenticationService = value;
-        return this;
     }
 }

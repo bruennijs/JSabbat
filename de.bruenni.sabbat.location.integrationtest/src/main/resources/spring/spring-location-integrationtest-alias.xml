@@ -11,4 +11,5 @@
     <alias name="stubNotificationService" alias="notificationService"/>
     <alias name="jpaActivityRepository" alias="activityRepository"/>
     <alias name="oktaAccountService" alias="accountService"/>
+    <alias name="javaxEmailSender" alias="emailSender"/>
 </beans>
