@@ -23,6 +23,7 @@
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.core" vmOptions="" scriptParameters="" />
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure" vmOptions="" scriptParameters="" />
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.shared" vmOptions="" scriptParameters="" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/de.bruenni.sabbat.shared.okta/pom.xml" goal="clean" />
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/de.bruenni.sabbat.shared.okta/pom.xml" goal="-DskipTests=true install" />
     </method>
   </configuration>
