@@ -1,15 +1,11 @@
 package activity;
 
 import account.User;
-import identity.UserJwtBuilder;
-import infrastructure.identity.Jwt;
-import infrastructure.identity.Token;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,9 +16,6 @@ import sabbat.location.core.domain.model.Activity;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 
 
@@ -38,8 +31,11 @@ public class GroupActivityIntegrationTests {
 	@Qualifier("activityApplicationService")
 	public ActivityApplicationService activityApplicationService;
 
-	@Value("${sabbat.location.integrationtest.userid}")
-	private static String userId = "00uau41fdzjgnUYSt0h7";
+	@Value("${sabbat.location.integrationtest.userid1}")
+	private static String userId1 = "00uau41fdzjgnUYSt0h7";
+
+	@Value("${sabbat.location.integrationtest.userid2}")
+	private static String userId2 = "00uay1fn1ucXxlvwm0h7";
 
 	@Autowired
 	public ApplicationContext ctx;
@@ -47,13 +43,18 @@ public class GroupActivityIntegrationTests {
 	@Test
 	public void when_start_activity_expect_spring_context_fires_event_to_eventlistener_of_GroupActivityApplicationService() throws Exception {
 
-		Activity activity = this.activityApplicationService.start(new ActivityCreateCommand(createUser(), String.format("%1s", Instant.now(Clock.systemUTC()).toString()), "my title"));
+		Activity activityUser1 = this.activityApplicationService.start(new ActivityCreateCommand(createUser(userId1), String.format("%1s", Instant.now(Clock.systemUTC()).toString()), "my title user 1"));
+
+		Activity activityUser2 = this.activityApplicationService.start(new ActivityCreateCommand(createUser(userId2), String.format("%1s", Instant.now(Clock.systemUTC()).toString()), "my title user 2"));
 		//Activity activity2 = this.activityApplicationService.start(new ActivityCreateCommand(Token.valueOf("some token"), "4711", "my title"));
 
 		//verify(domainServiceMock).onActivityStarted(argThat(new LambdaArgumentMatcher<>(startedEvent -> startedEvent.getAggregate().equals(activity))));
+
+		this.activityApplicationService.stop(activityUser1.getUuid());
+		this.activityApplicationService.stop(activityUser2.getUuid());
 	}
 
-	private User createUser() {
-		return new User(userId, "name", "oliver.bruentje@gmx.de", Arrays.asList());
+	private User createUser(String id) {
+		return new User(id, "name", "oliver.bruentje@gmx.de", Arrays.asList());
 	}
 }

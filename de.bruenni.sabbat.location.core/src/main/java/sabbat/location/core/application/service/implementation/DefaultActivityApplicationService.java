@@ -50,10 +50,12 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
         Date nowDate = Date.from(now);
         Activity activity = new Activity(0l, command.getId(), command.getTitle(), nowDate, command.getUser().getId());
 
-        // start activity
-        Event domainEvent = activity.start();
-
         Activity activityPersisted = this.activityRepository.save(activity);
+
+        // start activity
+        Event domainEvent = activityPersisted.start();
+
+        activityPersisted = this.activityRepository.save(activityPersisted);
 
         // fire domain event
         applicationEventPublisher.publishEvent(domainEvent);
