@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,7 +31,8 @@ import java.util.Arrays;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"dev"})
-@SpringApplicationConfiguration(classes = GroupActivityIntegrationTestConfiguration.class)
+@SpringBootTest(classes = GroupActivityIntegrationTestConfiguration.class)
+//@SpringBootApplication
 public class GroupActivityIntegrationTests {
 	@Autowired
 	@Qualifier("activityApplicationService")

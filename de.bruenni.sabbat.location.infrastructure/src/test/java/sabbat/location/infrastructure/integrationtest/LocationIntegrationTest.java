@@ -6,34 +6,28 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.concurrent.ListenableFuture;
 import rx.Observable;
 import rx.observables.BlockingObservable;
 import sabbat.location.infrastructure.builder.ActivityCreateRequestDtoBuilder;
 import sabbat.location.infrastructure.client.IActivityEventService;
 import sabbat.location.infrastructure.client.IActivityRemoteService;
-import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
 import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by bruenni on 14.07.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles({"dev"})
-@SpringApplicationConfiguration(classes = { IntegrationTestConfig.class })
+@SpringBootTest(classes = { IntegrationTestConfig.class })
 public class LocationIntegrationTest {
 
     Logger logger = org.slf4j.LoggerFactory.getLogger("location.infrastructure.traffic");

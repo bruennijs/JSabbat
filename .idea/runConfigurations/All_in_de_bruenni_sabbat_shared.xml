@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All in de.bruenni.sabbat.shared" type="JUnit" factoryName="JUnit" singleton="false" show_console_on_std_out="true" show_console_on_std_err="true">
+  <configuration default="false" name="All in de.bruenni.sabbat.shared" type="JUnit" factoryName="JUnit" show_console_on_std_out="true" show_console_on_std_err="true" nameIsGenerated="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="de.bruenni.sabbat.shared_test" />
+    <module name="de.bruenni.sabbat.shared" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
     <option name="PACKAGE_NAME" value="" />
@@ -17,7 +17,6 @@
       <value defaultName="singleModule" />
     </option>
     <envs />
-    <dir value="$PROJECT_DIR$/de.bruenni.sabbat.shared/src/test" />
     <patterns />
     <method />
   </configuration>

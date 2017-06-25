@@ -2,7 +2,6 @@ package activity;
 
 import account.User;
 import infrastructure.util.Tuple2;
-import notification.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;

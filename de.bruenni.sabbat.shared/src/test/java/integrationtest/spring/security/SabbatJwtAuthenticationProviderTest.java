@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test-stormpath")
-@SpringApplicationConfiguration(classes = IntegrationTestConfig.class)
+@SpringBootTest(classes = IntegrationTestConfig.class)
 public class SabbatJwtAuthenticationProviderTest {
     @Value("${stormpath.application.name}")
     public String applicationName;

@@ -1,31 +1,22 @@
 package sabbat.apigateway.location.unittest;
 
-import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.data.geo.Point;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.apigateway.location.builder.LocationApiDtoConverterBuilder;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
-import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
-import sabbat.apigateway.location.systemtest.SystemTestConfig;
 import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by bruenni on 02.10.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { UnitTestConfig.class })
+@SpringBootTest(classes = { UnitTestConfig.class })
 public class LocationApiDtoConverterResponseTest {
 
     @Test

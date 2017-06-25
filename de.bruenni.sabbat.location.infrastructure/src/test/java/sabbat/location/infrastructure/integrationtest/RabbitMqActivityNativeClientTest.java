@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -32,11 +32,12 @@ import java.util.concurrent.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles({"dev"})
-@SpringApplicationConfiguration(classes =
+@SpringBootTest(classes =
         {
                 IntegrationTestConfig.class,
                 AmqpClientAutoConfiguration.class
         })
+@Ignore
 public class RabbitMqActivityNativeClientTest {
 
     @Value("${spring.rabbitmq.host}")

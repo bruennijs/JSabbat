@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 //@IntegrationTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(value = "test")
-@SpringApplicationConfiguration(classes = { IntegrationTestConfig.class, WebConfig.class, Application.class })
+@SpringBootTest(classes = { IntegrationTestConfig.class, WebConfig.class, Application.class })
 @WebAppConfiguration
 public class MapMyTracksApiIntegrationTest {
 

@@ -4,36 +4,21 @@ import infrastructure.util.Tuple2;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.mockito.internal.matchers.GreaterThan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
-import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.geo.Point;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import sabbat.apigateway.Application;
-import sabbat.apigateway.location.config.WebConfig;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.ActivityStoppedResponse;
 import sabbat.apigateway.location.controller.dto.ActivityUpdatedResponse;
-import sabbat.apigateway.location.integrationtest.IntegrationTestConfig;
-import sabbat.apigateway.location.unittest.UnitTestConfig;
 import test.matcher.LambdaMatcher;
 
-import java.time.ZoneId;
-import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**
@@ -41,7 +26,7 @@ import java.util.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(value = "test")
-@SpringApplicationConfiguration(classes = { SystemTestConfig.class })
+@SpringBootTest(classes = { SystemTestConfig.class })
 public class MapMyTracksApiIntegrationTest {
 
     Logger logger = LoggerFactory.getLogger(MapMyTracksApiIntegrationTest.class);

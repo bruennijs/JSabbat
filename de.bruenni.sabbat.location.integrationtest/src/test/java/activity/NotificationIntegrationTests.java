@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,8 +38,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = {"dev"})
-//@SpringBootApplication()
-@SpringApplicationConfiguration(classes = NotificationIntegrationTestConfiguration.class)
+@SpringBootTest(classes = NotificationIntegrationTestConfiguration.class)
 public class NotificationIntegrationTests {
 	@Autowired
 	@Qualifier("emailUserNotificationService")

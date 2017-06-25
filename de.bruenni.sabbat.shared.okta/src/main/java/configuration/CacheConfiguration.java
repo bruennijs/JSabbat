@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  * Created by bruenni on 15.06.17.
  */
 @Configuration
-@PropertySource({"classpath:sabbat-shared-okta.properties"})
 @EnableCaching
 public class CacheConfiguration {
 

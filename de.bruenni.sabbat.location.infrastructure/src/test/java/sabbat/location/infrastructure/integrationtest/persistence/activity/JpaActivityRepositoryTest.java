@@ -13,15 +13,15 @@ import org.junit.runner.RunWith;
 import org.mockito.internal.matchers.Equals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.location.core.builder.ActivityBuilder;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
@@ -30,7 +30,6 @@ import test.matcher.LambdaMatcher;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.TemporalAmount;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +40,7 @@ import java.util.stream.Collectors;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = { "dev" })
-@SpringApplicationConfiguration(classes = { IntegrationTestConfig.class })
+@SpringBootTest(classes = { IntegrationTestConfig.class })
 public class JpaActivityRepositoryTest {
 
 	public static final String JPA_ACTIVITY_REPOSITORY_QUALIFIER = "jpaActivityRepository";

@@ -20,8 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,7 +34,7 @@ import java.util.stream.Collectors;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles({"dev"})
-@SpringApplicationConfiguration(classes = IntegrationTestConfig.class)
+@SpringBootTest(classes = IntegrationTestConfig.class)
 public class OktaAccountServiceTest {
 
 	@Autowired
@@ -53,8 +52,8 @@ public class OktaAccountServiceTest {
 		User userById = accountService.getUserById(userId);
 
 		Assert.assertThat(userById.getId(), IsEqual.equalTo("00uau41fdzjgnUYSt0h7"));
-		Assert.assertThat(userById.getName(), IsEqual.equalTo("user@test.de"));
-		Assert.assertThat(userById.getEmail(), IsEqual.equalTo("testemailaddress@mail.com"));
+		Assert.assertThat(userById.getName(), IsEqual.equalTo("user1@test.de"));
+		Assert.assertThat(userById.getEmail(), IsEqual.equalTo("oliver.bruentje@gmx.de"));
 
 		//client.listUsers();
 	}
