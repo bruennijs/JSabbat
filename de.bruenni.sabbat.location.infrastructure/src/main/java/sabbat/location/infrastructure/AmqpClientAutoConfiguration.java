@@ -29,7 +29,6 @@ import java.util.concurrent.Executor;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "location.infrastructure.amqp.client", name = "enabled", havingValue = "true", matchIfMissing = false)
-@PropertySource("classpath:sabbat-location-infrastructure.properties")
 @Import(LocationInfrastructureConfiguration.class)
 @ImportResource(locations =
         {

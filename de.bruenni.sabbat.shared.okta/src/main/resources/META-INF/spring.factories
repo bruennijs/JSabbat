@@ -2,4 +2,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 configuration.SabbatSharedOktaAutoConfiguration,\
 configuration.CacheConfiguration,\
-configuration.OktaApiConfiguration
+configuration.OktaApiConfiguration,\
+configuration.SabbatSharedOktaDevAutoConfiguration

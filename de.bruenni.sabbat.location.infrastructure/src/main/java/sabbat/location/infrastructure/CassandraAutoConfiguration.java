@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 //@ConditionalOnProperty(prefix = "location.infrastructure.cassandra", name = "enabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnProperty(prefix = "location.infrastructure.cassandra", name = "enabled", havingValue = "true", matchIfMissing = false)
-@PropertySource("classpath:sabbat-location-infrastructure.properties")
 @Import(LocationInfrastructureConfiguration.class)
 @ImportResource(locations =
         {

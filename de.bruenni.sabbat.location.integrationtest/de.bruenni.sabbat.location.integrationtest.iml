@@ -13,7 +13,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: de.bruenni:sabbat.location.core:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:infrastructure.common:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: de.bruenni:sabbat.shared.okta:1.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: de.bruenni:sabbat.shared.okta:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:sabbat.location.infrastructure:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:sabbat.shared:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.3.8.RELEASE" level="project" />
@@ -90,7 +90,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework.amqp:spring-rabbit:1.6.3.RELEASE" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.rabbitmq:amqp-client:3.6.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.rabbitmq:http-client:1.0.0.RELEASE" level="project" />
-    <orderEntry type="module" module-name="de.bruenni.sabbat.shared.okta" scope="RUNTIME" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.okta.sdk:okta-sdk-api:0.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.okta.sdk:okta-sdk-impl:0.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.yaml:snakeyaml:1.17" level="project" />

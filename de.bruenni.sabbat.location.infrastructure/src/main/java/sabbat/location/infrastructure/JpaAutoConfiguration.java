@@ -9,8 +9,6 @@ import sabbat.location.infrastructure.persistence.activity.JpaActivityRepository
  * Created by bruenni on 24.09.16.
  */
 @Configuration
-//@ConditionalOnProperty(prefix = "location.infrastructure.jpa", name = "enabled", havingValue = "true", matchIfMissing = false)
-@PropertySource("classpath:sabbat-location-infrastructure.properties")
 public class JpaAutoConfiguration {
 
     @Bean(name = "jpaActivityRepository")

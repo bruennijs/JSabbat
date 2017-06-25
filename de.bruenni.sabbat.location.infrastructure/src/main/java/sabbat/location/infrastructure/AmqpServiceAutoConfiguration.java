@@ -33,7 +33,6 @@ import java.util.concurrent.Executor;
         name = "enabled",
         havingValue = "true",
         matchIfMissing = false)
-@PropertySource("classpath:sabbat-location-infrastructure.properties")
 @Import(LocationInfrastructureConfiguration.class)
 @ImportResource(locations =
         {
