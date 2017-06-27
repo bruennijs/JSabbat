@@ -52,7 +52,7 @@ public class GroupActivityIntegrationTestConfiguration {
 		return new UserNotificationService() {
 			@Override
 			public Observable<NotificationMessage<? extends NotificationContent>> notify(NotificationMessage<? extends NotificationContent> message) {
-				Log.info("[%1s]",  message);
+				Log.info(String.format("[%1s]",  message));
 				return Observable.empty();
 			}
 		};
