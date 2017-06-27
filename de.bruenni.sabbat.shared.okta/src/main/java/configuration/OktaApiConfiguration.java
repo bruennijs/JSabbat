@@ -7,6 +7,7 @@ import com.okta.sdk.client.ClientBuilder;
 import com.okta.sdk.client.Clients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 /**
  * Created by bruenni on 15.06.17.
  */
-@Configuration
+@SpringBootConfiguration
 public class OktaApiConfiguration {
 
 	@Value("${sabbat.shared.okta.apitoken}")

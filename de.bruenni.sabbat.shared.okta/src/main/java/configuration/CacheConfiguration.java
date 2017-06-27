@@ -1,28 +1,26 @@
 package configuration;
 
-import account.IAccountService;
-import account.OktaAccountService;
-import com.github.benmanes.caffeine.cache.*;
-import com.okta.sdk.client.Client;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.Expiry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.cache.CacheManager;
-
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.caffeine.*;
-import org.springframework.cache.concurrent.ConcurrentMapCache;
-import org.springframework.cache.support.SimpleCacheManager;
-import org.springframework.context.annotation.*;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bruenni on 15.06.17.
  */
-@Configuration
+@SpringBootConfiguration
 @EnableCaching
 public class CacheConfiguration {
 

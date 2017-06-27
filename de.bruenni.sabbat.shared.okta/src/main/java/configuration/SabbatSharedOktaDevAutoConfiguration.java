@@ -3,13 +3,14 @@ package configuration;
 import account.IAccountService;
 import account.OktaAccountService;
 import com.okta.sdk.client.Client;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * Created by bruenni on 15.06.17.
  */
-@Configuration
+@SpringBootConfiguration
 @Profile({"dev"})
 @PropertySource(
 		value = {"classpath:sabbat-shared-okta-dev.properties"},
