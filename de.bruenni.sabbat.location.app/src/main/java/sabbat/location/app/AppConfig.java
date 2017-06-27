@@ -10,7 +10,8 @@ import org.springframework.context.annotation.ImportResource;
 //@PropertySource("classpath:application.properties")
 @ImportResource(locations =
         {
-                "classpath:spring/spring-location-app.xml"
+                "classpath:spring/spring-location-app.xml",
+                "classpath:spring/spring-location-app-alias.xml"
         })
 public class AppConfig {
 }
