@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="log-path">/var/log/messages</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="DefaultFile"
+                fileName="${log-path}/sabbat.location.app.log"
+                filePattern="${log-path}/sabbat.location.app.%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+        </RollingFile>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <logger name="org.hibernate" level="INFO">
+        </logger>
+
+        <logger name="org.springframework" level="INFO">
+        </logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="DefaultFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

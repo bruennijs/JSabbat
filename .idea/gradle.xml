@@ -13,10 +13,8 @@
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.app" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.core" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure" />
-            <option value="$PROJECT_DIR$/de.bruenni.sabbat.messenger.app" />
-            <option value="$PROJECT_DIR$/de.bruenni.sabbat.messenger.core" />
-            <option value="$PROJECT_DIR$/de.bruenni.sabbat.messenger.infrastructure" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.shared" />
+            <option value="$PROJECT_DIR$/de.bruenni.sabbat.shared.okta" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
