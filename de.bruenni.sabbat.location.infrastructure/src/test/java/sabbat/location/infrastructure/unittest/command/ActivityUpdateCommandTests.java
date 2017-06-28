@@ -8,16 +8,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.internal.matchers.Equals;
+import sabbat.location.api.dto.ActivityUpdateEventDto;
+import sabbat.location.api.dto.TimeSeriesCoordinate;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.infrastructure.DtoToCommand.ActivityUpdateEventDtoConverter;
 import sabbat.location.infrastructure.builder.ActivityUpdateEventDtoBuilder;
 import sabbat.location.infrastructure.builder.TimeSeriesCoordinateBuilder;
-import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
-import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
 
 import java.util.Arrays;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**

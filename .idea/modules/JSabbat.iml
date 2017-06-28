@@ -7,6 +7,9 @@
     <content url="file://$MODULE_DIR$/../..">
       <excludeFolder url="file://$MODULE_DIR$/../../.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../de.bruenni.sabbat.messenger.app" />
+      <excludeFolder url="file://$MODULE_DIR$/../../de.bruenni.sabbat.messenger.core" />
+      <excludeFolder url="file://$MODULE_DIR$/../../de.bruenni.sabbat.messenger.infrastructure" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

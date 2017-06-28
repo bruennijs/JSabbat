@@ -20,15 +20,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
+import sabbat.location.api.dto.ActivityCreateRequestDto;
+import sabbat.location.api.dto.ActivityCreatedResponseDto;
+import sabbat.location.api.dto.ActivityUpdateEventDto;
 import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.infrastructure.DtoToCommand.ActivityCreateRequestDtoConverter;
 import sabbat.location.infrastructure.DtoToCommand.ActivityUpdateEventDtoConverter;
-import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
-import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
 
 import java.io.IOException;
 

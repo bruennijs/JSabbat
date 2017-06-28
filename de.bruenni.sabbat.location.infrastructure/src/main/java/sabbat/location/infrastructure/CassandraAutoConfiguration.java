@@ -15,7 +15,6 @@ import org.springframework.context.annotation.PropertySource;
 @Import(LocationInfrastructureConfiguration.class)
 @ImportResource(locations =
         {
-                //"classpath:spring/spring-location-amqp-client.xml",
                 "classpath:spring/spring-location-cassandra.xml"
         })
 public class CassandraAutoConfiguration {

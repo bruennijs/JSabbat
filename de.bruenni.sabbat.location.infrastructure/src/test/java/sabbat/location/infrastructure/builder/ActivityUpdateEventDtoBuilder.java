@@ -1,11 +1,10 @@
 package sabbat.location.infrastructure.builder;
 
-import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
-import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
+import sabbat.location.api.dto.ActivityUpdateEventDto;
+import sabbat.location.api.dto.TimeSeriesCoordinate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by bruenni on 08.10.16.

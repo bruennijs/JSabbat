@@ -6,13 +6,12 @@ import org.slf4j.LoggerFactory;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
 import sabbat.apigateway.location.controller.dto.ActivityStoppedResponse;
 import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
-import sabbat.location.infrastructure.client.dto.*;
+import sabbat.location.api.dto.*;
 
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by bruenni on 24.07.16.

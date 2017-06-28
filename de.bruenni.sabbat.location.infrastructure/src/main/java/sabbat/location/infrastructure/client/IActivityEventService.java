@@ -1,6 +1,6 @@
 package sabbat.location.infrastructure.client;
 
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
+import sabbat.location.api.dto.IActivityResponseDto;
 
 /**
  * Created by bruenni on 20.08.16.

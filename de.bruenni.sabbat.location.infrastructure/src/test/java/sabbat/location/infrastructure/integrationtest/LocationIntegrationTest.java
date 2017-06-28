@@ -12,11 +12,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import rx.Observable;
 import rx.observables.BlockingObservable;
+import sabbat.location.api.IActivityRemoteService;
+import sabbat.location.api.dto.ActivityCreatedResponseDto;
+import sabbat.location.api.dto.IActivityResponseDto;
 import sabbat.location.infrastructure.builder.ActivityCreateRequestDtoBuilder;
 import sabbat.location.infrastructure.client.IActivityEventService;
-import sabbat.location.infrastructure.client.IActivityRemoteService;
-import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;

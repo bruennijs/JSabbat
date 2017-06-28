@@ -1,7 +1,5 @@
 package sabbat.apigateway.location.command;
 
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
-
 /**
  * Created by bruenni on 04.08.16.
  */

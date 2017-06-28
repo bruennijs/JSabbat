@@ -4,8 +4,8 @@ import org.springframework.messaging.Message;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 import rx.subjects.ReplaySubject;
+import sabbat.location.api.dto.IActivityResponseDto;
 import sabbat.location.infrastructure.client.IActivityEventService;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
 
 /**
  * Created by bruenni on 20.08.16.

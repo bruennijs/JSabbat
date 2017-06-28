@@ -2,10 +2,10 @@ package sabbat.apigateway.location.command;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import rx.Observable;
-import sabbat.location.infrastructure.client.IActivityRemoteService;
-import sabbat.location.infrastructure.client.dto.ActivityStopRequestDto;
-import sabbat.location.infrastructure.client.dto.ActivityStoppedResponseDto;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
+import sabbat.location.api.IActivityRemoteService;
+import sabbat.location.api.dto.ActivityStopRequestDto;
+import sabbat.location.api.dto.ActivityStoppedResponseDto;
+import sabbat.location.api.dto.IActivityResponseDto;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;

@@ -1,13 +1,6 @@
 package sabbat.apigateway.location.command;
 
 import com.sun.javafx.binding.StringFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
-
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by bruenni on 04.08.16.

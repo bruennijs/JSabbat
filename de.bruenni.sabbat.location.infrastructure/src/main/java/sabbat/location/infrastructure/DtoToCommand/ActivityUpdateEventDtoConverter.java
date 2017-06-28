@@ -1,15 +1,11 @@
 package sabbat.location.infrastructure.DtoToCommand;
 
 import identity.UserRef;
-import infrastructure.identity.Token;
 import infrastructure.util.Tuple2;
-import jdk.nashorn.internal.parser.DateParser;
 import org.springframework.core.convert.converter.Converter;
-import sabbat.location.core.application.service.command.ActivityCreateCommand;
+import sabbat.location.api.dto.ActivityUpdateEventDto;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.application.service.command.TimeCoordinate;
-import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
-import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
 
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -1,6 +1,7 @@
 package sabbat.location.infrastructure.builder;
 
-import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
+
+import sabbat.location.api.dto.TimeSeriesCoordinate;
 
 import java.time.Instant;
 import java.util.Date;

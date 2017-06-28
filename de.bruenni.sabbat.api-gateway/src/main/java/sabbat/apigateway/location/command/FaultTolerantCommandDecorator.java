@@ -3,10 +3,9 @@ package sabbat.apigateway.location.command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
+import sabbat.location.api.dto.IActivityResponseDto;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**

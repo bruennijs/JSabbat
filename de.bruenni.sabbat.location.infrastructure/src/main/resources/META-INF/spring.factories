@@ -2,7 +2,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 sabbat.location.infrastructure.LocationInfrastructureConfiguration,\
 sabbat.location.infrastructure.LocationInfrastructureDevConfiguration,\
-sabbat.location.infrastructure.AmqpClientAutoConfiguration,\
 sabbat.location.infrastructure.AmqpServiceAutoConfiguration,\
 sabbat.location.infrastructure.CassandraAutoConfiguration,\
 sabbat.location.infrastructure.JpaAutoConfiguration

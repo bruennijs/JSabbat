@@ -1,24 +1,17 @@
 package sabbat.apigateway.location.command;
 
-import infrastructure.identity.Token;
 import infrastructure.parser.SerializingException;
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import rx.Observable;
-import sabbat.apigateway.location.controller.MapMyTracksApiController;
-import sabbat.location.infrastructure.client.IActivityRemoteService;
-import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
-import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
+import sabbat.location.api.IActivityRemoteService;
+import sabbat.location.api.dto.ActivityCreateRequestDto;
+import sabbat.location.api.dto.ActivityCreatedResponseDto;
+import sabbat.location.api.dto.IActivityResponseDto;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**

@@ -45,7 +45,7 @@ dependencies {
     // EXTERNAL DEPS
     compile group: 'org.springframework', name: 'spring-context', version: '4.3.8.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
-    compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.12.1.RELEASE'
+    //compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.12.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.4.7.RELEASE'
 
     // security
@@ -69,8 +69,7 @@ dependencies {
 
 
     compile group: 'de.bruenni', name: 'infrastructure.common', version: '1.0.0'
-    compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'
-    compile group: 'de.bruenni', name: 'sabbat.location.infrastructure', version: '1.0.0'
+    compile group: 'de.bruenni', name: 'sabbat.location.api', version: '1.0.0'
 
     // =========== LOGGING with SLF4J with a adapter to log4j 1.2 -> POM of slf4j pulls log4j dependency ===============
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'    /// writes to log4j 1.2...

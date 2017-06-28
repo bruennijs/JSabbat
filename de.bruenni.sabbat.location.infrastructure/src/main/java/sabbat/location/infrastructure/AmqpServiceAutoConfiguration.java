@@ -17,10 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
-import sabbat.location.infrastructure.DtoToCommand.ActivityCreateRequestDtoConverter;
-import sabbat.location.infrastructure.DtoToCommand.ActivityUpdateEventDtoConverter;
-import sabbat.location.infrastructure.common.ExtendedRabbitListenerContainerFactory;
 import sabbat.location.infrastructure.service.adapter.ActivityRabbitListener;
+import spring.rabbit.ExtendedRabbitListenerContainerFactory;
 
 import java.util.HashMap;
 import java.util.concurrent.Executor;

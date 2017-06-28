@@ -1,7 +1,7 @@
 package sabbat.location.infrastructure.integrationtest.stubs;
 
 import org.springframework.messaging.Message;
-import sabbat.location.infrastructure.client.dto.*;
+import sabbat.location.api.dto.*;
 
 /**
  * Created by bruenni on 04.07.16.

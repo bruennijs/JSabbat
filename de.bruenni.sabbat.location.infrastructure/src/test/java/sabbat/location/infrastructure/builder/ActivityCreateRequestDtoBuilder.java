@@ -1,10 +1,9 @@
 package sabbat.location.infrastructure.builder;
 
-import infrastructure.identity.ITokenAuthentication;
-import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
+
+import sabbat.location.api.dto.ActivityCreateRequestDto;
 
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by bruenni on 08.10.16.

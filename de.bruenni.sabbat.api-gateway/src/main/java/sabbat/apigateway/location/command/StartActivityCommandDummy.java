@@ -1,15 +1,10 @@
 package sabbat.apigateway.location.command;
 
 import org.slf4j.Logger;
-import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.util.concurrent.ListenableFuture;
 import rx.Observable;
 import rx.subjects.ReplaySubject;
-import sabbat.apigateway.location.controller.MapMyTracksApiController;
-import sabbat.location.infrastructure.client.IActivityRemoteService;
-import sabbat.location.infrastructure.client.dto.ActivityCreateRequestDto;
-import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
+import sabbat.location.api.dto.ActivityCreatedResponseDto;
+import sabbat.location.api.dto.IActivityResponseDto;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;

@@ -2,6 +2,7 @@ package sabbat.apigateway.location.controller;
 
 
 import com.sun.javafx.binding.StringFormatter;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -9,20 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import rx.Observable;
 import sabbat.apigateway.location.command.IActivityCommandFactory;
 import sabbat.apigateway.location.command.ICommand;
-import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
+import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import sabbat.apigateway.location.controller.dto.ActivityUpdatedResponse;
 import sabbat.apigateway.location.controller.dto.MapMyTracksResponse;
-import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
-import org.slf4j.Logger;
-import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
-import sabbat.location.infrastructure.client.dto.IActivityResponseDto;
+import sabbat.location.api.dto.IActivityResponseDto;
 
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bruenni on 03.07.16.
@@ -89,7 +88,7 @@ public class MapMyTracksApiController {
             ICommand command = activityCommandFactory.getCommand(requestType, title, points, source, activity_id);
 
             if (!command.getPublishOnly()) {
-                Observable<? extends IActivityResponseDto> responseObservable = command.requestAsync();
+                rx.Observable<? extends IActivityResponseDto> responseObservable = command.requestAsync();
 
                 IActivityResponseDto responseDto = responseObservable
                         .toBlocking()
