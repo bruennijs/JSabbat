@@ -49,6 +49,11 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
+    public Activity findByUuid(String uuid) {
+        return null;
+    }
+
+    @Override
     public Activity save(Activity entity) {
         return entity;
     }

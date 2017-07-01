@@ -59,4 +59,11 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
      * deletes all entities in table 'activity'
      */
     void truncate();
+
+    /**
+     * Finds activity by UUID.
+     * @param uuid
+     * @return
+     */
+    Activity findByUuid(String uuid);
 }

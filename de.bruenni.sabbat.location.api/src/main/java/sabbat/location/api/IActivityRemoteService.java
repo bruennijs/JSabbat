@@ -26,14 +26,14 @@ public interface IActivityRemoteService {
      * @param command
      * @return
      */
-    rx.Observable<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command);
+    rx.Observable<ActivityStoppedResponseDto> stop(@Payload ActivityStopRequestDto command);
 
     /**
      * Update of activity with new geo points, heartrate and so on.
      * @param command
      * @return Observable publishing channel confirmation whether dto has been
      */
-    rx.Observable<Void> update(ActivityUpdateEventDto command) throws Exception;
+    rx.Observable<Void> update(@Payload ActivityUpdateEventDto command) throws Exception;
 
     /**
      * Echo ping pong method.

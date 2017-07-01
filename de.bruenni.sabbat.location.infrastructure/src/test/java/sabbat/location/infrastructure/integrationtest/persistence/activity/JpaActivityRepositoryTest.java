@@ -259,6 +259,21 @@ public class JpaActivityRepositoryTest {
 		Assert.assertThat(activities, Matchers.contains(IsEqual.equalTo(activityInAndStarted)));
 	}
 
+	@Test
+	public void when_findByUuid_expect_returns_activity() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        Activity activity = new ActivityBuilder()
+                .withUuid(uuid)
+                .build();
+
+
+		Activity activityCreated = activityRepository.save(activity);
+
+        Activity activityFound = activityRepository.findByUuid(uuid);
+
+        Assert.assertThat(activityFound, LambdaMatcher.<Activity>isMatching(a -> a.getUuid().equals(uuid)));
+    }
+
 	private IActivityRepository getRepo() {
 		return ctx.getBean(JPA_ACTIVITY_REPOSITORY_QUALIFIER, IActivityRepository.class);
 	}

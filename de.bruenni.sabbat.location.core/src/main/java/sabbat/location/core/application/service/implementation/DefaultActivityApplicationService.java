@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
+import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
@@ -64,8 +65,17 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
     }
 
     @Override
-    public Void stop(String id) throws Exception {
-        throw new Exception("not implemented");
+    public void stop(String id) throws Exception {
+
+        logger.debug(String.format("Stopping actitity [uuid=%1s]", id));
+
+        Activity activity = this.activityRepository.findByUuid(id);
+        if (activity != null)
+        {
+            ActivityEvent domainEvent = activity.stop();
+
+            applicationEventPublisher.publishEvent(domainEvent);
+        }
     }
 
     @Override

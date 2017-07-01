@@ -33,7 +33,7 @@
                                    task-executor="activityExecuter"/>-->
 
 <int:gateway id="ActivityRemoteService"
-             service-interface="sabbat.location.infrastructure.client.IActivityRemoteService"
+             service-interface="sabbat.location.api.IActivityRemoteService"
              default-request-channel="activityRequestChannel"
              default-reply-channel="activityReplyChannel"
              async-executor="activityExecuter">

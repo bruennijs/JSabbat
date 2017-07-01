@@ -46,7 +46,7 @@ values (
 -- SELECT currval(pg_get_serial_sequence('activity', 'id'));
 
 -- select * from loc.activity where userid IN ('username1', 'username2');
-EXPLAIN select * from loc.activity where uuid = 'activityid3';
+EXPLAIN select * from loc.activity where uuid = 'activityid1';
 select * from loc.activityrelation ;
 select * from loc.activity ORDER BY started DESC;
 
@@ -157,6 +157,7 @@ ORDER by a.started DESC
 
 truncate table loc.domainevents;
 
-
+select * from loc.activity where uuid = '2101805292';
+select * from loc.activity ORDER BY started DESC;
 select * from loc.activityrelation;
 select * from loc.domainevents;

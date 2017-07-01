@@ -1,7 +1,6 @@
 package sabbat.location.core.builder;
 
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityPrimaryKey;
 
 import java.util.Date;
 import java.util.UUID;
@@ -14,10 +13,11 @@ public class ActivityBuilder {
     private static Long idCounter = 1l;
     private String userId = UUID.randomUUID().toString();
     private String title = "RuK 2017";
+    private String uuid = UUID.randomUUID().toString();
 
     public Activity build() {
         return new Activity(getNextid(),
-            UUID.randomUUID().toString(),
+            uuid,
             title,
             new Date(),
             userId);
@@ -35,6 +35,11 @@ public class ActivityBuilder {
 
     public ActivityBuilder withTitle(String value) {
         this.title = value;
+        return this;
+    }
+
+    public ActivityBuilder withUuid(String value) {
+        this.uuid = value;
         return this;
     }
 }

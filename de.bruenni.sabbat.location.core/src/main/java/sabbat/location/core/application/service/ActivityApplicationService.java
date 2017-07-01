@@ -27,7 +27,7 @@ public interface ActivityApplicationService {
      * @return
      * @throws Exception
      */
-    Void stop(String id) throws Exception;
+    void stop(String id) throws Exception;
 
     /**
      * Stores to persistence and executes business logic.

@@ -88,6 +88,13 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 	}
 
 	@Override
+	public Activity findByUuid(String uuid) {
+		return new TransactionScope(getEntityManager()).run(em ->
+			em.createQuery("SELECT a from Activity as a where uuid = :uuid", Activity.class)
+			.setParameter("uuid", uuid)).getSingleResult();
+	}
+
+	@Override
 	public <S extends Activity> S save(S entity) {
 		return new TransactionScope(getEntityManager()).run(em ->
 		{
