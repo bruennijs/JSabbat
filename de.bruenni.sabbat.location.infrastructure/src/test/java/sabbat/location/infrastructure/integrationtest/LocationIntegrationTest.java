@@ -39,7 +39,6 @@ public class LocationIntegrationTest {
     public IActivityEventService ActivityEventService;
 
     @Test
-    @Ignore
     public void When_echo_activity_remote_service_expect_return_string_with_payload() throws ExecutionException, InterruptedException {
         String payload = "mypayloadtext";
 
@@ -51,7 +50,6 @@ public class LocationIntegrationTest {
     }
 
     @Test
-    @Ignore
     public void when_send_ActivityCreateRequest_expect_IActivityEventService_received_same_event() throws Exception {
 
         BlockingObservable<IActivityResponseDto> eventObs = ActivityEventService.OnResponse()
