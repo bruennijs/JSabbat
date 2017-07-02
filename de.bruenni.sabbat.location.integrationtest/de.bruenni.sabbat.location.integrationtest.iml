@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -16,6 +17,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: de.bruenni:sabbat.shared.okta:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:sabbat.location.infrastructure:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: de.bruenni:sabbat.shared:1.0.0" level="project" />
+    <orderEntry type="module" module-name="de.bruenni.sabbat.shared.okta" scope="RUNTIME" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.3.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.3.8.RELEASE" level="project" />

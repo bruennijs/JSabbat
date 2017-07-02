@@ -20,19 +20,24 @@
 
     <!--<bean id="ReactiveMapMyTracksController" class="sabbat.apigateway.location.controller.ReactiveMapMyTracksController" />-->
 
-    <bean id="StartActivityCommand" class="sabbat.apigateway.location.command.StartActivityCommand" lazy-init="true">
+    <bean id="StartActivityCommand" class="sabbat.apigateway.location.command.StartActivityCommand"
+          lazy-init="true"
+          scope="prototype">
         <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
     </bean>
 
-    <bean id="StartActivityCommandDummy" class="sabbat.apigateway.location.command.StartActivityCommandDummy" lazy-init="true" scope="prototype"/>
+    <bean id="StartActivityCommandDummy"
+          class="sabbat.apigateway.location.command.StartActivityCommandDummy"
+          lazy-init="true"
+          scope="prototype"/>
 
-    <bean id="StopActivityCommand" class="sabbat.apigateway.location.command.StopActivityCommand" lazy-init="true">
+    <bean id="StopActivityCommand" class="sabbat.apigateway.location.command.StopActivityCommand" lazy-init="true" scope="prototype">
         <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
     </bean>
 
     <bean id="LocationApiDtoConverter" class="sabbat.apigateway.location.controller.converter.LocationApiDtoConverter" scope="singleton" />
 
-    <bean id="UpdateActivityCommand" class="sabbat.apigateway.location.command.UpdateActivityCommand" lazy-init="true">
+    <bean id="UpdateActivityCommand" class="sabbat.apigateway.location.command.UpdateActivityCommand" lazy-init="true" scope="prototype">
         <property name="ActivityRemoteService" ref="RabbitMqActivityRemoteService"/>
         <property name="DtoConverter" ref="LocationApiDtoConverter"/>
     </bean>

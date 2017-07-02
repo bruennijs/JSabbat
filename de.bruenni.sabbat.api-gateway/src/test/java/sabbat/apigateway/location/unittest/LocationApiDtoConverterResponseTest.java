@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sabbat.apigateway.location.builder.LocationApiDtoConverterBuilder;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
 import sabbat.apigateway.location.controller.dto.ActivityCreatedResponse;
-import sabbat.location.infrastructure.client.dto.ActivityCreatedResponseDto;
+import sabbat.location.api.dto.ActivityCreatedResponseDto;
 
 import java.util.Date;
 

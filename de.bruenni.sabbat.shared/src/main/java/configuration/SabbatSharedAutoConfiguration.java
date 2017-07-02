@@ -71,7 +71,9 @@ public class SabbatSharedAutoConfiguration {
 
         List<UserDetails> userList = Arrays.asList(new User("test", "password", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
                 new User("anmema", "anmema", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
-                new User("bruenni", "bruenni", Arrays.asList(new SimpleGrantedAuthority("USERS"))));
+                new User("bruenni", "bruenni", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new User("user1@test.de", "Sabbat2017", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new User("user2@test.de", "Sabbat2017", Arrays.asList(new SimpleGrantedAuthority("USERS"))));
 
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager(userList);
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

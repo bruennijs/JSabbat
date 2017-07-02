@@ -9,7 +9,8 @@
     <envs />
     <module name="de.bruenni.sabbat.api-gateway" />
     <method>
-      <option name="Gradle.BeforeRunTask" enabled="true" tasks="bootRepackage" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="compileJava" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="assemble" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>

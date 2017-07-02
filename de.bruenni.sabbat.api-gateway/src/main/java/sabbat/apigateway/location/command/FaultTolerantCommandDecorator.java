@@ -39,8 +39,9 @@ public class FaultTolerantCommandDecorator implements ICommand {
 
         return this.decoratee.requestAsync()
                 .timeout(replyResponseTimeout, TimeUnit.MILLISECONDS)
-                .doOnError(exc -> { log.error(String.format("No reply received within timeout but proceed [timeoutInMs=%1s, exception=%2s]", replyResponseTimeout, exc.toString())); })
-                .onErrorResumeNext(Observable.from(Arrays.asList(this.decoratee.getDefault())));
+                .doOnError(exc -> { log.error(String.format("No reply received within timeout [timeoutInMs=%1s, exception=%2s]", replyResponseTimeout, exc.toString())); });
+                //.doOnError(exc -> { log.error(String.format("No reply received within timeout but proceed [timeoutInMs=%1s, exception=%2s]", replyResponseTimeout, exc.toString())); })
+                //.onErrorResumeNext(Observable.from(Arrays.asList(this.decoratee.getDefault())));
     }
 
     @Override

@@ -69,17 +69,22 @@ configurations.all {
             //specifying a fixed version for all libraries with 'org.gradle' group
             if (details.requested.name == 'caffeine') {
                 details.useVersion '2.5.2'
+            } else if (details.requested.name == 'hibernate-core')
+            {
+                details.useVersion '5.2.8.Final'
             }
+
+
         }
     }
 }
 
 dependencies {
     // PROJECT DEPS
-    runtime group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'
-    runtime group: 'de.bruenni', name: 'sabbat.shared', version: '1.0.0'
-    runtime group: 'de.bruenni', name: 'sabbat.shared.okta', version: '1.0.0'
-    runtime group: 'de.bruenni', name: 'sabbat.location.infrastructure', version: '1.0.0'
+    compile group: 'de.bruenni', name: 'sabbat.location.core', version: '1.0.0'
+    compile group: 'de.bruenni', name: 'sabbat.shared', version: '1.0.0'
+    compile group: 'de.bruenni', name: 'sabbat.shared.okta', version: '1.0.0'
+    compile group: 'de.bruenni', name: 'sabbat.location.infrastructure', version: '1.0.0'
 
     // EXTERNAL DEPS
     compile group: 'org.springframework', name: 'spring-context', version: '4.3.8.RELEASE'

@@ -11,11 +11,13 @@ public abstract class ActivityCommandFactory implements IActivityCommandFactory 
 
     /**
      * Spring lookup method
+     *
+     * @param activity_id
      * @param title
      * @param points
      * @return
      */
-    protected abstract ICommand createStartActivityCommand(String title, String points);
+    protected abstract ICommand createStartActivityCommand(String activity_id, String title, String points);
 
     /**
      * Stops activity
@@ -44,7 +46,7 @@ public abstract class ActivityCommandFactory implements IActivityCommandFactory 
     @Override
     public ICommand getCommand(String requestType, String title, String points, String source, String activity_id) throws Exception {
         if (requestType.equals("start_activity")) {
-            return new FaultTolerantCommandDecorator(createStartActivityCommand(title, points), REPLY_TIMEOUT);
+            return new FaultTolerantCommandDecorator(createStartActivityCommand(activity_id, title, points), REPLY_TIMEOUT);
             //return createStartActivityCommand(UUID.randomUUID().toString(), title, points);
         }
         else if (requestType.equals("stop_activity"))

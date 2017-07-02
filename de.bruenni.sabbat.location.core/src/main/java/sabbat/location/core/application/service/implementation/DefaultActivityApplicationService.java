@@ -32,7 +32,6 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
     private Logger logger = LoggerFactory.getLogger(DefaultActivityApplicationService.class);
 
     private IActivityRepository activityRepository;
-    private IAuthenticationService authenticationService;
     private ApplicationEventPublisher applicationEventPublisher;
 
     /**
@@ -41,7 +40,6 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
      */
     public DefaultActivityApplicationService(IActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
-        this.authenticationService = authenticationService;
     }
 
     @Override

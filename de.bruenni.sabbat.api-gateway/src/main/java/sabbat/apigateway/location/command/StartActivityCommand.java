@@ -31,8 +31,9 @@ public class StartActivityCommand implements ICommand {
     private String title;
     private String points;
 
-    public StartActivityCommand(String title, String points) {
-        this.id = Long.valueOf(createNewUniqueId()).toString();
+    public StartActivityCommand(String activityId, String title, String points) {
+        //this.id = Long.valueOf(createNewUniqueId()).toString();
+        this.id = activityId;
         this.title = title;
         this.points = points;
     }

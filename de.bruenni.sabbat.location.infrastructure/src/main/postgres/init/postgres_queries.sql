@@ -144,7 +144,7 @@ SELECT * FROM loc.activity as a " +
 					"WHERE a.aggregateid = 461 " +
 					" AND " +
 					"  (SELECT dtype" +
-					"	FROM a.domainEvents as de " +
+					"	FROM a.domainEvents as de" +
 					"	WHERE TYPE(de) IN (ActivityStartedEvent, ActivityStoppedEvent) AND de.createdOn = MAX(de.createdOn)
 
 select * from loc.activity as  a
@@ -155,9 +155,9 @@ select * from loc.activity as  a
 inner join loc.domainevents as d ON d.aggregateid = a."id"
 ORDER by a.started DESC
 
-truncate table loc.domainevents;
+truncate table loc.activity CASCADE;
 
-select * from loc.activity where uuid = '2101805292';
+select * from loc.activity;
 select * from loc.activity ORDER BY started DESC;
 select * from loc.activityrelation;
 select * from loc.domainevents;

@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import sabbat.apigateway.location.builder.LocationApiDtoConverterBuilder;
 import sabbat.apigateway.location.controller.converter.LocationApiDtoConverter;
-import sabbat.location.infrastructure.client.dto.ActivityUpdateEventDto;
-import sabbat.location.infrastructure.client.dto.TimeSeriesCoordinate;
+import sabbat.location.api.dto.ActivityUpdateEventDto;
+import sabbat.location.api.dto.TimeSeriesCoordinate;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;

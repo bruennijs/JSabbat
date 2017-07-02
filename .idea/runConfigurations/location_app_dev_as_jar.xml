@@ -9,7 +9,7 @@
     <envs />
     <module name="de.bruenni.sabbat.location.app" />
     <method>
-      <option name="Gradle.BeforeRunTask" enabled="true" tasks="bootRepackage" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.app" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="assemble" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.app" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>
