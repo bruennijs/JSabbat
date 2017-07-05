@@ -1,5 +1,0 @@
-INSERT INTO activity(id, userid, started, title) VALUES (uuid(), 37bfd604-9573-4b12-ab3f-45151b613fde, toTimestamp(now()), 'mein erstes Rennen');
-
-SELECT * from activity WHERE userid = 37bfd604-9573-4b12-ab3f-45151b613fde;
-
-UPDATE activity SET finished=toTimestamp(now()) WHERE id = 50f012e3-987b-4eee-8ed1-cb60546b1b9b  AND userid = 37bfd604-9573-4b12-ab3f-45151b613fde;

@@ -142,7 +142,7 @@ services:
   cassandra-dev-1:
     hostname: cassandra-dev-1
     container_name: cassandra-dev-1
-    image: cassandra:3.0.8
+    image: cassandra:3.0.14
     environment:
       - CASSANDRA_CLUSTER_NAME=sabbat-dev
       - CASSANDRA_BROADCAST_ADDRESS=cassandra-dev-1
@@ -155,12 +155,12 @@ services:
       - "9042" #plugin: rabbitmq_management
       - "7000"  # gossip
     network_mode: "bridge"  # default network with bridge adapter docker0
-    # CQLSH: docker run -it --link cassandra-dev-1:cassandra-node --rm cassandra:3.0.8 cqlsh cassandra-node
+    # CQLSH: docker run -it --link cassandra-dev-1:cassandra-node --rm cassandra:3.0.14 cqlsh cassandra-node
 
   cassandra-dev-2:
     hostname: cassandra-dev-2
     container_name: cassandra-dev-2
-    image: cassandra:3.0.8
+    image: cassandra:3.0.14
     environment:
       - CASSANDRA_CLUSTER_NAME=sabbat-dev
       - CASSANDRA_BROADCAST_ADDRESS=cassandra-dev-2
@@ -175,7 +175,6 @@ services:
       - "9042" #plugin: rabbitmq_management
       - "7000"  # gossip
     network_mode: "bridge"  # default network with bridge adapter docker0
-    # CQLSH: docker run -it --link cassandra-dev-2:cassandra-node --rm cassandra:3.0.8 cqlsh cassandra-node
 
   rabbitmq-dev:
     hostname: rabbitmq-dev
