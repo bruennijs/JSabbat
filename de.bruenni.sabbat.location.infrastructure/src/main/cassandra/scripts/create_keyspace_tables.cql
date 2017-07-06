@@ -7,7 +7,8 @@ CREATE TABLE coordinates_by_user (
     activityid varchar,    
     captured timestamp,    
     --bucketyearday tuple<int, int>,	-- to keep all coordinates of same day together
-    long_lat tuple<decimal, decimal>,
+    longitude decimal,
+    latitude decimal,
     --velocity decimal,	-- can be null if calculated in batch
     deltaS decimal,
     PRIMARY KEY ((userid), activityid, captured)
@@ -18,7 +19,8 @@ CREATE TABLE coordinates_by_group (
     captured timestamp,
     activityid varchar,
     userid varchar,
-    long_lat tuple<decimal, decimal>,
+    longitude decimal,
+    latitude decimal,
     velocity decimal,
     deltaS decimal,
     PRIMARY KEY ((groupid), captured)

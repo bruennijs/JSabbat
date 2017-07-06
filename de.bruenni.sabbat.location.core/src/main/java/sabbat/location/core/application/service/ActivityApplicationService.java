@@ -1,14 +1,11 @@
 package sabbat.location.core.application.service;
 
-import infrastructure.common.event.IEventHandler;
 import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.parser.SerializingException;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
-
-import java.util.List;
+import sabbat.location.core.domain.model.coordinate.UserCoordinate;
 
 /**
  * Created by bruenni on 04.07.16.
@@ -35,5 +32,5 @@ public interface ActivityApplicationService {
      * @return
      * @throws Exception
      */
-    Iterable<ActivityCoordinate> update(ActivityUpdateCommand command) throws Exception;
+    Iterable<UserCoordinate> update(ActivityUpdateCommand command) throws Exception;
 }

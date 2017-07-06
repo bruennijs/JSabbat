@@ -36,7 +36,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.4.7.RELEASE'
 
     //compile group: 'org.springframework.data', name: 'spring-data-releasetrain', version: 'Hopper-SR1'
-    compile group: 'org.springframework.data', name: 'spring-data-cassandra', version: '1.4.3.RELEASE'
+    compile group: 'org.springframework.data', name: 'spring-data-cassandra', version: '1.5.4.RELEASE'
 
     compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
 

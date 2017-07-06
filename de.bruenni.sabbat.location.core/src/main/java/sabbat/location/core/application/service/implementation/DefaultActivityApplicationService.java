@@ -1,6 +1,5 @@
 package sabbat.location.core.application.service.implementation;
 
-import identity.IAuthenticationService;
 import identity.UserRef;
 import infrastructure.common.event.Event;
 import infrastructure.identity.AuthenticationFailedException;
@@ -14,10 +13,11 @@ import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
-import sabbat.location.core.domain.model.ActivityCoordinatePrimaryKey;
+import sabbat.location.core.domain.model.coordinate.UserCoordinate;
+import sabbat.location.core.domain.model.coordinate.UserCoordinatePrimaryKey;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
+import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
@@ -77,19 +77,19 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
     }
 
     @Override
-    public Iterable<ActivityCoordinate> update(ActivityUpdateCommand command) throws Exception {
+    public Iterable<UserCoordinate> update(ActivityUpdateCommand command) throws Exception {
 
-        List<ActivityCoordinate> activityCoordinates = toActivityCoordinates(command.getUser(), command);
+        List<UserCoordinate> activityCoordinates = toActivityCoordinates(command.getUser(), command);
 
         return this.activityRepository.insertCoordinate(activityCoordinates);
     }
 
-    private List<ActivityCoordinate> toActivityCoordinates(UserRef userRef, ActivityUpdateCommand command) {
+    private List<UserCoordinate> toActivityCoordinates(UserRef userRef, ActivityUpdateCommand command) {
         return command.getCoordinates().stream().map(coordinate -> {
 
-            ActivityCoordinatePrimaryKey pKey = new ActivityCoordinatePrimaryKey(userRef.getId(), command.getActivityId(), coordinate.getTimestamp());
+            UserCoordinatePrimaryKey pKey = new UserCoordinatePrimaryKey(userRef.getId(), command.getActivityId(), coordinate.getTimestamp());
 
-            return new ActivityCoordinate(pKey, coordinate.getLatitude(), coordinate.getLongitude());
+            return new UserCoordinate(pKey, BigDecimal.valueOf(coordinate.getLatitude()), BigDecimal.valueOf(coordinate.getLongitude()));
         }).collect(Collectors.toList());
     }
 

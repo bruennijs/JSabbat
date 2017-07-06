@@ -2,11 +2,10 @@ package sabbat.location.core.persistence.activity;
 
 import org.springframework.data.repository.CrudRepository;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
+import sabbat.location.core.domain.model.coordinate.UserCoordinate;
 import sabbat.location.core.domain.model.ActivityRelation;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by bruenni on 13.09.16.
@@ -33,14 +32,14 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
      * @param coordinate
      * @return
      */
-    Iterable<ActivityCoordinate> insertCoordinate(List<ActivityCoordinate> coordinate);
+    Iterable<UserCoordinate> insertCoordinate(List<UserCoordinate> coordinate);
 
     /***
      * Gets all coordinates of an activity by its aggregate root
      * @param aggregateRoot
      * @return
      */
-    Iterable<ActivityCoordinate> findActivityCoordinates(Activity aggregateRoot);
+    Iterable<UserCoordinate> findActivityCoordinates(Activity aggregateRoot);
 
     /**
      * Persists the activity relation to database.

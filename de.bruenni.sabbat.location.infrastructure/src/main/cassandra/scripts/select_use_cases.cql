@@ -21,11 +21,13 @@ select * from coordinates_by_user where userid = 'bruenni' AND activityid = 'br_
 
 
 -- USE CASE: current position & current velocity of all users of a group
-select activityid, userid, captured, long_lat, velocity from coordinates_by_group where groupid = 'ol' AND captured >= '2017-6-28T23:00:00Z'
+select activityid, userid, captured, longitude, latitude, velocity from coordinates_by_group where groupid = 'ol' AND captured >= '2017-6-28T23:00:00Z'
 	ORDER BY captured DESC;
 
 -- USE CASE: current average velocity & distance of entire activity of all users of a group
-select SUM(deltaS), MIN(captured), MAX(captured) as distance from coordinates_by_user where userid = 'bruenni' AND activityid = 'br_activity1';
+select SUM(deltaS)  as distance, MIN(captured), MAX(captured) from coordinates_by_user where userid = 'bruenni' AND activityid = 'br_activity1';
+select SUM(deltaS)  as distance, MIN(captured), MAX(captured) from coordinates_by_user where userid = 'anmema' AND activityid = 'an_activity1';
 
+-- NOTE: support only in CQL 3.4.3 (http://cassandra.apache.org/doc/latest/cql/changes.html#id1)
 --select SUM(deltaS) as distance from coordinates_by_user
 --GROUP BY userid, activityid;

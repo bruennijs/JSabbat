@@ -5,9 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.mockito.AdditionalAnswers;
-import org.mockito.stubbing.OngoingStubbing;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.util.List;

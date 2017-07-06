@@ -1,13 +1,11 @@
 package sabbat.location.core.persistence.activity.implementation;
 
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
-import sabbat.location.core.domain.model.ActivityPrimaryKey;
+import sabbat.location.core.domain.model.coordinate.UserCoordinate;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by bruenni on 10.10.16.
@@ -25,12 +23,12 @@ public class ActivityRepositoryDummy implements IActivityRepository {
     }
 
     @Override
-    public Iterable<ActivityCoordinate> insertCoordinate(List<ActivityCoordinate> coordinate) {
+    public Iterable<UserCoordinate> insertCoordinate(List<UserCoordinate> coordinate) {
         return null;
     }
 
     @Override
-    public Iterable<ActivityCoordinate> findActivityCoordinates(Activity aggregateRoot) {
+    public Iterable<UserCoordinate> findActivityCoordinates(Activity aggregateRoot) {
         return null;
     }
 

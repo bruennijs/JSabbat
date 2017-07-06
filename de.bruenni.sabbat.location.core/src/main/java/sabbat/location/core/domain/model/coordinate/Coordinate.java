@@ -1,4 +1,4 @@
-package sabbat.location.core.domain.model;
+package sabbat.location.core.domain.model.coordinate;
 
 import org.springframework.data.cassandra.mapping.Column;
 

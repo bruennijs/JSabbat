@@ -1,4 +1,4 @@
-package sabbat.location.core.domain.model;
+package sabbat.location.core.domain.model.coordinate;
 
 import org.springframework.cassandra.core.PrimaryKeyType;
 import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
@@ -6,13 +6,12 @@ import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by bruenni on 21.09.16.
  */
 @PrimaryKeyClass
-public class ActivityCoordinatePrimaryKey implements Serializable {
+public class UserCoordinatePrimaryKey implements Serializable {
     @PrimaryKeyColumn(name = "userid", ordinal = 0, type = org.springframework.cassandra.core.PrimaryKeyType.PARTITIONED)
     private String userId;
 
@@ -28,7 +27,7 @@ public class ActivityCoordinatePrimaryKey implements Serializable {
      * @param activityid
      * @param captured
      */
-    public ActivityCoordinatePrimaryKey(String userId, String activityid, Date captured) {
+    public UserCoordinatePrimaryKey(String userId, String activityid, Date captured) {
         this.userId = userId;
         this.activityid = activityid;
         this.captured = captured;
@@ -39,7 +38,7 @@ public class ActivityCoordinatePrimaryKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ActivityCoordinatePrimaryKey that = (ActivityCoordinatePrimaryKey) o;
+        UserCoordinatePrimaryKey that = (UserCoordinatePrimaryKey) o;
 
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (activityid != null ? !activityid.equals(that.activityid) : that.activityid != null) return false;
@@ -57,7 +56,7 @@ public class ActivityCoordinatePrimaryKey implements Serializable {
 
     @Override
     public String toString() {
-        return "ActivityCoordinatePrimaryKey{" +
+        return "UserCoordinatePrimaryKey{" +
                 "userId=" + userId +
                 ", activityid=" + activityid +
                 ", captured=" + captured +

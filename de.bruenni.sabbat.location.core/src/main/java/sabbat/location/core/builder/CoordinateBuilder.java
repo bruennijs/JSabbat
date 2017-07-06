@@ -1,6 +1,6 @@
 package sabbat.location.core.builder;
 
-import sabbat.location.core.domain.model.Coordinate;
+import sabbat.location.core.domain.model.coordinate.Coordinate;
 
 /**
  * Created by bruenni on 21.09.16.

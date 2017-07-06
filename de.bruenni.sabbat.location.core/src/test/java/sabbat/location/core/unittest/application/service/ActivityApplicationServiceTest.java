@@ -3,7 +3,6 @@ package sabbat.location.core.unittest.application.service;
 import identity.IAuthenticationService;
 import identity.UserRef;
 import infrastructure.identity.AuthenticationFailedException;
-import infrastructure.identity.Token;
 import infrastructure.parser.SerializingException;
 import infrastructure.util.IterableUtils;
 import org.junit.Assert;
@@ -17,7 +16,7 @@ import sabbat.location.core.application.service.implementation.DefaultActivityAp
 import sabbat.location.core.builder.ActivityApplicationServiceBuilder;
 import sabbat.location.core.builder.AuthenticationServiceBuilder;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
+import sabbat.location.core.domain.model.coordinate.UserCoordinate;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -61,13 +60,13 @@ public class ActivityApplicationServiceTest {
         DefaultActivityApplicationService sut = new ActivityApplicationServiceBuilder()
                 .build();
 
-        List<ActivityCoordinate> coordinateEntities = IterableUtils.stream(sut.update(command)).collect(Collectors.toList());
+        List<UserCoordinate> coordinateEntities = IterableUtils.stream(sut.update(command)).collect(Collectors.toList());
 
         Assert.assertEquals(1, coordinateEntities.size());
 
-        ActivityCoordinate activityCoordinate = coordinateEntities.stream().findFirst().get();
+        UserCoordinate userCoordinate = coordinateEntities.stream().findFirst().get();
 
-        Assert.assertEquals(command.getActivityId(), activityCoordinate.getKey().getActivityid());
-        Assert.assertEquals(user.getId(), activityCoordinate.getKey().getUserId());
+        Assert.assertEquals(command.getActivityId(), userCoordinate.getKey().getActivityid());
+        Assert.assertEquals(user.getId(), userCoordinate.getKey().getUserId());
     }
 }
