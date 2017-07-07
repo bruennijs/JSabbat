@@ -8,9 +8,14 @@ import notification.UserNotificationService;
 import notification.TextNotificationContent;
 import org.springframework.context.event.EventListener;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
+import sabbat.location.core.domain.events.activity.ActivityStoppedEvent;
 import sabbat.location.core.domain.model.Activity;
 import sabbat.location.core.domain.model.user.LocationUser;
 import sabbat.location.core.persistence.activity.IActivityRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by bruenni on 22.06.17.
@@ -30,27 +35,57 @@ public class NotificationDomainService {
 	@EventListener
 	public void onActivityRelated(ActivityRelationCreatedEvent event)
 	{
-		// 1. check whether user wants to be informed about activities active simultanously
-		User user1 = accountService.getUserById(event.getAggregate().getUserId());
-		LocationUser locationUser1 = LocationUser.from(user1);
+        // 1. check whether user wants to be informed about activities active simultanously
+        User user1 = accountService.getUserById(event.getAggregate().getUserId());
+        LocationUser locationUser1 = LocationUser.from(user1);
 
-		// 2. find related activity
-		Activity relatedActivity = activityRepository.findOne(event.getAttributes().getRelatedActivityId());
+        // 2. find related activity
+        Activity relatedActivity = activityRepository.findOne(event.getAttributes().getRelatedActivityId());
 
-		User user2 = accountService.getUserById(relatedActivity.getUserId());
-		LocationUser locationUser2 = LocationUser.from(user2);
+        User user2 = accountService.getUserById(relatedActivity.getUserId());
+        LocationUser locationUser2 = LocationUser.from(user2);
 
-		// 2. notify user if enabled
-		if (locationUser1.getNotificationEnabled())
-		{
-			notificationService.notify(buildNotificationMessage(user1, user2, relatedActivity));
-		}
+        // 2. notify user if enabled
+        if (locationUser1.getNotificationEnabled())
+        {
+            notificationService.notify(buildNotificationMessage(user1, user2, relatedActivity));
+        }
 
-		if (locationUser2.getNotificationEnabled())
-		{
-			notificationService.notify(buildNotificationMessage(user2, user1, event.getAggregate()));
-		}
+        if (locationUser2.getNotificationEnabled())
+        {
+            notificationService.notify(buildNotificationMessage(user2, user1, event.getAggregate()));
+        }
 	}
+
+	@EventListener
+	public void onActivityStopped(ActivityStoppedEvent stopEvent)
+	{
+        User usersOfStoppedActivity = this.accountService.getUserById(stopEvent.getAggregate().getUserId());
+
+        // find all related activities and notify the owning users about the stop
+        List<User> usersOfRelatedActivities = stopEvent.getAggregate().getRelatedActivities().stream().map(related -> this.accountService.getUserById(related.getUserId())).collect(Collectors.toList());
+
+        usersOfRelatedActivities.forEach(userOfRelatedActivity ->
+        {
+            LocationUser locationUser = LocationUser.from(userOfRelatedActivity);
+            if (locationUser.getNotificationEnabled())
+            {
+                notificationService.notify(buildNotificationMessageOnStop(userOfRelatedActivity, usersOfStoppedActivity, stopEvent.getAggregate()));
+            }
+        });
+    }
+
+    private NotificationMessage<? extends NotificationContent> buildNotificationMessageOnStop(User userToSendTo, User userOfStoppedActivity, Activity activity) {
+
+        String contextText = String.format("The user [%1s] stopped its active activity [%2s] at [%3s]. Take a look at the activty stats!",
+                userOfStoppedActivity.getName(),
+                activity.getTitle(),
+                activity.getStarted().toString());
+
+        return new NotificationMessage<TextNotificationContent>(userToSendTo,
+                "Sabbat location: User is active!",
+                new TextNotificationContent(contextText));
+    }
 
 	private NotificationMessage<? extends NotificationContent> buildNotificationMessage(User userToSendTo, User userAlsoActive, Activity activity) {
 
@@ -63,4 +98,10 @@ public class NotificationDomainService {
 			"Sabbat location: User is active!",
 			new TextNotificationContent(contextText));
 	}
+
+	private LocationUser getLocationUserById(String userId)
+    {
+        User user1 = accountService.getUserById(userId);
+        return LocationUser.from(user1);
+    }
 }
