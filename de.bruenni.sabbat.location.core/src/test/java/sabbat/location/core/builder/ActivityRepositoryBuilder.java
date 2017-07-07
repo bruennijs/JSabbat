@@ -17,7 +17,6 @@ public class ActivityRepositoryBuilder {
     public IActivityRepository buildmocked() {
         IActivityRepository mockedObject = mock(IActivityRepository.class);
         when(mockedObject.save(any(Activity.class))).then(AdditionalAnswers.returnsFirstArg());
-        when(mockedObject.insertCoordinate(any(List.class))).then(AdditionalAnswers.returnsFirstArg());
         return mockedObject;
     }
 }

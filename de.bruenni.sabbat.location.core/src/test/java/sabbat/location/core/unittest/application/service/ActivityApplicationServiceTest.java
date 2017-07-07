@@ -48,25 +48,4 @@ public class ActivityApplicationServiceTest {
                     .withUserRef(user)
                     .buildMocked();
     }
-
-    @Test
-    public void When_update_expect_ActivityCoordinates_userid_equals_userref_userid() throws Exception {
-        UserRef user = new UserRef("userid", "username", new ArrayList<>());
-
-        TimeCoordinate timeCoordinate = new TimeCoordinate(34.2, 22.889, new Date());
-
-        ActivityUpdateCommand command = new ActivityUpdateCommand(user, UUID.randomUUID().toString(), Arrays.asList(timeCoordinate), null, null);
-
-        DefaultActivityApplicationService sut = new ActivityApplicationServiceBuilder()
-                .build();
-
-        List<UserCoordinate> coordinateEntities = IterableUtils.stream(sut.update(command)).collect(Collectors.toList());
-
-        Assert.assertEquals(1, coordinateEntities.size());
-
-        UserCoordinate userCoordinate = coordinateEntities.stream().findFirst().get();
-
-        Assert.assertEquals(command.getActivityId(), userCoordinate.getKey().getActivityid());
-        Assert.assertEquals(user.getId(), userCoordinate.getKey().getUserId());
-    }
 }

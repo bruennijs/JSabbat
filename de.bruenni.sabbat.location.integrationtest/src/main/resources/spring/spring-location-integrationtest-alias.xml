@@ -12,4 +12,7 @@
     <alias name="jpaActivityRepository" alias="activityRepository"/>
     <alias name="oktaAccountService" alias="accountService"/>
     <alias name="javaxEmailSender" alias="emailSender"/>
+
+    <alias name="userCoordinateRepository" alias="cassandraUserCoordinateRepository"/>
+    <alias name="measurementApplicationService" alias="DefaultMeasuermentApplicationService"/>
 </beans>

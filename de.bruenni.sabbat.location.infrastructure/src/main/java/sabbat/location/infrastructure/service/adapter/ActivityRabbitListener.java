@@ -128,7 +128,8 @@ public class ActivityRabbitListener {
 
             ActivityUpdateCommand command = this.dtoUpdateConverter.convert(new Tuple2<>(userRef, dto));
 
-            this.applicationService.update(command);
+            // TBD: refactor and exclude into own listener
+            //this.applicationService.insert(command);
 
             ack(message, channel);
         }

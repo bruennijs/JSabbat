@@ -25,12 +25,4 @@ public interface ActivityApplicationService {
      * @throws Exception
      */
     void stop(String id) throws Exception;
-
-    /**
-     * Stores to persistence and executes business logic.
-     * @param command
-     * @return
-     * @throws Exception
-     */
-    Iterable<UserCoordinate> update(ActivityUpdateCommand command) throws Exception;
 }

@@ -39,4 +39,13 @@ public class TimeCoordinate {
     public Date getTimestamp() {
         return timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "TimeCoordinate{" +
+                "longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

@@ -27,21 +27,6 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
     Iterable<Activity> findActiveActivitiesByUserIds(List<String> userIds);
 
     /**
-     * Inserts coordinate time series entry as composition of Activity aggregate.
-     * Batch insert of all coordinates.
-     * @param coordinate
-     * @return
-     */
-    Iterable<UserCoordinate> insertCoordinate(List<UserCoordinate> coordinate);
-
-    /***
-     * Gets all coordinates of an activity by its aggregate root
-     * @param aggregateRoot
-     * @return
-     */
-    Iterable<UserCoordinate> findActivityCoordinates(Activity aggregateRoot);
-
-    /**
      * Persists the activity relation to database.
      * @param relation
      * @return

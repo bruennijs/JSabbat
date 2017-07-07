@@ -1,10 +1,12 @@
 package sabbat.location.core.domain.model.coordinate;
 
+import org.springframework.cassandra.core.Ordering;
 import org.springframework.cassandra.core.PrimaryKeyType;
 import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -12,14 +14,22 @@ import java.util.Date;
  */
 @PrimaryKeyClass
 public class UserCoordinatePrimaryKey implements Serializable {
-    @PrimaryKeyColumn(name = "userid", ordinal = 0, type = org.springframework.cassandra.core.PrimaryKeyType.PARTITIONED)
+
+    public static final String COLUMN_USER_ID = "userid";
+
+    public static final String COLUMN_ACTIVITY_ID = "activityid";
+
+    @PrimaryKeyColumn(name = COLUMN_USER_ID, ordinal = 0, type = org.springframework.cassandra.core.PrimaryKeyType.PARTITIONED)
     private String userId;
 
-    @PrimaryKeyColumn(name = "activityid", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(name = COLUMN_ACTIVITY_ID, ordinal = 1, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.ASCENDING)
     private String activityid;
 
-    @PrimaryKeyColumn(name = "captured", ordinal = 2, type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(name = "captured", ordinal = 2, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
     private Date captured;
+
+    public UserCoordinatePrimaryKey() {
+    }
 
     /**
      * Constructor

@@ -2,7 +2,6 @@ package sabbat.location.infrastructure.persistence.activity;
 
 import org.springframework.beans.factory.annotation.Value;
 import sabbat.location.core.domain.model.Activity;
-import sabbat.location.core.domain.model.ActivityCoordinate;
 import sabbat.location.core.domain.model.ActivityRelation;
 import sabbat.location.core.persistence.activity.IActivityRepository;
 import sabbat.location.infrastructure.persistence.JpaRepositoryBase;
@@ -47,16 +46,6 @@ public class JpaActivityRepository extends JpaRepositoryBase implements IActivit
 					"WHERE a.userId IN :userIds AND de2.id IS NULL", Activity.class)
 			.setParameter("userIds", userIds)
 			.getResultList());
-	}
-
-	@Override
-	public Iterable<ActivityCoordinate> insertCoordinate(List<ActivityCoordinate> list) {
-		return null;
-	}
-
-	@Override
-	public Iterable<ActivityCoordinate> findActivityCoordinates(Activity activity) {
-		return null;
 	}
 
 	@Override

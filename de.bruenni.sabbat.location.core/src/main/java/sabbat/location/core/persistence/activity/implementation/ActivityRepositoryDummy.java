@@ -22,15 +22,6 @@ public class ActivityRepositoryDummy implements IActivityRepository {
         return null;
     }
 
-    @Override
-    public Iterable<UserCoordinate> insertCoordinate(List<UserCoordinate> coordinate) {
-        return null;
-    }
-
-    @Override
-    public Iterable<UserCoordinate> findActivityCoordinates(Activity aggregateRoot) {
-        return null;
-    }
 
     @Override
     public ActivityRelation save(ActivityRelation relation) {

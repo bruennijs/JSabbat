@@ -77,23 +77,6 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
     }
 
     @Override
-    public Iterable<UserCoordinate> update(ActivityUpdateCommand command) throws Exception {
-
-        List<UserCoordinate> activityCoordinates = toActivityCoordinates(command.getUser(), command);
-
-        return this.activityRepository.insertCoordinate(activityCoordinates);
-    }
-
-    private List<UserCoordinate> toActivityCoordinates(UserRef userRef, ActivityUpdateCommand command) {
-        return command.getCoordinates().stream().map(coordinate -> {
-
-            UserCoordinatePrimaryKey pKey = new UserCoordinatePrimaryKey(userRef.getId(), command.getActivityId(), coordinate.getTimestamp());
-
-            return new UserCoordinate(pKey, BigDecimal.valueOf(coordinate.getLatitude()), BigDecimal.valueOf(coordinate.getLongitude()));
-        }).collect(Collectors.toList());
-    }
-
-    @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
