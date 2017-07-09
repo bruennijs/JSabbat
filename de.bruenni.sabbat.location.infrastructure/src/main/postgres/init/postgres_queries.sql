@@ -147,8 +147,9 @@ SELECT * FROM loc.activity as a " +
 					"	FROM a.domainEvents as de" +
 					"	WHERE TYPE(de) IN (ActivityStartedEvent, ActivityStoppedEvent) AND de.createdOn = MAX(de.createdOn)
 
-select * from loc.activity as  a
+select a.uuid, a2.uuid from loc.activity as  a
 inner join loc.activityrelation as r ON a."id" = r.activityid1 OR a."id" = r.activityid2
+inner join loc.activity as a2 ON a2."id" = r.activityid1 OR a2."id" = r.activityid2
 ORDER by a.started DESC
 
 select * from loc.activity as  a
@@ -156,6 +157,10 @@ inner join loc.domainevents as d ON d.aggregateid = a."id"
 ORDER by a.started DESC
 
 truncate table loc.activity CASCADE;
+commit;
+
+
+
 
 select * from loc.activity;
 select * from loc.activity ORDER BY started DESC;

@@ -10,11 +10,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Created by bruenni on 15.10.16.
  */
-@RunWith(JUnit4.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class JwtAuthenticationServiceTest {
     @Test
     public void When_create_from_userref_expect_verify_succeeds_with_equal_userref_parsed() throws AuthenticationFailedException {

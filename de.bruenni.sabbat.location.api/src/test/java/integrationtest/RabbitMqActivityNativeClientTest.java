@@ -5,7 +5,6 @@ import builder.ActivityUpdateEventDtoBuilder;
 import builder.TimeSeriesCoordinateBuilder;
 import infrastructure.parser.SerializingException;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,9 @@ import sabbat.location.api.dto.TimeSeriesCoordinate;
 import sabbat.location.api.implementations.RabbitMqActivityRemoteService;
 
 import java.io.IOException;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by bruenni on 28.08.16.
@@ -50,7 +51,7 @@ public class RabbitMqActivityNativeClientTest {
 
         ActivityCreateRequestDto dto = new ActivityCreateRequestDtoBuilder().build();
 
-        Observable<ActivityCreatedResponseDto> startObservable = Client.start(dto);
+        Observable<ActivityCreatedResponseDto> startObservable = Client.start(dto, "tokenvalue");
         ActivityCreatedResponseDto response = startObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
 
         Assert.assertEquals(dto.getId(), response.getId());

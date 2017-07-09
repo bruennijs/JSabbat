@@ -25,7 +25,7 @@
         <logger name="org.springframework" level="INFO">
         </logger>
 
-        <Root level="INFO">
+        <Root level="DEBUG">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
         </Root>

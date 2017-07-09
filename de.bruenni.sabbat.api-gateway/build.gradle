@@ -4,7 +4,7 @@ version ''
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -18,22 +18,21 @@ jar {
 }
 
 buildscript {
+    ext {
+        springVersion = '4.3.9.RELEASE'
+        springBootVersion = '1.5.4.RELEASE'
+    }
     repositories {
         mavenCentral()
-        mavenLocal()
-        maven { url "http://repo.spring.io/release" }
-        maven { url "http://repo.spring.io/milestone" }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.7.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url "http://repo.spring.io/release" }
-    maven { url "http://repo.spring.io/milestone" }
 }
 
 dependencies {
@@ -43,23 +42,20 @@ dependencies {
     //compile project(':de.bruenni.sabbat.location.core');
 
     // EXTERNAL DEPS
-    compile group: 'org.springframework', name: 'spring-context', version: '4.3.8.RELEASE'
-    compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
-    //compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.12.1.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.4.7.RELEASE'
+    //compile group: 'org.springframework.boot', name: 'spring-boot', version: '${springBootVersion}'
 
     // security
-    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.1.3.RELEASE'
-    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.1.3.RELEASE'
-    compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.1.3.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.3.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.2.3.RELEASE'
 
-    compile ("org.springframework.boot:spring-boot-starter-web:1.4.7.RELEASE")
+    compile ("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
             {
                 exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
             }
 
-    compile group: 'org.springframework.amqp', name: 'spring-amqp', version: '1.6.2.RELEASE'
-    compile group: 'org.springframework.amqp', name: 'spring-rabbit', version: '1.6.2.RELEASE'
+    compile group: 'org.springframework.amqp', name: 'spring-amqp', version: '1.7.3.RELEASE'
+    compile group: 'org.springframework.amqp', name: 'spring-rabbit', version: '1.7.3.RELEASE'
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.8'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.8'
@@ -81,11 +77,11 @@ dependencies {
     //compile group: 'org.springframework', name: 'spring-web', version: '4.3.3.RELEASE'
 
     // ==== TEST ====
-    testCompile group: 'org.springframework', name: 'spring-web', version: '4.3.8.RELEASE'
-    testCompile group: 'org.springframework', name: "spring-test", version: '4.3.8.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.8.9'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-test', version: '1.4.7.RELEASE'
+    testCompile ("org.springframework:spring-web:${springVersion}")
+    testCompile ("org.springframework:spring-test:${springVersion}")
+    testCompile ("org.springframework.boot:spring-boot-test:${springBootVersion}")
 }
 
 dependencies {

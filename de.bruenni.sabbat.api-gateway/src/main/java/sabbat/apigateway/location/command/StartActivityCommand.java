@@ -59,7 +59,7 @@ public class StartActivityCommand implements ICommand {
 
 
         // 2. start activity
-        return this.ActivityRemoteService.start(dto).map(resp -> resp);
+        return this.ActivityRemoteService.start(dto, token.getValue()).map(resp -> resp);
     }
 
     @Override

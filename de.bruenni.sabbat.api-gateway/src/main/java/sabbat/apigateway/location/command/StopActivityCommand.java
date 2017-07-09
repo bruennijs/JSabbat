@@ -1,5 +1,6 @@
 package sabbat.apigateway.location.command;
 
+import infrastructure.parser.SerializingException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import rx.Observable;
 import sabbat.location.api.IActivityRemoteService;
@@ -34,13 +35,13 @@ public class StopActivityCommand implements ICommand {
     }
 
     @Override
-    public Observable<IActivityResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+    public Observable<IActivityResponseDto> requestAsync() throws InterruptedException, ExecutionException, TimeoutException, IOException, SerializingException {
 
         // 1. get credentials
         infrastructure.identity.Token token = (infrastructure.identity.Token) SecurityContextHolder.getContext().getAuthentication().getDetails();
 
         // 2. start activity
-        return this.ActivityRemoteService.stop(transformStopRequest(this.id)).map(resp -> resp);
+        return this.ActivityRemoteService.stop(transformStopRequest(this.id), token.getValue()).map(resp -> resp);
     }
 
     @Override

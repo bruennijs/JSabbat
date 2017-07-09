@@ -24,7 +24,7 @@ import java.util.Arrays;
         {
                 CassandraAutoConfiguration.class,
                 CassandraDataAutoConfiguration.class,
-                RabbitAutoConfiguration.class,
+                RabbitAutoConfiguration.class
                 //JacksonAutoConfiguration.class
         })
 // contains componentscan to find @Configuratuion annotated class -> instead give spring boot these classes by calling SpringApplication.run(...) with these classes

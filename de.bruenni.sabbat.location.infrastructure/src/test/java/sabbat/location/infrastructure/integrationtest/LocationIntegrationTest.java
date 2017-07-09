@@ -58,7 +58,7 @@ public class LocationIntegrationTest {
                 .timeout(2000, TimeUnit.MILLISECONDS)
                 .toBlocking();
 
-        Observable<ActivityCreatedResponseDto> startObservable = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build());
+        Observable<ActivityCreatedResponseDto> startObservable = ActivityRemoteService.start(new ActivityCreateRequestDtoBuilder().build(), "tokenvalue");
         ActivityCreatedResponseDto responseDto = startObservable.timeout(5000, TimeUnit.MILLISECONDS).toBlocking().single();
         // get respons eform event
         IActivityResponseDto eventResponseDto = eventObs.first();

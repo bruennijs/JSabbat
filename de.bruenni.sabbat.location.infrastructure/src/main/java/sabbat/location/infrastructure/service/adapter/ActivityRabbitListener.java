@@ -3,7 +3,10 @@ package sabbat.location.infrastructure.service.adapter;
 import com.rabbitmq.client.Channel;
 import identity.IAuthenticationService;
 import identity.UserRef;
+import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.Token;
+import infrastructure.parser.ParserException;
+import infrastructure.parser.SerializingException;
 import infrastructure.util.Tuple2;
 import jdk.nashorn.internal.parser.DateParser;
 import org.slf4j.Logger;
@@ -20,9 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
-import sabbat.location.api.dto.ActivityCreateRequestDto;
-import sabbat.location.api.dto.ActivityCreatedResponseDto;
-import sabbat.location.api.dto.ActivityUpdateEventDto;
+import sabbat.location.api.dto.*;
 import sabbat.location.core.application.service.ActivityApplicationService;
 import sabbat.location.core.application.service.command.ActivityCreateCommand;
 import sabbat.location.core.application.service.command.ActivityUpdateCommand;
@@ -65,43 +66,17 @@ public class ActivityRabbitListener {
     //@Header("correlationId") String correlationId
     public Message onCommandMessage(Message message,
                              @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey,
+                                    @Header(value = "AuthorizationToken") String accessToken,
                              Channel channel,
-                             @Header(AmqpHeaders.CORRELATION_ID) byte[] correlationId) throws Exception {
-        logger.debug("--> command [" + message.toString() + "cid=" + correlationId + ",routingkey=" + routingKey + "]");
+                             @Header(AmqpHeaders.CORRELATION_ID) String correlationId) throws Exception {
+        logger.debug("--> command [" + message.toString() + "cid=" + correlationId + ",routingkey=" + routingKey + ", accessToken=" + accessToken + "]");
 
         try
         {
+            Message responseMessage = executeDto(message, routingKey, accessToken, channel, correlationId);
 
-            if (routingKey.equals(ActivityStartRoutingKey)) {
+            logger.debug("<-- response [" + responseMessage.toString() + "cid=" + correlationId + "]");
 
-
-                ActivityCreateRequestDto dto = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
-
-                // veryify token
-                UserRef userRef = authenticationService.verify(Token.valueOf(dto.getIdentityToken()));
-
-                ActivityCreateCommand command = dtoCreateConverter.convert(new Tuple2<>(userRef, dto));
-
-                Activity activity = this.applicationService.start(command);
-
-                ack(message, channel);
-
-                //Observable.from(activityStartFuture)
-                ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getUuid());
-
-                MessageProperties msgProps = MessagePropertiesBuilder.newInstance()
-                        .setCorrelationId(correlationId)
-                        .setContentType(MessageProperties.CONTENT_TYPE_JSON)
-                        .build();
-
-                Message responseMessage = MessageBuilder.withBody(dtoParser.serialize(dtoResponse).getBytes())
-                        .andProperties(msgProps)
-                        .build();
-
-                logger.debug("<-- response [" + responseMessage.toString() + "cid=" + correlationId + "]");
-
-                return responseMessage;
-            }
         }
         catch (Exception exception)
         {
@@ -110,6 +85,80 @@ public class ActivityRabbitListener {
 
         logger.error("Message could not be handled -> return message == null");
         return null;
+    }
+
+    private Message executeDto(Message message, @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey, @Header(value = "AuthorizationToken") String accessToken, Channel channel, @Header(AmqpHeaders.CORRELATION_ID) String correlationId) throws Exception {
+        // veryify token
+        UserRef userRef = authenticationService.verify(Token.valueOf(accessToken));
+
+        if (routingKey.equals(ActivityStartRoutingKey)) {
+            return executeStart(message, userRef, channel, correlationId);
+        }else if (routingKey.equals(ActivityStopRoutingKey))
+        {
+            return executeStop(message, channel, correlationId);
+        }
+
+        throw new Exception("Message not supported");
+    }
+
+    /***
+     * Handling of Start DTO
+     * @param message
+     * @param userRef
+     * @param channel
+     * @param correlationId
+     * @return
+     * @throws infrastructure.parser.ParserException
+     * @throws AuthenticationFailedException
+     * @throws SerializingException
+     * @throws IOException
+     */
+    private Message executeStart(Message message, @Header(value = "AuthorizationToken") UserRef userRef, Channel channel, @Header(AmqpHeaders.CORRELATION_ID) String correlationId) throws infrastructure.parser.ParserException, AuthenticationFailedException, SerializingException, IOException {
+        ActivityCreateRequestDto dto = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
+
+        ActivityCreateCommand command = dtoCreateConverter.convert(new Tuple2<>(userRef, dto));
+
+        Activity activity = this.applicationService.start(command);
+
+        ack(message, channel);
+
+        //Observable.from(activityStartFuture)
+        ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getUuid());
+
+        Message responseMessage = serializeResponseDto(correlationId, dtoResponse);
+
+        return responseMessage;
+    }
+
+    private <T> Message serializeResponseDto(String correlationId, T dto) throws SerializingException {
+        MessageProperties msgProps = MessagePropertiesBuilder.newInstance()
+                .setCorrelationIdString(correlationId)
+                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                .build();
+
+        return MessageBuilder.withBody(dtoParser.serialize(dto).getBytes())
+                .andProperties(msgProps)
+                .build();
+    }
+
+    /***
+     * Handling of Stop DTO
+     * @param message
+     * @param channel
+     * @param correlationId
+     * @return
+     * @throws Exception
+     */
+    private Message executeStop(Message message, Channel channel, String correlationId) throws Exception {
+        ActivityStopRequestDto dto = dtoParser.parse(message.getBody(), ActivityStopRequestDto.class);
+
+        this.applicationService.stop(dto.getId());
+
+        ack(message, channel);
+
+        ActivityStoppedResponseDto responseDto = new ActivityStoppedResponseDto(dto.getId());
+
+        return serializeResponseDto(correlationId, responseDto);
     }
 
     @RabbitListener(queues = "${location.activity.queue.tracking}",

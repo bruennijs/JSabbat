@@ -2,13 +2,9 @@ package sabbat.apigateway.location.config;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.boot.context.embedded.ServletContextInitializer;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
 
 /**
  * Created by bruenni on 07.07.16.

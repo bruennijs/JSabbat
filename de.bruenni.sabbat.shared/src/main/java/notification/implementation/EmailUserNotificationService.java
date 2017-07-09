@@ -33,6 +33,8 @@ public class EmailUserNotificationService implements UserNotificationService {
 	@Override
 	public Observable<NotificationMessage<? extends NotificationContent>> notify(NotificationMessage<? extends NotificationContent> message) {
 
+		Log.debug(String.format("notify message! [%1%]", message));
+
 		AsyncSubject<NotificationMessage<? extends NotificationContent>> returnSubject = AsyncSubject.create();
 
 		executor.execute(() ->

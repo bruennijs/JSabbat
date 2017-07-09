@@ -14,19 +14,23 @@ import java.util.concurrent.TimeoutException;
  */
 public interface IActivityRemoteService {
 
+    String AUTHORIZATION_TOKEN = "AuthorizationToken";
+
     /***
      * Creates new activity.
      * @param command
      * @return
      */
-    rx.Observable<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command) throws InterruptedException, ExecutionException, TimeoutException, SerializingException;
+    rx.Observable<ActivityCreatedResponseDto> start(@Payload ActivityCreateRequestDto command,
+                                                    @Header(name = AUTHORIZATION_TOKEN) String accessToken) throws InterruptedException, ExecutionException, TimeoutException, SerializingException;
 
     /**
      * Stops activity
      * @param command
      * @return
      */
-    rx.Observable<ActivityStoppedResponseDto> stop(@Payload ActivityStopRequestDto command);
+    rx.Observable<ActivityStoppedResponseDto> stop(@Payload ActivityStopRequestDto command,
+                                                   @Header(name = AUTHORIZATION_TOKEN) String accessToken) throws SerializingException;
 
     /**
      * Update of activity with new geo points, heartrate and so on.

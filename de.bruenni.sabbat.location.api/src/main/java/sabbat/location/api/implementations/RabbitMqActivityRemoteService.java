@@ -7,6 +7,7 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.AsyncRabbitTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.RequestEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -58,16 +59,14 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public Observable<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command) throws InterruptedException, ExecutionException, TimeoutException, SerializingException {
+    public Observable<ActivityCreatedResponseDto> start(ActivityCreateRequestDto command, String accessToken) throws InterruptedException, ExecutionException, TimeoutException, SerializingException {
 
         try {
             logger.debug("Start activity [" + command.toString() + "]");
 
             String dtoJson = parser.serialize(command);
 
-            MessageProperties messageProperties = new MessageProperties();
-            messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
-            messageProperties.setCorrelationIdString(UUID.randomUUID().toString());
+            MessageProperties messageProperties = buildMessageProperties(accessToken);
 
             AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.startRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
 
@@ -88,11 +87,38 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
     }
 
     @Override
-    public Observable<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command) {
-        ReplaySubject<ActivityStoppedResponseDto> subject = ReplaySubject.create();
-        subject.onNext(new ActivityStoppedResponseDto(command.getId()));
-        subject.onCompleted();
-        return subject;
+    public Observable<ActivityStoppedResponseDto> stop(ActivityStopRequestDto command, String accessToken) throws SerializingException {
+        try {
+            logger.debug("Stop activity [" + command.toString() + "]");
+
+            String dtoJson = parser.serialize(command);
+
+            MessageProperties messageProperties = buildMessageProperties(accessToken);
+
+            AsyncRabbitTemplate.RabbitMessageFuture responseFuture = asyncRabbitTemplate.sendAndReceive(this.stopRoutingKey, new org.springframework.amqp.core.Message(dtoJson.getBytes(StandardCharsets.US_ASCII), messageProperties));
+
+            return Observable.from(responseFuture).map(msg -> {
+                try {
+                    return parser.parse(msg.getBody(), ActivityStoppedResponseDto.class);
+                } catch (ParserException e) {
+                    logger.error("Parse DTO failed", e);
+                    return null;
+                }
+            });
+        }
+        catch (Exception exception)
+        {
+            logger.error("Start activity failed", exception);
+            throw exception;
+        }
+    }
+
+    private MessageProperties buildMessageProperties(String accessToken) {
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setHeader("AuthorizationToken", accessToken);
+        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+        messageProperties.setCorrelationIdString(UUID.randomUUID().toString());
+        return messageProperties;
     }
 
     @Override

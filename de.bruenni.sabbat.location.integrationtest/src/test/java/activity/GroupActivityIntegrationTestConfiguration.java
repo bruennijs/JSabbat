@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import rx.Observable;
@@ -26,8 +28,8 @@ import sabbat.location.infrastructure.CassandraAutoConfiguration;
 @EnableAutoConfiguration(exclude = {
 	CassandraDataAutoConfiguration.class,
 	CassandraAutoConfiguration.class,
-	AmqpServiceAutoConfiguration.class})
-@ComponentScan
+	AmqpServiceAutoConfiguration.class,
+	org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration.class})
 public class GroupActivityIntegrationTestConfiguration {
 
 	private static Logger Log = LoggerFactory.getLogger(GroupActivityIntegrationTestConfiguration.class);

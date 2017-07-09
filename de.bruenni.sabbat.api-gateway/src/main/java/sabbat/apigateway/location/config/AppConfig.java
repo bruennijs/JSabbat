@@ -1,15 +1,12 @@
 package sabbat.apigateway.location.config;
 
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.filter.Slf4jRequestLoggingFilter;
 
 /**
@@ -17,7 +14,6 @@ import org.springframework.web.filter.Slf4jRequestLoggingFilter;
  * ONLY loaded on application startup , not is test
  */
 @Configuration
-//@Profile({"dev", "prod"})
 @ImportResource(locations =
         {
                 "classpath:spring/spring-api-gateway.xml"

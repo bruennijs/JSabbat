@@ -68,12 +68,12 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
     links:
       - rabbitmq-dev:rabbitmq-host
-      - cassandra-v22-dev-1:cassandra-host-1
-      - cassandra-v22-dev-2:cassandra-host-2
+      - cassandra-dev-1:cassandra-host-1
+      - cassandra-dev-2:cassandra-host-2
 
 
     depends_on:
-      - cassandra-v22-dev-1
+      - cassandra-dev-1
       - rabbitmq-dev
 
     network_mode: "bridge"  # default network with bridge adapter docker0
@@ -88,12 +88,12 @@ services:
           - SPRING_PROFILES_ACTIVE=prod
         links:
           - rabbitmq-dev:rabbitmq-host
-          - cassandra-v22-dev-1:cassandra-host-1
-          - cassandra-v22-dev-2:cassandra-host-1
+          - cassandra-dev-1:cassandra-host-1
+          - cassandra-dev-2:cassandra-host-1
 
 
         depends_on:
-          - cassandra-v22-dev-1
+          - cassandra-dev-1
           - rabbitmq-dev
 
         network_mode: "bridge"  # default network with bridge adapter docker0
@@ -176,12 +176,21 @@ services:
       - "7000"  # gossip
     network_mode: "bridge"  # default network with bridge adapter docker0
 
+#  rabbitmq-build:
+#    build:
+#      context: ./docker/rabbitmq
+#      dockerfile: Dockerfile
+#    image: bruenni/rabbitmq-initialization:3.6.4
+
   rabbitmq-dev:
+    # NOTE
+    # No need for rabbitmqctl from different container or management stuff
+    # -> this image has an enabled management console; just go in the runninig container and change password for guest and call:
+    # 1. docker exec -it rabbitmq-dev /bin/bash
+    # 2. http://localhost:15672/ -> login with guest:newpassword
     hostname: rabbitmq-dev
     container_name: rabbitmq-dev
-    image: rabbitmq:3.6.4
-    #ports:  #Expose ports. Either specify both ports (HOST:CONTAINER), or just the container port (a random host port will be chosen).
-     #- "5672:5672"
+    image: rabbitmq:3.6.4-management
 
     #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
     expose:
@@ -191,7 +200,7 @@ services:
     - "15672:15672"
     volumes:
      - /opt/rabbitmq-sabbat:/var/lib/rabbitmq
-    network_mode: "bridge"  # default network with bridge adapter docker0
+    network_mode: "bridge"  # default network with bridge adapter docker
 
   rabbitmq-prod:
     hostname: rabbitmq-prod
@@ -215,7 +224,7 @@ services:
   rabbitmq-ctl:
     #docker run -it --name rabbitmq-ctl --link some-rabbit:my-rabbit -e RABBITMQ_ERLANG_COOKIE='secret cookie here' rabbitmq:3 bash
     #docker run -it --name rabbitmq-ctl --add-host rabbit:138.68.75.155 -e RABBITMQ_ERLANG_COOKIE='HXZQALONJINGVZQBVBMZ' rabbitmq:3.6.4 bash
-    #docker run -it --name rabbitmq-ctl --link rabbitmq-dev:rabbit -e RABBITMQ_ERLANG_COOKIE='DDXFNKDEXRBEGNIOHNPO' rabbitmq:3.6.4 bash
+    #docker run -it --name rabbitmq-ctl ¹
     # then run in bash: rabbitmqctl -n rabbit@rabbitmq-dev list_queues
 
     #root@f2a2d3d27c75:/# rabbitmqctl -n rabbit@rabbitmq-dev list_users

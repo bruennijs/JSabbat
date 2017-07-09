@@ -5,6 +5,9 @@ package sabbat.location.api.dto;
  */
 public class ActivityStopRequestDto extends ActivityRequestDtoBase {
 
+    public ActivityStopRequestDto() {
+    }
+
     /**
      * Constructor
      */
