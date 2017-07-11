@@ -176,21 +176,21 @@ services:
       - "7000"  # gossip
     network_mode: "bridge"  # default network with bridge adapter docker0
 
-#  rabbitmq-build:
-#    build:
-#      context: ./docker/rabbitmq
-#      dockerfile: Dockerfile
-#    image: bruenni/rabbitmq-initialization:3.6.4
+  rabbitmq-sabbat-build:
+    build:
+      context: ./docker/rabbitmq
+      dockerfile: Dockerfile
+    image: bruenni/rabbitmq-sabbat:3.6.10
 
-  rabbitmq-dev:
+  rabbitmq-sabbat-dev:
     # NOTE
     # No need for rabbitmqctl from different container or management stuff
     # -> this image has an enabled management console; just go in the runninig container and change password for guest and call:
     # 1. docker exec -it rabbitmq-dev /bin/bash
     # 2. http://localhost:15672/ -> login with guest:newpassword
-    hostname: rabbitmq-dev
-    container_name: rabbitmq-dev
-    image: rabbitmq:3.6.4-management
+    hostname: rabbitmq-sabbat-dev
+    container_name: rabbitmq-sabbat-dev
+    image: bruenni/rabbitmq-sabbat:3.6.10
 
     #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
     expose:
@@ -199,8 +199,28 @@ services:
     - "5672:5672"
     - "15672:15672"
     volumes:
-     - /opt/rabbitmq-sabbat:/var/lib/rabbitmq
+     - /opt/rabbitmq-sabbat-dev:/var/lib/rabbitmq
     network_mode: "bridge"  # default network with bridge adapter docker
+
+  rabbitmq-dev:
+        # NOTE
+        # No need for rabbitmqctl from different container or management stuff
+        # -> this image has an enabled management console; just go in the runninig container and change password for guest and call:
+        # 1. docker exec -it rabbitmq-dev /bin/bash
+        # 2. http://localhost:15672/ -> login with guest:newpassword
+        hostname: rabbitmq-dev
+        container_name: rabbitmq-dev
+        image: rabbitmq:3.6.4-management
+
+        #Expose ports without publishing them to the host machine - they’ll only be accessible to linked services. Only the internal port can be specified.
+        expose:
+          - "15672" #plugin: rabbitmq_management
+        ports:
+        - "5672:5672"
+        - "15672:15672"
+        volumes:
+         - /opt/rabbitmq-sabbat:/var/lib/rabbitmq
+        network_mode: "bridge"  # default network with bridge adapter docker
 
   rabbitmq-prod:
     hostname: rabbitmq-prod

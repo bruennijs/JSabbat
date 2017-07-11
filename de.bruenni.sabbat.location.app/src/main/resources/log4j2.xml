@@ -25,7 +25,13 @@
         <logger name="org.springframework" level="INFO">
         </logger>
 
-        <Root level="DEBUG">
+        <logger name="notification.implementation" level="DEBUG">
+        </logger>
+
+        <logger name="sabbat.location.core" level="DEBUG">
+        </logger>
+
+        <Root level="INFO">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
         </Root>
