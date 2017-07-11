@@ -46,7 +46,7 @@ public class DefaultGroupActivityApplicationService implements GroupActivityAppl
 	@EventListener
 	public void onActivityStarted(ActivityStartedEvent activityStarted)
 	{
-		Log.debug("onActivityStarted [%1%]", activityStarted.toString());
+		Log.debug("onActivityStarted [%1s]", activityStarted.toString());
 
 		List<? extends Event> domainEvents = domainService.onActivityStarted(activityStarted);
 		domainEvents.stream().forEach(e -> applicationEventPublisher.publishEvent(e));

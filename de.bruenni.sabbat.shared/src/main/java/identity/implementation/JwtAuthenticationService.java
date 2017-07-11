@@ -8,18 +8,13 @@ import infrastructure.identity.AuthenticationFailedException;
 import infrastructure.identity.ITokenAuthentication;
 import infrastructure.identity.Jwt;
 import infrastructure.identity.Token;
-import infrastructure.util.IterableUtils;
-import infrastructure.util.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Date;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,19 +43,23 @@ public class JwtAuthenticationService implements IAuthenticationService {
 
         Jwt jwt = this.tokenAuthentication.verify(token);
 
-        String userName = new UserJwtBuilder().fromJwt(jwt).getUserName();
+        String userId = new UserJwtBuilder().fromJwt(jwt).getUserId();
         List<String> groupNames = new UserJwtBuilder().fromJwt(jwt).getGroupNames();
 
-        return new UserRef(userName, userName, groupNames.stream().map(GroupRef::new).collect(Collectors.toList()));
+        return new UserRef(userId, groupNames.stream().map(GroupRef::new).collect(Collectors.toList()));
     }
 
     @Override
-    public Token authenticate(String userName, String password) {
+    public Token authenticate(String userName, String password) throws Exception {
+        throw new Exception("cannot be implemented cause can only verify tokens.");
+    }
+
+    public Token create(String userId) {
 
         Instant iat = Instant.now(Clock.systemUTC());
         Instant exp = iat.plus(3, ChronoUnit.DAYS);
 
-        Jwt jwt = new UserJwtBuilder().withData(userName, Arrays.asList("users"), iat, exp).build();
+        Jwt jwt = new UserJwtBuilder().withData(userId, Arrays.asList("users"), iat, exp).build();
 
         return this.tokenAuthentication.create(jwt);
     }

@@ -1,9 +1,7 @@
 package sabbat.location.infrastructure.integrationtest.persistence.measurement;
 
 import identity.UserRef;
-import infrastructure.util.IterableUtils;
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.junit.Assert;
@@ -21,16 +19,13 @@ import sabbat.location.core.application.service.command.ActivityUpdateCommand;
 import sabbat.location.core.application.service.command.TimeCoordinate;
 import sabbat.location.core.domain.model.coordinate.UserCoordinate;
 import sabbat.location.core.persistence.coordinate.UserCoordinateRepository;
-import sabbat.location.infrastructure.integrationtest.CassandraIntegrationTest;
-import sabbat.location.infrastructure.integrationtest.IntegrationTestConfig;
-import test.matcher.LambdaMatcher;
+import sabbat.location.infrastructure.integrationtest.CassandraIntegrationTestConfiguration;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +35,8 @@ import java.util.stream.Collectors;
  * Created by bruenni on 07.07.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles({"dev"})
-@SpringBootTest(classes = { CassandraIntegrationTest.class })
+@ActiveProfiles({"test"})
+@SpringBootTest(classes = { CassandraIntegrationTestConfiguration.class })
 public class DefaultMeasurementApplicationServiceTest {
 
     private static Logger logger = LoggerFactory.getLogger(DefaultMeasurementApplicationServiceTest.class);

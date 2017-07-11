@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  * Created by bruenni on 01.06.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles(profiles = {"dev"})
+@ActiveProfiles(profiles = {"test"})
 @SpringBootTest(classes = NotificationIntegrationTestConfiguration.class)
 public class NotificationIntegrationTests {
 	@Autowired

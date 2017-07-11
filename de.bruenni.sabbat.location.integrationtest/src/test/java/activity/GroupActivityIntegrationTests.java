@@ -23,7 +23,7 @@ import java.util.Arrays;
  * Created by bruenni on 01.06.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles(profiles = {"dev"})
+@ActiveProfiles(profiles = {"test", "dev"})
 @SpringBootTest(classes = GroupActivityIntegrationTestConfiguration.class)
 //@SpringBootApplication
 public class GroupActivityIntegrationTests {

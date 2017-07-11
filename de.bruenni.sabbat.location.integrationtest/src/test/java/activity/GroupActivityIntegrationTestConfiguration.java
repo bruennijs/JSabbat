@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import rx.Observable;
+import sabbat.location.api.AmqpClientAutoConfiguration;
 import sabbat.location.infrastructure.AmqpServiceAutoConfiguration;
 import sabbat.location.infrastructure.CassandraAutoConfiguration;
 
@@ -28,6 +29,7 @@ import sabbat.location.infrastructure.CassandraAutoConfiguration;
 @EnableAutoConfiguration(exclude = {
 	CassandraDataAutoConfiguration.class,
 	CassandraAutoConfiguration.class,
+        AmqpClientAutoConfiguration.class,
 	AmqpServiceAutoConfiguration.class,
 	org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration.class})
 public class GroupActivityIntegrationTestConfiguration {

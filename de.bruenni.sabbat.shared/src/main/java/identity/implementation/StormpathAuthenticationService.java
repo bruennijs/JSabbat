@@ -87,10 +87,10 @@ public class StormpathAuthenticationService implements IAuthenticationService {
 
         Jwt jwt = this.tokenAuthentication.verify(token);
 
-        String userName = new UserJwtBuilder().fromJwt(jwt).getUserName();
+        String userId = new UserJwtBuilder().fromJwt(jwt).getUserId();
         List<String> groupNames = new UserJwtBuilder().fromJwt(jwt).getGroupNames();
 
-        return new UserRef(userName, userName, groupNames.stream().map(GroupRef::new).collect(Collectors.toList()));
+        return new UserRef(userId, groupNames.stream().map(GroupRef::new).collect(Collectors.toList()));
     }
 
     @Override
@@ -114,7 +114,7 @@ public class StormpathAuthenticationService implements IAuthenticationService {
             Account account = result.getAccount();
             List<String> groupMemberNames = getGroupMemberNames(account);
 
-            Jwt jwt = CreateJwt(userName, groupMemberNames);
+            Jwt jwt = CreateJwt(account.getHref(), groupMemberNames);
 
             return this.tokenAuthentication.create(jwt);
         }

@@ -17,3 +17,6 @@ COMMIT;
 -- SET ROLE postgres;
 --DROP DATABASE sabbat;
 CREATE DATABASE sabbat OWNER postgres;
+
+-- db for integration tests
+CREATE DATABASE sabbattest OWNER postgres;

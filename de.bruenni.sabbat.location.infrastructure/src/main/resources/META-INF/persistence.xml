@@ -4,7 +4,7 @@
              version="2.0">
     <persistence-unit name="activity.dev" transaction-type="RESOURCE_LOCAL">
         <description>
-            Persistence unit of sabbat's location space for production
+            Persistence unit of sabbat's location space for development
         </description>
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
@@ -44,6 +44,55 @@
 
             <property name="hibernate.dialect"
                     value="org.hibernate.dialect.PostgreSQL95Dialect" />
+
+            <!-- http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
+            <property name="hibernate.hbm2ddl.auto"
+                      value="validate" />
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="activity.test" transaction-type="RESOURCE_LOCAL">
+        <description>
+            Persistence unit of sabbat's location space for integration tests
+        </description>
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!--<jar-file>sabbat.location.core.jar</jar-file>-->
+
+        <class>sabbat.location.core.domain.model.Activity</class>
+        <class>sabbat.location.core.domain.model.ActivityRelation</class>
+        <class>sabbat.location.core.domain.events.activity.ActivityStartedEvent</class>
+        <class>sabbat.location.core.domain.events.activity.ActivityStoppedEvent</class>
+        <class>sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent</class>
+        <class>sabbat.location.core.domain.events.activity.ActivityRelationUpdatedEvent</class>
+        <class>sabbat.location.core.domain.events.activity.NewDistanceEvent</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver"
+                      value="org.postgresql.Driver" />
+
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:postgresql://127.0.0.1:5432/sabbattest" />
+
+            <property name="javax.persistence.jdbc.user"
+                      value="sabbat" />
+
+            <property name="javax.persistence.jdbc.password"
+                      value="sabbat#2017" />
+
+
+            <property name="hibernate.connection.initial_pool_size"
+                      value="2" />
+
+            <property name="hibernate.connection.pool_size"
+                      value="2" />
+
+            <property name="hibernate.show_sql"
+                      value="true" />
+
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.PostgreSQL95Dialect" />
 
             <!-- http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#configurations-hbmddl -->
             <property name="hibernate.hbm2ddl.auto"

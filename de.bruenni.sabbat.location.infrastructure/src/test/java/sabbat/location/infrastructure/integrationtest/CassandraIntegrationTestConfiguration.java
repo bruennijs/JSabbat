@@ -12,5 +12,5 @@ import sabbat.location.infrastructure.LocationInfrastructureConfiguration;
 @Configuration
 @TestPropertySource(properties = "location.infrastructure.cassandra.enabled=true")
 @ImportAutoConfiguration(value = {CassandraAutoConfiguration.class, LocationInfrastructureConfiguration.class})
-public class CassandraIntegrationTest {
+public class CassandraIntegrationTestConfiguration {
 }

@@ -6,6 +6,8 @@ import com.hazelcast.util.IterableUtil;
 import identity.UserRef;
 import infrastructure.common.event.Event;
 import infrastructure.util.IterableUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
 import sabbat.location.core.domain.events.activity.ActivityEvent;
 import sabbat.location.core.domain.events.activity.ActivityStartedEvent;
@@ -24,6 +26,8 @@ import java.util.stream.StreamSupport;
  * Created by bruenni on 16.03.17.
  */
 public class DefaultGroupActivityDomainService implements GroupActivityDomainService {
+
+	private static Logger Log = LoggerFactory.getLogger(DefaultGroupActivityDomainService.class);
 
 	private IActivityRepository activityRepository;
 	private IAccountService accountService;
@@ -47,6 +51,7 @@ public class DefaultGroupActivityDomainService implements GroupActivityDomainSer
 	 */
 	@Override
 	public List<? extends Event> onActivityStarted(ActivityStartedEvent event) {
+
 		// 0.5 get groups the user of started activity is in
 		User userOfStartedActivity = accountService.getUserById(event.getAggregate().getUserId());
 
@@ -59,13 +64,23 @@ public class DefaultGroupActivityDomainService implements GroupActivityDomainSer
 			.filter(user -> !user.getId().equals(userOfStartedActivity.getId()))    // remove user of started activity
 			.collect(Collectors.toList());
 
+        Log.info(String.format("onActivityStarted [user=%1s, same group's users=[%2s]]",
+                userOfStartedActivity.getName(),
+                toString(groupsUsers.stream().map(guser -> guser.getName()))));
+
 		if (groupsUsers.size() > 0) {
 			// 2. find still active activities of the users from 1)
 
-			Stream<String> groupsUsersIds = StreamSupport.stream(groupsUsers.spliterator(), false)
-				.map(user -> user.getId());
+            List<String> groupsUsersIds = groupsUsers.stream().map(user -> user.getId()).collect(Collectors.toList());
 
-			Iterable<Activity> groupsUsersActiveActivities = activityRepository.findActiveActivitiesByUserIds(groupsUsersIds.collect(Collectors.toList()));
+            Log.info(String.format("onActivityStarted: group user ids [%1s]]",
+                    toString(groupsUsersIds.stream())));
+
+            List<Activity> groupsUsersActiveActivities = IterableUtils.toList(activityRepository.findActiveActivitiesByUserIds(groupsUsersIds));
+
+        Log.info(String.format("onActivityStarted: activity.uuid=%1s ---will be related to---> [%2s]",
+                event.getAggregate().getUuid(),
+                toString(groupsUsersActiveActivities.stream().map(a -> a.getUuid()))));
 
 			// 3. relate associated activities with each other
 			Stream<ActivityEvent> domainEventStream = IterableUtils.stream(groupsUsersActiveActivities)
@@ -76,4 +91,8 @@ public class DefaultGroupActivityDomainService implements GroupActivityDomainSer
 
 		return Arrays.asList();
 	}
+
+    private String toString(Stream<String> stream) {
+        return stream.reduce("", (acc, cur) -> acc + "," + cur);
+    }
 }

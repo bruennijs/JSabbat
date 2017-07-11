@@ -7,18 +7,15 @@ import java.util.List;
  */
 public class UserRef {
     String id;
-    String name;
     List<GroupRef> groups;
 
     /**
      * Constructor
      * @param id Natural identifier of the user.
-     * @param name
      * @param groups
      */
-    public UserRef(String id, String name, List<GroupRef> groups) {
+    public UserRef(String id, List<GroupRef> groups) {
         this.id = id;
-        this.name = name;
         this.groups = groups;
     }
 
@@ -28,10 +25,6 @@ public class UserRef {
      */
     public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public List<GroupRef> getGroupRefs() {

@@ -20,5 +20,5 @@ public interface IAuthenticationService {
      * @param password password
      * @return
      */
-    Token authenticate(String userName, String password) throws AuthenticationFailedException;
+    Token authenticate(String userName, String password) throws Exception;
 }

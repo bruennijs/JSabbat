@@ -6,6 +6,8 @@ import notification.NotificationContent;
 import notification.NotificationMessage;
 import notification.UserNotificationService;
 import notification.TextNotificationContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import sabbat.location.core.domain.events.activity.ActivityRelationCreatedEvent;
 import sabbat.location.core.domain.events.activity.ActivityStoppedEvent;
@@ -21,6 +23,8 @@ import java.util.stream.Stream;
  * Created by bruenni on 22.06.17.
  */
 public class NotificationDomainService {
+
+    private static Logger Log = LoggerFactory.getLogger(NotificationDomainService.class);
 
 	private IAccountService accountService;
 	private IActivityRepository activityRepository;
@@ -70,6 +74,8 @@ public class NotificationDomainService {
             LocationUser locationUser = LocationUser.from(userOfRelatedActivity);
             if (locationUser.getNotificationEnabled())
             {
+                //Log.debug(String.format("onActivityStopped: notify message! [%1%]", message));
+
                 notificationService.notify(buildNotificationMessageOnStop(userOfRelatedActivity, usersOfStoppedActivity, stopEvent.getAggregate()));
             }
         });

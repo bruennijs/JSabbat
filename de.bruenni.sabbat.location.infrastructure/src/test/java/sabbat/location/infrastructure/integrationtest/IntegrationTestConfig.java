@@ -16,7 +16,7 @@ import sabbat.location.infrastructure.LocationInfrastructureConfiguration;
 @PropertySource(
         {
                 "classpath:sabbat-location-infrastructure.properties",
-                //"classpath:application.properties"
+
         })
 @ImportResource(locations =
         {

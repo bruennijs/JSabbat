@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * Created by bruenni on 14.07.16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles({"dev"})
+@ActiveProfiles({"test"})
 @SpringBootTest(classes = { IntegrationTestConfig.class })
 public class LocationIntegrationTest {
 

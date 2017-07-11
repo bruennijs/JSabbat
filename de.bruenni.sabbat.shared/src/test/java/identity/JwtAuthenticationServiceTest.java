@@ -20,19 +20,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class JwtAuthenticationServiceTest {
     @Test
     public void When_create_from_userref_expect_verify_succeeds_with_equal_userref_parsed() throws AuthenticationFailedException {
-        String userName = "test";
+        String userId = "test";
         JwtAuthenticationService sut = new JwtAuthenticationServiceBuilder().build();
-        Token token = sut.authenticate(userName, "");
+        Token token = sut.create(userId);
         UserRef userRef = sut.verify(token);
-        Assert.assertEquals(userName, userRef.getName());
+        Assert.assertEquals(userId, userRef.getId());
     }
 
     @Test
     public void When_verify_token_expect_no_exception() throws AuthenticationFailedException {
-        String userName = "test";
+        String userId = "test";
         JwtAuthenticationService sut = new JwtAuthenticationServiceBuilder().build();
         JJwtTokenAuthentication tokenAuthentication = new JJwtTokenAuthenticationBuilder().build();
-        Token token = sut.authenticate(userName, "");
+        Token token = sut.create(userId);
 
         tokenAuthentication.verify(token);
     }

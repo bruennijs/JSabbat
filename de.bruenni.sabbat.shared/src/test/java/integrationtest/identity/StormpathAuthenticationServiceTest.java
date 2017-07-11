@@ -42,7 +42,7 @@ public class StormpathAuthenticationServiceTest {
         Token token = sut.authenticate(userName, "password");
 
         Jwt jwt = tokenAuthentication.verify(token);
-        Assert.assertEquals(userName, jwt.getClaims().get("username"));
+        Assert.assertEquals("https://api.stormpath.com/v1/accounts/2630FgFzIutkN2IK8H4jk2", jwt.getClaims().get("userid"));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class StormpathAuthenticationServiceTest {
         Token token = sut.authenticate(userName, "password");
         UserRef userRef = sut.verify(token);
 
-        Assert.assertEquals(userName, userRef.getName());
+        Assert.assertEquals("https://api.stormpath.com/v1/accounts/2630FgFzIutkN2IK8H4jk2", userRef.getId());
         List<String> actualGroupNames = userRef.getGroupRefs().stream().map(gref -> {
             return gref.getId();
         }).collect(Collectors.toList());

@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * Created by bruenni on 17.03.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles(profiles = { "dev" })
+@ActiveProfiles(profiles = { "test" })
 @SpringBootTest(classes = { IntegrationTestConfig.class })
 public class JpaActivityRepositoryTest {
 
@@ -254,7 +254,7 @@ public class JpaActivityRepositoryTest {
 
 		activityInAndStarted = activityRepository.save(activityInAndStarted);
 
-		Iterable<Activity> activities = activityRepository.findActiveActivitiesByUserIds(Arrays.asList(activityInAndStarted.getUserId()));
+		Iterable<Activity> activities = getRepo().findActiveActivitiesByUserIds(Arrays.asList(activityInAndStarted.getUserId()));
 
 		Assert.assertThat(activities, Matchers.contains(IsEqual.equalTo(activityInAndStarted)));
 	}

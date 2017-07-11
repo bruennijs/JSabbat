@@ -12,6 +12,7 @@ import java.util.*;
  */
 public class User extends UserRef {
 
+    private String name;
     String email;
     private Map<String, Object> properties;
 
@@ -23,7 +24,8 @@ public class User extends UserRef {
      * @param groups
      */
     public User(String id, String name, String email, List<GroupRef> groups) {
-        super(id, name, groups);
+        super(id, groups);
+        this.name = name;
         this.email = email;
         this.properties = new HashMap<>();
     }
@@ -37,7 +39,8 @@ public class User extends UserRef {
      * @param properties
      */
     public User(String id, String name, String email, List<GroupRef> groups, Map<String, Object> properties) {
-        super(id, name, groups);
+        super(id, groups);
+        this.name = name;
         this.email = email;
         this.properties = properties;
     }
@@ -47,10 +50,14 @@ public class User extends UserRef {
     }
 
 
+    public String getName() {
+        return name;
+    }
+
+
     public String getEmail() {
         return email;
     }
-
 
     /**
      * Gets all properties associated with a user.
