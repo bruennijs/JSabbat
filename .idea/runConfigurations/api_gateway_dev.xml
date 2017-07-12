@@ -10,6 +10,7 @@
     <module name="de.bruenni.sabbat.api-gateway" />
     <method>
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.location.api" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="install" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.shared" vmOptions="" scriptParameters="" />
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="assemble" externalProjectPath="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" vmOptions="" scriptParameters="" />
     </method>
   </configuration>

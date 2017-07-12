@@ -66,7 +66,7 @@ public class DefaultGroupActivityDomainService implements GroupActivityDomainSer
 
         Log.info(String.format("onActivityStarted [user=%1s, same group's users=[%2s]]",
                 userOfStartedActivity.getName(),
-                toString(groupsUsers.stream().map(guser -> guser.getName()))));
+                toString(groupsUsers.stream().map(guser -> guser.getId()))));
 
 		if (groupsUsers.size() > 0) {
 			// 2. find still active activities of the users from 1)

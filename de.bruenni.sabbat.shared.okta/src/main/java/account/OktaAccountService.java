@@ -75,7 +75,7 @@ public class OktaAccountService implements IAccountService {
 		OktaUserConverter<UserRef> converter = new OktaUserConverter<>((u, g) ->
 		{
 			UserProfile userProfile = u.getProfile();
-			return new UserRef(u.getId(), userProfile.getLogin(), g);
+			return new UserRef(u.getId(), g);
 		});
 
 

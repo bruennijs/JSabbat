@@ -69,7 +69,7 @@ public class OktaAccountServiceCacheTest {
 				List<UserRef> usersByGroup = accountService.getUsersByGroup(new GroupRef(GROUP_ID));
 
 				Optional<String> reduced = usersByGroup.stream()
-					.map(user -> user.getName())
+					.map(user -> user.getId())
 					.reduce((acc, name) -> acc + "," + name);
 
 				log.debug(String.format("%1s [%2s]", l.toString(), reduced));

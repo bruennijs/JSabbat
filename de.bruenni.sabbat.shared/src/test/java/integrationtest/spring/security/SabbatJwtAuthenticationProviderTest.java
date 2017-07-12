@@ -40,8 +40,8 @@ public class SabbatJwtAuthenticationProviderTest {
     public IAuthenticationService authService;
 
     @Test
-    public void When_authenticate_expect_JWT_token_parsed_contains_username_and_groups() throws Exception {
-        Authentication authToken = this.authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken("test", "password"));
+    public void When_authenticate_where_authenticationprovider_setdetail_is_instanceof_user_expect_JWT_token_parsed_contains_username_and_groups() throws Exception {
+        Authentication authToken = this.authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken("username", "password"));
         Assert.assertTrue(authToken instanceof UsernamePasswordAuthenticationToken);
 
         UsernamePasswordAuthenticationToken userNametoken = (UsernamePasswordAuthenticationToken) authToken;
@@ -51,10 +51,26 @@ public class SabbatJwtAuthenticationProviderTest {
 
         UserRef userRef = authService.verify(token);
 
-        Assert.assertEquals("https://api.stormpath.com/v1/accounts/2630FgFzIutkN2IK8H4jk2", userRef.getId());
+        Assert.assertEquals("username",    userRef.getId());    // in case of User instances -> username is taken
         Assert.assertThat(userRef.getGroupRefs().stream().map(gref -> gref.getId()).collect(Collectors.toList())
-                        , IsCollectionContaining.hasItems("https://api.stormpath.com/v1/groups/2xHJtcQf2PxAqAZuFmEiao",
-                                                            "https://api.stormpath.com/v1/groups/6vTQw8pRzoRoFHZbtvOPUj"));
+                        , IsCollectionContaining.hasItems("USERS"));
+    }
+
+    @Test
+    public void When_authenticate_where_authenticationprovider_setdetail_is_instanceof_UserExtended_expect_JWT_token_parsed_contains_Id_and_groups() throws Exception {
+        Authentication authToken = this.authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken("testwithUserExtended", "password"));
+        Assert.assertTrue(authToken instanceof UsernamePasswordAuthenticationToken);
+
+        UsernamePasswordAuthenticationToken userNametoken = (UsernamePasswordAuthenticationToken) authToken;
+
+        //// details contain the sabbat JWT token
+        Token token = (Token) userNametoken.getDetails();
+
+        UserRef userRef = authService.verify(token);
+
+        Assert.assertEquals("id",    userRef.getId());    // in case of User instances -> username is taken
+        Assert.assertThat(userRef.getGroupRefs().stream().map(gref -> gref.getId()).collect(Collectors.toList())
+                , IsCollectionContaining.hasItems("USERS"));
     }
 
     @Test

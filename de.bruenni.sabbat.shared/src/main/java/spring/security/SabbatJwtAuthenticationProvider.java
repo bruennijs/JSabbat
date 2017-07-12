@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -57,11 +58,9 @@ public class SabbatJwtAuthenticationProvider implements AuthenticationProvider {
             throw new BadAuthenticationTypeException("usernamePasswordAuthenticationToken getprincipal is not of type 'User'");
         }
 
-        User userDetails = (User) usernamePasswordAuthenticationToken.getPrincipal();
+        Object principal = usernamePasswordAuthenticationToken.getPrincipal();
 
-        //// create JWT with user properties
-        //usernamePasswordAuthenticationToken.getAuthorities().stream().filter(a -> a.)
-        Token jwtToken = buildJwtFromUserDetails(userDetails);
+        Token jwtToken = createJwtTokenFromUser(principal);
 
         //// add JwtToken as details
         usernamePasswordAuthenticationToken.setDetails(jwtToken);
@@ -69,7 +68,25 @@ public class SabbatJwtAuthenticationProvider implements AuthenticationProvider {
         return usernamePasswordAuthenticationToken;
     }
 
-    private Token buildJwtFromUserDetails(User userDetails) {
+    private Token createJwtTokenFromUser(Object principal) throws AuthenticationException {
+        if (principal instanceof UserExtended)
+        {
+            // own AuthenticationProvider can provide these special extended UserDetail object to provide
+            // special data from remote authentications services like IDs
+            // OKTA and InMemory variants are used with UserExtended
+            return buildJwtFromUserDetails((UserExtended)principal, user -> user.getId());
+        } else if (principal instanceof User)
+        {
+            // many AuthenticationProvider instantiate these objects , then use username as id
+
+            //// create JWT with user properties
+            return buildJwtFromUserDetails((User)principal, user -> user.getUsername());
+        }
+
+        throw new BadAuthenticationTypeException("principal type not supported");
+    }
+
+    private <TUser extends User> Token buildJwtFromUserDetails(TUser userDetails, Function<? super TUser, String> userIdGetter) {
 
         Instant now = Instant.now(Clock.systemUTC());
 
@@ -78,7 +95,7 @@ public class SabbatJwtAuthenticationProvider implements AuthenticationProvider {
             return authority.getAuthority();
         }).collect(Collectors.toList());
 
-        Jwt jwt = new UserJwtBuilder().withData(userDetails.getUsername(),
+        Jwt jwt = new UserJwtBuilder().withData(userIdGetter.apply(userDetails),
                                                 authorities,
                                                 now,
                                                 now.plusSeconds(this.JwtTtl))

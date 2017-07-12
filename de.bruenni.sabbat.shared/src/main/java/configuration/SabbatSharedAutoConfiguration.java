@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import spring.security.SabbatJwtAuthenticationProvider;
+import spring.security.UserExtended;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,13 +70,20 @@ public class SabbatSharedAutoConfiguration {
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public AuthenticationProvider inMemoryTestAthenticationProvider() throws Exception {
 
-        List<UserDetails> userList = Arrays.asList(new User("test", "password", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
-                new User("anmema", "anmema", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
-                new User("bruenni", "bruenni", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
-                new User("user1@test.de", "Sabbat2017", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
-                new User("user2@test.de", "Sabbat2017", Arrays.asList(new SimpleGrantedAuthority("USERS"))));
+        List<UserDetails> userList = Arrays.asList(new User("username", "password", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new UserExtended("id", "testwithUserExtended", "password", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new UserExtended("00uau3uz0bBIi8pMP0h7", "oliver.bruentje@googlemail.com", "Sabbat#2017", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new UserExtended("00uau41fdzjgnUYSt0h7", "user1@test.de", "Sabbat#2017", Arrays.asList(new SimpleGrantedAuthority("USERS"))),
+                new UserExtended("00uay1fn1ucXxlvwm0h7", "user2@test.de", "Sabbat#2017", Arrays.asList(new SimpleGrantedAuthority("USERS"))));
 
-        InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager(userList);
+        spring.security.provisioning.InMemoryUserDetailsManager userDetailsService = new spring.security.provisioning.InMemoryUserDetailsManager(userList, user -> {
+            if (user instanceof UserExtended) {
+                UserExtended userExtended = (UserExtended) user;
+                return new UserExtended(userExtended.getId(), userExtended.getUsername(), userExtended.getPassword(), userExtended.getAuthorities());
+            }
+
+            return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        });
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         return authenticationProvider;

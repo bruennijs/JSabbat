@@ -35,8 +35,8 @@ dependencies {
 
     compile ("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
 
-    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.1.3.RELEASE'
-    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.1.3.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.3.RELEASE'
 
     compile group: 'org.springframework.amqp', name: 'spring-rabbit', version: '1.7.3.RELEASE'
 

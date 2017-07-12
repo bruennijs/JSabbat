@@ -137,7 +137,7 @@ from loc.activity as a
 INNER JOIN loc.domainevents as de ON de.aggregateid = a.id AND de.dtype = 1
 LEFT JOIN loc.domainevents as de2 ON de2.aggregateid = a.id AND de2.dtype = 5-- find all stooped activities and use the complementary set
 --where de2.id IS NULL
-ORDER BY a.started DESC;
+ORDER BY a.started DESC;[object Object]
 
 
 SELECT * FROM loc.activity as a " +

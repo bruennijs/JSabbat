@@ -30,7 +30,7 @@ public class ActivityApplicationServiceTest {
     @Test
     public void When_start_expect_returned_activity_contains_id() throws ExecutionException, InterruptedException, AuthenticationFailedException, SerializingException {
 
-        UserRef user = new UserRef("userid", "username", new ArrayList<>());
+        UserRef user = new UserRef("userid", new ArrayList<>());
 
         DefaultActivityApplicationService sut = new ActivityApplicationServiceBuilder()
                 .build();

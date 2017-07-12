@@ -28,8 +28,8 @@
             id="clientConnectionFactory"
             host="${spring.rabbitmq.host}"
             port="${spring.rabbitmq.port}"
-            username="guest"
-            password="guest"
+            username="sabbat"
+            password="Sabbat#2017"
             executor="serviceTaskExecuter"
             publisher-confirms="true"
             publisher-returns="true"/>
