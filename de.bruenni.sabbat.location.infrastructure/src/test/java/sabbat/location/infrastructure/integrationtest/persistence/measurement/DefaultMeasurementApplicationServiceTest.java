@@ -29,6 +29,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -52,7 +53,7 @@ public class DefaultMeasurementApplicationServiceTest {
     @Test
     public void when_insert_expect_findActivityCoordinates_finds_all_inserted_ones() throws Exception {
 
-        UserRef userRef = new UserRef("userid1", "bruenni", Arrays.asList());
+        UserRef userRef = new UserRef("userid1", Arrays.asList());
 
         Instant now = Instant.now(Clock.systemUTC());
 
@@ -60,7 +61,7 @@ public class DefaultMeasurementApplicationServiceTest {
                 new TimeCoordinate(23.11, 34.22, Date.from(now)),
                 new TimeCoordinate(22.11, 34.23, Date.from(now.plus(20, ChronoUnit.SECONDS))));
 
-        ActivityUpdateCommand command = new ActivityUpdateCommand(userRef, "activityid1", timeCoordinates, Optional.empty(), Optional.empty());
+        ActivityUpdateCommand command = new ActivityUpdateCommand(userRef, UUID.randomUUID().toString(), timeCoordinates, Optional.empty(), Optional.empty());
 
         Iterable<UserCoordinate> insertedCoordinates = service.insert(command);
 
@@ -70,7 +71,7 @@ public class DefaultMeasurementApplicationServiceTest {
 
         // asserts
         Assert.assertThat(actualCoordinates,
-                Matchers.contains(timeCoordinates.stream().map(tc -> new UserCoordinateMatcher(userRef.getId(), command.getActivityId(), tc)).collect(Collectors.toList())));
+                Matchers.containsInAnyOrder(timeCoordinates.stream().map(tc -> new UserCoordinateMatcher(userRef.getId(), command.getActivityId(), tc)).collect(Collectors.toList())));
     }
 
     private class UserCoordinateMatcher extends TypeSafeDiagnosingMatcher<UserCoordinate>
@@ -98,11 +99,11 @@ public class DefaultMeasurementApplicationServiceTest {
             BigDecimal bd1 = BigDecimal.valueOf(timeCoordinate.getLongitude());
             BigDecimal bd2 = BigDecimal.valueOf(timeCoordinate.getLatitude());
 
-            return item.getKey().getActivityid() == activityId
-                    && item.getKey().getUserId() == userRefId
-                    && item.getKey().getCaptured() == timeCoordinate.getTimestamp()
-                    && item.getLongitude() == BigDecimal.valueOf(timeCoordinate.getLongitude())
-                    && item.getLatitude() == BigDecimal.valueOf(timeCoordinate.getLatitude());
+            return item.getKey().getActivityid().equals(activityId)
+                    && item.getKey().getUserId().equals(userRefId)
+                    && item.getKey().getCaptured().equals(timeCoordinate.getTimestamp())
+                    && item.getLongitude().equals(BigDecimal.valueOf(timeCoordinate.getLongitude()))
+                    && item.getLatitude().equals(BigDecimal.valueOf(timeCoordinate.getLatitude()));
         }
 
         @Override

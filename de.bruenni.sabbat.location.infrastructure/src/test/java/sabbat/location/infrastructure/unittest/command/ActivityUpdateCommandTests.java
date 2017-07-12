@@ -62,6 +62,6 @@ public class ActivityUpdateCommandTests {
     }
 
     private UserRef createUserRef() {
-        return new UserRef("someid", "name", Arrays.asList());
+        return new UserRef("someid", Arrays.asList());
     }
 }
