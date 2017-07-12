@@ -72,6 +72,8 @@ public class DefaultActivityApplicationService implements ActivityApplicationSer
         {
             ActivityEvent domainEvent = activity.stop();
 
+            this.activityRepository.save(activity);
+
             applicationEventPublisher.publishEvent(domainEvent);
         }
     }
