@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
+import org.springframework.amqp.rabbit.support.DefaultMessagePropertiesConverter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,12 +71,19 @@ public class AmqpServiceAutoConfiguration implements RabbitListenerConfigurer {
         @Bean(name = "rabbitListenerContainerFactory")
         public ExtendedRabbitListenerContainerFactory rabbitListenerContainerFactory()
         {
-                ExtendedRabbitListenerContainerFactory factory = new ExtendedRabbitListenerContainerFactory();
+            // to interpret the received ids as string and do not parse them to binary array
+            // -> rabbitListener can inject Header CorrelationId as String and set asstring for responses.
+/*            DefaultMessagePropertiesConverter messagePropertiesConverter = new DefaultMessagePropertiesConverter();
+            messagePropertiesConverter.setCorrelationIdPolicy(DefaultMessagePropertiesConverter.CorrelationIdPolicy.STRING);*/
+
+
+            ExtendedRabbitListenerContainerFactory factory = new ExtendedRabbitListenerContainerFactory();
                 factory.setConcurrentConsumers(2);
                 factory.setMaxConcurrentConsumers(3);
                 factory.setTaskExecutor(taskExecutor);
                 factory.setConnectionFactory(connectionFactory);
                 //factory.setMessageConverter(jackson2JsonMessageConverter());
+                //factory.setMessagePropertiesConverter(messagePropertiesConverter);
                 factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
                 factory.setAutoStartup(true);
                 factory.setAutoDeclare(true);

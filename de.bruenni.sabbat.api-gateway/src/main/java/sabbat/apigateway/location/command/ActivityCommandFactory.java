@@ -7,7 +7,7 @@ import com.sun.javafx.binding.StringFormatter;
  */
 public abstract class ActivityCommandFactory implements IActivityCommandFactory {
 
-    private static final long REPLY_TIMEOUT = 5000;
+    private static final long REPLY_TIMEOUT = 10000;
 
     /**
      * Spring lookup method

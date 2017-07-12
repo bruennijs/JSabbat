@@ -63,20 +63,20 @@ public class ActivityRabbitListener {
 
     @RabbitListener(queues = "${location.activity.queue.command}",
                     containerFactory = "rabbitListenerContainerFactory")
-    //@Header("correlationId") String correlationId
     public Message onCommandMessage(Message message,
-                             @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey,
                                     @Header(value = "AuthorizationToken") String accessToken,
-                             Channel channel,
-                             @Header(AmqpHeaders.CORRELATION_ID) String correlationId) throws Exception {
-        logger.debug("--> command [" + message.toString() + "cid=" + correlationId + ",routingkey=" + routingKey + ", accessToken=" + accessToken + "]");
+                                    //@Header(AmqpHeaders.CORRELATION_ID) String correlationId,
+                             Channel channel) throws Exception {
+
+        logger.debug("--> command [" + message.toString() + "properties=" + message.getMessageProperties().getCorrelationIdString() + "]");
 
         try
         {
-            Message responseMessage = executeDto(message, routingKey, accessToken, channel, correlationId);
+            Message responseMessage = executeDto(message, message.getMessageProperties().getReceivedRoutingKey(), accessToken, channel, message.getMessageProperties().getCorrelationIdString());
 
-            logger.debug("<-- response [" + responseMessage.toString() + "cid=" + correlationId + "]");
+            logger.debug("<-- response [" + responseMessage.toString() + "cid=" + message.getMessageProperties().getCorrelationIdString() + "]");
 
+            return responseMessage;
         }
         catch (Exception exception)
         {
@@ -87,7 +87,7 @@ public class ActivityRabbitListener {
         return null;
     }
 
-    private Message executeDto(Message message, @Header(AmqpHeaders.RECEIVED_ROUTING_KEY) String routingKey, @Header(value = "AuthorizationToken") String accessToken, Channel channel, @Header(AmqpHeaders.CORRELATION_ID) String correlationId) throws Exception {
+    private Message executeDto(Message message, String routingKey, String accessToken, Channel channel, String correlationId) throws Exception {
         // veryify token
         UserRef userRef = authenticationService.verify(Token.valueOf(accessToken));
 
@@ -113,7 +113,7 @@ public class ActivityRabbitListener {
      * @throws SerializingException
      * @throws IOException
      */
-    private Message executeStart(Message message, @Header(value = "AuthorizationToken") UserRef userRef, Channel channel, @Header(AmqpHeaders.CORRELATION_ID) String correlationId) throws infrastructure.parser.ParserException, AuthenticationFailedException, SerializingException, IOException {
+    private Message executeStart(Message message, UserRef userRef, Channel channel, String correlationId) throws infrastructure.parser.ParserException, AuthenticationFailedException, SerializingException, IOException {
         ActivityCreateRequestDto dto = dtoParser.parse(message.getBody(), ActivityCreateRequestDto.class);
 
         ActivityCreateCommand command = dtoCreateConverter.convert(new Tuple2<>(userRef, dto));
@@ -125,14 +125,15 @@ public class ActivityRabbitListener {
         //Observable.from(activityStartFuture)
         ActivityCreatedResponseDto dtoResponse = new ActivityCreatedResponseDto(activity.getUuid());
 
-        Message responseMessage = serializeResponseDto(correlationId, dtoResponse);
+        Message responseMessage = serializeResponseDto(message, dtoResponse);
 
         return responseMessage;
     }
 
-    private <T> Message serializeResponseDto(String correlationId, T dto) throws SerializingException {
+    private <T> Message serializeResponseDto(Message request, T dto) throws SerializingException {
         MessageProperties msgProps = MessagePropertiesBuilder.newInstance()
-                .setCorrelationIdString(correlationId)
+                .copyProperties(request.getMessageProperties())
+                .setCorrelationId(request.getMessageProperties().getCorrelationId())
                 .setContentType(MessageProperties.CONTENT_TYPE_JSON)
                 .build();
 
@@ -158,7 +159,7 @@ public class ActivityRabbitListener {
 
         ActivityStoppedResponseDto responseDto = new ActivityStoppedResponseDto(dto.getId());
 
-        return serializeResponseDto(correlationId, responseDto);
+        return serializeResponseDto(message, responseDto);
     }
 
     @RabbitListener(queues = "${location.activity.queue.tracking}",

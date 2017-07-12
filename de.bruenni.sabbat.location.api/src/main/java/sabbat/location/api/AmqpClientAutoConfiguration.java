@@ -68,20 +68,6 @@ public class AmqpClientAutoConfiguration {
         @Qualifier("serviceTaskExecuter")
         public Executor taskExecutor;
 
-        @Bean(name = "messageListenerContainerFactory")
-        public ExtendedRabbitListenerContainerFactory rabbitListenerContainerFactory() {
-            ExtendedRabbitListenerContainerFactory factory = new ExtendedRabbitListenerContainerFactory();
-            //factory.setConcurrentConsumers(5);
-            //factory.setMaxConcurrentConsumers(10);
-            factory.setTaskExecutor(taskExecutor);
-            factory.setConnectionFactory(connectionFactory);
-            factory.setMessageConverter(jackson2JsonMessageConverter());
-            factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-            factory.setAutoStartup(true);
-            factory.setAutoDeclare(true);
-            return factory;
-        }
-
         @Bean(name = "locationCommandRabbitTemplate")
         @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
         public AsyncRabbitTemplate locationCommandRabbitTemplate() {

@@ -6,6 +6,9 @@ package sabbat.location.api.dto;
 public class ActivityStoppedResponseDto implements IActivityResponseDto {
     private String id;
 
+    public ActivityStoppedResponseDto() {
+    }
+
     public ActivityStoppedResponseDto(String id) {
         this.id = id;
     }

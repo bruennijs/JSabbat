@@ -26,13 +26,7 @@
     <loaded-nodes>
       <connection connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4">
         <schema name="information_schema" object-types="function, table, view" />
-        <schema name="loc" object-types="column, function, table, view" />
-        <schema name="pg_catalog" object-types="function, table, view" />
-        <schema name="public" object-types="function, table, view" />
-      </connection>
-      <connection connection-id="706bae52-69c4-4770-92bd-792d3f9fb807">
-        <schema name="information_schema" object-types="function, table, view" />
-        <schema name="loc" object-types="column, function, table, view" />
+        <schema name="loc" object-types="column, function, sequence, table, view" />
         <schema name="pg_catalog" object-types="function, table, view" />
         <schema name="public" object-types="function, table, view" />
       </connection>
@@ -117,7 +111,9 @@ select activity0_.id as id1_0_2_, activity0_.finished as finished2_0_2_, activit
 from loc.activity activity0_
 left outer join loc.activityrelation relations1x1_ on activity0_.id=relations1x1_.activityid1
 left outer join loc.activity activity2_ on relations1x1_.activityid2=activity2_.id
-where activity0_.id=67;]]></console>
+where activity0_.id=67;
+
+truncate table loc.activity CASCADE;]]></console>
     </connection>
     <connection id="706bae52-69c4-4770-92bd-792d3f9fb807">
       <console name="sabbattest-localhost" type="STANDARD" />
@@ -156,8 +152,8 @@ where activity0_.id=67;]]></console>
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_queries.sql" connection-id="706bae52-69c4-4770-92bd-792d3f9fb807" current-schema="loc" />
     <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_tables.sql" connection-id="706bae52-69c4-4770-92bd-792d3f9fb807" current-schema="information_schema" />
+    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_queries.sql" connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_db.sql" connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4" current-schema="public" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">

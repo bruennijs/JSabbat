@@ -115,9 +115,9 @@ public class RabbitMqActivityRemoteService implements IActivityRemoteService {
 
     private MessageProperties buildMessageProperties(String accessToken) {
         MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setHeader("AuthorizationToken", accessToken);
         messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
         messageProperties.setCorrelationIdString(UUID.randomUUID().toString());
+        messageProperties.setHeader("AuthorizationToken", accessToken);
         return messageProperties;
     }
 

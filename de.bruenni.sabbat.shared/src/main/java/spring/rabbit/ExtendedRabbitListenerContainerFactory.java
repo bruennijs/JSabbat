@@ -20,6 +20,7 @@ import org.aopalliance.aop.Advice;
 
 import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.support.MessagePropertiesConverter;
 import org.springframework.amqp.support.ConsumerTagStrategy;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -89,6 +90,8 @@ public class ExtendedRabbitListenerContainerFactory
     private ApplicationContext applicationContext;
 
     private boolean autoDeclare = false;
+
+    private MessagePropertiesConverter messagePropertiesConverter;
 
     /**
      * @param taskExecutor the {@link Executor} to use.
@@ -259,6 +262,11 @@ public class ExtendedRabbitListenerContainerFactory
         this.applicationContext = applicationContext;
     }
 
+    public void setMessagePropertiesConverter(MessagePropertiesConverter value)
+    {
+        this.messagePropertiesConverter = value;
+    }
+
     @Override
     protected SimpleMessageListenerContainer createContainerInstance() {
         return new SimpleMessageListenerContainer();
@@ -327,6 +335,10 @@ public class ExtendedRabbitListenerContainerFactory
         }
         if (this.applicationEventPublisher != null) {
             instance.setApplicationEventPublisher(this.applicationEventPublisher);
+        }
+
+        if (this.messagePropertiesConverter != null) {
+            instance.setMessagePropertiesConverter(this.messagePropertiesConverter);
         }
 
         instance.setAutoDeclare(this.autoDeclare);

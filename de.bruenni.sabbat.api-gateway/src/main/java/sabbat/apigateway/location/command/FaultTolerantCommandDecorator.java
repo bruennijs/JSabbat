@@ -15,7 +15,7 @@ public class FaultTolerantCommandDecorator implements ICommand {
 
     private static Logger log = LoggerFactory.getLogger(FaultTolerantCommandDecorator.class);
 
-    private long replyResponseTimeout = 5000;
+    private long replyResponseTimeout = 10000;
 
     private ICommand decoratee;
 
