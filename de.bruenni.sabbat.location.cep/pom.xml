@@ -53,6 +53,13 @@
 
         <dependency>
             <groupId>de.bruenni</groupId>
+            <artifactId>sabbat.location.api</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>de.bruenni</groupId>
             <artifactId>infrastructure.tracking</artifactId>
             <version>1.0.0</version>
             <scope>test</scope>
@@ -61,7 +68,7 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java_2.10</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.1</version>
             <scope>compile</scope>
         </dependency>
 

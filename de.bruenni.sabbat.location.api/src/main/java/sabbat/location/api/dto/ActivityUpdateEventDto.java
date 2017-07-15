@@ -18,11 +18,10 @@ public class ActivityUpdateEventDto extends ActivityRequestDtoBase   {
 
     /**
      * Constructor
-     * @param id
-     * @param identityToken
+     * @param activityId
      */
-    public ActivityUpdateEventDto(String id, String identityToken, List<TimeSeriesCoordinate> timeSeriesArray) {
-        super(id, identityToken);
+    public ActivityUpdateEventDto(String activityId, List<TimeSeriesCoordinate> timeSeriesArray) {
+        super(activityId, "");
         this.timeSeries = timeSeriesArray;
     }
 

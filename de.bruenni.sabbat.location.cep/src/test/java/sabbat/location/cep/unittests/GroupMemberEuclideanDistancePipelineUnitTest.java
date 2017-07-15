@@ -52,8 +52,7 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
     private ITrackFileParser gpxParser = new LtOverdriveGpxTrackFileParser();
 
     @Before
-    public void before()
-    {
+    public void before() throws IOException {
 
         //Configuration conf = new Configuration();
         //conf.setFloat(ConfigConstants.DEFAULT_PARALLELISM, 0.5f);

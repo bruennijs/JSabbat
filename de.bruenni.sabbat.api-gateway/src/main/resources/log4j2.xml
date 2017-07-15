@@ -56,6 +56,11 @@
             <!--<AppenderRef ref="DefaultFile"/>-->
         </Logger>
 
+        <Logger name="org.springframework.amqp.rabbit"
+                level="debug">
+            <!--<AppenderRef ref="DefaultFile"/>-->
+        </Logger>
+
         <Root level="INFO">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="DefaultFile"/>
