@@ -10,6 +10,9 @@ public class ActivityCoordinate {
     private String activityId;
     private TimeSeriesCoordinate coordinate;
 
+    public ActivityCoordinate() {
+    }
+
     /**
      * Constructor
      * @param activityId
@@ -18,6 +21,14 @@ public class ActivityCoordinate {
     public ActivityCoordinate(String activityId, TimeSeriesCoordinate coordinate) {
         this.activityId = activityId;
         this.coordinate = coordinate;
+    }
+
+    public void setCoordinate(TimeSeriesCoordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
     }
 
     public String getActivityId() {
@@ -40,5 +51,13 @@ public class ActivityCoordinate {
                 return o1.getCoordinate().getTimestamp().compareTo(o2.getCoordinate().getTimestamp());
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        return "ActivityCoordinate{" +
+                "activityId='" + activityId + '\'' +
+                ", coordinate=" + coordinate +
+                '}';
     }
 }

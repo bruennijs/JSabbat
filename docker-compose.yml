@@ -61,7 +61,7 @@ services:
   location-app-dev:
     image: bruenni/sabbat-location-app:latest
     hostname: sabbat-location-app-dev
-    container_name: sabbat-location-app-prod
+    #container_name: sabbat-location-app-dev
 
     environment:
       #THIS IS RIGHT: use the prod/docker profile bit link to dev conatiner in "links"

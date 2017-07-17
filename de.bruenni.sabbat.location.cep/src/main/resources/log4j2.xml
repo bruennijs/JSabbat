@@ -5,7 +5,7 @@
         <Property name="log-path">/var/log</Property>
     </Properties>
     <Appenders>
-        <RollingFile name="DefaultFile"
+<!--        <RollingFile name="DefaultFile"
                 fileName="${log-path}/sabbat.location.cep.log"
                 filePattern="${log-path}/sabbat.location.cep.%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout pattern="%d{yyyy-dd-MM HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
@@ -13,7 +13,7 @@
                 <TimeBasedTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
-        </RollingFile>
+        </RollingFile>-->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{yyyy-dd-MM HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
@@ -23,9 +23,9 @@
         <Logger name="console" level="INFO">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Root level="DEBUG">
+        <Root level="INFO">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="DefaultFile"/>
+            <!--<AppenderRef ref="DefaultFile"/>-->
         </Root>
     </Loggers>
 </Configuration>

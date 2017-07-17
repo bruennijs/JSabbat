@@ -16,6 +16,10 @@ public abstract class TimeSeries {
         this.timestamp = timestamp;
     }
 
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public Instant getTimestamp() {
         return timestamp;
     }

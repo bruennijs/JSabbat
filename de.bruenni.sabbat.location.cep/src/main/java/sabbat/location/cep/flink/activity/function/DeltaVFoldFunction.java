@@ -27,6 +27,7 @@ import java.util.function.BiFunction;
  * Can calculate the euclidena distance between the coordinates of this window.
  * Example: x input coordinates -> emits latest x-1 Tuple with DeltaV to out collector.
  */
+@Deprecated
 public class DeltaVFoldFunction implements FoldFunction<ActivityCoordinate, Tuple2<ActivityCoordinate, DeltaV>> {
 
     private static GeoDistance distanceStrategy = new EuclideanDistance2();
@@ -41,8 +42,8 @@ public class DeltaVFoldFunction implements FoldFunction<ActivityCoordinate, Tupl
         // else accumulator contains first received coordinate
         // 1. calculate distance delta
         Distance<Double> distance = distanceStrategy.distance(
-                value.getCoordinate().getCoordinate(),
-                accumulator.f0.getCoordinate().getCoordinate(),
+                value.getCoordinate().getCoordinate().toDouble(),
+                accumulator.f0.getCoordinate().getCoordinate().toDouble(),
                 Metrics.METER);
 
         // 2. calculate duration in SEC

@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.api-gateway" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.api" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.app" />
+            <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.cep" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.core" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure" />
             <option value="$PROJECT_DIR$/de.bruenni.sabbat.shared" />

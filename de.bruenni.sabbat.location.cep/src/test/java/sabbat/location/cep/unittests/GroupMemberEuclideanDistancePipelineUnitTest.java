@@ -9,24 +9,19 @@ import infrastructure.tracking.file.ITrackFileParser;
 import infrastructure.tracking.file.TrackFileParserException;
 import infrastructure.util.IterableUtils;
 import lt.overdrive.trackparser.parsing.ParserException;
-import org.apache.flink.api.common.state.ValueState;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.windowing.RichWindowFunction;
-import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
-import org.apache.flink.util.Collector;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.LoggerFactory;
-import sabbat.location.cep.DoubleAverageRichWindowFunction;
+import sabbat.location.cep.flink.activity.function.DoubleAverageRichWindowFunction;
 import sabbat.location.cep.test.flink.FlinkStreamingTestBase;
-import sabbat.location.cep.test.flink.Sink2SubjectAdapter;
+import sabbat.location.cep.test.flink.RxSink;
 import sabbat.location.cep.flink.TimestampTuple2;
 
 import java.io.IOException;
@@ -62,7 +57,7 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
     @Test
     public void when_run_simple_keyed_stream_expect_reduce_collects_results() throws Exception {
 
-      Sink2SubjectAdapter<Double> adapter = new Sink2SubjectAdapter<>();
+      RxSink<Double> adapter = new RxSink<>();
 
       Instant t1 = Instant.now(Clock.systemUTC());
       Instant t2 = t1.plus(Duration.ofSeconds(5));
@@ -76,7 +71,7 @@ public class GroupMemberEuclideanDistancePipelineUnitTest extends FlinkStreaming
 
       DataStreamSource<TimestampTuple2<String, Double>> source = localEnvironment.fromCollection(Arrays.asList(v1, v2, v3, v4, v5));
       source.keyBy(v -> v.getT1())
-            .window(TumblingProcessingTimeWindows.of(Time.seconds(30)))
+            .window(TumblingEventTimeWindows.of(Time.seconds(30)))
             .apply(new DoubleAverageRichWindowFunction())
             .filter(avg -> avg > 10.0 )
             .addSink(adapter);

@@ -1,0 +1,106 @@
+group 'de.bruenni'
+version ''
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+//mainClassName = "sabbat.location.cep.Application"
+
+/*task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}*/
+
+jar {
+    baseName = 'sabbat.location.cep'
+    version = version
+    manifest {
+        attributes 'sabbat-location-cep': 'location CEP engine',
+                'Implementation-Version': version
+    }
+}
+
+buildscript {
+    ext {
+        springVersion = '4.3.9.RELEASE'
+        springBootVersion = '1.5.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+//see  https://docs.gradle.org/3.4.1/dsl/org.gradle.api.artifacts.ResolutionStrategy.html#org.gradle.api.artifacts.ResolutionStrategy:eachDependency(org.gradle.api.Action)
+configurations.all {
+    resolutionStrategy {
+        // fail eagerly on version conflict (includes transitive dependencies)
+        // e.g. multiple different versions of the same dependency (group and name are equal)
+        //failOnVersionConflict()
+        //preferProjectModules()
+
+        // force certain versions of dependencies (including transitive)
+        //  *append new forced modules:
+        // force 'com.github.ben-manes.caffeine:caffeine:2.5.2'//, 'io.reactivex:rxjava:1.3.0'
+        //  *replace existing forced modules with new ones:
+        // forcedModules = ['com.github.ben-manes.caffeine:caffeine:2.5.2']
+
+        // add dependency substitution rules
+        //dependencySubstitution {
+         //   substitute module('org.gradle:api') with project(':api')
+         //   substitute project(':util') with module('org.gradle:util:3.0')
+       // }
+
+        // cache dynamic versions for 10 minutes
+        //cacheDynamicVersionsFor 10*60, 'seconds'
+        // don't cache changing modules at all
+        //cacheChangingModulesFor 0, 'seconds'
+
+        eachDependency { DependencyResolveDetails details ->
+            //specifying a fixed version for all libraries with 'org.gradle' group
+            if (details.requested.name == 'caffeine') {
+                details.useVersion '2.5.2'
+            }
+        }
+    }
+}
+
+dependencies {
+    // PROJECT DEPS
+    runtime group: 'de.bruenni', name: 'sabbat.shared.okta', version: '1.0.0'   // must be part here cause not referenced in transitive dependencies
+    compile group: 'de.bruenni', name: 'sabbat.location.infrastructure', version: '1.0.0'
+
+    // EXTERNAL DEPS
+    compile ("org.springframework.boot:spring-boot-starter-parent:${springBootVersion}")
+            {
+                exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+            }
+
+    compile group: 'org.apache.flink', name: 'flink-streaming-java_2.10', version: '1.3.1'
+
+    // =========== LOGGING with SLF4J with a adapter to log4j 1.2 -> POM of slf4j pulls log4j dependency ===============
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'    /// writes to log4j 1.2...
+    compile group: 'org.apache.logging.log4j', name: 'log4j-1.2-api', version: '2.5'    //...maps 1.2 to 2 api
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'    // this is log4j 2 api
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
+
+    // ==== TEST ====
+    testCompile 'de.bruenni:infrastructure.tracking:1.0.0'
+    testCompile ("org.springframework:spring-test:${springVersion}")
+    //testCompile ("org.springframework.boot:spring-boot-test:${springBootVersion}")
+    testCompile group: 'de.bruenni', name: 'infrastructure.tracking', version: '1.0.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.8.9'
+}

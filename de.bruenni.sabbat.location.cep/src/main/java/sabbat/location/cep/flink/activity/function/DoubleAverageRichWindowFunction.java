@@ -1,4 +1,4 @@
-package sabbat.location.cep;
+package sabbat.location.cep.flink.activity.function;
 
 import infrastructure.util.IterableUtils;
 import org.apache.flink.api.common.state.ValueState;
@@ -18,6 +18,7 @@ import java.util.stream.Collector;
 /**
  * Created by bruenni on 19.01.17.
  */
+@Deprecated
 public class DoubleAverageRichWindowFunction extends RichWindowFunction<TimestampTuple2<String, Double>, Double, String, TimeWindow> implements WindowFunction<TimestampTuple2<String, Double>, Double, String, TimeWindow> {
 
 	private transient ValueState<Tuple2<Long, Double>> avgPerKey;

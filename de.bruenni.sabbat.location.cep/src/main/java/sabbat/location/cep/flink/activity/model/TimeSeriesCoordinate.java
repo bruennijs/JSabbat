@@ -1,6 +1,7 @@
 package sabbat.location.cep.flink.activity.model;
 
 import infrastructure.tracking.GeoPoint;
+import infrastructure.tracking.GeoPointBD;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,14 +11,21 @@ import java.time.Instant;
  */
 public class TimeSeriesCoordinate extends TimeSeries {
 
-    private GeoPoint coordinate;
+    private GeoPointBD coordinate;
 
-    public TimeSeriesCoordinate(Instant timestamp, GeoPoint<BigDecimal> coordinate) {
+    public TimeSeriesCoordinate() {
+    }
+
+    public TimeSeriesCoordinate(Instant timestamp, GeoPointBD coordinate) {
         super(timestamp);
         this.coordinate = coordinate;
     }
 
-    public GeoPoint getCoordinate() {
+    public void setCoordinate(GeoPointBD coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public GeoPointBD getCoordinate() {
         return coordinate;
     }
 

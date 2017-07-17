@@ -145,9 +145,9 @@ truncate table loc.activity CASCADE;]]></console>
     </last-used-providers>
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
+    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_queries.sql" connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4" current-schema="information_schema" />
     <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_db.sql" connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4" current-schema="public" />
     <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_init_tables.sql" connection-id="706bae52-69c4-4770-92bd-792d3f9fb807" current-schema="information_schema" />
-    <mapping file-url="file://$PROJECT_DIR$/de.bruenni.sabbat.location.infrastructure/src/main/postgres/init/postgres_queries.sql" connection-id="e1d4605f-2acf-4880-ab78-fe5b17a881b4" current-schema="information_schema" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />

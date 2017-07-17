@@ -14,6 +14,9 @@ public class DeltaV {
     private Distance<BigDecimal> distance;
     private Duration duration;
 
+    public DeltaV() {
+    }
+
     /**
      *
      * @param distance
@@ -21,6 +24,14 @@ public class DeltaV {
      */
     public DeltaV(Distance<BigDecimal> distance, Duration duration) {
         this.distance = distance;
+        this.duration = duration;
+    }
+
+    public void setDistance(Distance<BigDecimal> distance) {
+        this.distance = distance;
+    }
+
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
@@ -41,5 +52,13 @@ public class DeltaV {
 
     public static DeltaV empty() {
         return new DeltaV(Distance.from(BigDecimal.ZERO, Metrics.CENTIMETER), Duration.ZERO);
+    }
+
+    @Override
+    public String toString() {
+        return "DeltaV{" +
+                "distance=" + distance +
+                ", duration=" + duration +
+                '}';
     }
 }
