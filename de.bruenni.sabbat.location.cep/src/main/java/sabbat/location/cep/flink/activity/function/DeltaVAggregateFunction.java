@@ -53,7 +53,7 @@ public class DeltaVAggregateFunction implements AggregateFunction<ActivityCoordi
                     Metrics.METER);
 
             // 2. calculate duration in SEC
-            Duration duration = Duration.between(value.getCoordinate().getTimestamp(), latestAccTuple.f0.getCoordinate().getTimestamp());
+            Duration duration = Duration.between(latestAccTuple.f0.getCoordinate().getTimestamp(), value.getCoordinate().getTimestamp());
 
             accumulator.add(new Tuple2<>(value, new DeltaV(Distance.from(BigDecimal.valueOf(distance.get()), distance.getMetric()), duration)));
         }
@@ -74,4 +74,6 @@ public class DeltaVAggregateFunction implements AggregateFunction<ActivityCoordi
         a.addAll(b);
         return a;
     }
+
+
 }

@@ -20,10 +20,13 @@
     </Appenders>
     <Loggers>
 
+        <Logger name="sabbat.location.cep" level="DEBUG"/>
+
         <Logger name="console" level="INFO">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Root level="INFO">
+
+        <Root level="ERROR">
             <AppenderRef ref="Console"/>
             <!--<AppenderRef ref="DefaultFile"/>-->
         </Root>

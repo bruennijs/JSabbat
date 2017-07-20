@@ -4,6 +4,9 @@ import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.hadoop.hdfs.DFSClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Observer;
 import rx.subjects.ReplaySubject;
@@ -18,14 +21,23 @@ import java.util.concurrent.TimeUnit;
  */
 public class RxSink<IN> extends RichSinkFunction<IN> implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static Logger Log = LoggerFactory.getLogger(RxSink.class);
 
-  private transient rx.subjects.Subject<IN, IN> subject;
+    private static final long serialVersionUID = 1L;
+
+    private transient rx.subjects.Subject<IN, IN> subject;
+    private transient long countWindowSize;
 
 
-  @Override
+    public RxSink() {
+        Log.debug("ctor RxSink");
+    }
+
+    @Override
   public void invoke(IN in) throws Exception {
-    subject.onNext(in);
+        Log.debug("START RxSink invoke [countWindowSize {}]", this.countWindowSize);
+        subject.onNext(in);
+        Log.debug("END RxSink invoke");
   }
 
 
@@ -33,7 +45,11 @@ public class RxSink<IN> extends RichSinkFunction<IN> implements Serializable {
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
         this.subject = ReplaySubject.create();
+        Configuration configuration = (Configuration) getRuntimeContext().getExecutionConfig().getGlobalJobParameters();
+        //this.countWindowSize = parameters.getLong("countWindowSize", 2);
+        this.countWindowSize = configuration.getLong("countWindowSize", 2);
     }
+
 
     /**
    * Returns observable without any subscribers

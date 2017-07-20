@@ -1,11 +1,9 @@
 package sabbat.location.cep.flink.evictor;
 
-import infrastructure.util.IterableUtils;
 import org.apache.flink.streaming.api.windowing.evictors.Evictor;
 import org.apache.flink.streaming.api.windowing.windows.Window;
 import org.apache.flink.streaming.runtime.operators.windowing.TimestampedValue;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.function.Predicate;
 

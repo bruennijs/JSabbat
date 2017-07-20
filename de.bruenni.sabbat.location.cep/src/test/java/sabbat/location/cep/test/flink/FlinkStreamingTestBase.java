@@ -7,6 +7,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.OutputFormatSinkFunction;
 import sabbat.location.cep.flink.Outputformat.Sl4jOutputFormat;
 import sabbat.location.cep.flink.activity.model.ActivityCoordinate;
+import sabbat.location.cep.flink.activity.model.ActivitySum;
 import sabbat.location.cep.flink.activity.model.DeltaV;
 
 import java.io.IOException;
@@ -24,7 +25,11 @@ public abstract class FlinkStreamingTestBase {
       return env;
   }
 
-    protected OutputFormatSinkFunction<Tuple2<ActivityCoordinate, DeltaV>> createSl4jSink(String correlationId) {
+    protected OutputFormatSinkFunction<Tuple2<ActivityCoordinate, DeltaV>> createDeltavSl4jSink(String correlationId) {
+        return new OutputFormatSinkFunction<>(new Sl4jOutputFormat<>(correlationId));
+    }
+
+    protected OutputFormatSinkFunction<ActivitySum> createActivitySumSl4jSink(String correlationId) {
         return new OutputFormatSinkFunction<>(new Sl4jOutputFormat<>(correlationId));
     }
 }
